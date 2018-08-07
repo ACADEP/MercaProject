@@ -611,17 +611,17 @@ section {
     padding-top: 2%;
     text-decoration: none;
     font-size: 14px;
-    color: grey;
+    color: black;
     font-weight: 300;
 }
 #No-Account {
-    color: white;
+    color: black;
     font-weight: 400;
 }
 #Sign-up {
     text-decoration: underline;
     font-weight: 700;
-    color: white;
+    color: black;
 }
 /********************* Show Products By Category Page ******************************************************************/
 #product-sub-container {
