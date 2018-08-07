@@ -15,7 +15,7 @@ class AppMailers {
     /**
      * Who is the email from.
      */
-    protected $from = 'store@admin.com';
+    protected $from = 'jonces94@hotmail.com';
 
     /**
      * Who is this going to.
@@ -32,6 +32,10 @@ class AppMailers {
      */
     protected $data = [];
 
+    /**
+     * Asunto del correo.
+     */
+    protected $subject = 'Registro Mercadata';
 
     /**
      * @param Mailer $mailer
@@ -65,6 +69,7 @@ class AppMailers {
     public function deliver() {
         $this->mailer->send($this->view, $this->data, function($message) {
             $message->from($this->from, 'Administrator')
+                ->subject($this->subject)
                 ->to($this->to);
         });
     }

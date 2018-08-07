@@ -52,24 +52,28 @@ class AuthController extends Controller
      */
     public function postRegister(RegistrationRequest $request, AppMailers $mailer) {
 
+      
         // Create the user in the DB.
         $user = User::create([
             'email' => $request->input('email'),
             'username' => $request->input('username'),
             'password' => bcrypt($request->input('password')),
             'verified' => 0,
+            'admin' => 0,
         ]);
 
         /**
          * send email conformation to user that just registered.
          * -- sendEmailConfirmationTo is in Mailers/AppMailers.php --
          */
-        //$mailer->sendEmailConfirmationTo($user);
+        $mailer->sendEmailConfirmationTo($user);
 
         // Flash a info message saying you need to confirm your email.
-        flash()->overlay('Info', 'Please confirm your email address in your inbox.');
 
-        return redirect()->back();
+        //flash()->overlay('Info', 'Por favor, confirma tu correo electrónico en tu bandeja de entrada.');
+
+        return back()->with('flash','Por favor, confirma tu correo electrónico en tu bandeja de entrada.');
+        //return redirect()->back();
 
     }
 
@@ -86,9 +90,11 @@ class AuthController extends Controller
         User::whereToken($token)->firstOrFail()->confirmEmail();
 
         // Flash a info message saying you need to confirm your email.
-        flash()->success('Success', 'You are now confirmed. Please sign in.');
+        //flash()->success('Success', 'Ahora estás confirmado. Por favor, registrese.');
 
-        return redirect('/');
+        //return back()->with('flash','Ahora esta registrado. Por favor, inicie sesión.');
+        return redirect('/')->with('flash','Ahora esta registrado. Por favor, inicie sesión.');
+
     }
 
 
