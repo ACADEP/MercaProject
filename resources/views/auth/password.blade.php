@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container-fluid" id="Login-Register-Container">
+    <div class="container-fluid" id="Login-Register-Container" style="padding-bottom: 60px;">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
                 <div class="card" id="Login-Register-Panel">
