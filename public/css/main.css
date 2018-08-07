@@ -580,7 +580,7 @@ section {
 }
 /** Login.blade.php **/
 #Login-Register-Container {
-    background: #298eea;
+    background: #cfcfcf;/*#298eea;*/
     padding: 0;
     margin: 0;
     height: 100%;
