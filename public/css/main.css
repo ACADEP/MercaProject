@@ -75,47 +75,7 @@ p {
 /***** typeahead search-box *****************/
 
 
-.typeahead-container {
-    padding-bottom: 50px;
-}
 
-.typeahead-list {
-    top: 0;
-}
-
-#typeahead-container {
-    padding-bottom: 25px;
-}
-
-
-
-#flyer-query {
-    height: 40px;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-}
-
-#Search-Btn {
-    height: 40px;
-    background-color: #2BBBAD;
-    color: white;
-    line-height: 31px;
-    padding: 5px 22px;
-    margin-top: 10px;
-    border: 0;
-    border-radius: 2px;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
-    text-decoration: none;
-    text-transform: uppercase;
-    margin-left: 10px;
-    outline: 0!important;
-}
 
 
 /*******************************************/
