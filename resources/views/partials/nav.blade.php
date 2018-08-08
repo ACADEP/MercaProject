@@ -46,10 +46,8 @@
               
         
 
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Buscar productos...." aria-label="Search" size="80">
-          <button class="btn btn-outline-success btn-sm" type="submit"><i class="material-icons">search</i></button>
-        </form>
+       <!-- Busquedas -->
+       @include('pages.partials.search_box')
 
       <div id="form-sesion">
             

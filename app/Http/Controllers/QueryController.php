@@ -7,6 +7,7 @@ use App\Product;
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
@@ -23,8 +24,15 @@ class QueryController extends Controller {
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function search() {
+    public function search(Request $peticion) {
 
+        $peticion->validate([
+            'searchname' => 'required'
+        ],
+        [
+            'searchname.required'=>'putita'
+        ]);
+        
         // From Traits/CategoryTrait.php
         // ( Show Categories in side-nav )
         $categories = $this->categoryAll();
@@ -38,21 +46,28 @@ class QueryController extends Controller {
         $cart_count = $this->countProductsInCart();
 
         // Gets the query string from our form submission
-        $query = Input::get('search');
-
-        // Returns an array of products that have the query string located somewhere within
-        // our products product name. Paginate them so we can break up lots of search results.
-        $search = Product::where('product_name', 'LIKE', '%' . $query . '%')->paginate(200);
-
-        // If no results come up, flash info message with no results found message.
-        if ($search->isEmpty()) {
-            flash()->info('Not Found', 'No search results found.');
-            return redirect('/');
+        $query = Input::get('searchname');
+        if($query!=null)
+        {
+            // Returns an array of products that have the query string located somewhere within
+            // our products product name. Paginate them so we can break up lots of search results.
+            $search = Product::where('product_name', 'LIKE', '%' . $query . '%')->paginate(200);
         }
+        
+        
+        // If no results come up, flash info message with no results found message.
 
         // Return a view and pass the view the list of products and the original query.
         return view('pages.search', compact('search', 'query', 'categories', 'brands', 'cart_count'));
     }
+
+    public function data()
+    {
+        $productsname=Product::pluck('product_name');
+        return $productsname;
+    }
+
+
 
 
 }

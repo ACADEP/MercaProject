@@ -1,4 +1,4 @@
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 300px;">
     <div class="carousel-inner">
       
       <div class="carousel-item active animated fadeInDown">

@@ -1,49 +1,38 @@
 @extends('app')
 
 @section('content')
-
-    <div id="wrapper">
-
-        @include('pages.partials.side-nav')
-
-        <!-- Button to toggle side-nav -->
-        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars fa-5x"></i></a>
-
-
-        <div class="container-fluid">
-
             <h6>
-              Search results for: <i>{{ $query }}</i>
+               Resultados para:  <i>{{ $query }}</i>
             </h6><br>
 
             @if (count($search) === 0)
-                No products found
+                <h1>No hay productos</h1>
             @elseif (count($search) >= 1)
                 @foreach($search as $query)
-                    <div class="col-md-12 wow slideInLeft" id="product-sub-container">
-                        <div class="col-md-4 text-center hoverable">
+                    <div class="col-md-4 wow slideInLeft" id="product-sub-container">
+                        <div class="text-center hoverable">
                             <a href="{{ route('show.product', $query->product_name) }}">
                             @if ($query->photos->count() === 0)
-                                    <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag">
+                                    <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag">
                             @else
                                 @if ($query->featuredPhoto)
-                                    <img src="/store/{{ $query->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $query->featuredPhoto->id }}" />
+                                    <img src="{{asset($query->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $query->featuredPhoto->id }}" width="100%" />
                                 @elseif(!$query->featuredPhoto)
-                                    <img src="/store/{{ $query->photos->first()->thumbnail_path}}" alt="Photo" />
+                                    <img src="{{asset($query->photos->first()->thumbnail_path)}}" alt="Photo" />
                                 @else
                                     N/A
                                 @endif
                             @endif
                             </a>
                         </div>
-                        <div class="col-md-5">
+                        <div class="text-center">
                             <a href="{{ route('show.product', $query->product_name) }}">
                             <h5 class="center-on-small-only">{{ $query->product_name }}</h5>
                             <h6 class="center-on-small-only">Marcas: {{ $query->brand->brand_name }}</h6>
                             <p style="font-size: .9em;">{!! nl2br(str_limit($query->description, $limit = 200, $end = '...')) !!}</p>
                             </a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="text-center">
                             @if($query->reduced_price == 0)
                                 $ {{  $query->price }}
                                 <br>
@@ -62,9 +51,4 @@
                     </div>
                 @endforeach
             @endif
-
-        </div>      <!-- Close container-fluid -->
-
-    </div>  <!-- Close wrapper -->
-
 @endsection

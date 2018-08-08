@@ -26,9 +26,9 @@
 
        
         <!-- Include sweet alert file -->
-        <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}">
+        <!-- <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}"> -->
         <!-- Include typeahead file -->
-        <link rel="stylesheet" href="{{ asset('/css/typeahead.css') }}">
+        <!-- <link rel="stylesheet" href="{{ asset('/css/typeahead.css') }}"> -->
         <!-- Include lity ligh-tbox file -->
         <link rel="stylesheet" href="{{ asset('/css/lity.css') }}">
         
@@ -42,18 +42,9 @@
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
 
         <link rel="stylesheet" href="{{ asset('/sass/app.scss') }}"> -->
-
-        <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-
-       
-        <!-- Styles -->
         
-        <!-- Bootstrap core CSS -->
-       
-        <!-- Bootstrap core mdb.css -->
-       
-        <!-- Include app.less file -->
+        <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
         
         
         
@@ -63,15 +54,15 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <!-- Font Awesome -->
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
+        <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" > -->
 
         <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-            ga('create', 'UA-76800406-1', 'auto');
-            ga('send', 'pageview');
+            // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            //             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            //         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            // })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            // ga('create', 'UA-76800406-1', 'auto');
+            // ga('send', 'pageview');
         </script>
 
     </head>
@@ -87,32 +78,15 @@
                 
             
      @include('pages.partials.footer')
-    
 
-   <!-- jQuery -->
-   <!-- <script type="text/javascript" src="{{ asset('/js/libs/jquery.js') }}"></script> -->
-    <!-- Include main app.js file -->
-    
-    <!-- Bootstrap core JavaScript -->
-    <!-- <script type="text/javascript" src="{{ asset('/js/libs/bootstrap.min.js') }}"></script> -->
-    <!-- MDB core JavaScript -->
-    <!-- <script type="text/javascript" src="{{ asset('/js/libs/mdb.js') }}"></script> -->
-    
-    <!-- SCRIPTS -->
-    <!-- JQuery -->
-    <!-- <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> -->
-    <!-- Bootstrap tooltips -->
-    <!-- <script type="text/javascript" src="js/popper.min.js"></script> -->
-    <!-- Bootstrap core JavaScript -->
-    <!-- <script type="text/javascript" src="js/bootstrap.min.js"></script> -->
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
     <!-- Include sweet-alert.js file -->
-    <script type="text/javascript" src="{{ asset('/js/libs/sweetalert.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('/js/libs/sweetalert.js') }}"></script> -->
     <!-- Include typeahead.js file -->
-    <script type="application/javascript" src="{{ asset('/js/libs/typeahead.js') }}"></script>
+    <!-- <script type="application/javascript" src="{{ asset('/js/libs/typeahead.js') }}"></script> -->
     <!-- Include lity light-box js file -->
-    <script type="application/javascript" src="{{ asset('/js/libs/lity.js') }}"></script>
+    <!-- <script type="application/javascript" src="{{ asset('/js/libs/lity.js') }}"></script> -->
     <!-- Stripe.js file -->
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
@@ -204,16 +178,84 @@
             }
         }
     </script>
+    <style>
+       .team .row .col-md-4 {
+    margin-bottom: 5em;
+}
+.team .row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  flex-wrap: wrap;
+}
+.team .row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {    /* used to be tt-dropdown-menu in older versions */
+  width: 99%;
+  margin-top: 4px;
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor,.tt-suggestion:hover {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+        
+    </style>
+    </style>
+    <script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script>
     <script>
-        $('#flyer-query').typeahead({
-            minLength: 2,
-            source: {
-                data: [
-                    @foreach($search as $query)
-                         "{{ $query->product_name }}",
-                    @endforeach
-                ]
-            }
+           
+            $(function () {
+            // 
+            var datos = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              prefetch: '{{ url("/data") }}'
+            });            
+
+            // inicializar typeahead sobre nuestro input de búsqueda
+            $('#search').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                name: 'datos',
+                source: datos
+            });
         });
     </script>
     <script>
