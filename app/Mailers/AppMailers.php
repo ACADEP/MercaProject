@@ -62,6 +62,16 @@ class AppMailers {
         $this->deliver();
     }
 
+    public function sendEmailResetPassword(User $user) {
+        // Send this to the users email.
+        $this->to = $user->email;
+        // Pass the view to this...
+        $this->view = 'auth.confirmpassword';
+        // The data that is required. 
+        $this->data = compact('user');
+        // Now deliver the email to the user.
+        $this->deliver();
+    }
 
     /**
      * Delivery email to user.
