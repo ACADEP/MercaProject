@@ -140,7 +140,7 @@ class AuthController extends Controller
         }
 
         // Else, show error message, and redirect them back to login.php.
-        flash()->customErrorOverlay('Error', 'Could not sign you in with those credentials');
+        flash()->customErrorOverlay('Error', 'No se pudo iniciar sesión con esas credenciales');
 
         return redirect('login');
     }

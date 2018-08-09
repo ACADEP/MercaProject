@@ -150,7 +150,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/password/reset/{token}', '\App\Http\Controllers\PasswordController@getReset');
     Route::post('/password/reset', '\App\Http\Controllers\PasswordController@postReset');
 
-
+    
     /**************************************** Cart Routes *********************************************/
     
     
