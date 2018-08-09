@@ -23,10 +23,12 @@
     
     @foreach($rand_brands as $rand)
     <div class="carousel-item animated fadeInDown">
-    <div class="carousel-caption hidden-xs">
-            <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
-    </div>
-       <a href="{{ url('brand', $rand->id) }}"> <img class="d-block w-100" src="{{ asset('/images/hp_logo.png') }}" alt="Second slide" height="300px" ></a>
+        <a href="{{ url('brand', $rand->id) }}">
+            <div class="carousel-caption hidden-xs">
+                    <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
+            </div>
+            <img class="" src="{{ asset('/images/hp_logo.png') }}" alt="Second slide" height="300px" >
+         </a>
     </div>
     @endforeach
 

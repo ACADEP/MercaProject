@@ -14,29 +14,33 @@
           <a class="nav-link dropdown-toggle hidden-md-down" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Categorias
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <!-- Categorias y subcategorias -->
-              <li><a class="dropdown-item" href="#">Categoria 1</a></li>
-              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                  <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
-                </ul>
-              </li>
-              <li><a class="dropdown-item" href="#">Categoria 3</a></li>
-              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                  <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
-                  <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
-                </ul>
-              </li>
-              <li><a class="dropdown-item" href="#">Categoria 5</a></li>
-              <li><a class="dropdown-item" href="#">Categoria 6</a></li>
-              <li><a class="dropdown-item" href="#">Ver mas categorias</a></li>
-              
-              
-          </ul>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!-- Categorias y subcategorias -->
+               
+                @foreach($categories as $categorie)
+                  <li><a class="dropdown-item" href="#">{{$categorie}}</a></li>
+                @endforeach
+                
+                <!-- Subcategorias dropdown -->
+                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
+                    <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
+                  </ul>
+                </li>
+                <li><a class="dropdown-item" href="#">Categoria 3</a></li>
+                
+                <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
+                    <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
+                    <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
+                  </ul>
+                </li> -->
+                <li><a class="dropdown-item" href="#">Ver mas categorias</a></li>
+                
+                
+            </ul>
         </li>
       
       </ul>

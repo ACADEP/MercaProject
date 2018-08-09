@@ -25,12 +25,11 @@ class QueryController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function search(Request $peticion) {
-
         $peticion->validate([
             'searchname' => 'required'
         ],
         [
-            'searchname.required'=>'putita'
+            'searchname.required'=>'No puede estar vacio'
         ]);
         
         // From Traits/CategoryTrait.php

@@ -29,8 +29,8 @@ class PagesController extends Controller {
 
         // From Traits/CategoryTrait.php
         // ( Show Categories in side-nav )
-        $categories = $this->categoryAll();
-
+        $categories = Category::pluck('category')->take(5);
+        
         // From Traits/BrandAll.php
         // Get all the Brands
         $brands = $this->brandsAll();
@@ -54,7 +54,7 @@ class PagesController extends Controller {
         $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(4)->get();
 
         
-        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_brands'))->with('categories', $categories);
+        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_brands','categories'));
     }
 
     /**

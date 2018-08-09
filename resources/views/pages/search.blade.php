@@ -6,7 +6,9 @@
             </h6><br>
 
             @if (count($search) === 0)
-                <h1>No hay productos</h1>
+                <div class="col-md-12 wow slideInLeft" style="height: 500px;">
+                    <h1>No hay productos</h1>
+                </div>
             @elseif (count($search) >= 1)
                 @foreach($search as $query)
                     <div class="col-md-4 wow slideInLeft" id="product-sub-container">
