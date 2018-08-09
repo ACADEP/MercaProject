@@ -25,8 +25,14 @@ Route::group(['middleware' => ['web']], function () {
 
     /** Route to post search results **/
     Route::post('/queries', [
-        'uses' => '\App\Http\Controllers\QueryController@search',
+        'uses' => 'QueryController@search',
         'as'   => 'queries.search',
+    ]);
+
+    /** Route to get typehead results **/
+    Route::get('/data', [
+        'uses' => 'QueryController@data',
+        'as'   => 'data.json',
     ]);
 
     /** Route to Products show page **/

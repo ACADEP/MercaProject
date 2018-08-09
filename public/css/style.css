@@ -2,7 +2,10 @@
 /* #content-body{
     margin: 50px;
 } */
-
+/*************************************Brands****************************************************************************/
+#brand-slide{
+    background-color: red;
+}
 /* ********************************** Dropdown hover ******************************************************************/
 .navbar-nav li:hover > ul.dropdown-menu {
     display: block;
@@ -60,18 +63,77 @@
 #footer_div{
   
     padding-top: 20px;
+    height: 100px;
     
 }
 
-
 /********************************* brands **************************************************************/
 #brands{
-    background-color: aqua;
+     background-color: inherit;
 }
 #brands a{
     text-decoration: none;
 }
+/*******************************************Typehead****************************************************/
+.team .row .col-md-4 {
+    margin-bottom: 5em;
+}
+.team .row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  flex-wrap: wrap;
+}
+.team .row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
 
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {    /* used to be tt-dropdown-menu in older versions */
+  width: 222px;
+  margin-top: 4px;
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor,.tt-suggestion:hover {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+/***********************************************store-designt***************************************/
+#store-card{
+    background-color: palegoldenrod;
+    height: 300px;
+}
 /***********************************************Card design******************************************/
 .title-arch {
     text-align: center;
@@ -82,8 +144,8 @@
 }
 .project {
 width: 100%;
-height: 500px;
-background-image: url(https://image.freepik.com/free-vector/abstract-geometric-background-design_1045-764.jpg);
+height: 100px;
+background-image: url("../images/hp_logo.png");
 background-size: cover;
 background-position: center;
 padding: 0 !important;
@@ -104,14 +166,13 @@ background-image: url(https://image.freepik.com/free-vector/abstract-geometric-b
 
 .project-hover {
 width: 100%;
-height: 100%;
 color: #fff;
 opacity: 0;
 -webkit-transition: all 0.5s ease;
 -moz-transition: all 0.5s ease;
 -o-transition: all 0.5s ease;
 transition: all 0.5s ease;
-background-color: rgba(186, 232, 2, 0.7);
+background-color: red;
 padding: 40% 30px !important;
 }
 
