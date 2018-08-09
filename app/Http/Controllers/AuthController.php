@@ -34,12 +34,12 @@ class AuthController extends Controller
     public function getRegister() {
         // Gets the query string from our form submission
         $query = Input::get('search');
-
+        $categories = Category::pluck('category')->take(5);
         // Returns an array of products that have the query string located somewhere within
         // our products product name. Paginates them so we can break up lots of search results.
         $search = \DB::table('products')->where('product_name', 'LIKE', '%' . $query . '%')->paginate(10);
 
-        return view('auth.register', compact('query', 'search'));
+        return view('auth.register', compact('query', 'search','categories'));
     }
 
 
@@ -110,12 +110,12 @@ class AuthController extends Controller
     public function getLogin() {
         // Gets the query string from our form submission
         $query = Input::get('search');
-
+        $categories = Category::pluck('category')->take(5);
         // Returns an array of products that have the query string located somewhere within
         // our products product name. Paginates them so we can break up lots of search results.
         $search = \DB::table('products')->where('product_name', 'LIKE', '%' . $query . '%')->paginate(10);
 
-        return view('auth.login', compact('query', 'search'));
+        return view('auth.login', compact('query', 'search','categories'));
     }
 
 
