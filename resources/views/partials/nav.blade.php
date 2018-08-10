@@ -1,8 +1,8 @@
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" id="navbar-header">
-      
-      <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{asset('images/logo-home.jpg')}}" width="150px"></a>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <nav class="navbar navbar-expand-md navbar-light bg-light stinky-top" id="navbar-header">
+    
+    <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{asset('images/logo-home.png')}}" ></a>
+            
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -17,10 +17,8 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <!-- Categorias y subcategorias -->
                
-                @foreach($categories as $categorie)
-                  <li><a class="dropdown-item" href="#">{{$categorie}}</a></li>
-                @endforeach
                 
+                <li><a class="dropdown-item" href="#">Categoria 1</a></li>
                 <!-- Subcategorias dropdown -->
                 <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
                   <ul class="dropdown-menu">
@@ -37,7 +35,7 @@
                     <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
                   </ul>
                 </li> -->
-                <li><a class="dropdown-item" href="#">Ver mas categorias</a></li>
+                <li><a class="dropdown-item" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
                 
                 
             </ul>
@@ -45,16 +43,15 @@
       
       </ul>
       
-      
-            
-              
-        
-
        <!-- Busquedas -->
        @include('pages.partials.search_box')
 
+           
+      
+      
       <div id="form-sesion">
-            
+      
+
            @if(Auth::check())
               <a href="{{ url('/profile') }}">Perfil &nbsp</a>
               <a href="{{ url('/logout') }}">Salir</a>
@@ -64,6 +61,10 @@
           @endif
             
             
+      </div>
+
+      <div>
+            <a href="#"><i class="material-icons"> shopping_cart </i></a>
       </div>
       
         

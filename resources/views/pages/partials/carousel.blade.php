@@ -1,7 +1,7 @@
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 300px;">
     <div class="carousel-inner">
       
-      <div class="carousel-item active animated fadeInDown">
+      <div class="carousel-item  active animated fadeInDown">
         
           <img class="d-block w-100" src="{{ asset('/images/slider/main_2.jpg') }}" alt="First slide">
           <div class="carousel-caption hidden-xs">

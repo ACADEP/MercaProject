@@ -1,6 +1,6 @@
 
 <div class="col-md-12" id="new_product">
-        <h4 class="text-left" id="featured-products-heading">Nuevos productos</h4>
+<h4 class="text-left animated zoomIn" id="title-product">Nuevos productos</h4>
     <div class="text-center wow">
         
         <div class="container-fluid" id="Index-Main-Container">

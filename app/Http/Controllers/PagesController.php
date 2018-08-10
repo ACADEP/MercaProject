@@ -27,8 +27,6 @@ class PagesController extends Controller {
      */
     public function index() {
 
-        // From Traits/CategoryTrait.php
-        // ( Show Categories in side-nav )
         $categories = Category::pluck('category')->take(5);
         
         // From Traits/BrandAll.php
@@ -141,6 +139,12 @@ class PagesController extends Controller {
         $cart_count = $this->countProductsInCart();
 
         return view('brand.show', compact('products', 'brands', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
+    }
+
+    public function displayAllCategories()
+    {
+        $categories = Category::all();
+        return view('pages.categories',compact('categories'));
     }
 
 }

@@ -1,4 +1,4 @@
-@if ($errors->any())
+<!-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -6,12 +6,24 @@
             @endforeach
         </ul>
     </div>
-@endif
-<form class="form-inline my-2 my-lg-0"  method="POST" action="{{ route('queries.search') }}">
-            {!! csrf_field() !!}
-          <input class="form-control mr-sm-2" name="searchname" id="search" type="search" placeholder="Buscar productos...." autocomplete="off" size="80">
-          <button class="btn btn-outline-success btn-sm" type="submit"><i class="material-icons">search</i></button>
-</form>
+@endif -->
+<div id="search-box">
+    <form class="form-inline my-2 my-lg-0"  method="POST" action="{{ route('queries.search') }}">
+                    {!! csrf_field() !!}
+                <input class="form-control mr-sm-2" name="searchname" id="search" type="search" placeholder="Buscar productos...." autocomplete="off" size="60">
+                <button class="btn btn-outline-success btn-sm" type="submit"><i class="material-icons">search</i></button>
+    </form>
+
+</div>
+
+<style>
+    #search-box
+    {
+        margin-right: 90px;
+    } 
+</style>
+
+
 
 
 <!-- {!! Form::open(array('route' => 'queries.search')) !!}
