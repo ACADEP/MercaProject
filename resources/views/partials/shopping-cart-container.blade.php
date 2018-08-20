@@ -6,7 +6,7 @@
     
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         <li>
-            <p>No hay productos<p>
+            <p id="product_container"></p>
         </li>
                                            
         <li class="total">

@@ -2,7 +2,7 @@
 <div class="col-md-12" id="product_featured">
     <h4 class="text-left animated zoomIn" id="title-product">Productos destacados</h4>
         <div class="text-center row" >            
-                    
+                   
                         @foreach($products as $product)
                             
                             <div class="col-sm-6 col-md-3 animated zoomIn grow ">
@@ -32,12 +32,14 @@
                             </div>
                                 
 
-                                <form action="/store/cart/add" method="post" name="add_to_cart" id="form-add-cart">
-                                    {!! csrf_field() !!}
-                                    <input type="hidden" name="product" value="{{$product->id}}" />
-                                    <input type="hidden" name="qty" value="1" />
-                                    <button class="btn btn-default waves-effect waves-light"><i class="fa fa-cart" aria-hidden="true"></i>Agregar al carrito</button>
-                                </form>
+                                
+                                    <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
+                                    <input type="hidden" id="qty" value="1"/>
+                                    <input type="hidden" id="url" value="{{ route('addCart') }}">
+                                    <button class="btn btn-default btn-addcart" value="{{$product->id}}"><i class="fa fa-cart" aria-hidden="true"></i>Agregar al carrito</button>
+                                
+                                    
+                                
                             </div>
                         @endforeach
                     

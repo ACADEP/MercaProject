@@ -164,11 +164,8 @@ Route::group(['middleware' => ['web']], function () {
         'uses'   => 'CartController@showCart'
     ));
 
-    /** Add items in the cart **/
-    Route::post('/cart/add', array(
-        'before' => 'auth.basic',
-        'uses'   => 'CartController@addCart'
-    ));
+    /** Agregar productos al carrito **/
+    Route::post('/cart/add', 'CartController@addCart')->name('addCart');
 
     /** Update items in the cart **/
     Route::post('/cart/update', [
