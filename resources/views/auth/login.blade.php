@@ -47,7 +47,7 @@
                                     <button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Iniciar Sesión</button>
                                 </div>
                                 <div class="col-md-12">
-                                    <br><a href="{{ url('password/email') }}" class="d-block text-center" id="Forgot-Password">Olvidé mi contraseña</a><br>
+                                    <br><a href="{{ url('password/email') }}" class="d-block text-center" id="Forgot-Password">Olvidé mi contraseña</a>
                                 </div>
                             </div>
 
