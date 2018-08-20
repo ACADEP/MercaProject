@@ -7,6 +7,13 @@
 #brand-slide{
     background-color: red;
 }
+/************************************ Products styles******************************************************************/
+
+
+/**********Hover de imagenes***********/
+
+
+
 /* ********************************** Dropdown hover ******************************************************************/
 .navbar-nav li:hover > ul.dropdown-menu {
     display: block;
@@ -37,16 +44,9 @@
 } */
 
 /************************************* navbar**********************************************************************/
-/* #navbar-header{
-    margin-bottom: 100px;
-   
-} */
-#form-sesion{
-    margin-left: 10px;
-    margin-right: 10px;
-    
-    
-}
+
+  
+
 #form-sesion a{
     text-decoration:none;
 }
@@ -54,7 +54,14 @@
 /*********************************product featured**************************************************************/
 #product_featured{
     padding: 20px;
+    height: 100%;
+
 }
+#product-container{
+    
+}
+
+
 
 /*********************************news prodcuts**************************************************************/
 #new_product{
@@ -65,7 +72,7 @@
 #footer_div{
   
     padding-top: 20px;
-    height: 100px;
+    width:100%;
     
 }
 

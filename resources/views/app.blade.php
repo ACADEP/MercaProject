@@ -71,9 +71,11 @@
             
     @include('partials.nav')
             
-        
-    <div class="container">      
+   
+    <div class="container">
+       
         @yield('content')
+          
     </div>
                 
             
@@ -178,8 +180,8 @@
             }
         }
     </script>
-    <style>
-       .team .row .col-md-4 {
+<style>
+.team .row .col-md-4 {
     margin-bottom: 5em;
 }
 .team .row {
@@ -233,9 +235,29 @@
 .tt-suggestion p {
   margin: 0;
 }
+
+.grow img
+{
+    transition: 1s ease;
+}
+    
+.grow img:hover
+{
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+    transition: 1s ease;
+}
+
+#form-add-cart{
+
+   
+  
+}
+
         
-    </style>
-    </style>
+</style>
+   
     <script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script>
     <script>
            
@@ -256,13 +278,17 @@
                 name: 'datos',
                 source: datos
             });
+
+             
         });
     </script>
     <script>
         new WOW().init();
     </script>
-
+    @yield('styles')
+    @yield('js')
     @include('partials.flash')
+    @include('partials.special_search')
 
 </body>
 </html>

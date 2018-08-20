@@ -1,73 +1,129 @@
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light stinky-top" id="navbar-header">
+  
+  <nav class="navbar navbar-light navbar-expand-lg bg-light sticky-top" id="navbar-header">
     
-    <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{asset('images/logo-home.png')}}" ></a>
-            
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    
+    <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{asset('images/logo-home.png')}}" style="float: left; width: 240px; height:80;"></a>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
           
-          <a class="nav-link dropdown-toggle hidden-md-down" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Categorias
-          </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <!-- Categorias y subcategorias -->
-               
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
                 
-                <li><a class="dropdown-item" href="#">Categoria 1</a></li>
-                <!-- Subcategorias dropdown -->
-                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                    <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
-                  </ul>
-                </li>
-                <li><a class="dropdown-item" href="#">Categoria 3</a></li>
-                
-                <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                    <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
-                    <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
-                  </ul>
-                </li> -->
-                <li><a class="dropdown-item" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
-                
-                
+              <div class="nav-menu">
+
+                    <li class="nav-item">
+                        @include('pages.partials.search_box')
+                    
+                       
+                    </li>
+                   
+                <div id="search_down">
+                    <li class="nav-item dropdown" >
+                            
+                            <a class="nav-link dropdown-toggle hidden-md-down" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Categorias </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <!-- Categorias y subcategorias -->
+                                
+                                    
+                                    <li><a class="dropdown-item" href="#">Categoria 1</a></li>
+                                    <!-- Subcategorias dropdown -->
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
+                                    </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Categoria 3</a></li>
+                                    
+                                    <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
+                                    </ul>
+                                    </li> -->
+                                    <li><a class="dropdown-item" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
+                                </ul>
+                        </li>
+                    </div>
+                        
+                </div>
+                &nbsp&nbsp&nbsp
+                <div class="nav-menu">
+                    <div id="form-search-down">
+                    <li class="nav-item">
+                        <div id="form-sesion">
+                            @if(Auth::check())
+                                <a href="{{ url('/profile') }}">Perfil</a>&nbsp
+                                <a href="{{ url('/logout') }}">Salir</a>
+                            @else  
+                                <a href="{{ url('/login') }}">Inicio de sesion </a>&nbsp &nbsp
+                                <a href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
+                            @endif
+                            <!-- <a href="#" id="cart"><i class="material-icons"> shopping_cart</i><span class="badge">3</span></a> -->
+                            
+                        </div>
+                    </li>
+                    @include('partials.shopping-cart-container')
+                    <br><br>
+                        <li class="nav-item">
+                            <a data-toggle="modal"  data-target="#exampleModalCenter">Busqueda especial</a>
+                        </li>
+                        &nbsp&nbsp
+                        <li class="nav-item">
+                            <a href="#">Nosotros</a>
+                        </li>
+                        &nbsp&nbsp
+                        <li class="nav-item">
+                            <a href="#">Ayuda</a>
+                        </li>
+                    </div>
+                    
+                </div>  
+
             </ul>
-        </li>
-      
-      </ul>
-      
-       <!-- Busquedas -->
-       @include('pages.partials.search_box')
 
-           
-      
-      
-      <div id="form-sesion">
-      
+              </div>
+    </nav>
+    
 
-           @if(Auth::check())
-              <a href="{{ url('/profile') }}">Perfil &nbsp</a>
-              <a href="{{ url('/logout') }}">Salir</a>
-          @else  
-              <a class="" href="{{ url('/login') }}">Inicio de sesion &nbsp &nbsp</a>
-              <a class="" href="{{ url('/register') }}">Registrarse</a>
-          @endif
-            
-            
-      </div>
+<!-- Estilos de la plantilla -->
+  @section('styles')
+  <style>
+      #form-search-down li{
+           display: inline-block;
+       }
+       #form-search-down a{
+           text-decoration:none;
+       }
+       #search_down{
+           width: 18%;
+       }
+       
+       .badge {
+            background-color: #6394F8;
+            border-radius: 10px;
+            color: white;
+            display: inline-block;
+            font-size: 10px;
+            line-height: 1;
+            padding: 2px 7px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
 
-      <div>
-            <a href="#"><i class="material-icons"> shopping_cart </i></a>
-      </div>
-      
-        
-    </div>
-  </nav>
+       
+       
+  </style>
+ 
+
+  @stop
+
+  
 

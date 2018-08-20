@@ -24,14 +24,7 @@ class QueryController extends Controller {
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function search(Request $peticion) {
-        
-        if ($peticion->searchname == null) {
-            return back();
-        }
-       
-       
-        
+    public function search(Request $peticion) {    
         // From Traits/CategoryTrait.php
         // ( Show Categories in side-nav )
         $categories = $this->categoryAll();
@@ -46,14 +39,14 @@ class QueryController extends Controller {
 
         // Gets the query string from our form submission
         $query = $peticion->searchname;
-        
+        $search=null;
+       
         if($query!=null)
         {
             // Returns an array of products that have the query string located somewhere within
             // our products product name. Paginate them so we can break up lots of search results.
             $search = Product::where('product_name', 'LIKE', "%$query%")->paginate(200);
         }
-        
         
         // If no results come up, flash info message with no results found message.
 

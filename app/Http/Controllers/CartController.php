@@ -23,11 +23,11 @@ class CartController extends Controller {
     /**
      * CartController constructor.
      */
-    public function __construct() {
-        $this->middleware('auth');
-        // Reference the main constructor.
-        parent::__construct();
-    }
+    // public function __construct() {
+    //     $this->middleware('auth');
+        
+    //     parent::__construct();
+    // }
 
 
     /**
@@ -37,38 +37,9 @@ class CartController extends Controller {
      */
     public function showCart() {
 
-        // Set the $user_id the the currently authenticated user
-        $user_id = Auth::user()->id;
         
-        // Set $cart_books to the member ID, along with the products.
-        // ( "products" is coming from the Products() method in the Product.php Model )
-        $cart_products = Cart::with('products')->where('user_id', '=', $user_id)->get();
-
-        // Set $cart_products to the total in the Cart for that user_id to check and see if the cart is empty
-        $cart_total = Cart::with('books')->where('user_id', '=', $user_id)->sum('total');
-
-        // From Traits/SearchTrait.php
-        // Enables capabilities search to be preformed on this view )
-        $search = $this->search();
-
-        // From Traits/CategoryTrait.php
-        // ( Show Categories in side-nav )
-        $categories = $this->categoryAll();
-
-        // Get brands to display left nav-bar
-        $brands = $this->BrandsAll();
-
-        // Count all the products in a cart  with the currently signed in user
-        $count = Cart::where('user_id', '=', $user_id)->count();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        // Return the cart with products, and total amount in cart
-        return view('cart.cart', compact('search', 'categories', 'brands', 'count', 'cart_count'))
-            ->with('cart_products', $cart_products)
-            ->with('cart_total', $cart_total);
+        return view('cart.cart');
+            
     }
 
 

@@ -9,7 +9,7 @@
                 <div class="row">
                  @foreach($new as $product)
 
-                    <div class="col-sm-6 col-md-3 wow zoomIn" id="featured-container">
+                    <div class="col-sm-6 col-md-3 wow zoomIn grow" id="featured-container">
                             <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration:none;">
                             @if ($product->photos->count() === 0)
                                 <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag" id="Product-similar-Image" style="width: 200px; height: 200px;">
@@ -24,6 +24,9 @@
                             @endif
                                 <div id="featured-product-name-container">
                                     <h6 class="center-on-small-only" id="featured-product-name"><br>{{ $product->product_name }}</h6>
+                                </div>
+                                <div>
+                                    <h6 class="center-on-small-only" id="featured-product-name">Codigo: {{ $product->product_sku }}</h6>
                                 </div>
                                 @if($product->reduced_price == 0)
                                     <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  $product->price }}</div>
@@ -44,4 +47,6 @@
         </div>
     </div>
 </div>
+
+
 
