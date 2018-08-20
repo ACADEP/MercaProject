@@ -20,6 +20,9 @@ Route::group(['middleware' => ['web']], function () {
     /** Display Products by category Route **/
     Route::get('category/{id}','PagesController@displayProducts');
 
+    /** Display all category Route **/
+    Route::get('allcategory','PagesController@displayAllCategories')->name('categories.all');
+
     /** Display Products by Brand Route **/
     Route::get('brand/{id}','PagesController@displayProductsByBrand');
 

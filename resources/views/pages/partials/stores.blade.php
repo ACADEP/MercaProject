@@ -1,4 +1,4 @@
-<div class="col-md-12" id="product_featured">
+<div class="col-md-12" id="breads">
     <h4 class="text-left animated zoomIn" id="title-product">Tiendas</h4><a href="#">Ver todas</a>
         <div class="text-center" >
             

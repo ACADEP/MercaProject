@@ -1,15 +1,15 @@
 
 <!-- Footer -->
-<div class="col-md-12" id="footer_div">
+<div id="footer_div">
     <footer class="page-footer" if="footer" id="contact">
         <div style="color:white">
             <div class="row">
-                <div class="col-md-3 text-center">
+                <div class="col-md-4 text-center">
                     <img src="{{asset('images/mercadata-footer.png')}}" width="150px">
                     <p class="white-text text-center"><a href="{{ url('/') }}">Mercadata</a></p>
-            </div>
+                </div>
                 
-                <div class="col-md-3 text-center">
+                <div class="col-md-4 text-center">
                     <address>
                         <ul class="list-unstyled">
                             <li class="footer-sprite address">
@@ -35,14 +35,22 @@
                         </ul>
                     </address>
                 </div>
+
+                 <div class="col-md-4 text-center">
+                    <p>Formas de pago</p>
+                    <img src="{{asset('/images/waystopays/paypal.png')}}">
+                    <img src="{{asset('/images/waystopays/visa.png')}}">
+                    <img src="{{asset('/images/waystopays/oxxo.png')}}">
+                    <img src="{{asset('/images/waystopays/mastercard.png')}}">
+                    <img src="{{asset('/images/waystopays/dollar.png')}}">
+                </div>
                 
             </div>
         </div>
         <div class="footer-copyright">
-            <div class="container">
+           
             
-                <div class="col-md-10 col-md-offset-1 text-center"><a href="http://acadep.com/wp/" target="_blank">© 2018 Copyright Acadep</a></div>
-            </div>
+                <div class="text-center"><a href="http://acadep.com/wp/" target="_blank">© 2018 Derechos Reservados, mercadata.com</a></div>
         </div>
     </footer>
 </div>

@@ -13,7 +13,7 @@
     <div class="carousel-inner">
       
 
-      <div class="carousel-item active animated fadeInDown">
+      <div class="carousel-item active animated fadeInLeft">
           <img class="d-block w-100" src="{{ asset('/images/slider/brand-store.jpg') }}" height="300px" alt="First slide">
           <div class="carousel-caption hidden-xs">
             <h1><strong>Comprar por marcas</strong></h1>
@@ -22,7 +22,7 @@
       </div>
     
     @foreach($rand_brands as $rand)
-    <div class="carousel-item animated fadeInDown">
+    <div class="carousel-item animated fadeInLeft">
         <a href="{{ url('brand', $rand->id) }}">
             <div class="carousel-caption hidden-xs">
                     <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
@@ -39,14 +39,6 @@
     </div>
   
 
-    <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-
-    <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
+   
 
 </div>
