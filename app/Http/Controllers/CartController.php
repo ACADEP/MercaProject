@@ -21,24 +21,11 @@ class CartController extends Controller {
 
 
     /**
-     * CartController constructor.
-     */
-    // public function __construct() {
-    //     $this->middleware('auth');
-        
-    //     parent::__construct();
-    // }
-
-
-    /**
      * Return the Cart page with the cart items and total
      * 
      * @return mixed
      */
     public function showCart() {
-
-        
-        return view('cart.cart');
             
     }
 
