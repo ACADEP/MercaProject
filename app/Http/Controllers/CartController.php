@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cart;
 use Validator;
 use App\Product;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -21,70 +22,46 @@ class CartController extends Controller {
 
 
     /**
-     * Return the Cart page with the cart items and total
-     * 
-     * @return mixed
+     * CartController constructor.
      */
+    // public function __construct() {
+    //     $this->middleware('auth');
+        
+    //     parent::__construct();
+    // }
+
     public function showCart() {
+
+        return view('cart.cart'); 
             
     }
 
 
     /**
-     * Add Products to the cart
-     * 
-     * @return mixed
+     * Agregar productos al carrito
+    
      */
-    public function addCart() {
+    public function addCart(Request $request) {
 
-        // Assign validation rules
-        $rules = array(
-            'qty' => 'required|numeric',
-            'product'   => 'required|numeric|exists:products,id'
-        );
-
-        // Apply validation
-        $validator = Validator::make(Input::all(), $rules);
-
-        // If validation fails, show error message
-        if ($validator->fails()) {
-            flash()->error('Error', 'The product could not added to your cart!');
-            return redirect()->back();
+    
+        // Identificar si es visitante o usuario registrado
+        if(Auth::user()==null)
+        {
+            $var="si";
         }
-
-        // Set $user_id to the currently signed in user ID
-        $user_id = Auth::user()->id;
-
-        // Set $product_id to the hidden product input field in the add to cart from
-        $product_id = Input::get('product');
-
-        // Set the $qty to the quantity of products selected
-        $qty = Input::get('qty');
-
-        // Get the ID of the Products in the cart
-        $product = Product::find($product_id);
-
-        // set total to quantity * the product price
-        // $total = $qty * $product->price;
-
-        if ($product->reduced_price == 0) {
-            $total = $qty * $product->price;
-        } else {
-            $total = $qty * $product->reduced_price;
+        else
+        {
+            $var="no";
         }
-
-        // Create the Cart
-        Cart::create(
-            array (
-                'user_id'    => $user_id,
-                'product_id' => $product_id,
-                'qty'        => $qty,
-                'total'      => $total
-            )
-        );
-
+    
+        $product_id=Product::find($request->product_id);
+        
+       
         // then redirect back
-        return redirect()->route('cart');
+        // return response($request->product_id, 200);
+        return  response()->json([
+            'product' => $product_id,
+        ]);
 
     }
 

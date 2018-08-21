@@ -5,7 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="A medium sized e-commerce shopping cart made by David Trushkov. Made using Laravel 5.2" />
         <meta name="keywords" content="shopping, ecommerce, store, electronics, electronics store, david, david trushkov, github, laravel, laravel 5, laravel 5.2" />
         <meta name="author" content="David Trushkov" />
@@ -92,6 +93,7 @@
     <!-- Stripe.js file -->
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
+    <script src="{{ asset('/js/ajax.js') }}"></script>
 
     <script>
         (function(w,d,s,g,js,fs){
@@ -284,6 +286,7 @@
     </script>
     <script>
         new WOW().init();
+        
     </script>
     @yield('styles')
     @yield('js')
