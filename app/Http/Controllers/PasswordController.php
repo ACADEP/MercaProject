@@ -75,6 +75,16 @@ class PasswordController extends Controller
         return redirect('/')->with('flash','Ahora revise su correo electronico gracias.');
     }
 
+    public function getReset($token) {
+        // Get the user with token, or fail.
+        //User::whereToken($token)->firstOrFail()->confirmEmail();
+
+        //return back()->with('flash','Ahora esta registrado. Por favor, inicie sesión.');
+        //return redirect('/')->with('flash','Ahora puede cambiar su contraseña. Por favor, inicie sesión.');
+        return view('auth.password/reset');
+
+    }
+
     public function postReset() {
         // Gets the query string from our form submission
         $query = Input::get('search');

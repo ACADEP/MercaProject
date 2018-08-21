@@ -6,7 +6,7 @@
     
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         <li>
-            <p id="product_container"></p>
+            <div id="product_container"><script>obtenerCookie("producto1")</script></p></div>
         </li>
                                            
         <li class="total">

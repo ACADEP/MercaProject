@@ -30,21 +30,16 @@ class CartController extends Controller {
     //     parent::__construct();
     // }
 
-
-    /**
-     * Return the Cart page with the cart items and total
-     * 
-     * @return mixed
-     */
     public function showCart() {
+
         return view('cart.cart'); 
+            
     }
 
 
     /**
      * Agregar productos al carrito
-     * 
-     * @return mixed
+    
      */
     public function addCart(Request $request) {
 

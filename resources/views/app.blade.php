@@ -286,6 +286,7 @@
     </script>
     <script>
         new WOW().init();
+        
     </script>
     @yield('styles')
     @yield('js')
