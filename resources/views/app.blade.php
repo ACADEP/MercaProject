@@ -68,7 +68,7 @@
 
     </head>
 <body>
-
+    
             
     @include('partials.nav')
             
@@ -93,7 +93,9 @@
     <!-- Stripe.js file -->
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
-    <script src="{{ asset('/js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
+    
 
     <script>
         (function(w,d,s,g,js,fs){

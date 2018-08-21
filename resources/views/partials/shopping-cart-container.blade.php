@@ -6,12 +6,12 @@
     
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         <li>
-            <div id="product_container"><script>obtenerCookie("producto1")</script></p></div>
+            <div id="product_container">{{ Cookie::get('productos1') }} </div>
         </li>
                                            
         <li class="total">
             <span><strong>Total</strong>: $0.00</span>
-            <button class="btn btn-success btn-xs">Pagar</button
+            <button class="btn btn-success btn-xs">Pagar</button>
         </li>
         <a href="{{ route('cart') }}">Ir a detalles</a>         
     </ul>
