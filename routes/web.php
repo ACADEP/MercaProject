@@ -44,6 +44,12 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'show.product',
     ]);
 
+    /************************************** Order by Routes for Shops ***********************************/
+    
+    /** Display all shops Route **/
+    Route::get('shop','ShopController@show');
+
+
     /************************************** Order By Routes for Products By Category ***********************************/
 
     /** Route to sort products by price lowest */
