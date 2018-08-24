@@ -46,8 +46,10 @@ Route::group(['middleware' => ['web']], function () {
 
     /************************************** Order by Routes for Shops ***********************************/
     
-    /** Display all shops Route **/
-    Route::get('shop','ShopController@show');
+    /** Display all products for shop Route **/
+    Route::get('shop/{id}','ShopController@show');
+
+    Route::get('shop/{id}','ShopController@showproducts');
 
 
     /************************************** Order By Routes for Products By Category ***********************************/

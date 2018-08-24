@@ -6,6 +6,10 @@ use App\Cart;
 use Validator;
 use App\Product;
 use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Cookie;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -20,16 +24,6 @@ class CartController extends Controller {
 
     use BrandAllTrait, CategoryTrait, SearchTrait, CartTrait;
 
-
-    /**
-     * CartController constructor.
-     */
-    // public function __construct() {
-    //     $this->middleware('auth');
-        
-    //     parent::__construct();
-    // }
-
     public function showCart() {
 
         return view('cart.cart'); 
@@ -39,7 +33,6 @@ class CartController extends Controller {
 
     /**
      * Agregar productos al carrito
-    
      */
     public function addCart(Request $request) {
 
@@ -53,15 +46,13 @@ class CartController extends Controller {
         {
             $var="no";
         }
-    
+
         $product_id=Product::find($request->product_id);
         
-       
         // then redirect back
-        // return response($request->product_id, 200);
-        return  response()->json([
-            'product' => $product_id,
-        ]);
+       
+        return response($product_id,200);
+    
 
     }
 
