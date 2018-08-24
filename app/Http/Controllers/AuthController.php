@@ -59,7 +59,7 @@ class AuthController extends Controller
             'username' => $request->input('username'),
             'password' => bcrypt($request->input('password')),
             'verified' => 0,
-            'admin' => 0,
+            'admin' => $request->input('account'),
         ]);
 
         /**

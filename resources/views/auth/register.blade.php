@@ -27,6 +27,20 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
+                                <div class="col-md-12 col-md-offset-1">
+                                    <select class="form-control" id="SelectAccount" name="account" value="{{ old('account') }}">
+                                        <option value="0" selected>Cliente</option>
+                                        <option value="1">Vendedor</option>
+                                    </select>
+                                    @if ($errors->has('account'))
+                                        <span class="form-text">
+                                        <strong>{{ $errors->first('account') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-md-offset-1">
                                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Correo">
@@ -66,11 +80,15 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="col-md-12 col-md-offset-3 text-center">
+                                    <a href="{{ url('/login') }}" id="Sign-up" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Inicia Sesión</a>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
-                <br><p id="No-Account" class="d-block text-center">¿Ya tienes una cuenta? <a href="{{ url('/login') }}" id="Sign-up">Inicia Sesión</a></p>
-                <!--<p id="No-Account" class="center-block text-center">Login as Test Admin User <a href="{{ url('/login') }}" id="Sign-up">Login</a></p>-->
             </div>
         </div>
     </div>

@@ -34,12 +34,11 @@
                                     <div class="green-text medium-500" id="Product_Reduced-Price">$ {{ $product->reduced_price }}</div>
                                 @endif
                             </a>
-                        <form action="/store/cart/add" method="post" name="add_to_cart">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="product" value="{{$product->id}}" />
-                            <input type="hidden" name="qty" value="1" />
-                            <button class="btn btn-default waves-effect waves-light"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Agregar al carrito</button>
-                        </form>
+                            
+                            <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
+                            <input type="hidden" id="qty" value="1"/>
+                            <input type="hidden" id="url" value="{{ route('addCart') }}">
+                            <button class="btn btn-default btn-addcart" value="{{$product->id}}"><i class="fa fa-cart" aria-hidden="true"></i>Agregar al carrito</button>
                     </div>
                  @endforeach 
                 </div>

@@ -47,17 +47,18 @@
                                     <button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Iniciar Sesión</button>
                                 </div>
                                 <div class="col-md-12">
-                                <br><a href="{{ url('password/email') }}" class="d-block text-center" id="Forgot-Password">Olvidé mi contraseña</a>
+                                    <br><a href="{{ url('password/email') }}" class="d-block text-center" id="Forgot-Password">Olvidé mi contraseña</a>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12 col-md-offset-3 text-center">
+                                    <a href="{{ url('/register') }}" id="Sign-up" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Registrase</a>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
-                </div>
-                <br><p id="No-Account" class="d-block text-center">¿No tienes una cuenta? <a href="{{ url('/register') }}" id="Sign-up">Registrarse</a></p>
-                <div class="" id="Login-Register-Panel" style="padding: 20px, margin-bottom: 20px">
-                    <!--<h6 class="text-center">Login as Test Admin User</h6>
-                    <h6 class="text-center">Email: test@hotmail.com</h6>
-                    <h6 class="text-center">Password: test123</h6>-->
                 </div>
             </div>
         </div>

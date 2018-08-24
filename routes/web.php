@@ -44,6 +44,12 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'show.product',
     ]);
 
+    /************************************** Order by Routes for Shops ***********************************/
+    
+    /** Display all shops Route **/
+    Route::get('shop','ShopController@show');
+
+
     /************************************** Order By Routes for Products By Category ***********************************/
 
     /** Route to sort products by price lowest */
@@ -172,12 +178,11 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => 'CartController@update'
     ]);
 
-    /** Delete items in the cart **/
-    Route::get('/cart/delete/{id}', array(
-        'before' => 'auth.basic',
-        'as'     => 'delete_book_from_cart',
-        'uses'   => 'CartController@delete'
-    ));
+    Route::get('print', 'CartController@vista');
+    Route::get('print-cart', 'CartController@PDF')->name('cart.pdf');
+
+    /** Eliminar productos del carrito **/
+    Route::post('/cart/delete','CartController@delete')->name('deleteCart');
 
 
     /**************************************** Order Routes *********************************************/

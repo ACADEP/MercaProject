@@ -58,4 +58,31 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+
+        
+    }
+    
+    public function product($id)
+    {   
+        $product=Product::find($id);
+        return $product;
+    }
+    public function getCartAttribute()
+    {
+        $cart = $this->carts()->where('status', 'Active');
+        if ($cart)
+            return $cart;
+
+        // else
+        $cart = new Cart();
+        $cart->status = 'Active';
+        $cart->user_id = $this->id;
+        $cart->save();
+
+        return $cart;
+    }
+
 }

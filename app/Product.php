@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
 
-    protected $table = 'products';
+    
 
     protected $fillable = [
         'product_name',
@@ -34,6 +34,10 @@ class Product extends Model {
      */
     public function category() {
         return $this->hasOne('App\Category', 'id');
+    }
+
+    public function cart(){
+        return $this->belongsTo(Cart::class);
     }
 
 

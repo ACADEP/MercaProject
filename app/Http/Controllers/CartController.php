@@ -18,11 +18,12 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
-use App\Http\Traits\CartTrait;
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CartController extends Controller {
 
-    use BrandAllTrait, CategoryTrait, SearchTrait, CartTrait;
+    use BrandAllTrait, CategoryTrait, SearchTrait;
 
     public function showCart() {
 
@@ -36,26 +37,40 @@ class CartController extends Controller {
      */
     public function addCart(Request $request) {
 
-    
-        // Identificar si es visitante o usuario registrado
-        if(Auth::user()==null)
-        {
-            $var="si";
-        }
-        else
-        {
-            $var="no";
-        }
-
+        //Buscar el producto para agregar al carrito
         $product_id=Product::find($request->product_id);
+        // Identificar si es visitante o usuario registrado
+        $user=0;
+        $itemCount=0;
+        if(Auth::check())
+        {
+            $user=1;
+           $cart=new Cart;
+           $cart->user_id=Auth::user()->id;
+           $cart->status="Active";
+           $cart->product_id=$product_id->id;
+           $cart->qty=1;
+           $cart->total=$product_id->price;
+           $cart->save();
+           $itemCount=Auth::user()->carts->count();
+        }
         
-        // then redirect back
-       
-        return response($product_id,200);
+        return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount],200);
     
 
     }
 
+    public function vista(){
+        return view("cart.Print-cart");
+    }
+    public function PDF(Request $request)
+    {
+        
+        $productos=$request;
+        $pdf = PDF::loadView('cart.Print-cart');
+        return $pdf->download('Carrito.pdf');
+       
+    }
 
     /**
      * Update the Cart
@@ -99,19 +114,21 @@ class CartController extends Controller {
         return redirect()->route('cart');
     }
     
-
-    /**
-     * Delete a product from a users Cart
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function delete($id) {
+    
+    
+    public function delete(Request $request) {
         // Find the Carts table and given ID, and delete the record
-        Cart::find($id)->delete();
-
+       
+        $cartDestroy=Cart::destroy($request->cart_id);
+        $cartItems;
+        if(Auth::check())
+        {
+            $cartItems=Auth::user()->cart->with('product')->get();
+        }
+       
+        
         // Then redirect back
-        return redirect()->back();
+        return response($cartItems,200);
     }
     
     
