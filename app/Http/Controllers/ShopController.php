@@ -61,9 +61,4 @@ class ShopController extends Controller
         return view('shop.index', compact('products', 'banner', 'brands', 'search', 'new', 'cart_count', 'rand_brands','categories'));
     }
 
-    public function showbanner($id) {
-        $banner = Product::where('id', '=', $id);
-        return view('shop.index', compact('banner'));
-    }
-
 }
