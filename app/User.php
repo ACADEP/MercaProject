@@ -70,9 +70,19 @@ class User extends Authenticatable
         $product=Product::find($id);
         return $product;
     }
+    public function getTotalAttribute()
+    {
+        $cartUser= $this->carts()->where('status', 'Active')->get();
+        $total=0;
+        foreach($cartUser as $cartItem)
+        {
+            $total+=$cartItem->total;
+        }
+        return $total;
+    }
     public function getCartAttribute()
     {
-        $cart = $this->carts()->where('status', 'Active');
+        $cart = $this->carts()->where('status', 'Active')->with("product")->get();
         if ($cart)
             return $cart;
 

@@ -1,7 +1,37 @@
 $(document).ready(function(){
-   
+   $(".selectCtd").change(function(){
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+            var cart_id=$(this).attr('id');
+            var qty=$(this).val();
+            var formData = { cart_id  : cart_id, qty: qty};
+            console.log(formData);
+            $.ajax({
+                url: '/cart/qty',
+                method: 'POST',
+                data: formData,
+                success: function(response){
+                   
+                    console.log(response);
+                    $("#total-client" + cart_id).html(response.total);
+                   
+                    
+                    
+               
+                },
 
-   
+                error: function(response){
+                    console.log(response);
+                    alert("Intente de nuevo");
+                }
+        
+            });
+   });
+
     $("#client-body").on('click', '.cart-delete', function(e){
         e.preventDefault();
            

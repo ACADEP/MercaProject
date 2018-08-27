@@ -23,13 +23,13 @@
                         <td>{{ Auth::user()->product($cart->product_id)->product_name  }}</td>
                         <td>{{ Auth::user()->product($cart->product_id)->price  }}</td>
                         <td>
-                            <select class="form-control" id="exampleSelect1">
+                            <select class="form-control selectCtd" id="{{ $cart->id }}">
                                 @for($i = 0; $i < Auth::user()->product($cart->product_id)->product_qty; $i++)
-                                    <option>{{$i+1}}</option>
+                                    <option value="{{$i+1}}">{{$i+1}}</option>
                                 @endfor
                             </select>
                         </td>
-                        <td>{{ $cart->total }}</td>
+                        <td id="total-client{{ $cart->id }}">{{ $cart->total }}</td>
                         <input type="hidden" id="url" value="{{ route('deleteCart')}}">
                         <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'>Borrar</button></td>
                     </tr>
@@ -40,9 +40,13 @@
         </tbody>
         
     </table>
-    <a  href="{{route('cart.pdf')}}" class="btn btn-primary">
-        <i class="material-icons">local_printshop</i> Imprimir PDF
-    </a>
+    <form class="form-inline" method="get" action="{{ route('cart.pdf') }}">
+        <input type="hidden" name="Items" id="items-carts">
+            <button class="btn btn-primary btn-just-icon" type="submit">
+                    <i class="material-icons">local_printshop</i> Imprimir PDF
+            </button>
+    </form>
+    
     @if(Auth::check())
         <button type="button" class="btn btn-success text-center"><i class="material-icons">attach_money</i> Pagar</button>
     @endif

@@ -47,6 +47,9 @@
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
         <script>
             function borrarCache()
             {
@@ -98,10 +101,7 @@
     <!-- <script type="application/javascript" src="{{ asset('/js/libs/lity.js') }}"></script> -->
     <!-- Stripe.js file -->
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript" src="{{ asset('/js/download.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
+    
    
    
     

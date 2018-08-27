@@ -1,39 +1,25 @@
 $(document).ready(function(){
     
-  
+    $('#tbody').on('change', '.selectqty', function(e){
+        e.preventDefault();
+        var productosJson=jQuery.parseJSON(Cookies.get("productos"));
+        var max=productosJson.length;
+        var i=0;
+       
+        for(i;i<max;i++)
+        {
+            if($(this).attr('id') == 'selectQty'+i+'')
+            {
+                var qty=parseInt($( '#selectQty'+i+'').val());
+                $("#subtotal"+i+"").html(qty*productosJson[i].price);
+            }
+        }
+    });
+        
+
+    
     //Mostar productos seleccionados previamente
     mostrarElementos();
-    $("#btn-pdf").click(function(){
-        $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        var productosJson=jQuery.parseJSON(Cookies.get("productos"));
-        console.log(productosJson);
-        var formData = { 
-            productos: productosJson };
-
-        $.ajax({
-                url:'/print-cart',
-                method:'get',
-                data: formData,
-                success: function(response)
-                {
-                    console.log(response);
-                    download.bind(true,'carrito.pdf', response);
-                
-                },
-                error: function(response)
-                {
-                    console.log(response);
-                }
-                
-            });
-    
-        });
-    
     $('#tbody').on('click', '.click-delete', function(e){
         e.preventDefault();
         console.log(Cookies.get("productos"));
@@ -74,12 +60,14 @@ $(document).ready(function(){
                 data: formData,
                 success: function(response){
                     console.log(response);
+                    
                     if(Cookies.get("productos")!=null)
                     {
                         var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
                         productosCart=productosJSON;
                     }
                     productosCart.push(response.item);
+                    
                     
                     Cookies.set("productos",productosCart,1);
                     if(response.user==1)
@@ -120,15 +108,16 @@ $(document).ready(function(){
         {
             var i=0;
             var nBadge=0;
+            var total=0;
             var productosArray=jQuery.parseJSON(Cookies.get("productos"));
-            console.log(productosArray);
+            $("#items-carts").val(JSON.stringify(productosArray));
             var maxElements=parseInt(productosArray.length);
             for(i;i<maxElements;i++)
             {
                
                     nBadge++;
                     var producto=productosArray[i];
-                    console.log(producto);
+                    
                     $('#product_container').append(producto.product_name+"<br>---------------------<br>");
                     
                     //Mostrar los productos en la vista detalles de carrito
@@ -136,20 +125,29 @@ $(document).ready(function(){
                     $('#tbody').append("<td>"+producto.product_name+"</td>");
                     $('#tbody').append("<td>"+producto.price+"</td>");
                     var k=0;
-                    $('#tbody').append("<td><select class='form-control' id='selectQty"+i+"'>");
+                    $('#tbody').append("<td><select class='form-control selectqty' id='selectQty"+i+"'>");
                     for(k;k<producto.product_qty;k++)
                     {
-                        $('#selectQty'+i+'').append("<option>"+(k+1)+"</option>");
+                        $('#selectQty'+i+'').append("<option value='"+(k+1)+"'>"+(k+1)+"</option>");
                     }
                     $('#tbody').append("</select></td>");
-
-                    $('#tbody').append("<td>$400</td>");
+                    
+                    var qty=parseInt($( '#selectQty'+i+'').val());
+                    $('#tbody').append("<td id='subtotal"+i+"'>"+qty*producto.price+"</td>");
+                    total+=qty*producto.price;
                     $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete' id='"+i+"'>Borrar</button></td>");
                     $('#tbody').append("</tr> <br>");
                     
-                    $('.badge').html(nBadge);
+                   
                 
             }
+            $('.badge').html(nBadge);
+            $('#total-items').html("<strong>Total</strong>: $"+total);
+        }
+        else
+        {
+            // $('.badge').html(0);
+            // $('#total-items').html("<strong>Total</strong>: $"+0);
         }
         
     }

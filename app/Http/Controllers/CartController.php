@@ -39,6 +39,7 @@ class CartController extends Controller {
 
         //Buscar el producto para agregar al carrito
         $product_id=Product::find($request->product_id);
+        $product_id->setAttribute('qty', 1);
         // Identificar si es visitante o usuario registrado
         $user=0;
         $itemCount=0;
@@ -60,16 +61,30 @@ class CartController extends Controller {
 
     }
 
-    public function vista(){
-        return view("cart.Print-cart");
+    public function changeqty(Request $request){
+        $cart=Auth::user()->carts->where('id',$request->cart_id);
+        $cart->qty=$request->qty;
+        $cart->total=$cart->total*$request->qty;
+        $cart->save();
+
+        $cartUser=Auth::user()->cart->where('id',$request->cart_id)->get();
+        return response($cartUser,200);
     }
     public function PDF(Request $request)
     {
-        
-        $productos=$request;
-        $pdf = PDF::loadView('cart.Print-cart');
-        return $pdf->download('Carrito.pdf');
+        $items;
+        if(Auth::check())
+        {
+            $items=Auth::user()->cart->with("product")->get();
+        }
+        else
+        {
+            $items=json_decode($request->get('Items'));
+        }
        
+        $pdf = PDF::loadView('cart.Print-cart',compact('items'));
+        return $pdf->download('Carrito.pdf');
+      
     }
 
     /**

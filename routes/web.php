@@ -177,6 +177,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/cart/update', [
         'uses' => 'CartController@update'
     ]);
+    Route::post('/cart/qty','CartController@changeqty');
 
     Route::get('print', 'CartController@vista');
     Route::get('print-cart', 'CartController@PDF')->name('cart.pdf');
