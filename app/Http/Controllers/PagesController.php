@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cart;
 use App\Brand;
 use App\Product;
+use App\Shop;
 use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;

@@ -17,7 +17,7 @@
                     <tr>
                         <td>{{$item->product->product_name}}</td>
                         <td>{{$item->product->price}}</td>
-                        <td>{{$item->qty }}</td>
+                        <td>{{$item->qty}}</td>
                         <td>{{$item->total}}</td>
                     </tr>
                 @endforeach
@@ -26,8 +26,8 @@
                 <tr>
                     <td>{{$item->product_name}}</td>
                     <td>{{$item->price}}</td>
-                    <td>1</td>
-                    <td>{{$item->price*1}}</td>
+                    <td>{{$item->qty}}</td>
+                    <td>{{$item->price*$item->qty}}</td>
                 </tr>
                 @endforeach
             @endif

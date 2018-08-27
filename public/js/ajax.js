@@ -12,8 +12,12 @@ $(document).ready(function(){
             {
                 var qty=parseInt($( '#selectQty'+i+'').val());
                 $("#subtotal"+i+"").html(qty*productosJson[i].price);
+                productosJson[i].qty=qty;
+                console.log(productosJson[i]);
+                Cookies.set("productos",productosJson,1);
             }
         }
+        
     });
         
 
@@ -60,30 +64,67 @@ $(document).ready(function(){
                 data: formData,
                 success: function(response){
                     console.log(response);
+                        if(response.user==1)
+                        {
+                            if(response.itemcount<=5 && response.itemcount>0)
+                            {
                     
-                    if(Cookies.get("productos")!=null)
-                    {
-                        var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
-                        productosCart=productosJSON;
-                    }
-                    productosCart.push(response.item);
+                                $('#client-container').append(response.item.product_name+"<br>---------------------<br>");
+                                $('.badge').html(response.itemcount);
+                                $('#total-items').html("<strong>Total</strong>: $"+response.item.total);
+                            
+                            }
+                            else
+                            {
+                                if(response.itemcount==0)
+                                {
+                                    alert("Este producto ya ha sido agregado");
+                                }
+                                else
+                                {
+                                    $('#cart-detail').html("Ver todos");
+                                    $('.badge').html(response.itemcount);
+                                    $('#total-items').html("<strong>Total</strong>: $"+response.item.total);
+                                }
+                                
+                            }
+                           
+                        }
+                        else
+                        {
+                            if(productoAgregado(response.item.id))
+                            {
+                                alert("Este producto ya ha sido agregado");
+                            }
+                            else
+                            {
+                                if(Cookies.get("productos")!=null)
+                                {
+                                    var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
+                                    productosCart=productosJSON;
+                                }
+                                productosCart.push(response.item);
+                                Cookies.set("productos",productosCart,1);
+                                if(productosCart.length<=5)
+                                {
+                                    $('#product_container').append(response.item.product_name+"<br>---------------------<br>");
+                                }
+                                else
+                                {
+                                    $('#cart-detail').html("Ver todos");
+                                }
+                                $('.badge').html(productosCart.length);
+                                var i=0;
+                                var total=0;
+                                for(i;i<productosCart.length;i++)
+                                {
+                                    total+= parseInt(productosCart[i].price);
+                                }
+                                $('#total-items').html("<strong>Total</strong>: $"+total);
+                            }
+                          
+                        }
                     
-                    
-                    Cookies.set("productos",productosCart,1);
-                    if(response.user==1)
-                    {
-                        $('#client_container').append(response.item.product_name+"<br>---------------------<br>");
-                        $('.badge').html(response.itemcount);
-                    }
-                    else
-                    {
-                        $('#product_container').append(response.item.product_name+"<br>---------------------<br>");
-                        $('.badge').html(productosCart.length);
-                       
-                    }
-                   
-                    
-               
                 },
 
                 error: function(response){
@@ -117,8 +158,15 @@ $(document).ready(function(){
                
                     nBadge++;
                     var producto=productosArray[i];
+                    if(i<=4)
+                    {
+                        $('#product_container').append(producto.product_name+"<br>---------------------<br>");
+                    }
+                    else
+                    {
+                        $('#cart-detail').html("Ver todos");
+                    }
                     
-                    $('#product_container').append(producto.product_name+"<br>---------------------<br>");
                     
                     //Mostrar los productos en la vista detalles de carrito
                     $('#tbody').append("<tr>");
@@ -131,10 +179,10 @@ $(document).ready(function(){
                         $('#selectQty'+i+'').append("<option value='"+(k+1)+"'>"+(k+1)+"</option>");
                     }
                     $('#tbody').append("</select></td>");
-                    
+                    $('#selectQty'+i+'').val(producto.qty);
                     var qty=parseInt($( '#selectQty'+i+'').val());
                     $('#tbody').append("<td id='subtotal"+i+"'>"+qty*producto.price+"</td>");
-                    total+=qty*producto.price;
+                    total+=producto.qty*producto.price;
                     $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete' id='"+i+"'>Borrar</button></td>");
                     $('#tbody').append("</tr> <br>");
                     
@@ -150,6 +198,21 @@ $(document).ready(function(){
             // $('#total-items').html("<strong>Total</strong>: $"+0);
         }
         
+    }
+
+    function productoAgregado(productid)
+    {
+        var band=false;
+        var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
+        var i=0;
+        for(i;i<productosJSON.length;i++)
+        {
+            if(productosJSON[i].id==productid)
+            {
+                band=true;
+            }
+        }
+        return band;
     }
    
 

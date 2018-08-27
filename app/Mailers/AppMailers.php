@@ -83,7 +83,21 @@ class AppMailers {
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)
                 ->to($this->to);
-                //dd($message);
+
+                
+                
+            /*}
+            elseif($asunto == 1) {
+                $message->from($this->from, 'Administrator')
+                ->subject($this->subject[0])
+                ->to($this->to);
+            }
+            elseif($asunto == 2) {
+                $message->from($this->from, 'Administrator')
+                ->subject($this->subject[0])
+                ->to($this->to);
+            }*/
+
         });    
     }
 

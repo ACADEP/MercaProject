@@ -9,7 +9,7 @@
             <div {{ Auth::check() ? 'id=client-container' : 'id=product_container' }} >
             @if(Auth::check())
                 <script>borrarCache();</script>
-                @foreach(Auth::user()->cart as $cartItem)
+                @foreach(Auth::user()->cart->with('product')->get() as $cartItem)
                     {{ $cartItem->product->product_name }}
                     <br>---------------------<br>
                 @endforeach
@@ -25,7 +25,7 @@
             @endif
         </li>
         <li class="text-center">
-            <a href="{{ route('cart') }}">Ir a detalles</a>      
+            <a href="{{ route('cart') }}" id="cart-detail">Ir a detalles</a>      
         </li>
            
     </ul>
