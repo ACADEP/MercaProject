@@ -13,6 +13,7 @@ use App\Cart;
 use App\Brand;
 use App\Product;
 use App\Category;
+use App\Shop;
 
 class ShopController extends Controller
 {
@@ -46,10 +47,11 @@ class ShopController extends Controller
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->paginate(30);
+        $products = Product::where('shop_id', '=', $id)->orderByRaw('RAND()')->paginate(6);
+        //dd($products);
 
         //
-        $banner = Product::where('id', '=', $id);
+        $banner = Shop::find($id);
 
         $rand_brands = Brand::orderByRaw('RAND()')->take(6)->get();
 

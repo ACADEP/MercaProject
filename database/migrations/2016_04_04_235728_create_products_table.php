@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->integer('product_sku')->unsigned()->nullable();
             $table->decimal('price', 10, 2)->unsigned();
             $table->decimal('reduced_price', 10, 2)->unsigned()->nullable();
+            $table->integer('shop_id')->nullable();
             $table->integer('cat_id')->unsigned()->nullable();
             $table->integer('brand_id')->unsigned()->nullable();
             $table->integer('featured')->default(0);

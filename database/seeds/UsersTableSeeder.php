@@ -58,5 +58,13 @@ class UsersTableSeeder extends Seeder
           'verified'    => 1,
           'admin'       => 1,
       ]);
+
+      DB::table('users')->insert([
+        'username'    => 'Bernardo',
+        'email'       => 'luis_ber_27@hotmail.com',
+        'password'    => Hash::make('123123'),
+        'verified'    => 1,
+        'admin'       => 1,
+    ]);
     }
 }

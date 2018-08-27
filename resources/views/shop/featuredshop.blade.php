@@ -1,19 +1,19 @@
 
-<div class="col-sm-12 col-md-12" id="product_featured">
-    <h4 class="text-right animated zoomIn" id="title-product">Productos #</h4>
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
+    <h4 class="text-center animated zoomIn" id="title-product">Productos #</h4>
     <div class="text-center row d-flex flex-row-reverse">                     
         @foreach($products as $product)
-            <div class="col-6 col-sm-6 col-md-3 col-lg-3 animated zoomIn grow card border-primary mb-2 ml-2 pt-3">
+            <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-2 pt-3 pb-2">
                 <div id="product-container">
                     <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration:none;">
-                        @if ($product->photos->count() === 0)
-                            <img src="{{asset('images/no-image-found.jpg')}}" alt="No Image Found Tag" id="Product-similar-Image" class="col-sm-6 col-md-8 col-lg-8">
+                        @if ($product->photos->count() == 0)
+                            <img src="{{asset('images/no-image-found.jpg')}}" alt="No Image Found Tag" id="Product-similar-Image">
                         @else
                             @if ($product->featuredPhoto)
-                                <img  src="{{asset($product->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" class="col-sm-6 col-md-8 col-lg-8" width="100px"/><br>
+                                <img  src="{{asset($product->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="100px"/><br>
                                 <span class="label label-red" style="color: red">- ${{$product->reduced_price}}</span>
                             @elseif(!$product->featuredPhoto)
-                                <img  src="{{asset($product->photos->first()->thumbnail_path)}}" class="col-sm-6 col-md-8 col-lg-8" alt="Photo" />
+                                <img  src="{{asset($product->photos->first()->thumbnail_path)}}" alt="Photo" />
                             @else
                                 N/A
                             @endif
@@ -30,8 +30,8 @@
                 <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                 <input type="hidden" id="qty" value="1"/>
                 <input type="hidden" id="url" value="{{ route('addCart') }}">
-                <div>
-                    <button class="btn btn-default btn-addcart" value="{{$product->id}}">
+                <div class="col-12 col-sm-12 col-md-12 col-md-offset-3 text-center" style="width: 100%;">
+                    <button class="btn btn-default btn-rounded waves-effect waves-light btn-block btn-addcart" value="{{$product->id}}" style="width: 100%; ">
                         <i class="fa fa-cart" aria-hidden="true"></i>Agregar al carrito
                     </button>
                 </div>

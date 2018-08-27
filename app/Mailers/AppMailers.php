@@ -82,11 +82,7 @@ class AppMailers {
         $this->mailer->send($this->view, $this->data, function($message) {
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)
-                ->to($this->to);
-<<<<<<< HEAD
-                //dd($message);
-=======
-                
+                ->to($this->to);                
             /*}
             elseif($asunto == 1) {
                 $message->from($this->from, 'Administrator')
@@ -98,7 +94,7 @@ class AppMailers {
                 ->subject($this->subject[0])
                 ->to($this->to);
             }*/
->>>>>>> origin/Nuevo-Inicio
+                //dd($message);
         });    
     }
 

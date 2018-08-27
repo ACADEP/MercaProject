@@ -179,13 +179,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/cart/update', [
         'uses' => 'CartController@update'
     ]);
+    Route::post('/cart/qty','CartController@changeqty');
 
-    /** Delete items in the cart **/
-    Route::get('/cart/delete/{id}', array(
-        'before' => 'auth.basic',
-        'as'     => 'delete_book_from_cart',
-        'uses'   => 'CartController@delete'
-    ));
+    Route::get('print', 'CartController@vista');
+    Route::get('print-cart', 'CartController@PDF')->name('cart.pdf');
+
+    /** Eliminar productos del carrito **/
+    Route::post('/cart/delete','CartController@delete')->name('deleteCart');
 
 
     /**************************************** Order Routes *********************************************/

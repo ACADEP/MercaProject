@@ -24,7 +24,7 @@ class ShopSalesTableSeeder extends Seeder
         ]);
 
         DB::table('shop_solds')->insert([
-            'shop_id'       => 1,
+            'shop_id'       => 7,
             'product_id'    => 8,
             'sold'          => 25,
         ]);
@@ -42,7 +42,7 @@ class ShopSalesTableSeeder extends Seeder
         ]);
 
         DB::table('shop_solds')->insert([
-            'shop_id'       => 1,
+            'shop_id'       => 7,
             'product_id'    => 1,
             'sold'          => 15,
         ]);
