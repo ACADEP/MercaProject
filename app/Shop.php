@@ -19,6 +19,24 @@ class Shop extends Model
         'thumbnail_path',
     ];
 
-    
+    /**
+     * One Product can have many photos.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function photos() {
+        return $this->hasMany('App\Shop');
+    }
+
+
+    /**
+     * Return a product can have one featured photo where "featured" column = true (or 1)
+     *
+     * @return mixed
+     */
+    public function featuredPhoto() {
+        return $this->hasOne('App\Shop')->whereFeatured(true);
+    }
+
 
 }

@@ -17,6 +17,7 @@ class Product extends Model {
         'product_sku',
         'price',
         'reduced_price',
+        'shop_id',
         'cat_id',
         'featured',
         'brand_id',
