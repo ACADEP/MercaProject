@@ -1,5 +1,9 @@
 $(document).ready(function(){
-    
+    $('#tbody').on('click', '.show-product', function(e){
+        e.preventDefault();
+        window.location.replace("/product/"+$(this).attr('id'));
+
+    });
     $('#tbody').on('change', '.selectqty', function(e){
         e.preventDefault();
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
@@ -13,8 +17,11 @@ $(document).ready(function(){
                 var qty=parseInt($( '#selectQty'+i+'').val());
                 $("#subtotal"+i+"").html(qty*productosJson[i].price);
                 productosJson[i].qty=qty;
-                console.log(productosJson[i]);
                 Cookies.set("productos",productosJson,1);
+                $("#items-carts").val(JSON.stringify(productosJson));
+                console.log( $("#items-carts").val());
+                $("#general-total").html("El total de su carrito es $"+getTotal());
+                $('#total-items').html("<strong>Total</strong>: $"+getTotal());
             }
         }
         
@@ -26,11 +33,9 @@ $(document).ready(function(){
     mostrarElementos();
     $('#tbody').on('click', '.click-delete', function(e){
         e.preventDefault();
-        console.log(Cookies.get("productos"));
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
         productosJson.splice(this.id, 1);
         Cookies.set("productos",productosJson,1);
-        console.log(productosJson); 
         mostrarElementos();
     });
 
@@ -64,14 +69,16 @@ $(document).ready(function(){
                 data: formData,
                 success: function(response){
                     console.log(response);
+                    console.log(response.item);
                         if(response.user==1)
                         {
+                            
                             if(response.itemcount<=5 && response.itemcount>0)
                             {
                     
                                 $('#client-container').append(response.item.product_name+"<br>---------------------<br>");
                                 $('.badge').html(response.itemcount);
-                                $('#total-items').html("<strong>Total</strong>: $"+response.item.total);
+                                $('#total-items-client').html("<strong>Total</strong>: $"+response.item.total);
                             
                             }
                             else
@@ -84,7 +91,8 @@ $(document).ready(function(){
                                 {
                                     $('#cart-detail').html("Ver todos");
                                     $('.badge').html(response.itemcount);
-                                    $('#total-items').html("<strong>Total</strong>: $"+response.item.total);
+                                    
+                                    $('#total-items-client').html("<strong>Total</strong>: $"+response.item.total);
                                 }
                                 
                             }
@@ -116,9 +124,10 @@ $(document).ready(function(){
                                 $('.badge').html(productosCart.length);
                                 var i=0;
                                 var total=0;
+                               
                                 for(i;i<productosCart.length;i++)
                                 {
-                                    total+= parseInt(productosCart[i].price);
+                                    total+=parseInt(productosCart[i].price);
                                 }
                                 $('#total-items').html("<strong>Total</strong>: $"+total);
                             }
@@ -149,7 +158,7 @@ $(document).ready(function(){
         {
             var i=0;
             var nBadge=0;
-            var total=0;
+           
             var productosArray=jQuery.parseJSON(Cookies.get("productos"));
             $("#items-carts").val(JSON.stringify(productosArray));
             var maxElements=parseInt(productosArray.length);
@@ -170,7 +179,7 @@ $(document).ready(function(){
                     
                     //Mostrar los productos en la vista detalles de carrito
                     $('#tbody').append("<tr>");
-                    $('#tbody').append("<td>"+producto.product_name+"</td>");
+                    $('#tbody').append("<td><a class='show-product' id='"+producto.product_name+"' style='text-decoration:none;'>"+producto.product_name+"</a></td>");
                     $('#tbody').append("<td>"+producto.price+"</td>");
                     var k=0;
                     $('#tbody').append("<td><select class='form-control selectqty' id='selectQty"+i+"'>");
@@ -182,15 +191,16 @@ $(document).ready(function(){
                     $('#selectQty'+i+'').val(producto.qty);
                     var qty=parseInt($( '#selectQty'+i+'').val());
                     $('#tbody').append("<td id='subtotal"+i+"'>"+qty*producto.price+"</td>");
-                    total+=producto.qty*producto.price;
-                    $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete' id='"+i+"'>Borrar</button></td>");
+                  
+                    $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete'  ><i class='fa fa-trash' aria-hidden='true'></i></button></td>");
                     $('#tbody').append("</tr> <br>");
                     
                    
                 
             }
             $('.badge').html(nBadge);
-            $('#total-items').html("<strong>Total</strong>: $"+total);
+            $('#total-items').html("<strong>Total</strong>: $"+getTotal());
+            $('#general-total').html("El total de su carrito es $"+getTotal());
         }
         else
         {
@@ -203,16 +213,35 @@ $(document).ready(function(){
     function productoAgregado(productid)
     {
         var band=false;
-        var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
-        var i=0;
-        for(i;i<productosJSON.length;i++)
+        if(Cookies.get("productos")!=null)
         {
-            if(productosJSON[i].id==productid)
+            var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
+            var i=0;
+            for(i;i<productosJSON.length;i++)
             {
-                band=true;
+                if(productosJSON[i].id==productid)
+                {
+                    band=true;
+                }
             }
         }
+        
         return band;
+    }
+
+    function getTotal()
+    {
+        var total=0;
+        if(Cookies.get("productos")!=null)
+        {
+            var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
+            var i=0;
+            for(i;i<productosJSON.length;i++)
+            {
+                total+=parseInt(productosJSON[i].price*productosJSON[i].qty);
+            }
+        }
+        return total;
     }
    
 

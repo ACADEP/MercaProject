@@ -86,6 +86,7 @@ class AppMailers {
 
                 
                 
+                ->to($this->to);                
             /*}
             elseif($asunto == 1) {
                 $message->from($this->from, 'Administrator')
@@ -98,6 +99,7 @@ class AppMailers {
                 ->to($this->to);
             }*/
 
+                //dd($message);
         });    
     }
 

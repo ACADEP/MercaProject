@@ -81,14 +81,15 @@ class CartController extends Controller {
         ));
 
         $cartUser=Auth::user()->cart->where('id',$request->cart_id)->get();
-        return response($cartUser,200);
+        $totalCart=Auth::User()->total;
+        return response(['cartUser'=>$cartUser,'totalCart'=>$totalCart],200);
     }
     public function PDF(Request $request)
     {
         $items;
         if(Auth::check())
         {
-            $items=Auth::user()->cart->with("product");
+            $items=Auth::user()->cart->with("product")->get();
         }
         else
         {
@@ -152,11 +153,12 @@ class CartController extends Controller {
         if(Auth::check())
         {
             $cartItems=Auth::user()->cart->with('product')->get();
+            $TotalUser=Auth::user()->total;
         }
        
         
         // Then redirect back
-        return response($cartItems,200);
+        return response(['cartItems'=>$cartItems,'totalUser'=>$TotalUser ],200);
     }
     
     

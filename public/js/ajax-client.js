@@ -16,9 +16,11 @@ $(document).ready(function(){
                 data: formData,
                 success: function(response){
                    
-                    console.log(response[0].total);
+                    console.log(response.cartUser[0].total);
 
-                    $("#total-client" + cart_id).html(response[0].total);
+                    $("#total-client" + cart_id).html(response.cartUser[0].total);
+                    $("#total-items-client").html('<strong>Total</strong>: $'+response.totalCart);
+                    $('#client-total').html("El total de su carrito es $ "+response.totalCart);
                    
                     
                     
@@ -56,13 +58,14 @@ $(document).ready(function(){
                     $("#client-container").empty();
                     var nBadge=0;
                     var total=0;
-                    response.forEach(element => {
+                    response.cartItems.forEach(element => {
                         $("#client-container").append(element.product.product_name+"<br>---------------------<br>");
                         nBadge++;
                         total+=parseInt(element.total);
                     });
                     $('.badge').html(nBadge);
-                    $('#total-items').html("<strong>Total</strong>: $"+total);
+                    $('#total-items-client').html("<strong>Total</strong>: $"+response.totalUser);
+                    $('#client-total').html("El total de su carrito es $ "+response.totalUser);
                     
                     
                

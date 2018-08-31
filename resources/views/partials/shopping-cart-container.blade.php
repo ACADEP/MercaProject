@@ -9,16 +9,20 @@
             <div {{ Auth::check() ? 'id=client-container' : 'id=product_container' }} >
             @if(Auth::check())
                 <script>borrarCache();</script>
+                @php $tItems=0 @endphp
                 @foreach(Auth::user()->cart->with('product')->get() as $cartItem)
-                    {{ $cartItem->product->product_name }}
-                    <br>---------------------<br>
+                    @if($tItems<=4)
+                            {{ $cartItem->product->product_name }}
+                            <br>---------------------<br>
+                    @endif
+                    @php $tItems++ @endphp
                 @endforeach
             @endif
             </div>
         </li>
                                            
         <li class="total">
-            <span id="total-items"><strong>Total</strong>: ${{ Auth::check() ? Auth::user()->total : '0' }}</span>
+            <span {{ Auth::check() ? 'id=total-items-client' : 'id=total-items' }}><strong>Total</strong>: ${{ Auth::check() ? Auth::user()->total : '0' }}</span>
             
             @if(Auth::check())
                 <button class="btn btn-success btn-xs btn-pay">Pagar</button>

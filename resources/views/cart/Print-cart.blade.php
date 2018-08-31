@@ -1,7 +1,11 @@
 <html>
 
 <body>
+    <div><img src="{{asset('images/mercadata-footer.png')}}" width="250px"></div>
+    @php $now = new \DateTime(); @endphp
+    <div>{{$now->format('d-m-Y h:i')}}</div>
     <table class="table">
+       @php $totalCart=0;@endphp
         <thead>
                 <tr>
                     <th>Nombre</th>
@@ -19,6 +23,7 @@
                         <td>{{$item->product->price}}</td>
                         <td>{{$item->qty}}</td>
                         <td>{{$item->total}}</td>
+                        @php $totalCart+=$item->total; @endphp
                     </tr>
                 @endforeach
             @else
@@ -28,13 +33,15 @@
                     <td>{{$item->price}}</td>
                     <td>{{$item->qty}}</td>
                     <td>{{$item->price*$item->qty}}</td>
+                    @php $totalCart+=$item->price*$item->qty; @endphp
                 </tr>
                 @endforeach
             @endif
            
         </tbody>
     </table>
-            
+    <br>
+    <div id="total">Su total es: ${{$totalCart}}</div>        
     
         
  
