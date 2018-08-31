@@ -36,13 +36,21 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/data', [
         'uses' => 'QueryController@data',
         'as'   => 'data.json',
-    ]);
+    ])->middleware('client');
 
     /** Route to Products show page **/
     Route::get('product/{product_name}', [
         'uses' => '\App\Http\Controllers\ProductsController@show',
         'as'   => 'show.product',
     ]);
+
+    /************************************** Order by Routes for Shops ***********************************/
+    
+    /** Display all products for shop Route **/
+    Route::get('shop/{id}','ShopController@show');
+
+    Route::get('shop/{id}','ShopController@showproducts');
+
 
     /************************************** Order By Routes for Products By Category ***********************************/
 
@@ -164,23 +172,20 @@ Route::group(['middleware' => ['web']], function () {
         'uses'   => 'CartController@showCart'
     ));
 
-    /** Add items in the cart **/
-    Route::post('/cart/add', array(
-        'before' => 'auth.basic',
-        'uses'   => 'CartController@addCart'
-    ));
+    /** Agregar productos al carrito **/
+    Route::post('/cart/add', 'CartController@addCart')->name('addCart');
 
     /** Update items in the cart **/
     Route::post('/cart/update', [
         'uses' => 'CartController@update'
     ]);
+    Route::post('/cart/qty','CartController@changeqty');
 
-    /** Delete items in the cart **/
-    Route::get('/cart/delete/{id}', array(
-        'before' => 'auth.basic',
-        'as'     => 'delete_book_from_cart',
-        'uses'   => 'CartController@delete'
-    ));
+    Route::get('print', 'CartController@vista');
+    Route::get('print-cart', 'CartController@PDF')->name('cart.pdf');
+
+    /** Eliminar productos del carrito **/
+    Route::post('/cart/delete','CartController@delete')->name('deleteCart');
 
 
     /**************************************** Order Routes *********************************************/
@@ -210,9 +215,20 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('profile', 'ProfileController');
     
 });
+ /*******************************************Seller Profile Routes below ************************************************/
+ Route::group(["middleware" => 'seller'], function(){
+    Route::get('seller/admin','SellerController@show');
 
+    Route::get('seller/products','SellerController@showProducts')->name('my-products');
 
+    Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
+    //CRUD PRODUCTOS
+    Route::post('seller/products/add','SellerController@addProduct')->name('add-Product');
+
+    Route::post('/addphoto/{id}','ProductPhotosController@store')->name('add-Photo');
+ });
+/************************************************************************************************** */
 Route::group(["middleware" => 'admin'], function(){
 
     /** Show the Admin Dashboard **/

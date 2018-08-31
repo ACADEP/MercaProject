@@ -12,22 +12,26 @@ use App\Http\Requests\ProductPhotoRequest;
 
 class ProductPhotosController extends Controller {
 
+    public function store($id) {
 
-    /**
-     * @param $id
-     * @param ProductPhotoRequest $request
-     */
-    public function store($id, ProductPhotoRequest $request) {
-        // Set $product = Product::LocatedAt() in (Product.php Model) = to the id
-        // -- Find the product.
-        $product = Product::LocatedAt($id);
-
-        // Store the photo from the file instance
-        // -- ('photo') is coming from "public/js/dropzone.forms.js" --
-        $photo = $request->file('photo');
-
-        // Create dedicated class to add photos to product, and save the photos.
-        (new AddPhotoToProduct($product, $photo))->save();
+        
+        $product=Product::find($id)->get();
+        $this->validate(request(),[
+            'photoProducto'=>'image|max:2048'
+        ]);
+        $file=request()->file('photoProducto');
+        $photourl=$file->store($product->category->category);
+        $imageProduct=ProductPhoto::create([
+            'product_id'=>$product->id,
+            'name'=>$file,
+            'path'=>Storage::url($photourl),
+            'thumbnail_path'=>Storage::url($photourl),
+            'featured'=>0
+        ]);
+        
+        return back();
+       
+        
     }
 
 

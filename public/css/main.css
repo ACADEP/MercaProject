@@ -542,6 +542,7 @@ section {
 #Login-Register-Container {
     background: #cfcfcf;/*#298eea;*/
     padding: 0;
+    padding-bottom: 5%;
     margin: 0;
     height: 100%;
 }
@@ -569,10 +570,10 @@ section {
 }
 #Forgot-Password {
     padding-top: 2%;
-    text-decoration: none;
+    text-decoration: underline;
     font-size: 14px;
     color: black;
-    font-weight: 300;
+    font-weight: 700;
 }
 #No-Account {
     color: black;

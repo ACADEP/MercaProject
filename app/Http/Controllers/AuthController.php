@@ -59,7 +59,7 @@ class AuthController extends Controller
             'username' => $request->input('username'),
             'password' => bcrypt($request->input('password')),
             'verified' => 0,
-            'admin' => 0,
+            'admin' => $request->input('account'),
         ]);
 
         /**
@@ -140,7 +140,7 @@ class AuthController extends Controller
         }
 
         // Else, show error message, and redirect them back to login.php.
-        flash()->customErrorOverlay('Error', 'No se puede iniciar sesión con esas credenciales');
+        // flash()->customErrorOverlay('Error', 'No se puede iniciar sesión con esas credenciales');
 
         return redirect('login');
     }

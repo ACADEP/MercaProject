@@ -35,7 +35,7 @@ class AppMailers {
     /**
      * Asunto del correo.
      */
-    protected $subject = array('Registro Mercadata','Restablecer Contraseña');
+    protected $subject = 'Registro Mercadata';
 
     /**
      * @param Mailer $mailer
@@ -58,8 +58,6 @@ class AppMailers {
         $this->view = 'auth.confirm';
         // The data that is required.
         $this->data = compact('user');
-        //confirm email
-        $subjectconfirmemail = 0;
         // Now deliver the email to the user.
         $this->deliver();
     }
@@ -82,11 +80,13 @@ class AppMailers {
      */
     public function deliver() {
         $this->mailer->send($this->view, $this->data, function($message) {
-            //if($asunto == 0) {
                 $message->from($this->from, 'Administrator')
-                ->subject($this->subject[0])
+                ->subject($this->subject)
                 ->to($this->to);
-                dd($message);
+
+                
+                
+                ->to($this->to);                
             /*}
             elseif($asunto == 1) {
                 $message->from($this->from, 'Administrator')
@@ -98,6 +98,8 @@ class AppMailers {
                 ->subject($this->subject[0])
                 ->to($this->to);
             }*/
+
+                //dd($message);
         });    
     }
 

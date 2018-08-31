@@ -18,6 +18,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 1,
             'price'=> 10000,
             'reduced_price'=>1000,
+            'shop_id'=>1,
             'cat_id'=>2,
             'brand_id'=>2,
             'featured'=>1,
@@ -30,6 +31,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 2,
             'price'=> 5000,
             'reduced_price'=>1000,
+            'shop_id'=>1,
             'cat_id'=>6,
             'brand_id'=>10,
             'featured'=>1,
@@ -42,6 +44,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 3,
             'price'=> 3000,
             'reduced_price'=>500,
+            'shop_id'=>1,
             'cat_id'=>5,
             'brand_id'=>4,
             'featured'=>1,
@@ -54,6 +57,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 4,
             'price'=> 200,
             'reduced_price'=>100,
+            'shop_id'=>1,
             'cat_id'=>4,
             'brand_id'=>5,
             'featured'=>1,
@@ -66,6 +70,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 5,
             'price'=> 10000,
             'reduced_price'=>1000,
+            'shop_id'=>1,
             'cat_id'=>10,
             'brand_id'=>6,
             'featured'=>1,
@@ -79,6 +84,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 6,
             'price'=> 10000,
             'reduced_price'=>0,
+            'shop_id'=>1,
             'cat_id'=>10,
             'brand_id'=>6,
             'featured'=>0,
@@ -91,6 +97,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 7,
             'price'=> 10000,
             'reduced_price'=>0,
+            'shop_id'=>1,
             'cat_id'=>2,
             'brand_id'=>7,
             'featured'=>0,
@@ -103,6 +110,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 8,
             'price'=> 5000,
             'reduced_price'=>0,
+            'shop_id'=>1,
             'cat_id'=>6,
             'brand_id'=>10,
             'featured'=>0,
@@ -115,6 +123,7 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 9,
             'price'=> 20000,
             'reduced_price'=>0,
+            'shop_id'=>1,
             'cat_id'=>1,
             'brand_id'=>3,
             'featured'=>0,
@@ -127,17 +136,429 @@ class ProductsTableSeeder extends Seeder
             'product_sku' => 10,
             'price'=> 5000,
             'reduced_price'=>0,
+            'shop_id'=>1,
             'cat_id'=>11,
             'brand_id'=>7,
             'featured'=>0,
             'description'=>'Celular inteligente'
         ]);
-
-
-
         
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
 
-        
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xperia Z5',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>8,
+            'brand_id'=>6,
+            'featured'=>1,
+            'description'=>'Smartphone de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xperia Z5',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>8,
+            'brand_id'=>6,
+            'featured'=>1,
+            'description'=>'Smartphone de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>2,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xperia Z5',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>8,
+            'brand_id'=>6,
+            'featured'=>1,
+            'description'=>'Smartphone de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>3,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox One - Turtle Beach X-40 Headset',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>2,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xperia Z5',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>8,
+            'brand_id'=>6,
+            'featured'=>1,
+            'description'=>'Smartphone de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>4,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>5,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>5,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Laptop Hp 500 Gb Ram 4 Gb',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>5,
+            'cat_id'=>1,
+            'brand_id'=>3,
+            'featured'=>1,
+            'description'=>'Laptop hp de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xperia Z5',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>5,
+            'cat_id'=>8,
+            'brand_id'=>6,
+            'featured'=>1,
+            'description'=>'Smartphone de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Bocinas Philis',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>5,
+            'cat_id'=>7,
+            'brand_id'=>2,
+            'featured'=>1,
+            'description'=>'Bocinas de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Xbox 360 - Halo 4',
+            'product_qty'        =>  30,
+            'product_sku' => 54,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>6,
+            'cat_id'=>11,
+            'brand_id'=>5,
+            'featured'=>1,
+            'description'=>'Consola xbox de buena calidad'
+        ]);
+
+        DB::table('products')->insert([
+            'product_name' => 'Ps4 God of war 4',
+            'product_qty'        =>  30,
+            'product_sku' => 1,
+            'price'=> 10000,
+            'reduced_price'=>1000,
+            'shop_id'=>6,
+            'cat_id'=>5,
+            'brand_id'=>7,
+            'featured'=>1,
+            'description'=>'Consola ps4 de buena calidad'
+        ]);
+
 
     }
 }

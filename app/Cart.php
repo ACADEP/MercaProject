@@ -6,20 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model {
 
-    /**
-     * @var string
-     */
-    protected $table = 'carts';
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'user_id', 'product_id', 'qty', 'total',
-    ];
 
 
     /**
@@ -27,8 +14,8 @@ class Cart extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function Products() {
-        return $this->belongsTo('App\Product', 'product_id');
+    public function Product() {
+        return $this->belongsTo('App\Product');
     }
 
 
@@ -38,7 +25,8 @@ class Cart extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function User() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class);
     }
+
 
 }

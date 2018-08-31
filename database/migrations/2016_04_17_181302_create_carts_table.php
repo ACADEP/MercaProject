@@ -15,7 +15,9 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->string('status');
             $table->integer('product_id');
+            $table->integer('product_price');
             $table->integer('qty')->unsigned();
             $table->decimal('total', 10, 2)->unsigned();
             $table->timestamps();

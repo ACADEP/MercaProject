@@ -2,9 +2,6 @@
 
 @section('content')
 
-
-
-
     <!-- @include('pages.partials.side-nav') -->
     @include('pages.partials.carousel')
 
@@ -19,19 +16,12 @@
     <!-- Oficcials stores section -->
     @include('pages.partials.stores')
 
-    
-
     <!-- New Products section -->
     @include('pages.partials.new')
 
     <!-- Buy for brands -->
     @include('pages.partials.brands')
 
-
-
-    
     <!-- close wrapper -->
-
-
 
 @stop

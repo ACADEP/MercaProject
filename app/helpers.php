@@ -10,7 +10,7 @@
 function flash($title = null, $message = null) {
     // Set variable $flash to fetch the Flash Class
     // in Flash.php
-    $flash = app('App\Http\Flash');
+    $flash = app('\Http\Flash');
 
     // If 0 parameters are passed in ($title, $message)
     // then just return the flash instance.

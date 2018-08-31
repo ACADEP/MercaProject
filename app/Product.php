@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
 
-    protected $table = 'products';
+    
 
     protected $fillable = [
         'product_name',
@@ -17,6 +17,7 @@ class Product extends Model {
         'product_sku',
         'price',
         'reduced_price',
+        'shop_id',
         'cat_id',
         'featured',
         'brand_id',
@@ -27,13 +28,13 @@ class Product extends Model {
     //protected $gaurded = ['id'];
 
 
-    /**
-     * One Product can have one Category.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
+    
     public function category() {
-        return $this->hasOne('App\Category', 'id');
+        return $this->belongsTo(Category::class,'cat_id');
+    }
+
+    public function cart(){
+        return $this->belongsTo(Cart::class);
     }
 
 
@@ -49,12 +50,6 @@ class Product extends Model {
     }
 
 
-    /**
-     * Save a Product to the ProductPhoto instance.
-     *
-     * @param ProductPhoto $ProductPhoto
-     * @return Model
-     */
     public function addPhoto(ProductPhoto $ProductPhoto) {
         return $this->photos()->save($ProductPhoto);
     }
@@ -66,7 +61,7 @@ class Product extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function photos() {
-        return $this->hasMany('App\ProductPhoto');
+        return $this->hasMany(ProductPhoto::class);
     }
 
 

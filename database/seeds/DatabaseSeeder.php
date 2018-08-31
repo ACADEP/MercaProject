@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -16,9 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(BrandTableSeed::class);
         $this->call(CategoryTableSeeder::class);
+        $this->call(ShopsTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
         $this->call(ProductImageTableSeeder::class);
-
+        $this->call(ShopSalesTableSeeder::class);
 
         \Illuminate\Database\Eloquent\Model::reguard();
     }

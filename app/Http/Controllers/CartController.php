@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Cart;
 use Validator;
 use App\Product;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Cookie;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -13,81 +18,88 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
-use App\Http\Traits\CartTrait;
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CartController extends Controller {
 
-    use BrandAllTrait, CategoryTrait, SearchTrait, CartTrait;
+    use BrandAllTrait, CategoryTrait, SearchTrait;
 
-
-    /**
-     * Return the Cart page with the cart items and total
-     * 
-     * @return mixed
-     */
     public function showCart() {
+
+        return view('cart.cart'); 
             
     }
 
 
     /**
-     * Add Products to the cart
-     * 
-     * @return mixed
+     * Agregar productos al carrito
      */
-    public function addCart() {
+    public function addCart(Request $request) {
 
-        // Assign validation rules
-        $rules = array(
-            'qty' => 'required|numeric',
-            'product'   => 'required|numeric|exists:products,id'
-        );
-
-        // Apply validation
-        $validator = Validator::make(Input::all(), $rules);
-
-        // If validation fails, show error message
-        if ($validator->fails()) {
-            flash()->error('Error', 'The product could not added to your cart!');
-            return redirect()->back();
+        //Buscar el producto para agregar al carrito
+        $product_id=Product::find($request->product_id);
+        $product_id->setAttribute('qty', 1);
+        // Identificar si es visitante o usuario registrado
+        $user=0;
+        $itemCount=0;
+        if(Auth::check())
+        { 
+            $user=1;
+            if(Auth::user()->productIs($product_id->id))
+            {  
+                
+            }
+            else
+            {
+               
+                $cart=new Cart;
+                $cart->user_id=Auth::user()->id;
+                $cart->status="Active";
+                $cart->product_id=$product_id->id;
+                $cart->product_price=$product_id->price;
+                $cart->qty=1;
+                $cart->total=$product_id->price;
+                $cart->save();
+                $itemCount=Auth::user()->carts->count();
+                $product_id->setAttribute('total', Auth::user()->total);
+            }
+            
         }
-
-        // Set $user_id to the currently signed in user ID
-        $user_id = Auth::user()->id;
-
-        // Set $product_id to the hidden product input field in the add to cart from
-        $product_id = Input::get('product');
-
-        // Set the $qty to the quantity of products selected
-        $qty = Input::get('qty');
-
-        // Get the ID of the Products in the cart
-        $product = Product::find($product_id);
-
-        // set total to quantity * the product price
-        // $total = $qty * $product->price;
-
-        if ($product->reduced_price == 0) {
-            $total = $qty * $product->price;
-        } else {
-            $total = $qty * $product->reduced_price;
-        }
-
-        // Create the Cart
-        Cart::create(
-            array (
-                'user_id'    => $user_id,
-                'product_id' => $product_id,
-                'qty'        => $qty,
-                'total'      => $total
-            )
-        );
-
-        // then redirect back
-        return redirect()->route('cart');
+        
+        return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount],200);
+    
 
     }
 
+    public function changeqty(Request $request){
+        $price_unit=Cart::select('product_price')->where('id',$request->cart_id)->where('user_id',Auth::user()->id)->first();
+        $cart=Cart::where('id',$request->cart_id)->where('user_id',Auth::user()->id);
+        $cart->update(array(
+            'qty'        => $request->qty,
+            'total'      => $request->qty*(int)$price_unit->product_price,
+        ));
+
+        $cartUser=Auth::user()->cart->where('id',$request->cart_id)->get();
+        $totalCart=Auth::User()->total;
+        return response(['cartUser'=>$cartUser,'totalCart'=>$totalCart],200);
+    }
+    public function PDF(Request $request)
+    {
+        $items;
+        if(Auth::check())
+        {
+            $items=Auth::user()->cart->with("product")->get();
+        }
+        else
+        {
+            $items=json_decode($request->get('Items'));
+        }
+       
+        $pdf = PDF::loadView('cart.Print-cart',compact('items'));
+        return $pdf->download('Carrito.pdf');
+      
+    }
 
     /**
      * Update the Cart
@@ -131,19 +143,22 @@ class CartController extends Controller {
         return redirect()->route('cart');
     }
     
-
-    /**
-     * Delete a product from a users Cart
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function delete($id) {
+    
+    
+    public function delete(Request $request) {
         // Find the Carts table and given ID, and delete the record
-        Cart::find($id)->delete();
-
+       
+        $cartDestroy=Cart::destroy($request->cart_id);
+        $cartItems;
+        if(Auth::check())
+        {
+            $cartItems=Auth::user()->cart->with('product')->get();
+            $TotalUser=Auth::user()->total;
+        }
+       
+        
         // Then redirect back
-        return redirect()->back();
+        return response(['cartItems'=>$cartItems,'totalUser'=>$TotalUser ],200);
     }
     
     
