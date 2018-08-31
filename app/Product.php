@@ -5,6 +5,8 @@ namespace App;
 use App\ProductPhoto;
 use App\Brand;
 use App\Category;
+use App\Shop;
+use App\ShopSold;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
@@ -39,6 +41,14 @@ class Product extends Model {
 
     public function cart(){
         return $this->belongsTo(Cart::class);
+    }
+
+    public function shop() {
+        return $this->hasMany(Shop::class);
+    }
+
+    public function shopsold() {
+        return $this->hasMany(ShopSold::class);
     }
 
 

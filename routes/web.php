@@ -11,6 +11,8 @@
 |
 */
 
+//precio bajo
+Route::post('/priceLow', 'testController@order');
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -25,6 +27,9 @@ Route::group(['middleware' => ['web']], function () {
 
     /** Display Products by Brand Route **/
     Route::get('brand/{id}','PagesController@displayProductsByBrand');
+
+    /** Display all products for shop Route **/
+    Route::get('shop/{id}','ShopController@showproducts');
 
     /** Route to post search results **/
     Route::post('/queries', [
@@ -44,12 +49,42 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'show.product',
     ]);
 
-    /************************************** Order by Routes for Shops ***********************************/
-    
-    /** Display all products for shop Route **/
-    Route::get('shop/{id}','ShopController@show');
 
-    Route::get('shop/{id}','ShopController@showproducts');
+
+    /************************************** Order By Routes for Products By Shop ***********************************/
+        
+
+    
+
+    /** Route to sort products by price lowest */
+    Route::get('shop/{id}/price/lowest', [
+        'uses' => '\App\Http\Controllers\testController@orderlow',
+        'as'   => 'shop.lowest',
+    ]);
+
+    /** Route to sort products by price highest */
+    Route::get('shop/{id}/price/highest', [
+        'uses' => '\App\Http\Controllers\testController@orderhigh',
+        'as'   => 'shop.highest',
+    ]);
+
+    /** Route to sort products by price newest */
+    Route::get('shop/{id}/newest', [
+        'uses' => '\App\Http\Controllers\testController@ordernewst',
+        'as'   => 'shop.newest',
+    ]);
+
+    /** Route to sort products by alpha highest */
+    Route::get('shop/{id}/alpha/highest', [
+        'uses' => '\App\Http\Controllers\testController@orderza',
+        'as'   => 'shop.alpha.highest',
+    ]);
+
+    /** Route to sort products by alpha highest */
+    Route::get('shop/{id}/alpha/lowest', [
+        'uses' => '\App\Http\Controllers\testController@orderaz',
+        'as'   => 'shop.alpha.lowest',
+    ]);
 
 
     /************************************** Order By Routes for Products By Category ***********************************/
