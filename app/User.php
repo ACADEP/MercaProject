@@ -94,6 +94,7 @@ class User extends Authenticatable
         return $band;
 
     }
+    
     public function getCartAttribute()
     {
         $cart = $this->carts()->where('status', 'Active');

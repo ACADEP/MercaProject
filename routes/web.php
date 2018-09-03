@@ -256,12 +256,19 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('seller/products','SellerController@showProducts')->name('my-products');
 
+    Route::get('seller/update/{product}','SellerController@showUpdate')->name('my-update');
+
     Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
     //CRUD PRODUCTOS
     Route::post('seller/products/add','SellerController@addProduct')->name('add-Product');
 
-    Route::post('/addphoto/{id}','ProductPhotosController@store')->name('add-Photo');
+    Route::post('seller/products/update','SellerController@updateProduct')->name('update-Product');
+
+    Route::post('/addphoto','ProductPhotosController@store')->name('add-Photo');
+
+    Route::delete('/deletephoto/{id}','ProductPhotosController@delete')->name('delete-Photo');
+
  });
 /************************************************************************************************** */
 Route::group(["middleware" => 'admin'], function(){

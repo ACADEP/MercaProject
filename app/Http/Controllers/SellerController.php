@@ -19,6 +19,11 @@ class SellerController extends Controller
         return view('seller.pages.products',compact('productsSeller'));
     }
 
+    public function showUpdate(Product $product)
+    {
+        return view('seller.partials.update-product',compact('product'));
+    }
+
     public function showSales()
     {
         return view('seller.pages.sales_history');
@@ -47,5 +52,10 @@ class SellerController extends Controller
         $productSeller->save();
 
         return back();
+    }
+
+    public function updateProduct()
+    {
+
     }
 }

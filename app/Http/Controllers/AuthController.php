@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Category;
+use App\Cart;
 use App\Mailers\AppMailers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,6 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRegister(RegistrationRequest $request, AppMailers $mailer) {
-
       
         // Create the user in the DB.
         $user = User::create([
@@ -61,7 +61,25 @@ class AuthController extends Controller
             'verified' => 0,
             'admin' => $request->input('account'),
         ]);
-
+        //Agregar productos del cookie al carrito
+        $items=json_decode($request->get('cookieProductos'));
+        if($items!=null)
+        {
+            foreach($items as $item)
+            {
+                $cartItemTotal=$item->price-$item->reduced_price;
+                $cart=new Cart;
+                $cart->user_id=$user->id;
+                $cart->status="Active";
+                $cart->product_id=$item->id;
+                $cart->product_price=$cartItemTotal;
+                $cart->qty=$item->qty;
+                $cart->total=$cartItemTotal*$item->qty;
+                $cart->save();
+            }
+           
+        }
+        
         /**
          * send email conformation to user that just registered.
          * -- sendEmailConfirmationTo is in Mailers/AppMailers.php --

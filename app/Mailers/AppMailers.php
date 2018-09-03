@@ -82,7 +82,14 @@ class AppMailers {
         $this->mailer->send($this->view, $this->data, function($message) {
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)
-                ->to($this->to);});    
+                ->to($this->to);
+
+                
+                
+                            
+        
+        });    
+
     }
 
 }
