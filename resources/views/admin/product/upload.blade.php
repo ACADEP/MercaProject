@@ -41,7 +41,7 @@
                                 <label>{{ $photo->id }}</label>
                                 @if (Auth::user()->id == 2)
                                     <a href="/store/{{ $photo->path }}" data-lity>
-                                        <img src="/store/{{ $photo->thumbnail_path }}" alt="" data-id="{{ $photo->id }}">
+                                        <img src="/store{{ $photo->thumbnail_path }}" alt="" data-id="{{ $photo->id }}">
                                     </a>
                                 @else
                                     <div class="img-wrap">
@@ -50,7 +50,7 @@
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="close">&times;</button>
                                             <a href="/store/{{ $photo->path }}" data-lity>
-                                                <img src="/store/{{ $photo->thumbnail_path }}" alt="" data-id="{{ $photo->id }}">
+                                                <img src="/store{{ $photo->thumbnail_path }}" alt="" data-id="{{ $photo->id }}">
                                             </a>
                                         </form>
                                     </div>

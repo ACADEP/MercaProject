@@ -14,12 +14,12 @@
                             <div class="text-center hoverable">
                                 <a href="{{ route('show.product', $query->product_name) }}">
                                 @if ($query->photos->count() === 0)
-                                        <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag">
+                                        <img src="/images/no-image-found.jpg" alt="No Image Found Tag">
                                 @else
                                     @if ($query->featuredPhoto)
-                                        <img src="{{asset($query->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $query->featuredPhoto->id }}" width="100%" />
+                                        <img src="{{$query->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $query->featuredPhoto->id }}" width="100%" />
                                     @elseif(!$query->featuredPhoto)
-                                        <img src="{{asset($query->photos->first()->thumbnail_path)}}" alt="Photo" />
+                                        <img src="{{$query->photos->first()->thumbnail_path}}" alt="Photo" />
                                     @else
                                         N/A
                                     @endif

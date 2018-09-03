@@ -32,12 +32,12 @@
                         <div class="col-md-4 text-center hoverable">
                             <a href="{{ route('show.product', $product->product_name) }}">
                             @if ($product->photos->count() === 0)
-                                    <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag" id="Product-similar-Image">
+                                    <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image">
                             @else
                                 @if ($product->featuredPhoto)
-                                    <img src="{{asset($product->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="50%" />
+                                    <img src="{{$product->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="50%" />
                                 @elseif(!$product->featuredPhoto)
-                                    <img src="{{asset($product->photos->first()->thumbnail_path)}}" alt="Photo" />
+                                    <img src="{{$product->photos->first()->thumbnail_path}}" alt="Photo" />
                                 @else
                                     N/A
                                 @endif

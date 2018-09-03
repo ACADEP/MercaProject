@@ -5,7 +5,7 @@
         <div style="color:white">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="{{asset('images/mercadata-footer.png')}}" width="150px">
+                    <img src="/images/mercadata-footer.png" width="150px">
                     <p class="white-text text-center"><a href="{{ url('/') }}">Mercadata</a></p>
                 </div>
                 
@@ -38,11 +38,11 @@
 
                  <div class="col-md-4 text-center">
                     <p>Formas de pago</p>
-                    <img src="{{asset('/images/waystopays/paypal.png')}}">
-                    <img src="{{asset('/images/waystopays/visa.png')}}">
-                    <img src="{{asset('/images/waystopays/oxxo.png')}}">
-                    <img src="{{asset('/images/waystopays/mastercard.png')}}">
-                    <img src="{{asset('/images/waystopays/dollar.png')}}">
+                    <img src="/images/waystopays/paypal.png">
+                    <img src="/images/waystopays/visa.png">
+                    <img src="/images/waystopays/oxxo.png">
+                    <img src="/images/waystopays/mastercard.png">
+                    <img src="/images/waystopays/dollar.png">
                 </div>
                 
             </div>

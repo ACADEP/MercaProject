@@ -15,7 +15,7 @@ class AppMailers {
     /**
      * Who is the email from.
      */
-    protected $from = 'jonces94@hotmail.com';
+    protected $from = 'confirmacion@mercageek.com';
 
     /**
      * Who is this going to.
@@ -89,6 +89,7 @@ class AppMailers {
                             
         
         });    
+
     }
 
 }

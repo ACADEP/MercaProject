@@ -41,7 +41,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('price')->where('shop_id', '=', $id)->Paginate(9);
         $relacion = false;
-        return view('shop.index', compact('products', 'banner', 'relacion'));
+        $orden = "Menor Precio";
+        return view('shop.index', compact('products', 'banner', 'relacion', 'orden'));
     }
 
     public function orderhigh($id)
@@ -49,7 +50,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('price', 'desc')->where('shop_id', '=', $id)->Paginate(9);
         $relacion = false;
-        return view('shop.index', compact('products', 'banner', 'relacion'));
+        $orden = "Mayor Precio";
+        return view('shop.index', compact('products', 'banner', 'relacion', 'orden'));
     }
 
     public function ordernewst($id)
@@ -63,7 +65,8 @@ class testController extends Controller
             dd($prod->product->product_name);
         }*/
         $relacion = true;
-        return view('shop.index', compact('products', 'banner', 'relacion'));
+        $orden = "Popularidad";
+        return view('shop.index', compact('products', 'banner', 'relacion', 'orden'));
     }
 
     public function orderaz($id)
@@ -71,7 +74,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('product_name')->where('shop_id', '=', $id)->Paginate(9);
         $relacion = false;
-        return view('shop.index', compact('products', 'banner', 'relacion'));
+        $orden = "Productos A-Z";
+        return view('shop.index', compact('products', 'banner', 'relacion', 'orden'));
     }
 
     public function orderza($id)
@@ -79,7 +83,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('product_name', 'desc')->where('shop_id', '=', $id)->Paginate(9);
         $relacion = false;
-        return view('shop.index', compact('products', 'banner', 'relacion'));
+        $orden = "Productos Z-A";
+        return view('shop.index', compact('products', 'banner', 'relacion', 'orden'));
     }
 
 

@@ -11,12 +11,12 @@
                     <div class="col-sm-6 col-md-3 wow zoomIn" id="featured-container">
                         <a href="{{ route('show.product', $product->product_name) }}">
                             @if ($product->photos->count() === 0)
-                                <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag" id="Product-similar-Image" style="width: 200px; height: 200px;">
+                                <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image" style="width: 200px; height: 200px;">
                             @else
                                 @if ($product->featuredPhoto)
-                                    <img src="{{asset($product->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" style="width: 200px; height: 200px;"/>
+                                    <img src="{{$product->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" style="width: 200px; height: 200px;"/>
                                 @elseif(!$product->featuredPhoto)
-                                    <img src="{{asset($product->photos->first()->path)}}" alt="Photo" />
+                                    <img src="{{$product->photos->first()->path}}" alt="Photo" />
                                 @else
                                     N/A
                                 @endif
@@ -52,9 +52,9 @@
                                     <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag" id="image-m" style="width: 200px; height: 200px;">
                                 @else
                                     @if ($product->featuredPhoto)
-                                        <img src="/store/{{ $product->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $product->featuredPhoto->id }}" class="img-responsive img-thumbnail" id="image-m" />
+                                        <img src="/store{{ $product->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $product->featuredPhoto->id }}" class="img-responsive img-thumbnail" id="image-m" />
                                     @elseif(!$product->featuredPhoto)
-                                        <img src="/store/{{ $product->photos->first()->thumbnail_path}}" alt="Photo" class="img-responsive img-thumbnail" id="image-m" />
+                                        <img src="/store{{ $product->photos->first()->thumbnail_path}}" alt="Photo" class="img-responsive img-thumbnail" id="image-m" />
                                     @else
                                         N/A
                                     @endif

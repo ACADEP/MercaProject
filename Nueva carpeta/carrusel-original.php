@@ -15,7 +15,7 @@
         <!-- First slide -->
         <div class="item active" id="tf-home">
             <div class="view overlay hm-blue-slight">
-                <a><img src="{{ asset('/images/slider/main_2.jpg') }}" alt="Shopify Welcome">
+                <a><img src="/images/slider/main_2.jpg" alt="Shopify Welcome">
                     <div class="mask waves-effect waves-light"></div>
                 </a>
                 <div class="carousel-caption hidden-xs">
@@ -31,7 +31,7 @@
 
         <div class="item" id="tf-home">
             <div class="view overlay hm-blue-slight">
-                <a><img src="{{ asset('/images/slider/iPhone_1.jpg') }}" alt="iPhone 6s">
+                <a><img src="/images/slider/iPhone_1.jpg" alt="iPhone 6s">
                     <div class="mask waves-effect waves-light"></div>
                 </a>
                 <div class="carousel-caption hidden-xs">
@@ -46,7 +46,7 @@
         <!-- Second slide -->
         <div class="item" id="tf-home">
             <div class="view overlay hm-blue-slight">
-                <a><img src="{{ asset('/images/slider/Xbox_Controller_2.jpg') }}" alt="Xbox One Elite Controller">
+                <a><img src="/images/slider/Xbox_Controller_2.jpg" alt="Xbox One Elite Controller">
                     <div class="mask waves-effect waves-light"></div>
                 </a>
                 <div class="carousel-caption hidden-xs">
@@ -61,7 +61,7 @@
         <!-- Third slide -->
         <div class="item" id="tf-home">
             <div class="view overlay hm-blue-slight">
-                <a><img src="{{asset('/images/slider/Astro_3.jpg')}}" alt="Astros">
+                <a><img src="/images/slider/Astro_3.jpg" alt="Astros">
                     <div class="mask waves-effect waves-light"></div>
                 </a>
                 <div class="carousel-caption hidden-xs">

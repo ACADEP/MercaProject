@@ -14,50 +14,50 @@ class ShopsTableSeeder extends Seeder
         DB::table('shops')->insert([
             'name'          => 'Mercadata',
             'banner'        => 'imagen1',
-            'path'          => 'images/shops/mercadata.png',
-            'thumbnail_path'=> 'images/shops/mercadata.png',
+            'path'          => '/images/shops/mercadata.png',
+            'thumbnail_path'=> '/images/shops/mercadata.png',
         ]);
 
         DB::table('shops')->insert([
             'name'          => 'Apple',
             'banner'        => 'imagen2',
-            'path'          => 'images/shops/apple_store.jpeg',
-            'thumbnail_path'=> 'images/shops/apple_store.jpeg',
+            'path'          => '/images/shops/apple_store.jpeg',
+            'thumbnail_path'=> '/images/shops/apple_store.jpeg',
         ]);
         
         DB::table('shops')->insert([
             'name'          => 'Microsoft',
             'banner'        => 'imagen3',
-            'path'          => 'images/shops/microsoft.png',
-            'thumbnail_path'=> 'images/shops/microsoft.png',
+            'path'          => '/images/shops/microsoft.png',
+            'thumbnail_path'=> '/images/shops/microsoft.png',
         ]);
 
         DB::table('shops')->insert([
             'name'          => 'Microsistemas Californianos',
             'banner'        => 'imagen4',
-            'path'          => 'images/shops/microsistemas_californianos.png',
-            'thumbnail_path'=> 'images/shops/microsistemas_californianos.png',
+            'path'          => '/images/shops/microsistemas_californianos.png',
+            'thumbnail_path'=> '/images/shops/microsistemas_californianos.png',
         ]);
 
         DB::table('shops')->insert([
             'name'          => 'Pc Green',
             'banner'        => 'imagen5',
-            'path'          => 'images/shops/pc_green.png',
-            'thumbnail_path'=> 'images/shops/pc_green.png',
+            'path'          => '/images/shops/pc_green.png',
+            'thumbnail_path'=> '/images/shops/pc_green.png',
         ]);
 
         DB::table('shops')->insert([
             'name'          => 'Todo Pc',
             'banner'        => 'imagen6',
-            'path'          => 'images/shops/todo_pc.png',
-            'thumbnail_path'=> 'images/shops/todo_pc.png',
+            'path'          => '/images/shops/todo_pc.png',
+            'thumbnail_path'=> '/images/shops/todo_pc.png',
         ]);
 
         DB::table('shops')->insert([
             'name'          => 'Exacto',
             'banner'        => 'imagen7',
-            'path'          => 'images/shops/exacto.jpg',
-            'thumbnail_path'=> 'images/shops/exacto.jpg',
+            'path'          => '/images/shops/exacto.jpg',
+            'thumbnail_path'=> '/images/shops/exacto.jpg',
         ]);
 
     }

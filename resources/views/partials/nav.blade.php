@@ -3,7 +3,7 @@
   <nav class="navbar navbar-light navbar-expand-lg bg-light sticky-top" id="navbar-header">
     
     
-    <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{asset('images/logo-home.png')}}" style="float: left; width: 240px; height:80;"></a>
+    <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="/images/logo-home.png" style="float: left; width: 240px; height:80;"></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>

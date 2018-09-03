@@ -11,9 +11,9 @@
                         <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image" style="width: 100px; height: 100px;" >
                     @else
                         @if ($cart_item->featuredPhoto)
-                            <img src="/store/{{ $cart_item->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $cart_item->featuredPhoto->id }}" style="width: 100px; height: 100px;" />
+                            <img src="/store{{ $cart_item->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $cart_item->featuredPhoto->id }}" style="width: 100px; height: 100px;" />
                         @elseif(!$cart_item->featuredPhoto)
-                            <img src="/store/{{ $cart_item->products->photos->first()->thumbnail_path}}" alt="Photo" style="width: 100px; height: 100px;" />
+                            <img src="/store{{ $cart_item->products->photos->first()->thumbnail_path}}" alt="Photo" style="width: 100px; height: 100px;" />
                         @else
                             N/A
                         @endif
