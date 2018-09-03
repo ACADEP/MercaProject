@@ -24,21 +24,21 @@
                     <li class="nav-item dropdown" >
                             
                             <a class="nav-link dropdown-toggle hidden-md-down" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Categorias </a>
+                                    Categorías </a>
                                 
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <!-- Categorias y subcategorias -->
                                 
                                     
-                                    <li><a class="dropdown-item" href="#">Categoria 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Categoría 1</a></li>
                                     <!-- Subcategorias dropdown -->
-                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 2</a>
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoría 2</a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Subcategoría 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Subcategoría 2</a></li>
                                     </ul>
                                     </li>
-                                    <li><a class="dropdown-item" href="#">Categoria 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Categoría 3</a></li>
                                     
                                     <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
                                     <ul class="dropdown-menu">
@@ -56,23 +56,26 @@
                 &nbsp&nbsp&nbsp
                 <div class="nav-menu">
                     <div id="form-search-down">
-                    <li class="nav-item">
-                        <div id="form-sesion">
-                            @if(Auth::check())
-                                <a href="{{ url('/profile') }}">Perfil</a>&nbsp
-                                <a href="{{ url('/logout') }}">Salir</a>
-                            @else  
-                                <a href="{{ url('/login') }}">Inicio de sesion </a>&nbsp &nbsp
-                                <a href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
-                            @endif
-                            <!-- <a href="#" id="cart"><i class="material-icons"> shopping_cart</i><span class="badge">3</span></a> -->
-                            
-                        </div>
-                    </li>
+                        <li class="nav-item">
+                            <div id="form-sesion">
+                                @if(Auth::check())
+                                    <div class="form-inline">
+                                        <a href="{{ url('/profile') }}">Perfil</a>&nbsp | &nbsp
+                                        <a href="{{ url('/logout') }}">Salir</a>
+                                    </div>
+                                    
+                                @else  
+                                    <a href="{{ url('/login') }}">Inicio de sesión </a>&nbsp &nbsp
+                                    <a href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
+                                @endif
+                                <!-- <a href="#" id="cart"><i class="material-icons"> shopping_cart</i><span class="badge">3</span></a> -->
+                                
+                            </div>
+                        </li>
                     @include('partials.shopping-cart-container')
                     <br><br>
                         <li class="nav-item">
-                            <a data-toggle="modal"  data-target="#exampleModalCenter">Busqueda especial</a>
+                            <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">

@@ -69,6 +69,7 @@ class User extends Authenticatable
         $product=Product::find($id);
         return $product;
     }
+
     public function getTotalAttribute()
     {
         $cartUser= $this->carts()->where('status', 'Active')->get();
@@ -93,6 +94,7 @@ class User extends Authenticatable
         return $band;
 
     }
+    
     public function getCartAttribute()
     {
         $cart = $this->carts()->where('status', 'Active');

@@ -22,7 +22,7 @@
         </li>
                                            
         <li class="total">
-            <span {{ Auth::check() ? 'id=total-items-client' : 'id=total-items' }}><strong>Total</strong>: ${{ Auth::check() ? Auth::user()->total : '0' }}</span>
+            <span {{ Auth::check() ? 'id=total-items-client' : 'id=total-items' }}><strong>Total</strong>: ${{ Auth::check() ? number_format(Auth::user()->total, 2) : '0' }}</span>
             
             @if(Auth::check())
                 <button class="btn btn-success btn-xs btn-pay">Pagar</button>

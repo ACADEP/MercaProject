@@ -52,14 +52,14 @@ class CartController extends Controller {
             }
             else
             {
-               
+                $product_total=$product_id->price-$product_id->reduced_price;
                 $cart=new Cart;
                 $cart->user_id=Auth::user()->id;
                 $cart->status="Active";
                 $cart->product_id=$product_id->id;
-                $cart->product_price=$product_id->price;
+                $cart->product_price=$product_total;
                 $cart->qty=1;
-                $cart->total=$product_id->price;
+                $cart->total=$product_total;
                 $cart->save();
                 $itemCount=Auth::user()->carts->count();
                 $product_id->setAttribute('total', Auth::user()->total);
@@ -73,11 +73,12 @@ class CartController extends Controller {
     }
 
     public function changeqty(Request $request){
-        $price_unit=Cart::select('product_price')->where('id',$request->cart_id)->where('user_id',Auth::user()->id)->first();
         $cart=Cart::where('id',$request->cart_id)->where('user_id',Auth::user()->id);
+        $product_price=Cart::where('id',$request->cart_id)->where('user_id',Auth::user()->id)->get();
+        
         $cart->update(array(
             'qty'        => $request->qty,
-            'total'      => $request->qty*(int)$price_unit->product_price,
+            'total'      => $request->qty*$product_price[0]->product_price,
         ));
 
         $cartUser=Auth::user()->cart->where('id',$request->cart_id)->get();
@@ -97,7 +98,7 @@ class CartController extends Controller {
         }
        
         $pdf = PDF::loadView('cart.Print-cart',compact('items'));
-        return $pdf->download('Carrito.pdf');
+        return $pdf->stream('Carrito.pdf');
       
     }
 
