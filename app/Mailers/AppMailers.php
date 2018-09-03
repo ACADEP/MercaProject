@@ -15,7 +15,7 @@ class AppMailers {
     /**
      * Who is the email from.
      */
-    protected $from = 'jonces94@hotmail.com';
+    protected $from = 'confirmacion@mercageek.com';
 
     /**
      * Who is this going to.
@@ -82,20 +82,7 @@ class AppMailers {
         $this->mailer->send($this->view, $this->data, function($message) {
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)
-                ->to($this->to);                
-            /*}
-            elseif($asunto == 1) {
-                $message->from($this->from, 'Administrator')
-                ->subject($this->subject[0])
-                ->to($this->to);
-            }
-            elseif($asunto == 2) {
-                $message->from($this->from, 'Administrator')
-                ->subject($this->subject[0])
-                ->to($this->to);
-            }*/
-                //dd($message);
-        });    
+                ->to($this->to);});    
     }
 
 }

@@ -1,15 +1,28 @@
 @extends('app')
 
 @section('content')
-<div class="col-md-12" style="height:100%; widht=100%;">
-    <table class="table">
+<div class="col-md-12" style="width:100%;">
+
+<form class="form-inline text-center"  method="get" action="{{ route('cart.pdf') }}">
+                <div class="text-right" style="width:100%;">
+                    <input type="hidden" name="Items" id="items-carts">
+                    <button class="btn btn-primary btn-just-icon" target="_blank" type="submit">
+                            <i class="material-icons">local_printshop</i>
+                    </button>
+                    @if(Auth::check())
+                        <button type="button" class="btn btn-success text-center">Pagar</button>
+                    @endif
+                </div>
+                
+</form>
+<table class="table text-center">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
                 <th>SubTotal</th>
-                <th>Opciones</th>
+                <th>Eliminar</th>
             </tr>
         </thead>
 
@@ -20,7 +33,9 @@
                 @foreach(Auth::user()->carts as $cart)
                     
                     <tr id="item-cart{{ $cart->id }}">
-                        <td>{{ Auth::user()->product($cart->product_id)->product_name  }}</td>
+                        
+                        <td><a href="{{ route('show.product', $cart->product->product_name) }}" style="text-decoration:none;">{{ Auth::user()->product($cart->product_id)->product_name  }}</a></td>
+                    
                         <td>{{ Auth::user()->product($cart->product_id)->price  }}</td>
                         <td>
                             <select class="form-control selectCtd" id="{{ $cart->id }}">
@@ -29,9 +44,10 @@
                                 @endfor
                             </select>
                         </td>
+                        <script>document.getElementById("{{ $cart->id }}").value = "{{ $cart->qty }}";</script>
                         <td id="total-client{{ $cart->id }}">{{ $cart->total }}</td>
                         <input type="hidden" id="url" value="{{ route('deleteCart')}}">
-                        <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'>Borrar</button></td>
+                        <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                     </tr>
                 @endforeach
            @endif
@@ -40,16 +56,15 @@
         </tbody>
         
     </table>
-    <form class="form-inline" method="get" action="{{ route('cart.pdf') }}">
-        <input type="hidden" name="Items" id="items-carts">
-            <button class="btn btn-primary btn-just-icon" type="submit">
-                    <i class="material-icons">local_printshop</i> Imprimir PDF
-            </button>
-    </form>
     
-    @if(Auth::check())
-        <button type="button" class="btn btn-success text-center"><i class="material-icons">attach_money</i> Pagar</button>
-    @endif
+    <div class="text-center" {{ Auth::check() ? 'id=client-total' : 'id=general-total' }}>
+            @if(Auth::check())
+                El total de su carrito es: $  {{ Auth::user()->total }}
+            @endif
+    </div>
+    
+    
+   
         
 </div>
 @stop

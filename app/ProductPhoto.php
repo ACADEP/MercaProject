@@ -7,16 +7,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductPhoto extends Model {
 
-    /**
-     * @var string
-     * The associated table.
-     */
-    protected $table = "product_images";
+   Protected $guarded=[];
+    
+   protected $table = "product_images";
 
     /**
      * @var array
      */
-    protected $fillable = ['name', 'path', 'thumbnail_path', 'featured'];
+    protected $fillable = ['product_id','name', 'path', 'thumbnail_path', 'featured'];
 
 
     /**

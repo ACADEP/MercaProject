@@ -61,7 +61,6 @@ class User extends Authenticatable
     public function carts()
     {
         return $this->hasMany(Cart::class);
-
         
     }
     
@@ -81,10 +80,23 @@ class User extends Authenticatable
         }
         return $total;
     }
-    
+    public function productIs($id)
+    {   
+        $band=false;
+        $cart = $this->cart->get();
+        foreach($cart as $cartItem)
+        {
+            if($cartItem->product_id==$id)
+            {
+                $band=true;
+            }
+        }
+        return $band;
+
+    }
     public function getCartAttribute()
     {
-        $cart = $this->carts()->where('status', 'Active')->with("product")->get();
+        $cart = $this->carts()->where('status', 'Active');
         if ($cart)
             return $cart;
 

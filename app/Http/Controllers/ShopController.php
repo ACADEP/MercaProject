@@ -38,10 +38,12 @@ class ShopController extends Controller
         $products = Product::where('shop_id', '=', $id)->orderBy('product_name')->paginate(9);
         //dd($products);
 
+        $orden = "Ordenar Por";
+
         $banner = Shop::find($id);
         
         $relacion = false;
-        return view('shop.index', compact('products', 'banner', 'search', 'cart_count', 'relacion'));
+        return view('shop.index', compact('products', 'banner', 'search', 'cart_count', 'relacion', 'orden'));
     }
 
 }

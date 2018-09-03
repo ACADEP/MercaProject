@@ -41,7 +41,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/data', [
         'uses' => 'QueryController@data',
         'as'   => 'data.json',
-    ]);
+    ])->middleware('client');
 
     /** Route to Products show page **/
     Route::get('product/{product_name}', [
@@ -250,9 +250,20 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('profile', 'ProfileController');
     
 });
+ /*******************************************Seller Profile Routes below ************************************************/
+ Route::group(["middleware" => 'seller'], function(){
+    Route::get('seller/admin','SellerController@show');
 
+    Route::get('seller/products','SellerController@showProducts')->name('my-products');
 
+    Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
+    //CRUD PRODUCTOS
+    Route::post('seller/products/add','SellerController@addProduct')->name('add-Product');
+
+    Route::post('/addphoto/{id}','ProductPhotosController@store')->name('add-Photo');
+ });
+/************************************************************************************************** */
 Route::group(["middleware" => 'admin'], function(){
 
     /** Show the Admin Dashboard **/

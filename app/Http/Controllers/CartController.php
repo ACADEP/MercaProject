@@ -44,16 +44,27 @@ class CartController extends Controller {
         $user=0;
         $itemCount=0;
         if(Auth::check())
-        {
+        { 
             $user=1;
-           $cart=new Cart;
-           $cart->user_id=Auth::user()->id;
-           $cart->status="Active";
-           $cart->product_id=$product_id->id;
-           $cart->qty=1;
-           $cart->total=$product_id->price;
-           $cart->save();
-           $itemCount=Auth::user()->carts->count();
+            if(Auth::user()->productIs($product_id->id))
+            {  
+                
+            }
+            else
+            {
+               
+                $cart=new Cart;
+                $cart->user_id=Auth::user()->id;
+                $cart->status="Active";
+                $cart->product_id=$product_id->id;
+                $cart->product_price=$product_id->price;
+                $cart->qty=1;
+                $cart->total=$product_id->price;
+                $cart->save();
+                $itemCount=Auth::user()->carts->count();
+                $product_id->setAttribute('total', Auth::user()->total);
+            }
+            
         }
         
         return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount],200);
@@ -62,13 +73,16 @@ class CartController extends Controller {
     }
 
     public function changeqty(Request $request){
-        $cart=Auth::user()->carts->where('id',$request->cart_id);
-        $cart->qty=$request->qty;
-        $cart->total=$cart->total*$request->qty;
-        $cart->save();
+        $price_unit=Cart::select('product_price')->where('id',$request->cart_id)->where('user_id',Auth::user()->id)->first();
+        $cart=Cart::where('id',$request->cart_id)->where('user_id',Auth::user()->id);
+        $cart->update(array(
+            'qty'        => $request->qty,
+            'total'      => $request->qty*(int)$price_unit->product_price,
+        ));
 
         $cartUser=Auth::user()->cart->where('id',$request->cart_id)->get();
-        return response($cartUser,200);
+        $totalCart=Auth::User()->total;
+        return response(['cartUser'=>$cartUser,'totalCart'=>$totalCart],200);
     }
     public function PDF(Request $request)
     {
@@ -83,7 +97,7 @@ class CartController extends Controller {
         }
        
         $pdf = PDF::loadView('cart.Print-cart',compact('items'));
-        return $pdf->download('Carrito.pdf');
+        return $pdf->stream('Carrito.pdf');
       
     }
 
@@ -139,11 +153,12 @@ class CartController extends Controller {
         if(Auth::check())
         {
             $cartItems=Auth::user()->cart->with('product')->get();
+            $TotalUser=Auth::user()->total;
         }
        
         
         // Then redirect back
-        return response($cartItems,200);
+        return response(['cartItems'=>$cartItems,'totalUser'=>$TotalUser ],200);
     }
     
     
