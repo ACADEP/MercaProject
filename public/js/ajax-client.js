@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
    $(".selectCtd").change(function(){
         $.ajaxSetup({
             headers: {
@@ -69,6 +70,11 @@ $(document).ready(function(){
                     var num = '$' + response.totalUser.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $('#total-items-client').html("<strong>Total</strong>: $"+num);
                     $('#client-total').html("El total de su carrito es $ "+num);
+                    console.log($("#body-cart").height());
+                    if($("#body-cart").height()<=160)
+                    {
+                        $("#body-cart").height(300);
+                    }
                     
                     
                

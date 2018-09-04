@@ -33,6 +33,10 @@ $(document).ready(function(){
     
     //Mostar productos seleccionados previamente
     mostrarElementos();
+    if($("#body-cart").height()<=160)
+    {
+        $("#body-cart").height(300);
+    }
     $('#tbody').on('click', '.click-delete', function(e){
         e.preventDefault();
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
@@ -154,6 +158,7 @@ $(document).ready(function(){
 
     function mostrarElementos()
     {   refresh();
+       
         if(Cookies.get("productos")!=null)
         {
             var i=0;
@@ -206,10 +211,13 @@ $(document).ready(function(){
             var numTotal = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $('#total-items').html("<strong>Total</strong>: "+numTotal);
             $('#general-total').html("El total de su carrito es "+numTotal);
+           
+           
+            
         }
         else
         {
-          
+            
         }
         
     }

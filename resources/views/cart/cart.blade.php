@@ -7,8 +7,7 @@
                 <div class="text-right" style="width:100%;">
                     <input type="hidden" name="Items" id="items-carts">
                     <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
-                    <button class="btn btn-primary btn-just-icon" target="_blank" type="submit">
-                            <i class="material-icons">local_printshop</i>
+                        <i class="material-icons">local_printshop</i>
                     </button>
                     @if(Auth::check())
                         <button type="button" class="btn btn-success text-center">Pagar</button>
