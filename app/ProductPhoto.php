@@ -52,21 +52,7 @@ class ProductPhoto extends Model {
     }
 
 
-    /**
-     * Delete a photo
-     *
-     * @throws \Exception
-     */
-    public function delete() {
-
-        // Delete path and thumbnail_path of photo
-        \File::delete([
-            $this->path,
-            $this->thumbnail_path
-        ]);
-
-        parent::delete();
-    }
+    
 
 
 

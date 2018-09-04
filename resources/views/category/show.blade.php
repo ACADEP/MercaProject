@@ -93,9 +93,9 @@
                                     <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image">
                             @else
                                 @if ($product->featuredPhoto)
-                                    <img src="/store/{{ $product->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $product->featuredPhoto->id }}" />
+                                    <img src="/store{{ $product->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $product->featuredPhoto->id }}" />
                                 @elseif(!$product->featuredPhoto)
-                                    <img src="/store/{{ $product->photos->first()->thumbnail_path}}" alt="Photo" />
+                                    <img src="/store{{ $product->photos->first()->thumbnail_path}}" alt="Photo" />
                                 @else
                                     N/A
                                 @endif

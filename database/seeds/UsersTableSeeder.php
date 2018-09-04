@@ -64,7 +64,7 @@ class UsersTableSeeder extends Seeder
         'email'       => 'luis_ber_27@hotmail.com',
         'password'    => Hash::make('123123'),
         'verified'    => 1,
-        'admin'       => 1,
+        'admin'       => 2,
     ]);
     }
 }

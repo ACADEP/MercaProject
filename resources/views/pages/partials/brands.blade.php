@@ -14,7 +14,7 @@
       
 
       <div class="carousel-item active animated fadeInLeft">
-          <img class="d-block w-100" src="{{ asset('/images/slider/brand-store.jpg') }}" height="300px" alt="First slide">
+          <img class="d-block w-100" src="/images/slider/brand-store.jpg" height="300px" alt="First slide">
           <div class="carousel-caption hidden-xs">
             <h1><strong>Comprar por marcas</strong></h1>
             <p class="lead">Compra con las mejores marcas!!</p>
@@ -27,7 +27,7 @@
             <div class="carousel-caption hidden-xs">
                     <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
             </div>
-            <img class="" src="{{ asset('/images/hp_logo.png') }}" alt="Second slide" height="300px" >
+            <img class="" src="/images/hp_logo.png" alt="Second slide" height="300px" >
          </a>
     </div>
     @endforeach

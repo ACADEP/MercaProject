@@ -16,8 +16,8 @@ class Client
      */
     public function handle()
     {
-        // If the authenticated user is not an admin (not = to 1), then redirect back to home page
-            return redirect('/');
+        
+        return redirect('/');
         
         
     }

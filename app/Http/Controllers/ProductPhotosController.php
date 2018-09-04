@@ -7,25 +7,26 @@ use App\ProductPhoto;
 use App\AddPhotoToProduct;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use File;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\ProductPhotoRequest;
 
 class ProductPhotosController extends Controller {
 
-    public function store($id) {
+    public function store(Request $request) {
 
         
-        $product=Product::find($id)->get();
+        $product=Product::where('id',$request->get("product_id"))->with("category")->first();
         $this->validate(request(),[
             'photoProducto'=>'image|max:2048'
         ]);
         $file=request()->file('photoProducto');
-        $photourl=$file->store($product->category->category);
+        $photourl=$file->store($product->category->category);       
         $imageProduct=ProductPhoto::create([
             'product_id'=>$product->id,
             'name'=>$file,
-            'path'=>Storage::url($photourl),
-            'thumbnail_path'=>Storage::url($photourl),
+            'path'=>"/images/".(string)$photourl,
+            'thumbnail_path'=>"/images/".(string)$photourl,
             'featured'=>0
         ]);
         
@@ -35,13 +36,16 @@ class ProductPhotosController extends Controller {
     }
 
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy($id) {
+   
+    public function delete($id) {
         // Find the photo and delete it.
-        ProductPhoto::findOrFail($id)->delete();
+        
+        $productPhoto=ProductPhoto::find($id);
+        if(File::delete(public_path($productPhoto->path)))
+        {
+            $productPhoto->delete();
+        }
+        
         // Then return back;
         return back();
     }

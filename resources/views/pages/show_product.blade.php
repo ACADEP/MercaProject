@@ -17,14 +17,14 @@
             <div class="col-md-12 row">
 
                 <div class="col-md-8 gallery zoom-container">
-                    @if ($product->photos->count() === 0)
+                    @if ($product->photos->count() == 0)
                         <p>No hay imagenes de este producto.</p><br>
-                        <img src="{{asset('/images/no-image-found.jpg') }}" alt="No Image Found Tag" id="Product-similar-Image">
+                        <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image">
                     @else
                         @foreach ($product->photos->slice(0, 8) as $photo)
                             <div class="col-xs-6 col-sm-4 col-md-3 gallery_image text-center">
-                                <a href="{{asset($photo->path) }}" data-lity>
-                                    <img src="{{asset($photo->thumbnail_path) }}" alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail">
+                                <a href="{{$photo->path }}" data-lity>
+                                    <img src="{{$photo->thumbnail_path}}" alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail">
                                 </a>
                             </div>
                         @endforeach
@@ -103,14 +103,14 @@
                             <a href="{{ route('show.product', $similar->product_name) }}">
                                 @if ($similar->photos->count() === 0)
                                     <p id="Similar-Title">{{ str_limit($similar->product_name, $limit = 28, $end = '...') }}</p>
-                                    <img src="{{asset('/images/no-image-found.jpg')}}" alt="Imagen no encontrada" id="Product-similar-Image">
+                                    <img src="/images/no-image-found.jpg" alt="Imagen no encontrada" id="Product-similar-Image">
                                 @else
                                     @if ($similar->featuredPhoto)
                                         <p id="Similar-Title">{{ str_limit($similar->product_name, $limit = 28, $end = '...') }}</p>
-                                        <img src="{{asset($similar->featuredPhoto->thumbnail_path) }}" alt="Photo ID: {{ $similar->featuredPhoto->id }}" id="Product-similar-Image" />
+                                        <img src="{{$similar->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $similar->featuredPhoto->id }}" id="Product-similar-Image" />
                                     @elseif(!$similar->featuredPhoto)
                                         <p id="Similar-Title">{{ $similar->product_name }}</p>
-                                        <img src="{{asset($similar->photos->first()->thumbnail_path)}}" alt="Photo" id="Product-similar-Image" />
+                                        <img src="{{$similar->photos->first()->thumbnail_path}}" alt="Photo" id="Product-similar-Image" />
                                     @else
                                         N/A
                                     @endif

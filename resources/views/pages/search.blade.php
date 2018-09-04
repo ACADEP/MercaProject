@@ -14,12 +14,12 @@
                             <div class="text-center hoverable">
                                 <a href="{{ route('show.product', $query->product_name) }}">
                                 @if ($query->photos->count() === 0)
-                                        <img src="{{asset('/images/no-image-found.jpg')}}" alt="No Image Found Tag">
+                                        <img src="/images/no-image-found.jpg" alt="No Image Found Tag">
                                 @else
                                     @if ($query->featuredPhoto)
-                                        <img src="{{asset($query->featuredPhoto->thumbnail_path)}}" alt="Photo ID: {{ $query->featuredPhoto->id }}" width="100%" />
+                                        <img src="{{$query->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $query->featuredPhoto->id }}" width="100%" />
                                     @elseif(!$query->featuredPhoto)
-                                        <img src="{{asset($query->photos->first()->thumbnail_path)}}" alt="Photo" />
+                                        <img src="{{$query->photos->first()->thumbnail_path}}" alt="Photo" />
                                     @else
                                         N/A
                                     @endif
@@ -42,12 +42,10 @@
                                     $ {{ $query->reduced_price }}
                                 @endif
                                 <br><br><br>
-                                    <form action="/store/cart/add" method="post" name="add_to_cart">
-                                        {!! csrf_field() !!}
-                                        <input type="hidden" name="product" value="{{$query->id}}" />
-                                        <input type="hidden" name="qty" value="1" />
-                                        <button class="btn btn-default waves-effect waves-light">Agregar al carrito</button>
-                                    </form>
+                                    <input type="hidden" id="product_id{{$query->id}}" value="{{$query->id}}"/>
+                                    <input type="hidden" id="qty" value="1"/>
+                                    <input type="hidden" id="url" value="{{ route('addCart') }}">
+                                    <button class="btn btn-default btn-addcart" value="{{$query->id}}"><i class="fa fa-cart" aria-hidden="true"></i>Agregar al carrito</button>
                             </div>
                         </div>
                     @endforeach

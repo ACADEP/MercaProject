@@ -76,6 +76,8 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 col-md-offset-3 text-center">
+                                <input type="hidden" id="registerCookie" name="cookieProductos">
+                                <script>document.getElementById("registerCookie").value=Cookies.get("productos");</script>
                                     <br><button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Registrarse</button>
                                 </div>
                             </div>

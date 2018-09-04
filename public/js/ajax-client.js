@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
    $(".selectCtd").change(function(){
         $.ajaxSetup({
             headers: {
@@ -9,18 +10,20 @@ $(document).ready(function(){
             var cart_id=$(this).attr('id');
             var qty=$(this).val();
             var formData = { cart_id  : cart_id, qty: qty};
-            console.log(formData);
+           
             $.ajax({
                 url: '/cart/qty',
                 method: 'POST',
                 data: formData,
                 success: function(response){
                    
-                    console.log(response.cartUser[0].total);
-
-                    $("#total-client" + cart_id).html(response.cartUser[0].total);
-                    $("#total-items-client").html('<strong>Total</strong>: $'+response.totalCart);
-                    $('#client-total').html("El total de su carrito es $ "+response.totalCart);
+                    var cartUserTotal = parseInt(response.cartUser[0].total);
+                    var num = '$' +cartUserTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#total-client" + cart_id).html(num);
+                    var cartTotal=parseInt(response.totalCart);
+                    num = '$' + cartTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $("#total-items-client").html('<strong>Total</strong>: '+num);
+                    $('#client-total').html("El total de su carrito es "+num);
                    
                     
                     
@@ -64,8 +67,14 @@ $(document).ready(function(){
                         total+=parseInt(element.total);
                     });
                     $('.badge').html(nBadge);
-                    $('#total-items-client').html("<strong>Total</strong>: $"+response.totalUser);
-                    $('#client-total').html("El total de su carrito es $ "+response.totalUser);
+                    var num = '$' + response.totalUser.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#total-items-client').html("<strong>Total</strong>: $"+num);
+                    $('#client-total').html("El total de su carrito es $ "+num);
+                    console.log($("#body-cart").height());
+                    if($("#body-cart").height()<=160)
+                    {
+                        $("#body-cart").height(300);
+                    }
                     
                     
                

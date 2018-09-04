@@ -51,9 +51,9 @@
                         No Images
                     @else
                         @if ($products->featuredPhoto)
-                            <img src="/store/{{ $products->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $products->featuredPhoto->id }}" />
+                            <img src="/store{{ $products->featuredPhoto->thumbnail_path }}" alt="Photo ID: {{ $products->featuredPhoto->id }}" />
                         @elseif(!$products->featuredPhoto)
-                            <img src="/store/{{ $products->photos->first()->thumbnail_path}}" alt="Photo" />
+                            <img src="/store{{ $products->photos->first()->thumbnail_path}}" alt="Photo" />
                         @else
                             N/A
                         @endif
