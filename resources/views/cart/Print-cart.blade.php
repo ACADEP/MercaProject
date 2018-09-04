@@ -3,7 +3,7 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div><img src="/images/mercadata-footer.png" width="250px"></div>
+    <div><img src="{{ asset('/images/mercadata-footer.png') }}" width="250px"></div>
     @php $now = new \DateTime(); @endphp
     <div class="text-right">{{$now->format('d-m-Y h:i')}}</div>
     <table class="table">

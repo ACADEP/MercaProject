@@ -38,11 +38,11 @@
 
                  <div class="col-md-4 text-center">
                     <p>Formas de pago</p>
-                    <img src="/images/waystopays/paypal.png">
-                    <img src="/images/waystopays/visa.png">
-                    <img src="/images/waystopays/oxxo.png">
-                    <img src="/images/waystopays/mastercard.png">
-                    <img src="/images/waystopays/dollar.png">
+                    <img src="/images/WaystoPays/PayPal.png">
+                    <img src="/images/WaystoPays/Visa.png">
+                    <img src="/images/WaystoPays/OXXO.png">
+                    <img src="/images/WaystoPays/Mastercard.png">
+                    <img src="/images/WaystoPays/Dollar.png">
                 </div>
                 
             </div>
