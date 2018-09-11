@@ -56,8 +56,16 @@ class QueryController extends Controller {
 
     public function data()
     {
-        $productsname=Product::pluck('product_name');
-        return $productsname;
+        if(request()->ajax())
+        {
+            $productsname=Product::pluck('product_name');
+            return $productsname;
+        }
+        else
+        {
+            return back();
+        }
+       
     }
 
 

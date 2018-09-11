@@ -15,6 +15,8 @@ use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
 use App\Http\Traits\CartTrait;
 
+use LaravelQRCode\Facades\QRCode;
+
 
 class ProductsController extends Controller {
 
@@ -281,7 +283,10 @@ class ProductsController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-
+        
+        //Codigo QR
+        
+        
         $similar_product = Product::where('id', '!=', $product->id)
             ->where(function ($query) use ($product) {
                 $query->where('brand_id', '=', $product->brand_id)
@@ -289,6 +294,15 @@ class ProductsController extends Controller {
             })->get();
 
         return view('pages.show_product', compact('product', 'search', 'brands', 'categories', 'similar_product', 'cart_count'));
+    }
+
+    public function qr_code()
+    {
+       
+        return QRCode::url(url()->previous())
+        ->setSize(5)
+        ->setMargin(2)
+        ->png();
     }
 
 

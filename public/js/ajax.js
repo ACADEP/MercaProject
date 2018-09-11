@@ -43,6 +43,10 @@ $(document).ready(function(){
         productosJson.splice(this.id, 1);
         Cookies.set("productos",productosJson,1);
         mostrarElementos();
+        if($("#body-cart").height()<=160)
+        {
+            $("#body-cart").height(300);
+        }
     });
 
     $('.btn-pay').click(function(){

@@ -7,6 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Mercadata | Vendedor</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -22,7 +23,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
 
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/checkbox.css')}}">
+
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
+
+  <!-- Compiled and minified CSS -->
+  
+
+<!-- Compiled and minified JavaScript -->
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -262,8 +271,12 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-list"></i> <span>Mis productos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-usd"></i> <span>Historial de ventas</span></a></li>
+        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-tags"></i> <span>Mis productos</span></a></li>
+        @php  $routeName =  \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->getName() @endphp
+        <li class="{{ Request::path() == 'seller/sales' || Request::path() == 'seller/sales/orderDate' || $routeName == 'order' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-list" aria-hidden="true"></i><span>Historial de ventas</span></a></li>
+        
+         
+         
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -396,9 +409,14 @@ desired effect
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
 
+<script src="{{asset('/js/ajax-seller.js')}}"></script>
+
+<script src="{{asset('/AdminLTE/dist/js/checkbox.js')}}"></script>
+
 @include('seller.partials.add-product')
 @include('seller.partials.add-images')
 @yield('js-dropzone')
+@yield('mostrar-modal')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

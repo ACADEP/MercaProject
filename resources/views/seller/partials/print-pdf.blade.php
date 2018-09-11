@@ -1,18 +1,15 @@
-@extends('seller.dash')
-
-@section('content')
-
-<section class="content-header">
-        <h1>
-            Mi historial de ventas
-        </h1>   
-</section><br>
-    
-    
- 
-
- @include('seller.partials.order-histories')
-    <table class="text-center table">
+<html>
+<head>
+    <!-- <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
+     -->
+     <title>Historial de ventas</title>
+     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div><img src="{{asset('/images/mercadata-footer.png')}}" width="250px"></div>
+    @php $now = new \DateTime(); @endphp
+    <div class="text-right">{{$now->format('d-m-Y h:i')}}</div>
+<table class="table text-center">
     <thead>
             <tr>
                 <th>Imagen</th>
@@ -25,30 +22,23 @@
             </tr>
         </thead>
         <tbody>
-        @if($seleHistories->count()>0)
+      
             @foreach($seleHistories as $history)
                 <tr>
-                    <td ><img  src="{{ $history->product->photos->first()->path }}"  height="30px"></td>
+                    <td ><img  src="{{url( $history->product->photos->first()->path)}}"  height="30px"></td>
                     <td>{{ $history->product->product_name }}</td>
                     <td>${{number_format($history->product->price, 2)}}</td>
                     <td>{{ $history->client }}</td>
-                    <td>{{$history->date}}</td>
+                   
+                    <td>{{ $history->date}}</td>
                     <td>{{ $history->amount }}</td>
                     <td>${{number_format($history->total, 2)  }}</td>
                 </tr>
             @endforeach
-        @else
-        
-        @endif
+       
         </tbody>
     
     </table>
-    <div class="text-left">
-        @if(empty($links))
-            {{ $seleHistories->links() }}
-        @else
-            {{ $links }}
-        @endif
-    </div>
-    
-@stop
+
+</body>
+</html>

@@ -41,7 +41,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/data', [
         'uses' => 'QueryController@data',
         'as'   => 'data.json',
-    ])->middleware('client');
+    ]);
 
     /** Route to Products show page **/
     Route::get('product/{product_name}', [
@@ -49,6 +49,7 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'show.product',
     ]);
 
+    Route::get('qr-code','ProductsController@qr_code')->name('QRCode');
 
 
     /************************************** Order By Routes for Products By Shop ***********************************/
@@ -252,7 +253,7 @@ Route::group(['middleware' => ['web']], function () {
 });
  /*******************************************Seller Profile Routes below ************************************************/
  Route::group(["middleware" => 'seller'], function(){
-    Route::get('seller/admin','SellerController@show');
+    Route::get('seller/admin','SellerController@show')->name('dash-seller');
 
     Route::get('seller/products','SellerController@showProducts')->name('my-products');
 
@@ -260,15 +261,27 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
+    //Order by histories
+    Route::get('seller/sales/{order}','SellerController@orderSales')->name('order');
+
+    Route::post('seller/sales/orderDate','SellerController@orderDate')->name('orderDate');
+
+    Route::get('print_pdf_seller','SellerController@printPdf');
+
+
+
     //CRUD PRODUCTOS
     Route::post('seller/products/add','SellerController@addProduct')->name('add-Product');
 
     Route::post('seller/products/update','SellerController@updateProduct')->name('update-Product');
 
+    Route::delete('/delete','SellerController@deleteProduct')->name('delete-Product');
+
     Route::post('/addphoto','ProductPhotosController@store')->name('add-Photo');
 
     Route::delete('/deletephoto/{id}','ProductPhotosController@delete')->name('delete-Photo');
 
+   
  });
 /************************************************************************************************** */
 Route::group(["middleware" => 'admin'], function(){

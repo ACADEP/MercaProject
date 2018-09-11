@@ -17,7 +17,7 @@ class CreateSeleHistoriesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('product_id');
-            $table->integer('client_id');
+            $table->string('client');
             $table->date('date');
             $table->integer('amount')->unsigned();
             $table->decimal('total', 10, 2)->unsigned();

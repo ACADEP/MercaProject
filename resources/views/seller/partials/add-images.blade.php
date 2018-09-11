@@ -47,6 +47,28 @@
             varDrop.on('error', function(file, res){
                 $('.dz-error-message:last > span').text(res.errors.photoProducto[0]);
             });
+            varDrop.on('success', function(file, res){
+                console.log(res);
+                if(res.imageUrl!=null && res.url!=null)
+                {
+                    $("#images-products").append(
+                    "<form action='"+res.url+"' method='POST'>"+
+                    "<input type='hidden' name='_token' value='{{ csrf_token() }}'>"+
+                    "<input type='hidden' name='_method' value='delete'>"+
+                    "<div class='col-md-4'>"+ 
+                    "<button class='btn btn-danger btn-xs' style='position: absolute;'><i class='fa fa-remove'></i></button>"+
+                    "<img class='img-responsive' src='"+res.imageUrl+"'>"+
+                    "</div>"+
+                    "</form>"
+
+                    );
+                }
+                else
+                {
+                    alert("Ya hay un maximo de 5 imagenes de este producto");
+                }
+                
+            });
             varDrop.on("sending", function(file, xhr, formData, gid) {
                 formData.append("product_id", $('#product_seller_id').val());
                 
