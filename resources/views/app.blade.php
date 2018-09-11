@@ -25,6 +25,8 @@
 
         <!-- <link rel="stylesheet" href="{{ asset('/css/mdb.css') }}"> -->
 
+        <!-- Payments css -->
+        <link rel="stylesheet" href="{{ asset('/css/payments.css') }}">
        
         <!-- Include sweet alert file -->
         <!-- <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}"> -->
@@ -35,6 +37,10 @@
         
         <!-- Added the main.css file that combines app.scss and app.css togather -->
         
+
+
+
+
         <!-- Scripts -->
         <script src="{{ asset('/js/app.js') }}" ></script>
         
@@ -55,10 +61,8 @@
             {
                 Cookies.remove("productos");
             }
-        </script>
-       
-        
-       
+        </script>       
+
         
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -91,16 +95,15 @@
             
      @include('pages.partials.footer')
 
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
+    
     <!-- Include sweet-alert.js file -->
     <!-- <script type="text/javascript" src="{{ asset('/js/libs/sweetalert.js') }}"></script> -->
     <!-- Include typeahead.js file -->
     <!-- <script type="application/javascript" src="{{ asset('/js/libs/typeahead.js') }}"></script> -->
     <!-- Include lity light-box js file -->
     <!-- <script type="application/javascript" src="{{ asset('/js/libs/lity.js') }}"></script> -->
-    <!-- Stripe.js file -->
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+ 
     
    
    
@@ -211,10 +214,7 @@
         });
     </script>
    
-    <script>
-        new WOW().init();
-        
-    </script>
+
     @yield('styles')
     @yield('js')
     @include('partials.flash')

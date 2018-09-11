@@ -52,9 +52,6 @@ Route::group(['middleware' => ['web']], function () {
 
 
     /************************************** Order By Routes for Products By Shop ***********************************/
-        
-
-    
 
     /** Route to sort products by price lowest */
     Route::get('shop/{id}/price/lowest', [
@@ -214,9 +211,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/cart/update', [
         'uses' => 'CartController@update'
     ]);
+
     Route::post('/cart/qty','CartController@changeqty');
 
     Route::get('print', 'CartController@vista');
+
     Route::get('print-cart', 'CartController@PDF')->name('cart.pdf');
 
     /** Eliminar productos del carrito **/
@@ -247,9 +246,37 @@ Route::group(['middleware' => ['web']], function () {
 
 
     /** Resource route for Profile **/
-    Route::resource('profile', 'ProfileController');
+    //Route::resource('profile', 'ProfileController');
     
 });
+
+
+/******************************************* User Profile Routes below ************************************************/
+
+Route::group(["middleware" => 'customer'], function(){
+    /** Resource route for Profile **/
+    Route::get('customer/profile', 'CustomerController@index');
+
+    /** Address Profile **/
+    Route::get('customer/profile/address', [
+        'uses' => '\App\Http\Controllers\CustomerController@address',
+        'as'   => 'customer.profile.address',
+    ]);
+
+    /** Payments Profile **/
+    Route::get('customer/profile/payments', [
+        'uses' => '\App\Http\Controllers\CustomerController@payments',
+        'as'   => 'customer.profile.payments',
+    ]);
+    
+    /** payment items in the cart **/
+    Route::get('/cart/payment', [
+        'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
+        'as'   => 'cart.payment',
+    ]);
+});
+
+
  /*******************************************Seller Profile Routes below ************************************************/
  Route::group(["middleware" => 'seller'], function(){
     Route::get('seller/admin','SellerController@show');
@@ -271,6 +298,10 @@ Route::group(['middleware' => ['web']], function () {
 
  });
 /************************************************************************************************** */
+
+
+ /*******************************************Admin Profile Routes below ************************************************/
+
 Route::group(["middleware" => 'admin'], function(){
 
     /** Show the Admin Dashboard **/

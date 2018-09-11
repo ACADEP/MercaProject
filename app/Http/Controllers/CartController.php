@@ -161,6 +161,10 @@ class CartController extends Controller {
         // Then redirect back
         return response(['cartItems'=>$cartItems,'totalUser'=>$TotalUser ],200);
     }
+
+    public function showPaymentCardCredit() {
+        return view('cart.cart-payment');
+    }
     
     
 }

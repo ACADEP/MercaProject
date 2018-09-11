@@ -10,6 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>Mercadata | Vendedor</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -63,15 +64,15 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ url('/') }}" class="logo">
+    <a href="{{ url('/') }}" class="logo" style="background: #696969;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>M</b>D</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">Mercadata</span>
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" style="background: gray;" role="navigation">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
@@ -123,7 +124,7 @@ desired effect
               <span class="label label-warning">10</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
+              <li class="header">Tienes 10 notificaciones</li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu">
@@ -212,10 +213,10 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{ url('/') }}" class="btn btn-default btn-flat" >Mercadata</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
                 </div>
               </li>
             </ul>
@@ -240,7 +241,7 @@ desired effect
           <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p> Jonatan C.M.</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -260,21 +261,25 @@ desired effect
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
+        <li class="header">Perfil</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-list"></i> <span>Mis productos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-usd"></i> <span>Historial de ventas</span></a></li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+          <a href="#"><i class="fa fa-user-circle"></i> <span>Mi Perfil</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
+            <li><a href="#"><i class="fa fa-address-card"></i>Datos Personales</a></li>
+            <li><a href="#"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
+            <li><a href="{{ route('customer.profile.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
+            <li><a href="{{ route('customer.profile.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
           </ul>
         </li>
+        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
+        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
+        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
+
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -317,7 +322,7 @@ desired effect
     <div class="tab-content">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <h3 class="control-sidebar-heading">Actividad Reciente</h3>
         <ul class="control-sidebar-menu">
           <li>
             <a href="javascript:;">
