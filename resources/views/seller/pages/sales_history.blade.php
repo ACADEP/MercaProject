@@ -44,11 +44,7 @@
     
     </table>
     <div class="text-left">
-        @if(empty($links))
-            {{ $seleHistories->links() }}
-        @else
-            {{ $links }}
-        @endif
+        {{ $seleHistories->links() }}
     </div>
     
 @stop

@@ -120,18 +120,14 @@ class SellerController extends Controller
         }
         else if($order==3)
         {
-            $seleHistories=Auth::user()->selehistories()->with("product")->paginate(5);
-            $histories=Auth::user()->selehistories()->with("product")->get()->sortByDesc('product.price');
-            $links = $seleHistories->links();
-            $seleHistories = $seleHistories->sortByDesc('product.price');
+            $seleHistories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->paginate(5);
+            $histories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->get();
             
         }
         else if($order==4)
         {
-            $seleHistories=Auth::user()->selehistories()->with("product")->paginate(5);
-            $histories=Auth::user()->selehistories()->with("product")->get()->sortBy('product.product_name');
-            $links = $seleHistories->links();
-            $seleHistories = $seleHistories->sortBy('product.product_name');
+            $seleHistories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(5);
+            $histories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->get();
         }
         else if($order==5)
         {
@@ -154,7 +150,7 @@ class SellerController extends Controller
             $histories=Auth::user()->selehistories()->get();
         }
        
-        return view('seller.pages.sales_history',compact('seleHistories','links','histories'));
+        return view('seller.pages.sales_history',compact('seleHistories','histories'));
     }
 
     public function addProduct(ValidateProducts $request)

@@ -31,8 +31,8 @@ class ValidateProducts extends FormRequest
             'product_reduced'=>'max:20||min:1',
             'categoria'=>'required|not_in:-1',
             'marca'=>'required|not_in:-1',
-            'product_des'=>'required|max:250|min:10|regex:/^[\pL\s\-]+$/u',
-            'product_spec'=>'required|max:250|min:10|regex:/^[\pL\s\-]+$/u',
+            'product_des'=>'required|max:250|min:10',
+            'product_spec'=>'required|max:250|min:10',
 
 
         ];
@@ -77,8 +77,6 @@ class ValidateProducts extends FormRequest
 
             //letras y numeros
             'product_name.regex'=> 'El nombre del producto solo permite letras y numeros',
-            'product_des.regex'=> 'La descripción solo permite letras y numeros',
-            'product_spec.regex'=> 'Las especificaciones solo permite letras y numeros',
             
         ];
     }

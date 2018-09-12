@@ -105,7 +105,7 @@
         
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-6 text-right">
         @php 
             $idHistories=array();
             foreach($histories as $history)
@@ -115,7 +115,7 @@
         @endphp
         <form action="{{ url('/print_pdf_seller') }}" method="get">
             <input type="hidden" name="histories" value="{{implode( ", ", $idHistories)}}">
-            <button class="btn btn-info" formtarget="_blank" type="submit">
+            <button class="btn btn-danger" formtarget="_blank" type="submit">
                 <i class="fa fa-print" aria-hidden="true"></i>
             </button>
         </form>

@@ -27,11 +27,11 @@
                     <p id="Product_Brand">Marca: {{ $product->brand->brand_name }}</p>
                     <br>
                     @if($product->reduced_price == 0)
-                        <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  $product->price }}</div>
+                        <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{number_format($product->price, 2)  }}</div>
                         <br>
                     @else
-                        <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s>$ {{ $product->price }}</s></div>
-                        <div class="green-text medium-500" id="Product_Reduced-Price">$ {{ $product->price-$product->reduced_price }}</div>
+                        <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s>$ {{number_format($product->price, 2)  }}</s></div>
+                        <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
                     @endif
                     <hr>
 
