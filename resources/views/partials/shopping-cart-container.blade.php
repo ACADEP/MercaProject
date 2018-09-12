@@ -25,7 +25,7 @@
             <span {{ Auth::check() ? 'id=total-items-client' : 'id=total-items' }}><strong>Total</strong>: ${{ Auth::check() ? number_format(Auth::user()->total, 2) : '0' }}</span>
             
             @if(Auth::check())
-                <button class="btn btn-success btn-xs btn-pay">Pagar</button>
+                <a href="{{ route('cart.payment') }}" class="btn btn-success btn-xs btn-pay">Pagar</a>
             @endif
         </li>
         <li class="text-center">

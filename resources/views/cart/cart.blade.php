@@ -7,10 +7,10 @@
                 <div class="text-right" style="width:100%;">
                     <input type="hidden" name="Items" id="items-carts">
                     <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
-                        <i class="material-icons">local_printshop</i>
+                            <i class="material-icons">local_printshop</i>
                     </button>
                     @if(Auth::check())
-                        <button type="button" class="btn btn-success text-center">Pagar</button>
+                        <a href="{{ route('cart.payment') }}" class="btn btn-success text-center">Pagar</a>
                     @endif
                 </div>
                 

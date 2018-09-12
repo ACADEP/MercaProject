@@ -35,7 +35,7 @@
                             </div>
                             <div class="text-center">
                                 @if($query->reduced_price == 0)
-                                    $ {{  $query->price }}
+                                    <i class="fa fa-tag" style="color: black" aria-hidden="true"></i> $ {{  $query->price }}
                                     <br>
                                 @else
                                     <div class="text-danger list-price"><s>$ {{ $query->price }}</s></div>

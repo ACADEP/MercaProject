@@ -56,7 +56,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 pl-1" style="float: left;">
+                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 pl-1" style="float: left; ">
                                     <button class="btn btn-default btn-rounded waves-effect waves-light btn-addcart" value="{{$product->id}}">
                                         <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
                                     </button>

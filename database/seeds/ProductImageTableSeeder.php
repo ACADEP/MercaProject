@@ -14,64 +14,64 @@ class ProductImageTableSeeder extends Seeder
         DB::table('product_images')->insert([
             'product_id' => 1,
             'name'       =>  'imagen1',
-            'path'=>'/images/videogames/XboxOne_GearsofWarBundle_1.jpg',
-            'thumbnail_path'=>'/images/videogames/XboxOne_GearsofWarBundle_1.jpg',
+            'path'=>'/images/VideoGames/XboxOne_GearsofWarBundle_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_GearsofWarBundle_1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 1,
             'name'       =>  'imagen2',
-            'path'=>'/images/videogames/XboxOne_GearsofWarBundle_1.jpg',
-            'thumbnail_path'=>'/images/videogames/XboxOne_GearsofWarBundle_1.jpg',
+            'path'=>'/images/VideoGames/XboxOne_GearsofWarBundle_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_GearsofWarBundle_1.jpg',
             'featured'=>0
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 2,
             'name'       =>  'imagen3',
-            'path'=>'/images/cameras/1.jpg',
-            'thumbnail_path'=>'/images/cameras/1.jpg',
+            'path'=>'/images/Cameras/1.jpg',
+            'thumbnail_path'=>'/images/Cameras/1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 2,
             'name'       =>  'imagen4',
-            'path'=>'/images/cameras/2.jpg',
-            'thumbnail_path'=>'/images/cameras/2.jpg',
+            'path'=>'/images/Cameras/2.jpg',
+            'thumbnail_path'=>'/images/Cameras/2.jpg',
             'featured'=>0
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 3,
             'name'       =>  'imagen5',
-            'path'=>'/images/computer/HD1.jpg',
-            'thumbnail_path'=>'/images/computer/HD1.jpg',
+            'path'=>'/images/Computer/HD1.jpg',
+            'thumbnail_path'=>'/images/Computer/HD1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 3,
             'name'       =>  'imagen6',
-            'path'=>'/images/computer/HD2.jpg',
-            'thumbnail_path'=>'/images/computer/HD2.jpg',
+            'path'=>'/images/Computer/HD2.jpg',
+            'thumbnail_path'=>'/images/Computer/HD2.jpg',
             'featured'=>0
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 4,
             'name'       =>  'imagen7',
-            'path'=>'/images/computer/mouse1.jpg',
-            'thumbnail_path'=>'/images/computer/mouse1.jpg',
+            'path'=>'/images/Computer/mouse1.jpg',
+            'thumbnail_path'=>'/images/Computer/mouse1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 4,
             'name'       =>  'imagen8',
-            'path'=>'/images/computer/mouse2.jpg',
-            'thumbnail_path'=>'/images/computer/mouse2.jpg',
+            'path'=>'/images/Computer/mouse2.jpg',
+            'thumbnail_path'=>'/images/Computer/mouse2.jpg',
             'featured'=>0
         ]);
 
@@ -103,16 +103,16 @@ class ProductImageTableSeeder extends Seeder
         DB::table('product_images')->insert([
             'product_id' => 7,
             'name'       =>  'imagen12',
-            'path'=>'/images/videogames/PS4_Consolee_Black_1.jpg',
-            'thumbnail_path'=>'/images/videogames/PS4_Consolee_Black_1.jpg',
+            'path'=>'/images/VideoGames/PS4_Consolee_Black_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Consolee_Black_1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 8,
             'name'       =>  'imagen13',
-            'path'=>'/images/cameras/Canon_Digital_DSLR_Camera_2.jpg',
-            'thumbnail_path'=>'/images/cameras/Canon_Digital_DSLR_Camera_2.jpg',
+            'path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_2.jpg',
             'featured'=>1
         ]);
 
@@ -127,8 +127,8 @@ class ProductImageTableSeeder extends Seeder
         DB::table('product_images')->insert([
             'product_id' => 10,
             'name'       =>  'imagen15',
-            'path'=>'/images/phones/Blacberry_32GB_1.jpg',
-            'thumbnail_path'=>'/images/phones/Blacberry_32GB_1.jpg',
+            'path'=>'/images/Phones/Blacberry_32GB_1.jpg',
+            'thumbnail_path'=>'/images/Phones/Blacberry_32GB_1.jpg',
             'featured'=>1
         ]);
 
@@ -136,352 +136,888 @@ class ProductImageTableSeeder extends Seeder
         DB::table('product_images')->insert([
             'product_id' => 11,
             'name'       =>  'imagen16',
-            'path'=>'/images/videoGames/xbox_360_halo_4.jpeg',
-            'thumbnail_path'=>'/images/videoGames/xbox_360_halo_4.jpeg',
+            'path'=>'/images/VideoGames/xbox_360_halo_4.jpeg',
+            'thumbnail_path'=>'/images/VideoGames/xbox_360_halo_4.jpeg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 12,
             'name'       =>  'imagen17',
-            'path'=>'/images/videogames/ps4_god_of_war_4.jpg',
-            'thumbnail_path'=>'/images/videogames/ps4_god_of_war_4.jpg',
+            'path'=>'/images/VideoGames/ps4_god_of_war_4.jpg',
+            'thumbnail_path'=>'/images/VideoGames/ps4_god_of_war_4.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 13,
             'name'       =>  'imagen18',
-            'path'=>'/images/computer/laptop_hp_500_gb.jpg',
-            'thumbnail_path'=>'/images/computer/laptop_hp_500_gb.jpg',
+            'path'=>'/images/Computer/laptop_hp_500_gb.jpg',
+            'thumbnail_path'=>'/images/Computer/laptop_hp_500_gb.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 14,
             'name'       =>  'imagen19',
-            'path'=>'/images/phones/xperia_z5.jpg',
-            'thumbnail_path'=>'/images/phones/xperia_z5.jpg',
+            'path'=>'/images/Phones/xperia_z5.jpg',
+            'thumbnail_path'=>'/images/Phones/xperia_z5.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 15,
             'name'       =>  'imagen20',
-            'path'=>'/images/audio/bocina_philips.jpg',
-            'thumbnail_path'=>'/images/audio/bocina_philips.jpg',
+            'path'=>'/images/Audio/bocina_philips.jpg',
+            'thumbnail_path'=>'/images/Audio/bocina_philips.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 16,
             'name'       =>  'imagen21',
-            'path'=>'/images/videoGames/PS4_Uncharted4_4.jpg',
-            'thumbnail_path'=>'/images/videoGames/PS4_Uncharted4_4.jpg',
+            'path'=>'/images/VideoGames/PS4_Uncharted4_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Uncharted4_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 16,
+            'name'       =>  'imagen22',
+            'path'=>'/images/VideoGames/PS4_Uncharted4_2.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Uncharted4_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 16,
+            'name'       =>  'imagen23',
+            'path'=>'/images/VideoGames/PS4_Uncharted4_4.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Uncharted4_4.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 17,
-            'name'       =>  'imagen22',
-            'path'=>'/images/videogames/PS4_Controller_Black_1.jpg',
-            'thumbnail_path'=>'/images/videogames/PS4_Controller_Black_1.jpg',
+            'name'       =>  'imagen24',
+            'path'=>'/images/VideoGames/PS4_Controller_Black_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Controller_Black_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 17,
+            'name'       =>  'imagen25',
+            'path'=>'/images/VideoGames/PS4_Controller_Black_2.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Controller_Black_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 17,
+            'name'       =>  'imagen26',
+            'path'=>'/images/VideoGames/PS4_Controller_Black_3.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PS4_Controller_Black_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 18,
-            'name'       =>  'imagen23',
-            'path'=>'/images/videogames/XboxOne_Halo5_1.jpg',
-            'thumbnail_path'=>'/images/videogames/XboxOne_Halo5_1.jpg',
+            'name'       =>  'imagen27',
+            'path'=>'/images/VideoGames/XboxOne_Halo5_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Halo5_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 18,
+            'name'       =>  'imagen28',
+            'path'=>'/images/VideoGames/XboxOne_Halo5_2.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Halo5_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 18,
+            'name'       =>  'imagen28',
+            'path'=>'/images/VideoGames/XboxOne_Halo5_3.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Halo5_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 19,
-            'name'       =>  'imagen24',
-            'path'=>'/images/videogames/XboxOne_Controller_Black_1.jpg',
-            'thumbnail_path'=>'/images/videogames/XboxOne_Controller_Black_1.jpg',
+            'name'       =>  'imagen29',
+            'path'=>'/images/VideoGames/XboxOne_Controller_Black_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Controller_Black_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 19,
+            'name'       =>  'imagen30',
+            'path'=>'/images/VideoGames/XboxOne_Controller_Black_2.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Controller_Black_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 19,
+            'name'       =>  'imagen31',
+            'path'=>'/images/VideoGames/XboxOne_Controller_Black_3.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_Controller_Black_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 20,
-            'name'       =>  'imagen25',
-            'path'=>'/images/videogames/PC_Fallout_4.jpg',
-            'thumbnail_path'=>'/images/videogames/PC_Fallout_4.jpg',
+            'name'       =>  'imagen32',
+            'path'=>'/images/VideoGames/PC_Fallout_4.jpg',
+            'thumbnail_path'=>'/images/VideoGames/PC_Fallout_4.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 21,
-            'name'       =>  'imagen26',
-            'path'=>'/images/videoGames/XboxOne_TomClancy_1.jpg',
-            'thumbnail_path'=>'/images/videoGames/XboxOne_TomClancy_1.jpg',
+            'name'       =>  'imagen33',
+            'path'=>'/images/VideoGames/XboxOne_TomClancy_1.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_TomClancy_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 21,
+            'name'       =>  'imagen34',
+            'path'=>'/images/VideoGames/XboxOne_TomClancy_2.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_TomClancy_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 21,
+            'name'       =>  'imagen35',
+            'path'=>'/images/VideoGames/XboxOne_TomClancy_3.jpg',
+            'thumbnail_path'=>'/images/VideoGames/XboxOne_TomClancy_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 22,
-            'name'       =>  'imagen27',
+            'name'       =>  'imagen36',
+            'path'=>'/images/TV/LG_OLED_55_1.jpg',
+            'thumbnail_path'=>'/images/TV/LG_OLED_55_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 22,
+            'name'       =>  'imagen37',
             'path'=>'/images/TV/LG_OLED_55_2.jpg',
             'thumbnail_path'=>'/images/TV/LG_OLED_55_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
+            'product_id' => 22,
+            'name'       =>  'imagen38',
+            'path'=>'/images/TV/LG_OLED_55_3.jpg',
+            'thumbnail_path'=>'/images/TV/LG_OLED_55_3.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
             'product_id' => 23,
-            'name'       =>  'imagen28',
+            'name'       =>  'imagen39',
+            'path'=>'/images/TV/Sony_4k_55_1.jpg',
+            'thumbnail_path'=>'/images/TV/Sony_4k_55_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 23,
+            'name'       =>  'imagen40',
             'path'=>'/images/TV/Sony_4k_55_2.jpg',
             'thumbnail_path'=>'/images/TV/Sony_4k_55_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
+            'product_id' => 23,
+            'name'       =>  'imagen41',
+            'path'=>'/images/TV/Sony_4k_55_3.jpg',
+            'thumbnail_path'=>'/images/TV/Sony_4k_55_3.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
             'product_id' => 24,
-            'name'       =>  'imagen29',
+            'name'       =>  'imagen42',
+            'path'=>'/images/TV/Samsung_Smart_48_2.jpg',
+            'thumbnail_path'=>'/images/TV/Samsung_Smart_48_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 24,
+            'name'       =>  'imagen43',
             'path'=>'/images/TV/Samsung_Smart_48_3.jpg',
             'thumbnail_path'=>'/images/TV/Samsung_Smart_48_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
+            'product_id' => 24,
+            'name'       =>  'imagen44',
+            'path'=>'/images/TV/Samsung_Smart_48_4.jpg',
+            'thumbnail_path'=>'/images/TV/Samsung_Smart_48_4.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
             'product_id' => 25,
-            'name'       =>  'imagen30',
+            'name'       =>  'imagen45',
+            'path'=>'/images/TV/LG_LED_TV_1.jpg',
+            'thumbnail_path'=>'/images/TV/LG_LED_TV_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 25,
+            'name'       =>  'imagen46',
             'path'=>'/images/TV/LG_LED_TV_2.jpg',
             'thumbnail_path'=>'/images/TV/LG_LED_TV_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 25,
+            'name'       =>  'imagen47',
+            'path'=>'/images/TV/LG_LED_TV_3.jpg',
+            'thumbnail_path'=>'/images/TV/LG_LED_TV_3.jpg',
             'featured'=>1
         ]);
         
         DB::table('product_images')->insert([
             'product_id' => 26,
-            'name'       =>  'imagen31',
+            'name'       =>  'imagen48',
+            'path'=>'/images/TV/LG_Curved_55_1.jpg',
+            'thumbnail_path'=>'/images/TV/LG_Curved_55_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 26,
+            'name'       =>  'imagen49',
             'path'=>'/images/TV/LG_Curved_55_2.jpg',
             'thumbnail_path'=>'/images/TV/LG_Curved_55_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
+            'product_id' => 26,
+            'name'       =>  'imagen50',
+            'path'=>'/images/TV/LG_Curved_55_3.jpg',
+            'thumbnail_path'=>'/images/TV/LG_Curved_55_3.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
             'product_id' => 27,
-            'name'       =>  'imagen32',
+            'name'       =>  'imagen51',
+            'path'=>'/images/TV/Samsung_4k_50_1.jpg',
+            'thumbnail_path'=>'/images/TV/Samsung_4k_50_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 27,
+            'name'       =>  'imagen52',
             'path'=>'/images/TV/Samsung_4k_50_2.jpg',
             'thumbnail_path'=>'/images/TV/Samsung_4k_50_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
+            'product_id' => 27,
+            'name'       =>  'imagen53',
+            'path'=>'/images/TV/Samsung_4k_50_3.jpg',
+            'thumbnail_path'=>'/images/TV/Samsung_4k_50_3.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
             'product_id' => 28,
-            'name'       =>  'imagen33',
-            'path'=>'/images/phones/iPhone_6_16GB_2.jpg',
-            'thumbnail_path'=>'/images/phones/iPhone_6_16GB_2.jpg',
+            'name'       =>  'imagen54',
+            'path'=>'/images/Phones/iPhone_6_16GB_1.jpg',
+            'thumbnail_path'=>'/images/Phones/iPhone_6_16GB_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 28,
+            'name'       =>  'imagen55',
+            'path'=>'/images/Phones/iPhone_6_16GB_2.jpg',
+            'thumbnail_path'=>'/images/Phones/iPhone_6_16GB_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 28,
+            'name'       =>  'imagen56',
+            'path'=>'/images/Phones/iPhone_6_16GB_3.jpg',
+            'thumbnail_path'=>'/images/Phones/iPhone_6_16GB_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 29,
-            'name'       =>  'imagen34',
-            'path'=>'/images/phones/Blacberry_32GB_1.jpg',
-            'thumbnail_path'=>'/images/phones/Blacberry_32GB_1.jpg',
+            'name'       =>  'imagen57',
+            'path'=>'/images/Phones/Blacberry_32GB_1.jpg',
+            'thumbnail_path'=>'/images/Phones/Blacberry_32GB_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 29,
+            'name'       =>  'imagen58',
+            'path'=>'/images/Phones/Blacberry_32GB_2.jpg',
+            'thumbnail_path'=>'/images/Phones/Blacberry_32GB_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 30,
-            'name'       =>  'imagen35',
-            'path'=>'/images/phones/Samsung_Galaxy_Edge_16GB_1.jpg',
-            'thumbnail_path'=>'/images/phones/Samsung_Galaxy_Edge_16GB_1.jpg',
+            'name'       =>  'imagen59',
+            'path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_1.jpg',
+            'thumbnail_path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 30,
+            'name'       =>  'imagen60',
+            'path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_2.jpg',
+            'thumbnail_path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 30,
+            'name'       =>  'imagen61',
+            'path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_3.jpg',
+            'thumbnail_path'=>'/images/Phones/Samsung_Galaxy_Edge_16GB_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 31,
-            'name'       =>  'imagen36',
-            'path'=>'/images/computer/Apple_MacBook_Pro_15_1.jpg',
-            'thumbnail_path'=>'/images/computer/Apple_MacBook_Pro_15_1.jpg',
+            'name'       =>  'imagen62',
+            'path'=>'/images/Computer/Apple_MacBook_Pro_15_1.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple_MacBook_Pro_15_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 31,
+            'name'       =>  'imagen63',
+            'path'=>'/images/Computer/Apple_MacBook_Pro_15_2.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple_MacBook_Pro_15_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 31,
+            'name'       =>  'imagen64',
+            'path'=>'/images/Computer/Apple_MacBook_Pro_13.3_3.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple_MacBook_Pro_13.3_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 32,
-            'name'       =>  'imagen37',
-            'path'=>'/images/computer/Apple-iPadAir_2.jpg',
-            'thumbnail_path'=>'/images/computer/Apple-iPadAir_2.jpg',
+            'name'       =>  'imagen65',
+            'path'=>'/images/Computer/Apple-iPadAir_1.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple-iPadAir_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 32,
+            'name'       =>  'imagen66',
+            'path'=>'/images/Computer/Apple-iPadAir_2.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple-iPadAir_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 32,
+            'name'       =>  'imagen67',
+            'path'=>'/images/Computer/Apple-iPadAir_3.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple-iPadAir_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 33,
-            'name'       =>  'imagen38',
-            'path'=>'/images/computer/ASUS_15.6_Laptop_1.jpg',
-            'thumbnail_path'=>'/images/computer/ASUS_15.6_Laptop_1.jpg',
+            'name'       =>  'imagen68',
+            'path'=>'/images/Computer/ASUS_15.6_Laptop_1.jpg',
+            'thumbnail_path'=>'/images/Computer/ASUS_15.6_Laptop_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 33,
+            'name'       =>  'imagen69',
+            'path'=>'/images/Computer/ASUS_15.6_Laptop_2.jpg',
+            'thumbnail_path'=>'/images/Computer/ASUS_15.6_Laptop_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 33,
+            'name'       =>  'imagen70',
+            'path'=>'/images/Computer/ASUS_15.6_Laptop_3.jpg',
+            'thumbnail_path'=>'/images/Computer/ASUS_15.6_Laptop_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 34,
-            'name'       =>  'imagen39',
-            'path'=>'/images/computer/CyberPower_GamerUltra_PC_2.jpg',
-            'thumbnail_path'=>'/images/computer/CyberPower_GamerUltra_PC_2.jpg',
+            'name'       =>  'imagen71',
+            'path'=>'/images/Computer/CyberPower_GamerUltra_PC_1.jpg',
+            'thumbnail_path'=>'/images/Computer/CyberPower_GamerUltra_PC_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 34,
+            'name'       =>  'imagen72',
+            'path'=>'/images/Computer/CyberPower_GamerUltra_PC_2.jpg',
+            'thumbnail_path'=>'/images/Computer/CyberPower_GamerUltra_PC_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 34,
+            'name'       =>  'imagen73',
+            'path'=>'/images/Computer/CyberPower_GamerUltra_PC_3.jpg',
+            'thumbnail_path'=>'/images/Computer/CyberPower_GamerUltra_PC_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 35,
-            'name'       =>  'imagen40',
-            'path'=>'/images/computer/DELL_Inspirion_Deskop_2.jpg',
-            'thumbnail_path'=>'/images/computer/DELL_Inspirion_Deskop_2.jpg',
+            'name'       =>  'imagen74',
+            'path'=>'/images/Computer/DELL_Inspirion_Deskop_1.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Inspirion_Deskop_1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 35,
-            'name'       =>  'imagen41',
-            'path'=>'/images/computer/DELL_Monitor_23-2.jpg',
-            'thumbnail_path'=>'/images/computer/DELL_Monitor_23-2.jpg',
+            'name'       =>  'imagen75',
+            'path'=>'/images/Computer/DELL_Inspirion_Deskop_2.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Inspirion_Deskop_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 35,
+            'name'       =>  'imagen76',
+            'path'=>'/images/Computer/DELL_Inspirion_Deskop_3.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Inspirion_Deskop_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 36,
-            'name'       =>  'imagen42',
-            'path'=>'/images/computer/DELL_XPS_Desktop_4.jpg',
-            'thumbnail_path'=>'/images/computer/DELL_XPS_Desktop_4.jpg',
+            'name'       =>  'imagen77',
+            'path'=>'/images/Computer/DELL_Monitor_23-1.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Monitor_23-1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 36,
+            'name'       =>  'imagen78',
+            'path'=>'/images/Computer/DELL_Monitor_23-2.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Monitor_23-2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 36,
+            'name'       =>  'imagen79',
+            'path'=>'/images/Computer/DELL_Monitor_23-3.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_Monitor_23-3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 37,
-            'name'       =>  'imagen43',
-            'path'=>'/images/computer/HP_Pavilion_23_1.jpeg',
-            'thumbnail_path'=>'/images/computer/HP_Pavilion_23_1.jpeg',
+            'name'       =>  'imagen80',
+            'path'=>'/images/Computer/DELL_XPS_Desktop_4.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_XPS_Desktop_4.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 37,
+            'name'       =>  'imagen81',
+            'path'=>'/images/Computer/DELL_XPS_Desktop_1.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_XPS_Desktop_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 37,
+            'name'       =>  'imagen82',
+            'path'=>'/images/Computer/DELL_XPS_Desktop_2.jpg',
+            'thumbnail_path'=>'/images/Computer/DELL_XPS_Desktop_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 38,
-            'name'       =>  'imagen44',
-            'path'=>'/images/computer/HD2.jpg',
-            'thumbnail_path'=>'/images/computer/HD2.jpg',
+            'name'       =>  'imagen83',
+            'path'=>'/images/Computer/HP_Pavilion_23_1.jpg',
+            'thumbnail_path'=>'/images/Computer/HP_Pavilion_23_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 38,
+            'name'       =>  'imagen84',
+            'path'=>'/images/Computer/HP_Pavilion_23_2.jpg',
+            'thumbnail_path'=>'/images/Computer/HP_Pavilion_23_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 38,
+            'name'       =>  'imagen85',
+            'path'=>'/images/Computer/HP_Pavilion_23_3.jpg',
+            'thumbnail_path'=>'/images/Computer/HP_Pavilion_23_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 39,
-            'name'       =>  'imagen45',
-            'path'=>'/images/computer/mouse1.jpg',
-            'thumbnail_path'=>'/images/computer/mouse1.jpg',
+            'name'       =>  'imagen86',
+            'path'=>'/images/Computer/HD2.jpg',
+            'thumbnail_path'=>'/images/Computer/HD2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 39,
+            'name'       =>  'imagen87',
+            'path'=>'/images/Computer/HD1.jpg',
+            'thumbnail_path'=>'/images/Computer/HD1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 40,
-            'name'       =>  'imagen46',
-            'path'=>'/images/audio/Beats_Solo_2_Earphones_Red_2.jpg',
-            'thumbnail_path'=>'audio/phones/Beats_Solo_2_Earphones_Red_2.jpg',
+            'name'       =>  'imagen88',
+            'path'=>'/images/Computer/mouse1.jpg',
+            'thumbnail_path'=>'/images/Computer/mouse1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 40,
+            'name'       =>  'imagen89',
+            'path'=>'/images/Computer/mouse2.jpg',
+            'thumbnail_path'=>'/images/Computer/mouse2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 41,
+            'name'       =>  'imagen90',
+            'path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 41,
+            'name'       =>  'imagen91',
+            'path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 41,
+            'name'       =>  'imagen92',
+            'path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_3.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_Earphones_Red_3.jpg',
             'featured'=>1
         ]);
         
         DB::table('product_images')->insert([
-            'product_id' => 41,
-            'name'       =>  'imagen47',
-            'path'=>'/images/audio/Astro_a40_Wired_PS4_2.jpg',
-            'thumbnail_path'=>'/images/audio/Astro_a40_Wired_PS4_2.jpg',
+            'product_id' => 42,
+            'name'       =>  'imagen93',
+            'path'=>'/images/Audio/Astro_a40_Wired_PS4_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Astro_a40_Wired_PS4_1.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 42,
-            'name'       =>  'imagen48',
-            'path'=>'/images/audio/Astro_headset_xbox_one_1.jpg',
-            'thumbnail_path'=>'/images/audio/Astro_headset_xbox_one_1.jpg',
+            'name'       =>  'imagen94',
+            'path'=>'/images/Audio/Astro_a40_Wired_PS4_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Astro_a40_Wired_PS4_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 43,
-            'name'       =>  'imagen49',
-            'path'=>'/images/audio/Beats_Solo_2_PowerBeats_Earphones_1.jpg',
-            'thumbnail_path'=>'/images/audio/Beats_Solo_2_PowerBeats_Earphones_1.jpg',
+            'name'       =>  'imagen95',
+            'path'=>'/images/Audio/Astro_headset_xbox_one_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Astro_headset_xbox_one_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 43,
+            'name'       =>  'imagen96',
+            'path'=>'/images/Audio/Astro_headset_xbox_one_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Astro_headset_xbox_one_2.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 44,
-            'name'       =>  'imagen50',
-            'path'=>'/images/audio/Bose_QuietComfort_Headphones_4.jpg',
-            'thumbnail_path'=>'/images/audio/Bose_QuietComfort_Headphones_4.jpg',
+            'name'       =>  'imagen97',
+            'path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 44,
+            'name'       =>  'imagen98',
+            'path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 44,
+            'name'       =>  'imagen99',
+            'path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_3.jpg',
+            'thumbnail_path'=>'/images/Audio/Beats_Solo_2_PowerBeats_Earphones_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 45,
-            'name'       =>  'imagen51',
-            'path'=>'/images/audio/PS4_Headset.jpg',
-            'thumbnail_path'=>'/images/audio/PS4_Headset.jpg',
+            'name'       =>  'imagen101',
+            'path'=>'/images/Audio/Bose_QuietComfort_Headphones_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Bose_QuietComfort_Headphones_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 45,
+            'name'       =>  'imagen102',
+            'path'=>'/images/Audio/Bose_QuietComfort_Headphones_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Bose_QuietComfort_Headphones_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 45,
+            'name'       =>  'imagen103',
+            'path'=>'/images/Audio/Bose_QuietComfort_Headphones_4.jpg',
+            'thumbnail_path'=>'/images/Audio/Bose_QuietComfort_Headphones_4.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 46,
-            'name'       =>  'imagen52',
-            'path'=>'/images/audio/Turtle_Beach_XO-7_Headset_2.jpg',
-            'thumbnail_path'=>'/images/audio/Turtle_Beach_XO-7_Headset_2.jpg',
+            'name'       =>  'imagen104',
+            'path'=>'/images/Audio/PS4_Headset.jpg',
+            'thumbnail_path'=>'/images/Audio/PS4_Headset.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 47,
-            'name'       =>  'imagen53',
-            'path'=>'/images/audio/turtle_beaches_star_wars_1.jpg',
-            'thumbnail_path'=>'/images/audio/turtle_beaches_star_wars_1.jpg',
+            'name'       =>  'imagen105',
+            'path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_1.jpg',
+            'thumbnail_path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 47,
+            'name'       =>  'imagen106',
+            'path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_2.jpg',
+            'thumbnail_path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 47,
+            'name'       =>  'imagen107',
+            'path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_3.jpg',
+            'thumbnail_path'=>'/images/Audio/Turtle_Beach_XO-7_Headset_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 48,
-            'name'       =>  'imagen54',
-            'path'=>'/images/audio/Xbox_one_mic.jpg',
-            'thumbnail_path'=>'/images/audio/Xbox_one_mic.jpg',
+            'name'       =>  'imagen108',
+            'path'=>'/images/Audio/turtle_beaches_star_wars_1.jpg',
+            'thumbnail_path'=>'/images/Audio/turtle_beaches_star_wars_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 48,
+            'name'       =>  'imagen109',
+            'path'=>'/images/Audio/turtle_beaches_star_wars_2.jpg',
+            'thumbnail_path'=>'/images/Audio/turtle_beaches_star_wars_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 48,
+            'name'       =>  'imagen110',
+            'path'=>'/images/Audio/turtle_beaches_star_wars_3.jpg',
+            'thumbnail_path'=>'/images/Audio/turtle_beaches_star_wars_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 49,
-            'name'       =>  'imagen55',
-            'path'=>'/images/cameras/Canon_Digital_DSLR_Camera_1.jpg',
-            'thumbnail_path'=>'/images/cameras/Canon_Digital_DSLR_Camera_1.jpg',
+            'name'       =>  'imagen111',
+            'path'=>'/images/Audio/Xbox_one_mic.jpg',
+            'thumbnail_path'=>'/images/Audio/Xbox_one_mic.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 50,
-            'name'       =>  'imagen56',
-            'path'=>'/images/cameras/Canon_PointandShoot_Camera_2.jpg',
-            'thumbnail_path'=>'/images/cameras/Canon_PointandShoot_Camera_2.jpg',
+            'name'       =>  'imagen112',
+            'path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_1.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 50,
+            'name'       =>  'imagen113',
+            'path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 50,
+            'name'       =>  'imagen114',
+            'path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_3.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_Digital_DSLR_Camera_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 51,
-            'name'       =>  'imagen57',
-            'path'=>'/images/cameras/GoPro-Hero4-Black_Camera_1.jpg',
-            'thumbnail_path'=>'/images/cameras/GoPro-Hero4-Black_Camera_1.jpg',
+            'name'       =>  'imagen115',
+            'path'=>'/images/Cameras/Canon_PointandShoot_Camera_1.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_PointandShoot_Camera_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 51,
+            'name'       =>  'imagen116',
+            'path'=>'/images/Cameras/Canon_PointandShoot_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_PointandShoot_Camera_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 51,
+            'name'       =>  'imagen117',
+            'path'=>'/images/Cameras/Canon_PointandShoot_Camera_3.jpg',
+            'thumbnail_path'=>'/images/Cameras/Canon_PointandShoot_Camera_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 52,
-            'name'       =>  'imagen58',
-            'path'=>'/images/cameras/Nikon_DSLR_Camera_2.jpg',
-            'thumbnail_path'=>'/images/cameras/Nikon_DSLR_Camera_2.jpg',
+            'name'       =>  'imagen118',
+            'path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_1.jpg',
+            'thumbnail_path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 52,
+            'name'       =>  'imagen119',
+            'path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 52,
+            'name'       =>  'imagen120',
+            'path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_3.jpg',
+            'thumbnail_path'=>'/images/Cameras/GoPro-Hero4-Black_Camera_3.jpg',
             'featured'=>1
         ]);
 
         DB::table('product_images')->insert([
             'product_id' => 53,
-            'name'       =>  'imagen59',
-            'path'=>'/images/cameras/Sony_Alpha_Mirrorless_Camera_4.jpg',
-            'thumbnail_path'=>'/images/cameras/Sony_Alpha_Mirrorless_Camera_4.jpg',
+            'name'       =>  'imagen121',
+            'path'=>'/images/Cameras/Nikon_DSLR_Camera_1.jpg',
+            'thumbnail_path'=>'/images/Cameras/Nikon_DSLR_Camera_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 53,
+            'name'       =>  'imagen122',
+            'path'=>'/images/Cameras/Nikon_DSLR_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/Nikon_DSLR_Camera_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 53,
+            'name'       =>  'imagen123',
+            'path'=>'/images/Cameras/Nikon_DSLR_Camera_3.jpg',
+            'thumbnail_path'=>'/images/Cameras/Nikon_DSLR_Camera_3.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 54,
+            'name'       =>  'imagen124',
+            'path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_1.jpg',
+            'thumbnail_path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_1.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 54,
+            'name'       =>  'imagen125',
+            'path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_2.jpg',
+            'thumbnail_path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_2.jpg',
+            'featured'=>1
+        ]);
+
+        DB::table('product_images')->insert([
+            'product_id' => 54,
+            'name'       =>  'imagen126',
+            'path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_4.jpg',
+            'thumbnail_path'=>'/images/Cameras/Sony_Alpha_Mirrorless_Camera_4.jpg',
             'featured'=>1
         ]);
 

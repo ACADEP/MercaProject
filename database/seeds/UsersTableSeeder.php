@@ -65,6 +65,14 @@ class UsersTableSeeder extends Seeder
         'password'    => Hash::make('123123'),
         'verified'    => 1,
         'admin'       => 2,
-    ]);
+        ]);
+
+        DB::table('users')->insert([
+            'username'    => 'Luis_Bernardo',
+            'email'       => '13310577@itlp.edu.mx',
+            'password'    => Hash::make('456456'),
+            'verified'    => 1,
+            'admin'       => 0,
+        ]);
     }
 }

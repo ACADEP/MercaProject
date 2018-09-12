@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Order;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Customer;
 
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
@@ -24,7 +26,6 @@ class ProfileController extends Controller {
         // Reference the main constructor.
         parent::__construct();
     }
-
 
     /**
      * Display Profile contents
