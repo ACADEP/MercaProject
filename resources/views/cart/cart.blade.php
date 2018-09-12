@@ -45,7 +45,7 @@
                         </td>
                         <script>document.getElementById("{{ $cart->id }}").value = "{{ $cart->qty }}";</script>
                         <td id="total-client{{ $cart->id }}">${{number_format($cart->total, 2)}}</td>
-                        <input type="hidden" id="url" value="{{ route('deleteCart')}}">
+                        <input type="hidden" id="url" value="/cart/delete">
                         <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                     </tr>
                 @endforeach

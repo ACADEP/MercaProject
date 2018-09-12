@@ -52,7 +52,7 @@
                                 @endif
                                     <input type="hidden" id="product_id{{$query->id}}" value="{{$query->id}}"/>
                                     <input type="hidden" id="qty" value="1"/>
-                                    <input type="hidden" id="url" value="{{ url('/cart/add') }}">
+                                    <input type="hidden" id="url" value="/cart/add">
                                     
                             </div>
                         </div>

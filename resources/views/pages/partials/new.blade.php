@@ -48,7 +48,7 @@
                         </a>
                         <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                         <input type="hidden" id="qty" value="1"/>
-                        <input type="hidden" id="url" value="{{ url('/cart/add') }}">
+                        <input type="hidden" id="url" value="/cart/add">
                     </div>
                  @endforeach 
                 </div>

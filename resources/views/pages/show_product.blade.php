@@ -27,11 +27,11 @@
                     <p id="Product_Brand">Marca: {{ $product->brand->brand_name }}</p>
                     <br>
                     @if($product->reduced_price == 0)
-                        <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  $product->price }}</div>
+                        <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{number_format($product->price, 2)  }}</div>
                         <br>
                     @else
-                        <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s style="color: red">$ {{ $product->price }}<i class="fa fa-tag pl-1" aria-hidden="true"></i></s></div>
-                        <div class="green-text medium-500" id="Product_Reduced-Price">$ {{ $product->price-$product->reduced_price }}</div>
+                        <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s>$ {{number_format($product->price, 2)  }}</s></div>
+                        <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
                     @endif
                     <hr>
 
@@ -43,7 +43,7 @@
                            
                             <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                             <input type="hidden" id="qty" value="1"/>
-                            <input type="hidden" id="url" value="{{ url('/cart/add') }}">
+                            <input type="hidden" id="url" value="/cart/add">
                             <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Agregar al carrito">
                                 <button class="btn btn-success btn-addcart" value="{{$product->id}}">
                                         <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
