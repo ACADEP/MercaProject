@@ -60,7 +60,11 @@
                             <div id="form-sesion">
                                 @if(Auth::check())
                                     <div class="form-inline">
-                                        <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        @if(Auth::user()->admin==2)
+                                            <a href="{{ url('/seller/admin') }}">Perfil</a>&nbsp | &nbsp
+                                        @else
+                                            <a href="{{ url('/profile') }}">Perfil</a>&nbsp | &nbsp
+                                        @endif
                                         <a href="{{ url('/logout') }}">Salir</a>
                                     </div>
                                     

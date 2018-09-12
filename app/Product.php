@@ -29,7 +29,7 @@ class Product extends Model {
 
     //protected $gaurded = ['id'];
 
-
+    
     
     public function category() {
         return $this->belongsTo(Category::class,'cat_id');

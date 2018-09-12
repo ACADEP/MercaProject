@@ -10,7 +10,7 @@
                                     @else
                                         @if ($prod->product->featuredPhoto)
                                             <img  src="{{$prod->product->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $prod->product->featuredPhoto->id }}" width="90%" height="90%"/><br>
-                                            <br><span class=" text-center label label-red" style="margin-left: 4em; color: red">- ${{$prod->product->reduced_price}} <i class="fa fa-tag" style="color: black" aria-hidden="true"></i></span> 
+                                            <br><span class=" text-center label label-red" style="margin-left: 4em; color: red">- ${{$prod->product->reduced_price}} <i class="fa fa-tag" aria-hidden="true"></i></span> 
                                             
                                         @elseif(!$prod->product->featuredPhoto)
                                             <img  src="{{$prod->product->photos->first()->thumbnail_path}}" alt="Photo" width="90%" height="90%"/>
@@ -20,14 +20,16 @@
                                     @endif
                                 </div>
                                 <div class="col-4 col-sm-4 col-md-4 col-lg-4" style="float: left;">
-                                    <button class="btn btn-default btn-rounded waves-effect waves-light btn-addcart" value="{{$prod->product->id}}">
-                                        <i class="material-icons" style="line-height: 2">add_shopping_cart</i>
-                                    </button>
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Agregar al carrito">
+                                        <button class="btn btn-default btn-rounded waves-effect waves-light btn-addcart" value="{{$prod->product->id}}">
+                                            <i class="material-icons" style="line-height: 2">add_shopping_cart</i>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                             <div id="featured-product-name-container prod-featured" style="margin-top: 3em;">
                                 @php
-                                    $acorName = substr($product->product_name, 0, 25);
+                                    $acorName = substr($prod->product_name, 0, 25);
                                 @endphp
                                 <h6 class="center-on-small-only" id="featured-product-name"><br>{{ $acorName }}</h6>
                             </div>
@@ -39,7 +41,7 @@
                     </div>
                     <input type="hidden" id="product_id{{$prod->product->id}}" value="{{$prod->product->id}}"/>
                     <input type="hidden" id="qty" value="1"/>
-                    <input type="hidden" id="url" value="{{ route('addCart') }}">
+                    <input type="hidden" id="url" value="{{ url('/cart/add') }}">
                 </div>
             @endforeach
             <div class="row justify-content-center mt-3 pl-5">

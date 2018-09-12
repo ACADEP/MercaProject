@@ -20,17 +20,27 @@ class ProductPhotosController extends Controller {
         $this->validate(request(),[
             'photoProducto'=>'image|max:2048'
         ]);
-        $file=request()->file('photoProducto');
-        $photourl=$file->store($product->category->category);       
-        $imageProduct=ProductPhoto::create([
-            'product_id'=>$product->id,
-            'name'=>$file,
-            'path'=>"/images/".(string)$photourl,
-            'thumbnail_path'=>"/images/".(string)$photourl,
-            'featured'=>0
-        ]);
         
-        return back();
+        if($product->photos()->count()<5)
+        {
+            $file=request()->file('photoProducto');
+            $photourl=$file->store($product->category->category);       
+            $imageProduct=ProductPhoto::create([
+                'product_id'=>$product->id,
+                'name'=>$file,
+                'path'=>"/images/".(string)$photourl,
+                'thumbnail_path'=>"/images/".(string)$photourl,
+                'featured'=>0
+            ]);
+            $url=route('delete-Photo',$imageProduct->id);
+            return response(['imageUrl'=>$imageProduct->path,"url"=>$url],200);
+        }
+        else
+        {
+            return response(['imageUrl'=>null,"url"=>null],200);
+        }
+        
+    
        
         
     }
@@ -39,7 +49,6 @@ class ProductPhotosController extends Controller {
    
     public function delete($id) {
         // Find the photo and delete it.
-        
         $productPhoto=ProductPhoto::find($id);
         if(File::delete(public_path($productPhoto->path)))
         {

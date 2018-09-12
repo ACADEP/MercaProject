@@ -31,7 +31,7 @@ $(document).ready(function(){
                 },
 
                 error: function(response){
-                    console.log(response);
+                    
                     alert("Intente de nuevo");
                 }
         
@@ -49,14 +49,14 @@ $(document).ready(function(){
             var cart_id=$(this).val();
             var url= $('#url').val();
             var formData = { cart_id  : cart_id};
-            console.log(formData);
+            
             $.ajax({
                 url: url,
                 method: 'POST',
                 data: formData,
                 success: function(response){
                    
-                    console.log(response);
+                   
                     $("#item-cart" + cart_id).remove();
                     $("#client-container").empty();
                     var nBadge=0;
@@ -70,7 +70,7 @@ $(document).ready(function(){
                     var num = '$' + response.totalUser.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $('#total-items-client').html("<strong>Total</strong>: $"+num);
                     $('#client-total').html("El total de su carrito es $ "+num);
-                    console.log($("#body-cart").height());
+                   
                     if($("#body-cart").height()<=160)
                     {
                         $("#body-cart").height(300);
@@ -81,7 +81,7 @@ $(document).ready(function(){
                 },
 
                 error: function(response){
-                    console.log(response);
+                    
                     alert("Intente de nuevo");
                 }
         
