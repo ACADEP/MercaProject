@@ -14,6 +14,12 @@
 //precio bajo
 Route::post('/priceLow', 'testController@order');
 
+/** Route to get typehead results **/
+Route::get('/data', [
+    'uses' => 'QueryController@data',
+    'as'   => 'data.json',
+]);
+
 Route::group(['middleware' => ['web']], function () {
 
     /** Get the Home Page **/
@@ -37,11 +43,7 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'queries.search',
     ]);
 
-    /** Route to get typehead results **/
-    Route::get('/data', [
-        'uses' => 'QueryController@data',
-        'as'   => 'data.json',
-    ]);
+    
 
     /** Route to Products show page **/
     Route::get('product/{product_name}', [
@@ -252,7 +254,7 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 
-/******************************************* User Profile Routes below ************************************************/
+/******************************************* Customer Profile Routes below ************************************************/
 
 Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/

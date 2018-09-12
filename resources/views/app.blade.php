@@ -197,7 +197,7 @@
             var datos = new Bloodhound({
               datumTokenizer: Bloodhound.tokenizers.whitespace,
               queryTokenizer: Bloodhound.tokenizers.whitespace,
-              prefetch: '{{ url("/data") }}'
+              prefetch: "/data"
             });            
 
             // inicializar typeahead sobre nuestro input de búsqueda

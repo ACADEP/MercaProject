@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee7a9ac4f2cf6fc4810b8e8360291b72",
+    "content-hash": "01a2fe827c9f9b50776f888fc7c11450",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2343,6 +2343,7 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             "name": "seld/jsonlint",
             "version": "1.7.1",
 =======
@@ -2403,6 +2404,10 @@
         {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.1.2",
+>>>>>>> origin/Jonatan
+=======
+            "name": "seld/jsonlint",
+            "version": "1.7.1",
 >>>>>>> origin/Jonatan
             "source": {
                 "type": "git",

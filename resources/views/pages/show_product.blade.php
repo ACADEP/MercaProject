@@ -43,10 +43,12 @@
                            
                             <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                             <input type="hidden" id="qty" value="1"/>
-                            <input type="hidden" id="url" value="{{ url('/cart/add') }}">
-                            <button class="btn btn-success btn-addcart" value="{{$product->id}}">
-                                    <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
-                            </button>
+                            <input type="hidden" id="url" value="/cart/add">
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Agregar al carrito">
+                                <button class="btn btn-success btn-addcart" value="{{$product->id}}">
+                                        <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
+                                </button>
+                            </span>
                             <br><br>
 
                             <p><b>Disponible: {{ $product->product_qty }}</b></p>
