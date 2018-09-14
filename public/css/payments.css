@@ -164,6 +164,33 @@
   cursor: pointer;
 }
 
+/* .example.example2 .btnadd button {
+  display: block;
+  width: calc(100% - 30px);
+  height: 40px;
+  margin: 40px 15px 0;
+  background-color: #24b47e;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+} */
+
+.example.example2 .btnclose button {
+  display: block;
+  width: calc(100% - 30px);
+  height: 40px;
+  margin: 40px 15px 0;
+  background-color: #3c8dbc;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+} 
+
+
 .example.example2 input:active {
   background-color: #159570;
 }

@@ -272,7 +272,7 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'customer.payments',
     ]);
 
-    /** Payments add **/
+    /** Payments add cards **/
     Route::get('/customer/payments/add', [
         'uses' => '\App\Http\Controllers\CustomerController@addCard',
         'as'   => 'customer.payments.add',

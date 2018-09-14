@@ -104,6 +104,8 @@ function registerElements(elements, exampleName) {
     var additionalData = {
       name: name ? name.value : undefined,
     };
+    // var titular = name.value;
+    // alert(titular);
 
     // Use Stripe.js to create a token. We only need to pass in one Element
     // from the Element group in order to create a token. We can also pass
