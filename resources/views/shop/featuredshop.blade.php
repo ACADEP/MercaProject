@@ -24,17 +24,24 @@
             @include('shop.featuredsold')
         @else                 
             @foreach($products as $product)
-                <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-2">
+                <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-4">
                     <div id="product-container">
                         <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration:none;">
                             <div class="row">
-                                <div class="col-9 col-sm-9 col-md-9 col-lg-9 feactured-imagen" style="float: left;">
+                                <div class="row col-3 col-sm-3 col-md-3 col-lg-3 pl-1" style="float: left; ">
+                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Agregar al carrito">
+                                        <button class="btn btn-primary btn-rounded waves-effect waves-light btn-addcart" style="margin-left: 220px;" value="{{$product->id}}">
+                                            <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="row col-9 col-sm-9 col-md-9 col-lg-9 feactured-imagen d-block pt-5">
                                     @if ($product->photos->count() == 0)
                                         <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image" width="90%" height="90%">
                                     @else
                                         @if ($product->featuredPhoto)
                                             <img  src="{{$product->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="90%" height="90%"/><br>
-                                            <br><span class="text-center label label-red" style="margin-left: 4em; color: red">- ${{$product->reduced_price}} <i class="fa fa-tag" aria-hidden="true"></i></span> 
+                                            <br><span class="text-center label label-red" style="margin-left: 4em; color: red">- ${{ number_format($product->reduced_price, 2) }} <i class="fa fa-tag" aria-hidden="true"></i></span> 
                                             
                                         @elseif(!$product->featuredPhoto)
                                             <img  src="{{$product->photos->first()->thumbnail_path}}" alt="Photo" width="90%" height="90%"/>
@@ -42,13 +49,6 @@
                                             N/A
                                         @endif
                                     @endif
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 pl-1" style="float: left; ">
-                                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Agregar al carrito">
-                                        <button class="btn btn-default btn-rounded waves-effect waves-light btn-addcart" value="{{$product->id}}">
-                                            <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
-                                        </button>
-                                    </span>
                                 </div>
                             </div>
                             <div id="featured-product-name-container prod-featured" style="margin-top: 3em;">
@@ -60,7 +60,7 @@
                             <div>
                                 <h6 class="center-on-small-only" id="featured-product-name">Código: {{ $product->product_sku }}</h6>
                             </div>
-                            <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  $product->price }}</div>
+                            <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  number_format($product->price, 2) }}</div>
                         </a>
                     </div>
                     <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>

@@ -18,7 +18,7 @@
 
                             <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-md-offset-1">
-                                    <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Usuario">
+                                    <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Nombre de usuario">
                                     @if ($errors->has('username'))
                                         <span class="form-text">
                                         <strong>{{ $errors->first('username') }}</strong>

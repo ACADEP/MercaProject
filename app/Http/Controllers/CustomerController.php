@@ -10,6 +10,9 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Shop;
+use App\Address;
+use App\PaymentInformation;
+
 
 class CustomerController extends Controller
 {
@@ -42,11 +45,18 @@ class CustomerController extends Controller
     }
 
     public function address() {
-        return view('customer.pages.address');
+        $useraddress = Address::Where('usuario', Auth::user()->id)->get();
+        return view('customer.pages.address',compact('useraddress'));
     }
 
     public function payments() {
-        return view('customer.pages.payments');
+        $usercards = Auth::user()->paymentscard()->get();
+        //  dd($usercards);
+        return view('customer.pages.payments',compact('usercards'));
+    }
+
+    public function addCard() {
+        
     }
 
 }

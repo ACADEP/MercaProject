@@ -165,6 +165,17 @@ class CartController extends Controller {
     public function showPaymentCardCredit() {
         return view('cart.cart-payment');
     }
+
+    public function showPaymentCardCreditSuccess(Request $request) {
+        //dd($request);
+        return back()->with('flash','Pago exitoso');
+    }
+
+
+    public function confirmation(Request $request) {
+        //dd($request);
+        return view('cart.cart-confirmation');
+    }
     
     
 }

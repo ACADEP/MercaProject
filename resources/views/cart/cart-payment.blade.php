@@ -23,13 +23,24 @@
                         </button>
                     </h5>
                 </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <!-- <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"> -->
                     <div class="card-body">
                         
                         <div class="globalContent">
                             <!--Example 2-->
+                            
                             <div class="hola cell example example2">
-                                <form action="#" method="post" id="payment-form"> 
+                                <form action="/cart/confirmation" method="post" id="payment-form"> 
+                                {{ csrf_field() }}
+                                    <div data-locale-reversible>
+                                        <div class="row">
+                                            <div class="field">
+                                                <input id="example2-name" data-tid="elements_examples.form.name_placeholder" class="input empty" type="text" placeholder="Nombre y apellido" required="" autocomplete="name">
+                                                <label for="example2-name" data-tid="elements_examples.form.name_label">Titular</label>
+                                                <div class="baseline"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="field">
                                             <div id="example2-card-number" class="input empty"></div>
@@ -57,11 +68,20 @@
                                         <span class="message"></span>
                                     </div>
                                 </form>
+                                <div class="success" id="successful" hidden>
+                                    <div class="icon">
+                                        <svg style="margin-left: 150px; padding-top: 20px;" width="84px" height="84px" viewBox="0 0 84 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <circle class="border" cx="42" cy="42" r="40" stroke-linecap="round" stroke-width="4" stroke="#000" fill="none"></circle>
+                                        <path class="checkmark" stroke-linecap="round" stroke-linejoin="round" d="M23.375 42.5488281 36.8840688 56.0578969 64.891932 28.0500338" stroke-width="4" stroke="#000" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="title" style="margin-left: 120px; padding-top: 10px;" data-tid="elements_examples.success.title">Pago exitoso</h3>
+                                </div>
                             </div>
                         </div>
 
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 
             
@@ -78,7 +98,6 @@
               // Stripe's examples are localized to specific languages, but if
               // you wish to have Elements automatically detect your user's locale,
               // use `locale: 'auto'` instead.
-              locale: window.__exampleLocale
             });
 
             // Floating labels

@@ -258,18 +258,24 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/
-    Route::get('customer/profile', 'CustomerController@index');
+    Route::get('/customer/profile', 'CustomerController@index');
 
     /** Address Profile **/
-    Route::get('customer/profile/address', [
+    Route::get('/customer/address', [
         'uses' => '\App\Http\Controllers\CustomerController@address',
-        'as'   => 'customer.profile.address',
+        'as'   => 'customer.address',
     ]);
 
     /** Payments Profile **/
-    Route::get('customer/profile/payments', [
+    Route::get('/customer/payments', [
         'uses' => '\App\Http\Controllers\CustomerController@payments',
-        'as'   => 'customer.profile.payments',
+        'as'   => 'customer.payments',
+    ]);
+
+    /** Payments add **/
+    Route::get('/customer/payments/add', [
+        'uses' => '\App\Http\Controllers\CustomerController@addCard',
+        'as'   => 'customer.payments.add',
     ]);
     
     /** payment items in the cart **/
@@ -277,6 +283,19 @@ Route::group(["middleware" => 'customer'], function(){
         'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
         'as'   => 'cart.payment',
     ]);
+
+    Route::post('/cart/payment', [
+        'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
+        'as'   => 'cart.payment',
+    ]);
+
+    /** payment items confirmation in the cart **/
+    Route::post('/cart/confirmation', [
+        'uses' => '\App\Http\Controllers\CartController@confirmation',
+        'as'   => 'cart.confirmation',
+    ]);
+
+        
 });
 
 
