@@ -276,7 +276,7 @@ desired effect
         </li>
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
         <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
+        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->

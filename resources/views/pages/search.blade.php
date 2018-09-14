@@ -44,7 +44,7 @@
                             </div>
                             <div class="text-center">
                                 @if($query->reduced_price == 0)
-                                    $ {{  number_format($query->price, 2) }}
+                                    <i class="fa fa-tag" style="color: black" aria-hidden="true"></i> $ {{  $query->price }}
                                     <br>
                                 @else
                                     <div class="text-danger list-price"><s style="color: red">$ {{ number_format($query->price, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>

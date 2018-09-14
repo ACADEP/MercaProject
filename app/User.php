@@ -89,6 +89,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(PaymentInformation::class, 'usuario');
     }
+    
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class,'id_seller');
+    }
 
     public function getTotalAttribute()
     {

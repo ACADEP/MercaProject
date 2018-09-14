@@ -16,12 +16,16 @@ class CreateProductsTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('product_name');
             $table->integer('product_qty')->nullable();
-            $table->integer('product_sku')->unsigned()->nullable();
+            $table->string('product_sku')->nullable();
+            $table->integer('product_manufacturer')->unsigned()->nullable();
+            $table->integer('guaranty')->unsigned()->nullable();
+            $table->dateTime('date_prom')->nullable();
             $table->decimal('price', 10, 2)->unsigned();
             $table->decimal('reduced_price', 10, 2)->unsigned()->nullable();
             $table->integer('shop_id')->nullable();
             $table->integer('cat_id')->unsigned()->nullable();
             $table->integer('brand_id')->unsigned()->nullable();
+
             $table->integer('featured')->default(0);
             $table->text('description')->nullable();
             $table->text('product_spec')->nullable();

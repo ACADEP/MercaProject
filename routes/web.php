@@ -296,6 +296,7 @@ Route::group(["middleware" => 'customer'], function(){
     ]);
 
         
+    Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');
 });
 
 

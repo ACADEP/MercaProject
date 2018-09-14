@@ -1,6 +1,6 @@
 
 <!-- Footer -->
-<div id="footer_div">
+<div id="footer_div" style="margin-top: -10px;height: 50px;">
     <footer class="page-footer" if="footer" id="contact">
         <div style="color:white">
             <div class="row">
