@@ -43,7 +43,7 @@
         </tbody>
     
     </table>
-    <div class="text-left">
+    <div class="text-center">
         {{ $seleHistories->links() }}
     </div>
     

@@ -21,9 +21,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-red.css')}}">
 
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/checkbox.css')}}">
+
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}">
 
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
 
@@ -65,7 +68,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -407,13 +410,26 @@ desired effect
 <!-- AdminLTE App -->
 <script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
 
+
 <script src="{{asset('/js/dropzone.js')}}"></script>
 
 <script src="{{asset('/js/ajax-seller.js')}}"></script>
 
 <script src="{{asset('/AdminLTE/dist/js/checkbox.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/moment-with-locales.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script>
 
-@include('seller.partials.add-product')
+
+ <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    
+                });
+            });
+  </script>
+
+
+@yield('modal-add-products')
 @include('seller.partials.add-images')
 @yield('js-dropzone')
 @yield('mostrar-modal')

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-1">
     <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         Ordenar
         <span class="caret"></span>
@@ -99,26 +99,32 @@
                     <li><a href="#">Separated link</a></li> -->
                 </ul>
             </div>
-            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-search" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
 
         </form>
         
     </div>
 
-    <div class="col-md-6 text-right">
+    <div class="col-md-2 text-left">
         @php 
             $idHistories=array();
+            $total=0;
             foreach($histories as $history)
             {
                 array_push($idHistories,$history->id);
+                $total+=$history->total;
             }
         @endphp
         <form action="{{ url('/print_pdf_seller') }}" method="get">
             <input type="hidden" name="histories" value="{{implode( ", ", $idHistories)}}">
             <button class="btn btn-danger" formtarget="_blank" type="submit">
-                <i class="fa fa-print" aria-hidden="true"></i>
+                <i class="fa fa-print fa-lg" aria-hidden="true"></i>
             </button>
         </form>
+    </div>
+
+    <div class="text-right" style="margin-right:10px;">
+       <h4><strong>Total:</strong> <span class="label label-success">${{ number_format($total, 2) }}</span></h4>      
     </div>
 
     

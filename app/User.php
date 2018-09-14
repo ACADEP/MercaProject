@@ -77,6 +77,11 @@ class User extends Authenticatable
         return $product;
     }
 
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class,'id_seller');
+    }
+
     public function getTotalAttribute()
     {
         $cartUser= $this->carts()->where('status', 'Active')->get();

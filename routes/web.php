@@ -277,6 +277,8 @@ Route::group(["middleware" => 'customer'], function(){
         'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
         'as'   => 'cart.payment',
     ]);
+
+    Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');
 });
 
 

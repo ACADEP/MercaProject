@@ -26,13 +26,16 @@ class ValidateProducts extends FormRequest
         return [
             'product_name'=>'required|max:75|min:3|regex:/^[\pL\s\-]+$/u',
             'product_qty'=>'required|integer|max:999|min:1',
-            'product_sku'=>'required|integer|min:1|max:9999999',
+            'product_sku'=>'required|min:1|max:10',
             'product_price'=>'required|numeric|between:0,9999999999999.99',
             'product_reduced'=>'max:20||min:1',
             'categoria'=>'required|not_in:-1',
             'marca'=>'required|not_in:-1',
             'product_des'=>'required|max:250|min:10',
             'product_spec'=>'required|max:250|min:10',
+            'paq' =>'required',
+            'code_mode'=>'max:10',
+            'guaranty'=>'max:10',
 
 
         ];
@@ -57,6 +60,7 @@ class ValidateProducts extends FormRequest
             'marca.not_in'=>'Ingresar la marca del producto',
             'product_des.required'=>'Ingresar la descripción del producto',
             'product_spec.required'=>'Ingresar las especificacones del producto',
+            'paq.required'=>'Elegir una paqueteria',
 
             //Maximos y minimos
             'product_name.max'=>'El nombre de producto debe tener un maximo de 75 caracteres',
@@ -64,6 +68,8 @@ class ValidateProducts extends FormRequest
             'product_sku.max'=> 'El SKU debe tener un maximo de 7 digitos',
             'product_price.max'=>'El precio debe tener un maximo de 9 digitos',
             'reduced_price.max'=>'El descuento debe tener un maximo de 9 digitos',
+            'code_mode.max'=>'El código del fabricante debe tener un maximo de 10 caracteres',
+            'guaranty.max'=>'La garantía debe tener un maximo de 10 caracteres',
             'product_des.max'=>'La descripcion debe tener un maximo de 2500 caracteres',
             'product_spec.max'=>'Las especificaciones debe tener un maximo de 2500 caracteres',
             'product_qty.max'=>'La cantidad maxima es de 999',
@@ -72,7 +78,7 @@ class ValidateProducts extends FormRequest
             //Numeros enteros
             'product_qty.integer'=>'La cantidad debe ser numero entero',
             'product_price.numeric'=>'El precio debe ser numerico',
-            'product_sku.integer'=>'El codigo SKU debe ser numerico',
+            
 
 
             //letras y numeros

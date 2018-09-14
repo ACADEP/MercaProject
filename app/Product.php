@@ -47,6 +47,10 @@ class Product extends Model {
         return $this->hasMany(ShopSold::class);
     }
 
+    public function shipments(){
+        return $this->hasMany(ShipmentProduct::class,'id_product');
+    }
+
 
     // do same thing above for category() if you want to show what category a certain product is under in products page.
 

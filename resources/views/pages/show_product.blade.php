@@ -2,7 +2,7 @@
 
 @section('content')
     
-    @include('partials.breadcrum')
+    <!-- @include('partials.breadcrum') -->
        
     <div class="col-md-12 row">
                
@@ -34,7 +34,14 @@
                         <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
                     @endif
                     <hr>
-
+                   
+                    @if($product->shipments()->count()>0)
+                        <h5>Metodos de envio por:</h5>
+                        @foreach($product->shipments()->get() as $shipment)
+                            <p id="Product_Brand">{{$shipment->ship->name}} - ${{number_format($shipment->price, 2)}}</p>
+                        @endforeach
+                    @endif
+                    <hr>
                     @if ($product->product_qty == 0)
                         <h5 class="text-center red-text">Agotado</h5>
                         <p class="text-center"><b>Disponible: {{ $product->product_qty }}</b></p>
@@ -51,7 +58,8 @@
                             </span>
                             <br><br>
 
-                            <p><b>Disponible: {{ $product->product_qty }}</b></p>
+                            <p id="Product_Brand" >Cantidad: {{ $product->product_qty }}</p>
+                            
                             <img src="{{ route('QRCode') }}" width="200" heigth="200">
                             
                             
