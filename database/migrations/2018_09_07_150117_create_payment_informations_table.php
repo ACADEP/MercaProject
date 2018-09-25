@@ -16,7 +16,7 @@ class CreatePaymentInformationsTable extends Migration
         Schema::create('payment_informations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('usuario');
-            $table->string('num-tarjeta');
+            $table->string('numtarjeta');
             $table->string('titular');
             $table->string('vigencia');
             $table->string('cvc');

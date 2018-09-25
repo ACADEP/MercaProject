@@ -34,6 +34,11 @@
                                             <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
                                         </button>
                                     </span>
+                                    <script>
+                                        $(function () {
+                                        $('[data-toggle="tooltip"]').tooltip()
+                                        })
+                                    </script>
                                 </div>
                                 <div class="row col-9 col-sm-9 col-md-9 col-lg-9 feactured-imagen d-block pt-5">
                                     @if ($product->photos->count() == 0)

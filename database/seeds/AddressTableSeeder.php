@@ -18,7 +18,7 @@ class AddressTableSeeder extends Seeder
             'estado'        => 'B.C.S.',
             'colonia'       => 'Olas altas',
             'cp'            => '23089',
-            'calles'        => 'Pto. Vallarta',
+            'calle2'        => 'Pto. Vallarta',
             'numExterior'   => 'Lt. 26',
             'referencias'   => 'Rejas blancas con un pino',
         ]);
@@ -30,19 +30,20 @@ class AddressTableSeeder extends Seeder
             'estado'        => 'B.C.S.',
             'colonia'       => 'Guerrero',
             'cp'            => '23024',
-            'calles'        => 'Lopéz Mateos',
+            'calle2'        => 'Lopéz Mateos',
+            'calle3'        => 'Manuel M. Dieguez',
             'numExterior'   => '224',
             'referencias'   => 'Rejas blancas con muchos camiones afura',
         ]);
 
         DB::table('addresses')->insert([
             'usuario'       => 7,
-            'calle'         => 'Bravo',
+            'calle'         => 'Nicolas Bravo',
             'ciudad'        => 'La Paz',
             'estado'        => 'B.C.S.',
             'colonia'       => 'Centro',
             'cp'            => '23055',
-            'calles'        => 'Héroes de independencia',
+            'calle2'        => 'Héroes de independencia',
             'numInterior'   => '6',
             'numExterior'   => '226',
             'referencias'   => 'En la esquina',

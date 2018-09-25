@@ -9,6 +9,11 @@
                                             <i class="material-icons" style="line-height: 2">add_shopping_cart</i>
                                         </button>
                                     </span>
+                                    <script>
+                                        $(function () {
+                                        $('[data-toggle="tooltip"]').tooltip()
+                                        })
+                                    </script>
                                 </div>
                                 <div class="row col-8 col-sm-8 col-md-8 col-lg-8 d-block pt-5 feactured-imagen">
                                     @if ($prod->product->photos->count() == 0)

@@ -23,7 +23,7 @@
                         </button>
                     </h5>
                 </div>
-                <!-- <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"> -->
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                         
                         <div class="globalContent">
@@ -81,7 +81,81 @@
                         </div>
 
                     </div>
-                <!-- </div> -->
+                </div>
+
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            PayPal
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion"> 
+                    <div class="card-body">
+                        
+                        <div id="paypal-button-container"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        // Render the PayPal button
+                        paypal.Button.render({
+                        // Set your environment
+                        env: 'sandbox', // sandbox | production
+
+                        // Specify the style of the button
+                        style: {
+                        layout: 'vertical',  // horizontal | vertical
+                        size:   'large',    // medium | large | responsive
+                        shape:  'rect',      // pill | rect
+                        color:  'gold'       // gold | blue | silver | white | black
+                        },
+
+                        // Specify allowed and disallowed funding sources
+                        //
+                        // Options:
+                        // - paypal.FUNDING.CARD
+                        // - paypal.FUNDING.CREDIT
+                        // - paypal.FUNDING.ELV
+                        funding: {
+                        allowed: [
+                            paypal.FUNDING.CARD,
+                            paypal.FUNDING.CREDIT
+                        ],
+                        disallowed: []
+                        },
+
+                        // PayPal Client IDs - replace with your own
+                        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                        client: {
+                        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+                        production: '<insert production client id>'
+                        },
+
+                        payment: function (data, actions) {
+                        return actions.payment.create({
+                            payment: {
+                            transactions: [
+                                {
+                                amount: {
+                                    total: '0.10',
+                                    currency: 'MXN'
+                                }
+                                }
+                            ]
+                            }
+                        });
+                        },
+
+                        onAuthorize: function (data, actions) {
+                        return actions.payment.execute()
+                            .then(function () {
+                            window.alert('Pago Completado!');
+                            });
+                        }
+                        }, '#paypal-button-container');
+                        </script>
+
+                    </div>
+                </div>
             </div>
 
             

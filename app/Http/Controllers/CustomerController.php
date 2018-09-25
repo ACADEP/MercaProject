@@ -44,19 +44,6 @@ class CustomerController extends Controller
         return view('customer.dash', compact('search', 'cart_count', 'username', 'orders'));
     }
 
-    public function address() {
-        $useraddress = Address::Where('usuario', Auth::user()->id)->get();
-        return view('customer.pages.address',compact('useraddress'));
-    }
-
-    public function payments() {
-        $usercards = Auth::user()->paymentscard()->get();
-        //  dd($usercards);
-        return view('customer.pages.payments',compact('usercards'));
-    }
-
-    public function addCard() {
-        
-    }
+    
 
 }

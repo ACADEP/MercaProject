@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>Hola Men</h1>
+<h1>Hola</h1>
 
 
 @endsection

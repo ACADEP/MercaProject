@@ -7,6 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Mercadata | Cliente</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -21,7 +22,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-yellow.min.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
+
+  <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}"> -->
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -55,7 +58,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-yellow sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -64,9 +67,9 @@ desired effect
     <!-- Logo -->
     <a href="{{ url('/') }}" class="logo" style="background: #212121;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>M</b>D</span>
+      <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Mercadata</span>
+      <span class="logo-lg"><img class="img-responsive" src="/images/logo-home.png" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
     </a>
 
     <!-- Header Navbar -->
@@ -79,105 +82,105 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <!-- <li class="dropdown messages-menu"> -->
+          <li class="dropdown messages-menu">
             <!-- Menu toggle button -->
-            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
               <span class="label label-success">4</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
-              <li> -->
+              <li>
                 <!-- inner menu: contains the messages -->
-                <!-- <ul class="menu">
-                  <li>start message -->
-                    <!-- <a href="#">
-                      <div class="pull-left"> -->
+                <ul class="menu">
+                  <li>start message
+                    <a href="#">
+                      <div class="pull-left">
                         <!-- User Image -->
-                        <!-- <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                      </div> -->
+                        <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                      </div>
                       <!-- Message title and timestamp -->
-                      <!-- <h4>
+                      <h4>
                         Support Team
                         <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4> -->
+                      </h4>
                       <!-- The message -->
-                      <!-- <p>Why not buy a new awesome theme?</p>
-                    </a> -->
-                  <!-- </li> -->
+                      <p>Why not buy a new awesome theme?</p>
+                    </a>
+                  </li>
                   <!-- end message -->
-                <!-- </ul> -->
+                </ul>
                 <!-- /.menu -->
-              <!-- </li>
+              </li>
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
-          </li> -->
+          </li>
           <!-- /.messages-menu -->
 
           <!-- Notifications Menu -->
-          <!-- <li class="dropdown notifications-menu"> -->
+          <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
-            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <span class="label label-warning">10</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Tienes 10 notificaciones</li>
-              <li> -->
+              <li>
                 <!-- Inner Menu: contains the notifications -->
-                <!-- <ul class="menu">
-                  <li>start notification -->
-                    <!-- <a href="#">
+                <ul class="menu">
+                  <li>start notification
+                    <a href="#">
                       <i class="fa fa-users text-aqua"></i> 5 new members joined today
                     </a>
-                  </li> -->
+                  </li>
                   <!-- end notification -->
-                <!-- </ul>
+                </ul>
               </li>
               <li class="footer"><a href="#">View all</a></li>
             </ul>
-          </li> -->
+          </li>
           <!-- Tasks Menu -->
-          <!-- <li class="dropdown tasks-menu"> -->
+          <li class="dropdown tasks-menu">
             <!-- Menu Toggle Button -->
-            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
               <span class="label label-danger">9</span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
-              <li> -->
+              <li>
                 <!-- Inner menu: contains the tasks -->
-                <!-- <ul class="menu">
-                  <li>Task item -->
-                    <!-- <a href="#"> -->
+                <ul class="menu">
+                  <li>Task item
+                    <a href="#">
                       <!-- Task title and progress text -->
-                      <!-- <h3>
+                      <h3>
                         Design some buttons
                         <small class="pull-right">20%</small>
-                      </h3> -->
+                      </h3>
                       <!-- The progress bar -->
-                      <!-- <div class="progress xs"> -->
+                      <div class="progress xs">
                         <!-- Change the css width attribute to simulate progress -->
-                        <!-- <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
+                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
                              aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                           <span class="sr-only">20% Complete</span>
                         </div>
                       </div>
                     </a>
-                  </li> -->
+                  </li>
                   <!-- end task item -->
-                <!-- </ul>
-              </li> -->
-              <!-- <li class="footer">
+                </ul>
+              </li>
+              <li class="footer">
                 <a href="#">View all tasks</a>
               </li>
             </ul>
-          </li> -->
+          </li>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right: 10px;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="margin-right: 10px;">
               <!-- The user image in the navbar-->
               <img src="/AdminLTE/dist/img/user.png" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
@@ -194,7 +197,7 @@ desired effect
                 </p>
               </li>
               <!-- Menu Body -->
-              <!-- <li class="user-body">
+              <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
                     <a href="#">Followers</a>
@@ -205,9 +208,9 @@ desired effect
                   <div class="col-xs-4 text-center">
                     <a href="#">Friends</a>
                   </div>
-                </div> -->
+                </div>
                 <!-- /.row -->
-              <!-- </li> -->
+              </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
@@ -395,7 +398,12 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
+<!-- <script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script> -->
+
+<script src="{{asset('/js/ajax-customer-cards.js')}}"></script>
+<script src="{{asset('/js/ajax-customer-address.js')}}"></script>
+@stack('scripts')
 
 
 @include('customer.partials.add-card')
