@@ -82,5 +82,30 @@ class UsersTableSeeder extends Seeder
         'admin'       => 0,
     ]);
     
+
+    DB::table('users')->insert([
+        'username'    => 'Cliente',
+        'email'       => 'cliente@acadep.com',
+        'password'    => Hash::make('acadep01'),
+        'verified'    => 1,
+        'admin'       => 0,
+    ]);
+
+    DB::table('users')->insert([
+        'username'    => 'Administrador',
+        'email'       => 'administrador@acadep.com',
+        'password'    => Hash::make('acadep01'),
+        'verified'    => 1,
+        'admin'       => 1,
+    ]);
+
+    DB::table('users')->insert([
+        'username'    => 'Proveedor',
+        'email'       => 'proveedor@acadep.com',
+        'password'    => Hash::make('acadep01'),
+        'verified'    => 1,
+        'admin'       => 2,
+    ]);
+
     }
 }

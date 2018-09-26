@@ -13,7 +13,7 @@ function registerElements(elements, exampleName) {
   function enableInputs() {
     Array.prototype.forEach.call(
       form.querySelectorAll(
-        "input[type='text'], input[type='email'], input[type='tel']"
+        "input[type='text']"
       ),
       function(input) {
         input.removeAttribute('disabled');
@@ -24,7 +24,7 @@ function registerElements(elements, exampleName) {
   function disableInputs() {
     Array.prototype.forEach.call(
       form.querySelectorAll(
-        "input[type='text'], input[type='email'], input[type='tel']"
+        "input[type='text']"
       ),
       function(input) {
         input.setAttribute('disabled', 'true');
@@ -40,10 +40,7 @@ function registerElements(elements, exampleName) {
     submit.style.display = 'none';
     form.appendChild(submit);
     submit.remove();
-    submit.submit();
   }
-
-  
 
   // Listen for errors from each Element, and show error messages in the UI.
   var savedErrors = {};
@@ -70,6 +67,7 @@ function registerElements(elements, exampleName) {
         } else {
           // The user fixed the last error; no more errors.
           error.classList.remove('visible');
+          document.getElementById('ocultar').hidden = true;
         }
       }
     });
@@ -95,23 +93,38 @@ function registerElements(elements, exampleName) {
       return;
     }
 
-    // Show a loading screen...
+    // // Show a loading screen...
     example.classList.add('submitting');
 
     // Disable all inputs.
     disableInputs();
 
+    // Gather additional customer data we may have collected in our form.
+    var name = form.querySelector('#' + exampleName + '-name');
+    var additionalData = {
+      name: name ? name.value : undefined,
+    };
+    // var titular = name.value;
+    // alert(titular);
+
     // Use Stripe.js to create a token. We only need to pass in one Element
     // from the Element group in order to create a token. We can also pass
     // in the additional customer data we collected in our form.
-    stripe.createToken(elements[0]).then(function(result) {
+    stripe.createToken(elements[0], additionalData).then(function(result) {
       // Stop loading!
       example.classList.remove('submitting');
 
       if (result.token) {
         // If we received a token, show the token ID.
         //example.querySelector('.token').innerText = result.token.id;
+        // stripeTokenHandler(result.token);
         example.classList.add('submitted');
+        document.getElementById('successful').hidden = false;
+        document.getElementById('payment-form').hidden = true;
+        setTimeout(function() {
+          form.submit();        
+        }, 5000)
+        // alert(result.token);
       } else {
         // Otherwise, un-disable inputs.
         enableInputs();
@@ -119,6 +132,5 @@ function registerElements(elements, exampleName) {
     });
   });
 
-  
 
 }

@@ -21,10 +21,12 @@ class CreateAddressesTable extends Migration
             $table->string('estado');
             $table->string('colonia');
             $table->string('cp');
-            $table->string('calles')->nullable();
-            $table->string('numInterior')->default(''); 
-            $table->string('numExterior')->nulable();
+            $table->string('calle2')->nullable();
+            $table->string('calle3')->nullable();
+            $table->string('numInterior')->nullable(); 
+            $table->string('numExterior')->nullable();
             $table->text('referencias')->nullable();
+            $table->boolean('activo')->default(false);
             $table->timestamps();
         });
     }

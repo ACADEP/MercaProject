@@ -28,5 +28,6 @@ class ShipmentTableSeeder extends Seeder
             'Name'              =>'UPS',
             'rate'              => 110,
         ]);
+        
     }
 }

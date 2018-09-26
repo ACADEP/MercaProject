@@ -7,7 +7,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Mercadata | Vendedor</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Mercadata | Cliente</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
@@ -23,7 +24,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
 
-  <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
+  <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}"> -->
 
 
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/summernote/summernote.css')}}">
@@ -68,15 +69,15 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ url('/') }}" class="logo" style="background: #696969;">
+    <a href="{{ url('/') }}" class="logo" style="background: #212121;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>M</b>D</span>
+      <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Mercadata</span>
+      <span class="logo-lg"><img class="img-responsive" src="/images/logo-home.png" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" style="background: gray;" role="navigation">
+    <nav class="navbar navbar-static-top" role="navigation" style="background: #424242;">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
@@ -96,7 +97,7 @@ desired effect
               <li>
                 <!-- inner menu: contains the messages -->
                 <ul class="menu">
-                  <li><!-- start message -->
+                  <li>start message
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
@@ -132,7 +133,7 @@ desired effect
               <li>
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu">
-                  <li><!-- start notification -->
+                  <li>start notification
                     <a href="#">
                       <i class="fa fa-users text-aqua"></i> 5 new members joined today
                     </a>
@@ -155,7 +156,7 @@ desired effect
               <li>
                 <!-- Inner menu: contains the tasks -->
                 <ul class="menu">
-                  <li><!-- Task item -->
+                  <li>Task item
                     <a href="#">
                       <!-- Task title and progress text -->
                       <h3>
@@ -183,20 +184,20 @@ desired effect
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="margin-right: 10px;">
               <!-- The user image in the navbar-->
-              <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="/AdminLTE/dist/img/user.png" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">{{ Auth::user()->username }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
-              <li class="user-header">
-                <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <li class="user-header" style="background: #212121;">
+                <img src="/AdminLTE/dist/img/user.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{ Auth::user()->email }}
+                  <small style="padding-top: 10px;">Cliente</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -226,9 +227,9 @@ desired effect
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
+          <!-- <li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -242,17 +243,17 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="/AdminLTE/dist/img/user.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p> Jonatan C.M.</p>
+          <p> {{ Auth::user()->username }}</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
 
       <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -260,7 +261,7 @@ desired effect
               </button>
             </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
 
       <!-- Sidebar Menu -->
@@ -276,8 +277,8 @@ desired effect
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-address-card"></i>Datos Personales</a></li>
             <li><a href="#"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
-            <li><a href="{{ route('customer.profile.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
-            <li><a href="{{ route('customer.profile.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
+            <li class="{{ Request::path() == '/customer/address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
+            <li class="{{ Request::path() == '/customer/payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
           </ul>
         </li>
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
@@ -401,7 +402,12 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
+<!-- <script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script> -->
+
+<script src="{{asset('/js/ajax-customer-cards.js')}}"></script>
+<script src="{{asset('/js/ajax-customer-address.js')}}"></script>
+@stack('scripts')
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
 <!-- include summernote css/js -->
@@ -412,6 +418,9 @@ desired effect
 @yield('modal-reclame')
 @yield('add-images')
 @yield('js-dropzone')
+
+@include('customer.partials.add-card')
+@include('customer.partials.add-address')
 @yield('mostrar-modal')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

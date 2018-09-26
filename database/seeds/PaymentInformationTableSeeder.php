@@ -13,7 +13,7 @@ class PaymentInformationTableSeeder extends Seeder
     {
         DB::table('payment_informations')->insert([
             'usuario'       => 6,
-            'num-tarjeta'   => '4152313324916290',
+            'numtarjeta'   => '4152313324916290',
             'titular'       => 'Ceseña Marquez',
             'vigencia'      => '08/22',
             'cvc'           => '351'
@@ -21,7 +21,7 @@ class PaymentInformationTableSeeder extends Seeder
 
         DB::table('payment_informations')->insert([
             'usuario'       => 5,
-            'num-tarjeta'   => '4242424242424242',
+            'numtarjeta'   => '4242424242424242',
             'titular'       => 'Marquez',
             'vigencia'      => '10/18',
             'cvc'           => '555'

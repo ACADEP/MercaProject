@@ -27,8 +27,19 @@
                         <!-- incio strippe -->
                         <div class="globalContent">
                             <!--Example 2-->
+                            
                             <div class="hola cell example example2">
-                                <form action="#" method="post" id="payment-form"> 
+                                <form action="/cart/confirmation" method="post" id="payment-form"> 
+                                {{ csrf_field() }}
+                                    <div data-locale-reversible>
+                                        <div class="row">
+                                            <div class="field">
+                                                <input id="example2-name" data-tid="elements_examples.form.name_placeholder" class="input empty" type="text" placeholder="Nombre y apellido" required="" autocomplete="name">
+                                                <label for="example2-name" data-tid="elements_examples.form.name_label">Titular</label>
+                                                <div class="baseline"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="field">
                                             <div id="example2-card-number" class="input empty"></div>
@@ -56,9 +67,92 @@
                                         <span class="message"></span>
                                     </div>
                                 </form>
+                                <div class="success" id="successful" hidden>
+                                    <div class="icon">
+                                        <svg style="margin-left: 150px; padding-top: 20px;" width="84px" height="84px" viewBox="0 0 84 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <circle class="border" cx="42" cy="42" r="40" stroke-linecap="round" stroke-width="4" stroke="#000" fill="none"></circle>
+                                        <path class="checkmark" stroke-linecap="round" stroke-linejoin="round" d="M23.375 42.5488281 36.8840688 56.0578969 64.891932 28.0500338" stroke-width="4" stroke="#000" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="title" style="margin-left: 120px; padding-top: 10px;" data-tid="elements_examples.success.title">Pago exitoso</h3>
+                                </div>
                             </div>
                         </div>
                         <!-- strippe-->
+                    </div>
+                </div>
+
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            PayPal
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion"> 
+                    <div class="card-body">
+                        
+                        <div id="paypal-button-container"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        // Render the PayPal button
+                        paypal.Button.render({
+                        // Set your environment
+                        env: 'sandbox', // sandbox | production
+
+                        // Specify the style of the button
+                        style: {
+                        layout: 'vertical',  // horizontal | vertical
+                        size:   'large',    // medium | large | responsive
+                        shape:  'rect',      // pill | rect
+                        color:  'gold'       // gold | blue | silver | white | black
+                        },
+
+                        // Specify allowed and disallowed funding sources
+                        //
+                        // Options:
+                        // - paypal.FUNDING.CARD
+                        // - paypal.FUNDING.CREDIT
+                        // - paypal.FUNDING.ELV
+                        funding: {
+                        allowed: [
+                            paypal.FUNDING.CARD,
+                            paypal.FUNDING.CREDIT
+                        ],
+                        disallowed: []
+                        },
+
+                        // PayPal Client IDs - replace with your own
+                        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                        client: {
+                        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+                        production: '<insert production client id>'
+                        },
+
+                        payment: function (data, actions) {
+                        return actions.payment.create({
+                            payment: {
+                            transactions: [
+                                {
+                                amount: {
+                                    total: '0.10',
+                                    currency: 'MXN'
+                                }
+                                }
+                            ]
+                            }
+                        });
+                        },
+
+                        onAuthorize: function (data, actions) {
+                        return actions.payment.execute()
+                            .then(function () {
+                            window.alert('Pago Completado!');
+                            });
+                        }
+                        }, '#paypal-button-container');
+                        </script>
+
                     </div>
                 </div>
             </div>
@@ -77,7 +171,6 @@
               // Stripe's examples are localized to specific languages, but if
               // you wish to have Elements automatically detect your user's locale,
               // use `locale: 'auto'` instead.
-              locale: window.__exampleLocale
             });
 
             // Floating labels

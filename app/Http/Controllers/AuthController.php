@@ -52,7 +52,6 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRegister(RegistrationRequest $request, AppMailers $mailer) {
-      
         // Create the user in the DB.
         $user = User::create([
             'email' => $request->input('email'),

@@ -63,10 +63,12 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class);
         
     }
+
     public function productseller()
     {
         return $this->hasMany(ProductSeller::class);
     }
+
     public function selehistories()
     {
         return $this->hasMany(SeleHistory::class);
@@ -79,12 +81,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(PaymentInformation::class)
     }
+
     public function product($id)
     {   
         $product=Product::find($id);
         return $product;
     }
 
+    public function address()
+    {
+        return $this->hasMany(Address::class, 'usuario');
+    }
+
+    public function paymentscard()
+    {
+        return $this->hasMany(PaymentInformation::class, 'usuario');
+    }
+    
     public function shipments()
     {
         return $this->hasMany(Shipment::class,'id_seller');

@@ -413,7 +413,7 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 

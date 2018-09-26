@@ -10,6 +10,9 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Shop;
+use App\Address;
+use App\PaymentInformation;
+
 
 class CustomerController extends Controller
 {
@@ -41,12 +44,6 @@ class CustomerController extends Controller
         return view('customer.dash', compact('search', 'cart_count', 'username', 'orders'));
     }
 
-    public function address() {
-        return view('customer.pages.address');
-    }
-
-    public function payments() {
-        return view('customer.pages.payments');
-    }
+    
 
 }

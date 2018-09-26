@@ -63,7 +63,7 @@
                                         @if(Auth::user()->admin==2)
                                             <a href="{{ url('/seller/admin') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
-                                            <a href="{{ url('customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                            <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @endif
                                         <a href="{{ url('/logout') }}">Salir</a>
                                     </div>
