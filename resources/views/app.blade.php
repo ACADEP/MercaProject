@@ -221,11 +221,12 @@
         });
     </script>
    
-
+    @yield('modal-debit')
     @yield('styles')
     @yield('js')
     @yield('css-pay')
     @yield('js-pay')
+    @yield('show-modal')
     @include('partials.flash')
     @include('partials.special_search')
 

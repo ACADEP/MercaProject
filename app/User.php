@@ -75,6 +75,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sale::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(PaymentInformation::class)
+    }
     public function product($id)
     {   
         $product=Product::find($id);

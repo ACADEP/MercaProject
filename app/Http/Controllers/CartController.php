@@ -33,6 +33,7 @@ class CartController extends Controller {
 
     public function payCart()
     {
+        $payments=Auth::user()
         return view('cart.pay-cart');
     }
 
