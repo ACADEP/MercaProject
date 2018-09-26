@@ -14,4 +14,8 @@ class SeleHistory extends Model
     {
         return $this->hasMany(Product::class);
     }
+    public function sales()
+    {
+        return $this->hasMany(Sales::class);
+    }
 }

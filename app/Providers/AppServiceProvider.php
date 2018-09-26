@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Shippo::setApiKey(env('SHIPPO_API_KEY'));
     }
 
     /**

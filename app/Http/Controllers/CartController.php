@@ -31,6 +31,10 @@ class CartController extends Controller {
             
     }
 
+    public function payCart()
+    {
+        return view('cart.pay-cart');
+    }
 
     /**
      * Agregar productos al carrito

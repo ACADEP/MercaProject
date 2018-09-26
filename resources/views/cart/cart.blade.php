@@ -10,7 +10,9 @@
                             <i class="material-icons">local_printshop</i>
                     </button>
                     @if(Auth::check())
-                        <a href="{{ route('cart.payment') }}" class="btn btn-success text-center">Pagar</a>
+                        @if(Auth::user()->carts()->count()>0)
+                            <a href="{{ route('pay-cart') }}" class="btn btn-success text-center">Pagar</a>
+                        @endif
                     @endif
                 </div>
                 

@@ -1,8 +1,6 @@
 <?php
-
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
-
 class SeleHistoriesTableSeeder extends Seeder
 {
     /**
@@ -20,7 +18,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>2,
             'total'         => 20000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 2,
@@ -29,7 +26,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>5,
             'total'         => 25000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 3,
@@ -38,7 +34,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>4,
             'total'         => 12000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 4,
@@ -47,7 +42,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>3,
             'total'         => 600
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 5,
@@ -56,7 +50,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 10000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 4,
@@ -65,7 +58,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 100
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 5,
@@ -74,7 +66,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 10000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 6,
@@ -83,7 +74,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 10000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 7,
@@ -92,7 +82,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 10000
         ]);
-
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
             'product_id'    => 8,
@@ -101,8 +90,6 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 5000
         ]);
-
         
-
     }
 }

@@ -7,11 +7,9 @@
             Mi historial de ventas
         </h1>   
 </section><br>
-    
-    
- 
 
  @include('seller.partials.order-histories')
+    
     <table class="text-center table">
     <thead>
             <tr>

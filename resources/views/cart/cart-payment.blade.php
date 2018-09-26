@@ -11,8 +11,7 @@
         <div class="payments" id="accordion" style="width: 100%;">
 
         <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
-        <script src="https://js.stripe.com/v3/"></script>
-        <script src="/js/index-stripe.js" data-rel-js></script>
+        
 
             <h1 class="mt-5 mb-3">Método sugerido</h1>
             <div class="card debit-card">
@@ -25,7 +24,7 @@
                 </div>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        
+                        <!-- incio strippe -->
                         <div class="globalContent">
                             <!--Example 2-->
                             <div class="hola cell example example2">
@@ -59,7 +58,7 @@
                                 </form>
                             </div>
                         </div>
-
+                        <!-- strippe-->
                     </div>
                 </div>
             </div>
@@ -146,7 +145,7 @@
               classes: elementClasses,
             });
             cardCvc.mount('#example2-card-cvc');
-
+            
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
     </script>
 

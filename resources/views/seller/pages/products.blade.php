@@ -43,7 +43,7 @@
                     <div class="form-inline">
                         <button class="btn btn-danger btn-xs btn-delete" data-toggle="tooltip" value="{{$productSeller->product->id}}" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
                         <a type="button" href="{{ route('my-update',$productSeller->product->id) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
-                        <button class="btn btn-default btn-xs btn-image" value="{{$productSeller->product->id}}"data-toggle="modal" data-target="#add_images" data-placement="top" title="Subir imagenes"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+                        <button class="btn btn-default btn-xs btn-image" value="{{$productSeller->product->id}}" data-toggle="modal" data-target="#add_images" data-placement="top" title="Subir imagenes"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
                     </div>              
                 </td>
             

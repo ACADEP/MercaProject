@@ -46,12 +46,18 @@
         
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
+         <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
+
+        <script src="https://js.stripe.com/v3/"></script>
+        
+
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
 
         <link rel="stylesheet" href="{{ asset('/sass/app.scss') }}"> -->
         
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pay.css') }}" >
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
@@ -62,7 +68,8 @@
                 Cookies.remove("productos");
             }
         </script>       
-
+        <script src="/js/index-stripe.js" data-rel-js></script>
+       
         
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -217,6 +224,8 @@
 
     @yield('styles')
     @yield('js')
+    @yield('css-pay')
+    @yield('js-pay')
     @include('partials.flash')
     @include('partials.special_search')
 

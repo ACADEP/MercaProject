@@ -25,6 +25,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
 
+
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/summernote/summernote.css')}}">
+  <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet"> -->
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -278,7 +282,7 @@ desired effect
         </li>
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
         <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
+        <li class="{{ Request::path() == 'customer/profile/myshopping' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->
@@ -400,10 +404,15 @@ desired effect
 <script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
+<!-- include summernote css/js -->
 
-@include('seller.partials.add-product')
-@include('seller.partials.add-images')
+<script src="{{asset('AdminLTE/dist/summernote/summernote.js')}}"></script>
+
+
+@yield('modal-reclame')
+@yield('add-images')
 @yield('js-dropzone')
+@yield('mostrar-modal')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
