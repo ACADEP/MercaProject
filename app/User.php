@@ -79,7 +79,7 @@ class User extends Authenticatable
     }
     public function payments()
     {
-        return $this->hasMany(PaymentInformation::class)
+        return $this->hasMany(PaymentInformation::class,'usuario');
     }
 
     public function product($id)

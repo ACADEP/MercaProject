@@ -27,6 +27,14 @@ class PaymentInformationTableSeeder extends Seeder
             'cvc'           => '555'
         ]);
 
+        DB::table('payment_informations')->insert([
+            'usuario'       =>  9,
+            'numtarjeta'   =>   '4242424242424242',
+            'titular'       =>  'Perez Torres Luis Bernardo',
+            'vigencia'      =>  '08/22',
+            'cvc'           =>  '351'
+        ]);
+
 
     }
 }

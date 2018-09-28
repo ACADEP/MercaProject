@@ -9,11 +9,13 @@
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 @php $i=1;@endphp
+<div class="panel panel-default">
 @foreach($sales as $sale)
-    <div class="panel panel-default">
+   
     <div class="panel-heading" role="tab" id="heading{{$i}}">
       <h4 class="panel-title">
         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}">
+           
            <div class="text-left">Fecha:<span class="label label-default">{{$sale->date}}</span></div> <div class="text-right">Pago: <span class="label label-default">{{$sale->status_pago}}</span></div>
         </a>
       </h4>
@@ -200,9 +202,6 @@
     </div>
   </div>
 </div>
-<form action="{{ url('/testShipment')}}" method="get">
-    <button type="submit" class="btn btn-danger">testShipment</button>
-</form>
 
 @stop
 

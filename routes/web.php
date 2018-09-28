@@ -207,6 +207,9 @@ Route::group(['middleware' => ['web']], function () {
         'uses'   => 'CartController@showCart'
     ));
 
+    Route::get('/recibe','CartController@showRecibe');
+    
+    Route::post('/sendReceiptPayment','CartController@sendReceipt')->name("ReceiptPayment");
     /* Vista de pagar carrito */
     Route::get('/cart-pay','CartController@payCart')->name("pay-cart");
     /** Agregar productos al carrito **/

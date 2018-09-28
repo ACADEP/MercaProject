@@ -11,7 +11,7 @@ class CustomerHistoryController extends Controller
 {
     public function show()
     {
-        $sales=Auth::user()->sale()->paginate(10);
+        $sales=Auth::user()->sale()->paginate(5);
         return view('customer.pages.customer_history',compact("sales"));
     }
     public function reclame(Request $request)
@@ -54,5 +54,6 @@ class CustomerHistoryController extends Controller
             return response(['imageUrl'=>null,"url"=>null],200);
         }
     }
+
 
 }

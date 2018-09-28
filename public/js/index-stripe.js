@@ -5,7 +5,6 @@ var stripe = Stripe('pk_test_M1U2ifs6hohMw8VJaQWc33Be');
 function registerElements(elements, exampleName) {
   var formClass = '.' + exampleName;
   var example = document.querySelector(formClass);
- 
   var form = example.querySelector('form');
   var error = form.querySelector('.error');
   var errorMessage = error.querySelector('.message');

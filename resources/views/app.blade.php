@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+       
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="A medium sized e-commerce shopping cart made by David Trushkov. Made using Laravel 5.2" />
         <meta name="keywords" content="shopping, ecommerce, store, electronics, electronics store, david, david trushkov, github, laravel, laravel 5, laravel 5.2" />
@@ -50,7 +50,7 @@
 
         <script src="https://js.stripe.com/v3/"></script>
         
-
+        <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
 
         <link rel="stylesheet" href="{{ asset('/sass/app.scss') }}"> -->
@@ -94,7 +94,14 @@
             
    
     <div class="container">
-       
+    <script> 
+            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> favor de revisar su correo</div>', { allow_dismiss: false });
+        </script>
+        @if(Session::has('pay-success'))
+        <script> 
+            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> Revisar su correo</div>', { allow_dismiss: false });
+        </script>
+        @endif
         @yield('content')
           
     </div>

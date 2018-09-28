@@ -1,8 +1,9 @@
 @extends('app')
 
 @section('content')
-<h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
 
+
+<h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
 <!-- Stepper -->
 <div class="row">
 <div class="col-md-8 border" >
@@ -27,8 +28,22 @@
     <!-- <form role="form" action="" method="post"> -->
         <div class="row setup-content-2" id="step-1">
             <div class="col-md-12">
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Dirección</strong></h3>
+                @if($address != null)
+                
+                    <div class="text-right"><a href="{{ url('/customer/address') }}" style="color:blue;">Cambiar de dirección</a></div>
                     
+                    <h4>Sera enviado a:</h4>
+                    <div class="border" style="font-size:23px;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> <strong>CP:</strong>{{$address->cp}} <strong>Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
+                    <strong>Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} Colonia: {{ $address->colonia }}
+
+                    </div>
                     
+                @else
+                    <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una dirección</a>
+                    <div class="alert alert-danger">Usted no tiene dirección definida </div>
+                    
+                @endif
                 <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Siguiente</button>
             </div>
         </div>
@@ -36,9 +51,10 @@
     <!-- Second Step -->
         <div class="row setup-content-2" id="step-2">
             <div class="col-md-12">
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Envio</strong></h3>
                 <div class="row">
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria</div>
+                        <div class="card-header">Paqueteria <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/estafeta.jpg" style="width:100%;" alt="">
@@ -52,12 +68,13 @@
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria</div>
+                        <div class="card-header">Paqueteria <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/dhl.jpg" style="width:100%;" alt="">
                                 
                             </p>
+                            <br>
                             <div class="custom-control custom-radio" >
                                     <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
                                     <label class="custom-control-label" for="defaultUnchecked2"></label>
@@ -66,12 +83,13 @@
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria</div>
+                        <div class="card-header">Paqueteria <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/fedex.jpg" style="width:100%;" alt="">
                                 
                             </p>
+                            <br>
                             <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" id="defaultUnchecked3" name="defaultExampleRadios">
                                     <label class="custom-control-label" for="defaultUnchecked3"></label>
@@ -80,10 +98,10 @@
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Acuerdo con el vendedor</div>
+                        <div class="card-header">A acordar con el vendedor</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <img src="/images/shipments/vendedor.png" style="width:100%;" alt="">
+                                <img src="/images/shipments/vendedor.png" style="width:100%; height:65px;" alt="">
                                 
                             </p>
                             <div class="custom-control custom-radio">
@@ -96,51 +114,54 @@
                 
 
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Siguiente</button>
+                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
             </div>
         </div>
 
         <!-- Third Step -->
         <div class="row setup-content-2" id="step-3">
             <div class="col-md-12">
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Metodo de pago</strong></h3>
             <div class="row">
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Debito</div>
+                        <div class="card-header">Débito <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <i class="fa fa-credit-card-alt fa-3x" aria-hidden="true"></i>
+                                <img src="images/shipments/debit-credit.png" style="width:100%;">
                                 
                             </p>
+                            <br>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked4" name="defaultExampleRadios">
+                                    <input type="radio" class="custom-control-input" id="defaultUnchecked4" name="defaultExampleRadios2">
                                     <label class="custom-control-label" for="defaultUnchecked4"></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Credito</div>
+                        <div class="card-header">Crédito <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <i class="fa fa-credit-card fa-3x" aria-hidden="true"></i>
+                                <img src="images/shipments/debit-credit.png" style="width:100%;">
                                 
                             </p>
+                            <br>
                             <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked5" name="defaultExampleRadios">
+                                    <input type="radio" class="custom-control-input" id="defaultUnchecked5" name="defaultExampleRadios2">
                                     <label class="custom-control-label" for="defaultUnchecked5"></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Pay Pal</div>
+                        <div class="card-header">PayPal <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <i class="fa fa-cc-paypal fa-3x" aria-hidden="true"></i>
+                                <img src="images/shipments/paypal.png" style="width:100%; height:60px;">
                                 
                             </p>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked6" name="defaultExampleRadios">
+                                    <input type="radio" class="custom-control-input" id="defaultUnchecked6" name="defaultExampleRadios2">
                                     <label class="custom-control-label" for="defaultUnchecked6"></label>
                                 </div>
                         </div>
@@ -150,28 +171,47 @@
                         <div class="card-header">Tranferencia bancaria</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <i class="fa fa-exchange fa-3x" aria-hidden="true"></i
+                                <img src="images/shipments/transfer.png" style="width:100%; height:60px;">
                                 
                             </p>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultChecked2" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="defaultChecked2"></label>
+                                    <input type="radio" class="custom-control-input" id="defaultUnchecked7" name="defaultExampleRadios2">
+                                    <label class="custom-control-label" for="defaultUnchecked7"></label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Siguiente</button>
+                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>
+                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-pay" type="button">Siguiente</button>
             </div>
         </div>
 
         <!-- Fourth Step -->
         <div class="row setup-content-2" id="step-4">
             <div class="col-md-12">
-                <h3 class="font-weight-bold pl-0 my-4"><strong>Finish</strong></h3>
-                <h2 class="text-center font-weight-bold my-4">Registration completed!</h2>
-                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Previous</button>
-                <button class="btn btn-success btn-rounded float-right" type="submit">Submit</button>
+                <h3 class="font-weight-bold pl-0 my-4"><strong>Verificar compra</strong></h3>
+                    <h4> <i class="fa fa-truck fa-lg" aria-hidden="true"></i> Metodo de envio:</h4>
+                    <div id="shipment" style="font-size:15px;"> Seleccionar un metodo</div>
+                    <br>
+                    @if($address != null)
+                        <h4>Sera enviado a:</h4>
+                        <div class="border" style="font-size:15px;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> <strong>CP:</strong>{{$address->cp}} <strong>Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
+                        <strong>Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} Colonia: {{ $address->colonia }}
+                        </div>
+                    @else
+                        <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una direccion</a>
+                        <div class="alert alert-danger">Usted no tiene dirección definida </div>
+                    @endif
+                    <br>
+                    <h4><i class="fa fa-usd" aria-hidden="true"></i> Metodo de pago:</h4>
+                    <div id="pay" style="font-size:15px;">Seleccionar un metodo</div>
+                    
+                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
+                @if($address != null)
+                    <button class="btn btn-success btn-rounded float-right" id="btn-conf"type="submit">Confirmar</button>
+                @endif
+                
+                
             </div>
         </div>
     <!-- </form> -->
@@ -182,22 +222,21 @@
 <form class="text-center border">
 
     <p class="h4 mb-4">Detalles de la compra</p>
-    <div>
-        Descripcion del producto <br>
-        Cantidad: 1<!-- Cantidad -->
+    <div class="h5">
+        Cantidad: {{ $cartItems->count() }}<!-- Cantidad -->
     </div>
 
     <hr>
 
-    <div>
-        Producto: $0,000,000 <br>
-        Envio+inpuestos: $0,00 <br>
+    <div class="h5">
+        Total de productos: ${{ number_format($subtotal, 2) }} <br>
+        Envio + inpuestos: $0,00 <br>
     </div>
     
     <hr>
 
-    <div>
-        Total: $0,000,00
+    <div class="h5">
+        Total: ${{ number_format($subtotal, 2) }}
     </div>
     
  
@@ -322,10 +361,56 @@ $(document).ready(function () {
 @section('show-modal')
 <script>
     $(function() {
+        $("#shipment").html("A acordar con el vendedor");
+        // Paqueterias
+        $("#defaultChecked").click(function(){
+            $("#shipment").html("A acordar con el vendedor");
+        });
+
+        //Metodos de pago
         $("#defaultUnchecked4").click(function(){
-            $('#debit-card').modal('show');
+            $("#pay").html("Débito");
+        });
+
+        $("#defaultUnchecked5").click(function(){
+            $("#pay").html("Crédito");
+        });
+
+         $("#defaultUnchecked6").click(function(){
+            $("#pay").html("PayPal");
+        });
+
+         $("#defaultUnchecked7").click(function(){
+            $("#pay").html("Tranferencia bancaria");
         });
         
+        // $("#btn-next-pay")
+        $("#btn-conf").click(function(){
+            if($("#defaultUnchecked4").prop("checked"))
+            {
+                $('#debit-card').modal('show');
+              
+            }
+            else if($("#defaultUnchecked5").prop("checked"))
+            {
+                $('#debit-card').modal('show');
+                
+            }
+            else if($("#defaultUnchecked6").prop("checked"))
+            {
+                alert("Metodo en desarollo");
+                
+            }
+            else if($("#defaultUnchecked7").prop("checked"))
+            {
+                alert("Metodo en desarollo");
+            }
+            else
+            {
+                alert("Elegir un metodo de pago");
+            }
+        });
+
     });
 </script>
 @stop
@@ -335,14 +420,25 @@ $(document).ready(function () {
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title text-center" id="exampleModalLongTitle">Metodo de pago</h1>
+        <h1 class="modal-title text-center" id="exampleModalLongTitle">Información de pago</h1>
       </div>
-      <div class="modal-body">
-            <!-- incio strippe -->
-            <div class="globalContent">
+      <div class="modal-body text-center">
+             <!-- incio strippe -->
+             <div class="globalContent">
                             <!--Example 2-->
+                            
                             <div class="hola cell example example2">
-                                <form action="#" method="post" id="payment-form"> 
+                                <form action="/cart/confirmation" method="post" id="payment-form"> 
+                                {{ csrf_field() }}
+                                    <div data-locale-reversible>
+                                        <div class="row">
+                                            <div class="field">
+                                                <input id="example2-name" data-tid="elements_examples.form.name_placeholder" class="input empty" type="text" placeholder="Nombre y apellido" required="" autocomplete="name">
+                                                <label for="example2-name" data-tid="elements_examples.form.name_label">Titular</label>
+                                                <div class="baseline"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="field">
                                             <div id="example2-card-number" class="input empty"></div>
@@ -370,6 +466,15 @@ $(document).ready(function () {
                                         <span class="message"></span>
                                     </div>
                                 </form>
+                                <div class="success" id="successful" hidden>
+                                    <div class="icon">
+                                        <svg style="margin-left: 150px; padding-top: 20px;" width="84px" height="84px" viewBox="0 0 84 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <circle class="border" cx="42" cy="42" r="40" stroke-linecap="round" stroke-width="4" stroke="#000" fill="none"></circle>
+                                        <path class="checkmark" stroke-linecap="round" stroke-linejoin="round" d="M23.375 42.5488281 36.8840688 56.0578969 64.891932 28.0500338" stroke-width="4" stroke="#000" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="title" style="margin-left: 120px; padding-top: 10px;" data-tid="elements_examples.success.title">Pago exitoso</h3>
+                                </div>
                             </div>
                         </div>
                         <!-- strippe-->
