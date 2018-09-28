@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Routing\Controller as BaseController;
 
+use Laravel\Cashier\CashierServiceProvider;
+use Laravel\Cashier\Cashier;
+
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
@@ -172,10 +175,38 @@ class CartController extends Controller {
     }
 
 
-    public function confirmation(Request $request) {
-        //dd($request);
-        return view('cart.cart-confirmation');
+    public function stripe() {
+        // Set your secret key: remember to change this to your live secret key in production
+        // See your keys here: https://dashboard.stripe.com/account/apikeys
+
+        // Token is created using Checkout or Elements!
+        // Get the payment token ID submitted by the form:
+        try {
+            if(!isset($_POST['stripeToken'])) {
+                throw new \Exception("El token de Stripe no fue generado correctamente");
+            } else {
+                $token = $_POST['stripeToken'];
+                // dd($token);
+                $charge = \Stripe\Charge::create([
+                    'amount' => 1000, // Ingresar cantidad en centavos 100 centavos = $1 peso, 
+                    'currency' => 'mxn', // monto minimo que acepta Stripe es de $10 pesos
+                    'description' => 'Pago de Xbox One',
+                    'source' => $token,
+                ]);  
+                dd($charge);  
+                return view('cart.cart-confirmation');
+                echo("Pago realizado con exito");
+            }    
+        }
+        catch(Exeption $e) {
+            $error = $e->getMessage();
+        }
+
     }
     
+    public function paypal(Request $request) {
+        return view('cart.cart-confirmation');
+    }
+
     
 }

@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Stripe\Stripe::setApiKey("sk_test_eah7qeJhlMmOlsNPS6CHsxUX");
     }
 
     /**

@@ -26,7 +26,20 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                         
-                        <div class="globalContent">
+                        <form action="/cart/confirmation" method="POST">
+                            {{ csrf_field() }}
+                            <script
+                              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                              data-key="pk_test_M1U2ifs6hohMw8VJaQWc33Be"
+                              data-amount="999"
+                              data-name="Mercadata"
+                              data-description="Example charge"
+                              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                              data-locale="auto">
+                            </script>
+                          </form>
+
+                        {{-- <div class="globalContent">
                             <!--Example 2-->
                             
                             <div class="hola cell example example2">
@@ -78,7 +91,7 @@
                                     <h3 class="title" style="margin-left: 120px; padding-top: 10px;" data-tid="elements_examples.success.title">Pago exitoso</h3>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -104,7 +117,7 @@
                         // Specify the style of the button
                         style: {
                         layout: 'vertical',  // horizontal | vertical
-                        size:   'large',    // medium | large | responsive
+                        size:   'medium',    // medium | large | responsive
                         shape:  'rect',      // pill | rect
                         color:  'gold'       // gold | blue | silver | white | black
                         },
@@ -126,7 +139,7 @@
                         // PayPal Client IDs - replace with your own
                         // Create a PayPal app: https://developer.paypal.com/developer/applications/create
                         client: {
-                        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+                        sandbox: 'AYPU5279dmgaIqbbk8_QrxzBk7Cv3HGVh4W_jQhqdugNDlVt8XP7gEC9tqSDRsvwfggevjmQqb-EU9zw',
                         production: '<insert production client id>'
                         },
 
@@ -136,7 +149,7 @@
                             transactions: [
                                 {
                                 amount: {
-                                    total: '0.10',
+                                    total: '0.50',
                                     currency: 'MXN'
                                 }
                                 }
@@ -148,7 +161,7 @@
                         onAuthorize: function (data, actions) {
                         return actions.payment.execute()
                             .then(function () {
-                            window.alert('Pago Completado!');
+                            window.alert('Payment Complete!');
                             });
                         }
                         }, '#paypal-button-container');
@@ -156,6 +169,7 @@
 
                     </div>
                 </div>
+                
             </div>
 
             

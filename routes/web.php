@@ -331,9 +331,15 @@ Route::group(["middleware" => 'customer'], function(){
 
     /** payment items confirmation in the cart **/
     Route::post('/cart/confirmation', [
-        'uses' => '\App\Http\Controllers\CartController@confirmation',
-        'as'   => 'cart.confirmation',
+        'uses' => '\App\Http\Controllers\CartController@stripe',
+        'as'   => 'cart.confirmation.stripe',
     ]);
+
+    // Route::post('/cart/confirmation', [
+    //     'uses' => '\App\Http\Controllers\CartController@paypal',
+    //     'as'   => 'cart.confirmation.paypal',
+    // ]);
+
 
         
     Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');

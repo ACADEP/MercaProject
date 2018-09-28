@@ -123,7 +123,7 @@ function registerElements(elements, exampleName) {
         document.getElementById('payment-form').hidden = true;
         setTimeout(function() {
           form.submit();        
-        }, 5000)
+        }, 1000)
         // alert(result.token);
       } else {
         // Otherwise, un-disable inputs.
