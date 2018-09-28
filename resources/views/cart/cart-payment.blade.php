@@ -117,9 +117,9 @@
                         // Specify the style of the button
                         style: {
                         layout: 'vertical',  // horizontal | vertical
-                        size:   'medium',    // medium | large | responsive
-                        shape:  'rect',      // pill | rect
-                        color:  'gold'       // gold | blue | silver | white | black
+                        size:   'responsive',    // medium | large | responsive
+                        shape:  'pill',      // pill | rect
+                        color:  'black'       // gold | blue | silver | white | black
                         },
 
                         // Specify allowed and disallowed funding sources
@@ -149,7 +149,7 @@
                             transactions: [
                                 {
                                 amount: {
-                                    total: '0.50',
+                                    total: '10.00',
                                     currency: 'MXN'
                                 }
                                 }
