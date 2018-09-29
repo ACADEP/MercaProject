@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Cart;
 use Validator;
 use App\Product;
+use App\User;
+use App\Sale;
+use App\CustomerHistory;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -21,6 +24,9 @@ use Laravel\Cashier\Cashier;
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
+use Illuminate\Support\Facades\Session;
+
+use App\Mailers\AppMailers;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -34,6 +40,13 @@ class CartController extends Controller {
             
     }
 
+    public function payCart()
+    {
+        $address=Auth::user()->address()->where('Activo',1)->first();
+        $cartItems=Auth::user()->carts()->get();
+        $subtotal=Auth::user()->total;
+        return view('cart.pay-cart', compact('address','cartItems','subtotal'));
+    }
 
     /**
      * Agregar productos al carrito
@@ -208,5 +221,62 @@ class CartController extends Controller {
         return view('cart.cart-confirmation');
     }
 
+    public function confirmation(Request $request, AppMailers $mailer) {
+
+        $sale= new Sale;
+        $sale->insert(Auth::user()->total);
+      
+        
+        $cartItems=Auth::user()->carts();
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        //Vendedor
+        $user=User::find(7);
+        $mailer->sendReceiptPayment($user);
+        if($mailer)
+        {
+            //borrar productos del carrito
+            Auth::user()->carts()->delete();
+            return redirect("/")->with('pay-success','Pago exitoso');;
+
+            
+        }
+        else
+        {
+            echo("Mensaje no enviado");
+        }
+        
+    }
+
+    //Pruebas de vista de recibo de pago
+    public function showRecibe()
+    {
+        $cartItems=Auth::user()->carts()->get();
+        $subtotal=Auth::user()->total; 
+        $user=Auth::user();
+        $address=Auth::user()->address()->where("Activo",1)->first();
+        return view('customer.partials.recibe',compact('user','cartItems','subtotal','address'));
+    }
+
+    public function sendReceipt(AppMailers $mailer)
+    {
+        $user=User::find(7);
+        $sale= new Sale;
+        $sale->insert(Auth::user()->total);
+        Auth::user()->carts()->delete();
+        dd($sale);
+        $mailer->sendReceiptPayment($user);
+        if($mailer)
+        {
+            return back();
+        }
+        else
+        {
+            echo("Mensaje no enviado");
+        }
+    }
     
 }

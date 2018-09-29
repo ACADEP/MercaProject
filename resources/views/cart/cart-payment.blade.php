@@ -11,8 +11,7 @@
         <div class="payments" id="accordion" style="width: 100%;">
 
         <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
-        <script src="https://js.stripe.com/v3/"></script>
-        <script src="/js/index-stripe.js" data-rel-js></script>
+        
 
             <h1 class="mt-5 mb-3">Método sugerido</h1>
             <div class="card debit-card">
@@ -25,6 +24,7 @@
                 </div>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
+<<<<<<< HEAD
                         
                         <form action="/cart/confirmation" method="POST">
                             {{ csrf_field() }}
@@ -40,6 +40,10 @@
                           </form>
 
                         {{-- <div class="globalContent">
+=======
+                        <!-- incio strippe -->
+                        <div class="globalContent">
+>>>>>>> Nuevo-Inicio
                             <!--Example 2-->
                             
                             <div class="hola cell example example2">
@@ -93,6 +97,8 @@
                             </div>
                         </div> --}}
 
+                        </div>
+                        <!-- strippe-->
                     </div>
                 </div>
 
@@ -262,7 +268,7 @@
               classes: elementClasses,
             });
             cardCvc.mount('#example2-card-cvc');
-
+            
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
     </script>
 

@@ -23,12 +23,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-red.css')}}">
 
+
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/checkbox.css')}}">
 
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}">
 
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
+
+  <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/summernote.css')}}"> -->
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 
   <!-- Compiled and minified CSS -->
   
@@ -277,6 +281,7 @@ desired effect
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-tags"></i> <span>Mis productos</span></a></li>
         @php  $routeName =  \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->getName() @endphp
         <li class="{{ Request::path() == 'seller/sales' || Request::path() == 'seller/sales/orderDate' || $routeName == 'order' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-list" aria-hidden="true"></i><span>Historial de ventas</span></a></li>
+        <li class="{{ $routeName == 'my-reclames' ? 'active' : ''  }}"><a href="{{ route('my-reclames') }}"><i class="fa fa-commenting" aria-hidden="true"></i><span>Reclamos de ventas</span></a></li>
         
          
          
@@ -410,6 +415,7 @@ desired effect
 <!-- AdminLTE App -->
 <script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
 
@@ -420,6 +426,7 @@ desired effect
 <script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script>
 
 
+
  <script type="text/javascript">
             $(function () {
                 $('#datetimepicker1').datetimepicker({
@@ -428,11 +435,13 @@ desired effect
             });
   </script>
 
-
+@yield('modal-respond-reclame')
 @yield('modal-add-products')
 @include('seller.partials.add-images')
 @yield('js-dropzone')
 @yield('mostrar-modal')
+@yield('select-sale')
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

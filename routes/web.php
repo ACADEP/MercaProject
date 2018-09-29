@@ -207,6 +207,11 @@ Route::group(['middleware' => ['web']], function () {
         'uses'   => 'CartController@showCart'
     ));
 
+    Route::get('/recibe','CartController@showRecibe');
+    
+    Route::post('/sendReceiptPayment','CartController@sendReceipt')->name("ReceiptPayment");
+    /* Vista de pagar carrito */
+    Route::get('/cart-pay','CartController@payCart')->name("pay-cart");
     /** Agregar productos al carrito **/
     Route::post('/cart/add', 'CartController@addCart')->name('addCart');
 
@@ -331,7 +336,7 @@ Route::group(["middleware" => 'customer'], function(){
 
     /** payment items confirmation in the cart **/
     Route::post('/cart/confirmation', [
-        'uses' => '\App\Http\Controllers\CartController@stripe',
+        'uses' => '\App\Http\Controllers\CartController@confirmation',
         'as'   => 'cart.confirmation.stripe',
     ]);
 
@@ -343,8 +348,13 @@ Route::group(["middleware" => 'customer'], function(){
 
         
     Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');
-});
 
+    Route::post('customer/profile/reclame','CustomerHistoryController@reclame')->name('make-reclame');
+
+    Route::post('/addphotoreclame','CustomerHistoryController@store')->name('add-Photo-reclame');
+});
+/*********************************************Shipmeents GoShoppo**********************************/
+    Route::get('/testShipment',"ShipmentController@test");
 
  /*******************************************Seller Profile Routes below ************************************************/
  Route::group(["middleware" => 'seller'], function(){
@@ -356,12 +366,16 @@ Route::group(["middleware" => 'customer'], function(){
 
     Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
+    Route::get('seller/reclames','SellerController@showReclames')->name('my-reclames');
+
     //Order by histories
     Route::get('seller/sales/{order}','SellerController@orderSales')->name('order');
 
     Route::post('seller/sales/orderDate','SellerController@orderDate')->name('orderDate');
 
     Route::get('print_pdf_seller','SellerController@printPdf');
+
+    Route::post('seller/respond-reclame','SellerController@respondReclame')->name('respond-reclame');
 
 
 

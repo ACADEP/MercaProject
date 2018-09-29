@@ -77,6 +77,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(SeleHistory::class);
     }
+    public function sale()
+    {
+        return $this->hasMany(Sale::class);
+    }
+    public function payments()
+    {
+        return $this->hasMany(PaymentInformation::class,'usuario');
+    }
 
     public function product($id)
     {   

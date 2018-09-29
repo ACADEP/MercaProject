@@ -15,12 +15,11 @@ class CreateCustomerHistoriesTable extends Migration
     {
         Schema::create('customer_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->date('date');
+            $table->integer('sale_id');
+            $table->integer('product_id');
             $table->string("product_name");
             $table->decimal('product_price', 10, 2)->unsigned();
             $table->integer('amount');
-            $table->decimal('total', 10, 2)->unsigned();
             $table->timestamps();
         });
     }

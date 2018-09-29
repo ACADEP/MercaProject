@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\ProductSeller;
 use App\SeleHistory;
+use App\Sale;
 use App\ShipmentProduct;
 use App\Http\Controllers\DB;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -35,6 +36,24 @@ class SellerController extends Controller
         return view('seller.partials.update-product',compact('product','paqueterias'));
     }
 
+    public function showReclames()
+    {
+        $sales=Sale::where('status_reclamo','En espera')->with("client")->get();
+        return view('seller.pages.reclames', compact("sales"));
+    }
+
+    public function respondReclame(Request $request)
+    {
+        $sale=Sale::where("id",$request->sale)->first();
+        if($sale!=null)
+        {
+            $sale->respond_reclame=$request->reclame_text;
+            $sale->status_reclamo=$request->reclame_state;
+            $sale->update();
+            
+        }
+        return back();
+    }
     public function showSales()
     {
         $seleHistories=Auth::user()->selehistories()->paginate(10);

@@ -20,7 +20,7 @@
                 <div class="panel panel-default" id="card{{ $cards->id }}">
                     <div class="panel-heading" role="tab" id="heading{{ $id }}">
                         <h4 class="panel-title" style="float: left;">
-                            <a class="collapsed lead" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $id }}" aria-expanded="false" aria-controls="collapse{{ $id }}">
+                            <a class="collapsed lead" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $id }}" aria-expanded="true" aria-controls="collapse{{ $id }}">
                                 @php
                                     $acorcard = substr($cards->numtarjeta, 12, 16);
                                 @endphp

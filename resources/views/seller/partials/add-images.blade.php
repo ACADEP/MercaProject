@@ -48,7 +48,6 @@
                 $('.dz-error-message:last > span').text(res.errors.photoProducto[0]);
             });
             varDrop.on('success', function(file, res){
-                console.log(res);
                 if(res.imageUrl!=null && res.url!=null)
                 {
                     $("#images-products").append(

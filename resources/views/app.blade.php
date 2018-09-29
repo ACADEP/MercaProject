@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+       
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="A medium sized e-commerce shopping cart made by David Trushkov. Made using Laravel 5.2" />
         <meta name="keywords" content="shopping, ecommerce, store, electronics, electronics store, david, david trushkov, github, laravel, laravel 5, laravel 5.2" />
@@ -46,12 +46,18 @@
         
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
+         <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
+
+        <script src="https://js.stripe.com/v3/"></script>
+        
+        <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
 
         <link rel="stylesheet" href="{{ asset('/sass/app.scss') }}"> -->
         
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pay.css') }}" >
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
@@ -62,7 +68,8 @@
                 Cookies.remove("productos");
             }
         </script>       
-
+        <script src="/js/index-stripe.js" data-rel-js></script>
+       
         
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -87,7 +94,11 @@
             
    
     <div class="container">
-       
+        @if(Session::has('pay-success'))
+        <script> 
+            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> Revisar su correo</div>', { allow_dismiss: false });
+        </script>
+        @endif
         @yield('content')
           
     </div>
@@ -214,9 +225,12 @@
         });
     </script>
    
-
+    @yield('modal-debit')
     @yield('styles')
     @yield('js')
+    @yield('css-pay')
+    @yield('js-pay')
+    @yield('show-modal')
     @include('partials.flash')
     @include('partials.special_search')
 
