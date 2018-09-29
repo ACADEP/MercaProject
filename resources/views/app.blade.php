@@ -94,9 +94,6 @@
             
    
     <div class="container">
-    <script> 
-            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> favor de revisar su correo</div>', { allow_dismiss: false });
-        </script>
         @if(Session::has('pay-success'))
         <script> 
             var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> Revisar su correo</div>', { allow_dismiss: false });
