@@ -286,6 +286,8 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'customer.address.showUpdate',
     ]);
 
+    Route::post('/updateAddressActive',"AddressController@updateAddressActive");
+
     // Route::get('/customer/address/showUpdate', [
     //     'uses' => '\App\Http\Controllers\AddressController@showUpdate',
     //     'as'   => 'customer.address.showUpdate',

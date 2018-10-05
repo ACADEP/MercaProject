@@ -39,10 +39,11 @@ class CartController extends Controller {
 
     public function payCart()
     {
-        $address=Auth::user()->address()->where('Activo',1)->first();
+        $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
-        return view('cart.pay-cart', compact('address','cartItems','subtotal'));
+        $customer=Auth::user()->customer;
+        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
     }
 
     /**
@@ -189,7 +190,6 @@ class CartController extends Controller {
 
         $sale= new Sale;
         $sale->insert(Auth::user()->total);
-      
         
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
@@ -197,16 +197,23 @@ class CartController extends Controller {
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
+
         //Vendedor
         $user=User::find(7);
         $mailer->sendReceiptPayment($user);
         if($mailer)
         {
-            //borrar productos del carrito
-            Auth::user()->carts()->delete();
-            return redirect("/")->with('pay-success','Pago exitoso');;
-
-            
+            $mailer->sendReceiptPaymentClient(Auth::user());
+            if($mailer)
+            {
+                //borrar productos del carrito
+                Auth::user()->carts()->delete();
+                return redirect("/")->with('pay-success','Pago exitoso');;
+            }
+            else
+            {
+                echo("Mensaje no enviado");
+            } 
         }
         else
         {

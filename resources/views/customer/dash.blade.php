@@ -26,9 +26,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}"> -->
 
+  <!-- include summernote css/js-->
 
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/summernote/summernote.css')}}">
-  <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet"> -->
+
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -410,9 +412,8 @@ desired effect
 @stack('scripts')
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
-<!-- include summernote css/js -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
-<script src="{{asset('AdminLTE/dist/summernote/summernote.js')}}"></script>
 
 
 @yield('modal-reclame')

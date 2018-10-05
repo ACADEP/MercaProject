@@ -75,7 +75,8 @@ function registerElements(elements, exampleName) {
   // Listen on the form's 'submit' handler...
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-
+   
+    
     // Trigger HTML5 validation UI on the form if any of the inputs fail
     // validation.
     var plainInputsValid = true;
@@ -117,9 +118,12 @@ function registerElements(elements, exampleName) {
         // If we received a token, show the token ID.
         //example.querySelector('.token').innerText = result.token.id;
         // stripeTokenHandler(result.token);
+       
+        
         example.classList.add('submitted');
         document.getElementById('successful').hidden = false;
         document.getElementById('payment-form').hidden = true;
+        $("#loader-contener").html("<div id='loader'></div>");
         setTimeout(function() {
           form.submit();        
         }, 5000)

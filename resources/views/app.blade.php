@@ -62,12 +62,13 @@
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
+        @yield("ajax-shipment")
         <script>
             function borrarCache()
             {
                 Cookies.remove("productos");
             }
-        </script>       
+        </script>   
         <script src="/js/index-stripe.js" data-rel-js></script>
        
         
@@ -88,7 +89,6 @@
 
     </head>
 <body>
-    
             
     @include('partials.nav')
             
@@ -190,11 +190,6 @@
     transition: 1s ease;
 }
 
-#form-add-cart{
-
-
-  
-}
 
         
 </style>
@@ -233,6 +228,7 @@
     @yield('show-modal')
     @include('partials.flash')
     @include('partials.special_search')
+    @include('customer.partials.add-address')
 
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Customer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as ResetPassword;
@@ -77,6 +78,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sale::class);
     }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class,"usuario");
+    }
+    
     public function payments()
     {
         return $this->hasMany(PaymentInformation::class,'usuario');
@@ -91,6 +98,25 @@ class User extends Authenticatable
     public function address()
     {
         return $this->hasMany(Address::class, 'usuario');
+    }
+
+    public function updateAddressActive($id)
+    {
+        $addresses=$this->address()->get();
+        foreach($addresses as $address)
+        {
+            $address->activo=0;
+            $address->update();
+        }
+        $addressActive=$this->address()->where("id",$id)->first();
+        if($addressActive!=null)
+        {
+            $addressActive->activo=1;
+            $addressActive->update();
+        }
+        
+
+        return $addressActive;
     }
 
     public function paymentscard()
