@@ -190,7 +190,6 @@ class CartController extends Controller {
 
         $sale= new Sale;
         $sale->insert(Auth::user()->total);
-        
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
@@ -198,7 +197,7 @@ class CartController extends Controller {
             $customerHistory->insert($cartItem,$sale);
         }
 
-        //Vendedor
+        //Administrador
         $user=User::find(7);
         $mailer->sendReceiptPayment($user);
         if($mailer)
@@ -208,7 +207,7 @@ class CartController extends Controller {
             {
                 //borrar productos del carrito
                 Auth::user()->carts()->delete();
-                return redirect("/")->with('pay-success','Pago exitoso');;
+                return redirect("/")->with('pay-success','Pago exitoso');
             }
             else
             {
