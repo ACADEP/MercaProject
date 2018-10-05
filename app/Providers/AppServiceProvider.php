@@ -13,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Shippo::setApiKey(env('SHIPPO_API_KEY'));
+        \Stripe\Stripe::setApiKey("sk_test_eah7qeJhlMmOlsNPS6CHsxUX");
+        //Openpay
+        \Openpay::setId('mk5lculzgzebbpxpam6x');
+        \Openpay::setApiKey('sk_d90dcb48c665433399f3109688b76e24');
+        \Openpay::setSandBoxMode(true);
+        \Openpay::setProductionMode(false);
     }
 
     /**

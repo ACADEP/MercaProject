@@ -9,6 +9,7 @@
         </div>
 </div> -->
 <h3>Comprar por marcas</h3>
+<a href="{{ route('all.brands') }}">Ver todas</a>
 <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" >
     <div class="carousel-inner">
       

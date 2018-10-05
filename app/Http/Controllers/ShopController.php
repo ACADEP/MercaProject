@@ -35,7 +35,7 @@ class ShopController extends Controller
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('shop_id', '=', $id)->orderBy('product_name')->paginate(9);
+        $products = Product::where('shop_id', '=', $id)->orderBy('product_name')->paginate(20);
         //dd($products);
 
         $orden = "Ordenar Por";

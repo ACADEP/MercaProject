@@ -70,8 +70,9 @@
             }
         </script>   
         <script src="/js/index-stripe.js" data-rel-js></script>
-       
-        
+        {{-- Openpay --}}
+        <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+                
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">

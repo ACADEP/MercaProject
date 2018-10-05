@@ -24,8 +24,21 @@
                 </div>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <!-- incio strippe -->
-                        <div class="globalContent">
+                        
+                        <form action="/cart/confirmation" method="POST">
+                            {{ csrf_field() }}
+                            <script
+                              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                              data-key="pk_test_M1U2ifs6hohMw8VJaQWc33Be"
+                              data-amount="999"
+                              data-name="Mercadata"
+                              data-description="Example charge"
+                              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                              data-locale="auto">
+                            </script>
+                          </form>
+
+                        {{-- <div class="globalContent">
                             <!--Example 2-->
                             
                             <div class="hola cell example example2">
@@ -77,7 +90,8 @@
                                     <h3 class="title" style="margin-left: 120px; padding-top: 10px;" data-tid="elements_examples.success.title">Pago exitoso</h3>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
+
                         <!-- strippe-->
                     </div>
                 </div>
@@ -103,9 +117,9 @@
                         // Specify the style of the button
                         style: {
                         layout: 'vertical',  // horizontal | vertical
-                        size:   'large',    // medium | large | responsive
-                        shape:  'rect',      // pill | rect
-                        color:  'gold'       // gold | blue | silver | white | black
+                        size:   'responsive',    // medium | large | responsive
+                        shape:  'pill',      // pill | rect
+                        color:  'black'       // gold | blue | silver | white | black
                         },
 
                         // Specify allowed and disallowed funding sources
@@ -125,7 +139,7 @@
                         // PayPal Client IDs - replace with your own
                         // Create a PayPal app: https://developer.paypal.com/developer/applications/create
                         client: {
-                        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+                        sandbox: 'AcbJmhLyQjcEbqe44-pfFrSk3UrV03SwoFSgFgwwoFfiCl8Qjda6ePlsHIyb0nCjzhOQDkUgsya5EHXn',
                         production: '<insert production client id>'
                         },
 
@@ -135,7 +149,7 @@
                             transactions: [
                                 {
                                 amount: {
-                                    total: '0.10',
+                                    total: '10.00',
                                     currency: 'MXN'
                                 }
                                 }
@@ -147,14 +161,91 @@
                         onAuthorize: function (data, actions) {
                         return actions.payment.execute()
                             .then(function () {
-                            window.alert('Pago Completado!');
+                            window.alert('Payment Complete!');
                             });
                         }
                         }, '#paypal-button-container');
                         </script>
 
+                        {{-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="9VMXDFPYPU7EL">
+                            <input type="image" src="https://www.paypalobjects.com/es_XC/MX/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+                        </form> --}}
+                            
+
+
                     </div>
                 </div>
+
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Pago en Banco
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion"> 
+                    <div class="card-body">
+                        {{-- <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script> --}}
+                        <form action="/cart/confirmation-banco" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary" formtarget="_blank">Depositar en Bancomer</button>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Pago Tiendas de Conveniencia
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/cart/confirmation-store" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary"  formtarget="_blank">Pagar en Tiendas de Conveniencia</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card-header" id="headingFive">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Notificaciones OpenPay
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/notificacions/openpay" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary">Notificacion</button>
+                        </form>    
+                    </div>
+                </div>
+                
+                <div class="card-header" id="headingSix">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Notificaciones Paypal
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/notificacions/paypal" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary">Notificacion</button>
+                        </form>    
+                    </div>
+                </div>    
+
+                
             </div>
 
             
@@ -162,6 +253,7 @@
     </div>
     
     <script>
+        //stripe
         var elements = stripe.elements({
               fonts: [
                 {
@@ -241,6 +333,15 @@
             
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
     </script>
+
+    {{-- <script type="text/javascript">
+        $(document),ready(function() {
+            OpenPay.setId('mk5lculzgzebbpxpam6x');
+            OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+            OpenPay.setSandboxMode(true);
+        });
+    </script> --}}
+
 
 </div>
 

@@ -7,10 +7,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+// use Laravel\Cashier\Billable;
+
 
 class User extends Authenticatable
 {
     use Notifiable;
+    // use Billable;
+    
     protected $table = 'users';
 
     /**
@@ -117,6 +121,9 @@ class User extends Authenticatable
         
 
         return $addressActive;
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'usuario');
     }
 
     public function paymentscard()

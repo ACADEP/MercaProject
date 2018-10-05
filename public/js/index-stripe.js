@@ -126,7 +126,7 @@ function registerElements(elements, exampleName) {
         $("#loader-contener").html("<div id='loader'></div>");
         setTimeout(function() {
           form.submit();        
-        }, 5000)
+        }, 1000)
         // alert(result.token);
       } else {
         // Otherwise, un-disable inputs.

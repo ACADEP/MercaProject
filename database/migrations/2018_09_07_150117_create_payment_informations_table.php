@@ -17,9 +17,11 @@ class CreatePaymentInformationsTable extends Migration
             $table->increments('id');
             $table->integer('usuario');
             $table->string('numtarjeta');
-            $table->string('titular');
+            $table->string('titular')->nullable();
             $table->string('vigencia');
             $table->string('cvc');
+            $table->string('marca')->nullable();
+            $table->string('ultimosdigitos')->nullable();
             $table->timestamps();
         });
     }
