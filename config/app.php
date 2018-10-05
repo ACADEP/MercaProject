@@ -163,7 +163,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
-        Laravel\Cashier\CashierServiceProvider::class,
+        // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 
     ],

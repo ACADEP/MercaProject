@@ -405,14 +405,15 @@ desired effect
 <script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
 <!-- <script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script> -->
 
+<script src="{{asset('AdminLTE/dist/summernote/summernote.js')}}"></script>
+
 <script src="{{asset('/js/ajax-customer-cards.js')}}"></script>
 <script src="{{asset('/js/ajax-customer-address.js')}}"></script>
-@stack('scripts')
+{{-- @stack('scripts') --}}
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
 <!-- include summernote css/js -->
 
-<script src="{{asset('AdminLTE/dist/summernote/summernote.js')}}"></script>
 
 
 @yield('modal-reclame')

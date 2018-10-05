@@ -44,16 +44,18 @@ class PagesController extends Controller {
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(4)->get();
+        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(8)->get();
 
         $rand_brands = Brand::orderByRaw('RAND()')->take(6)->get();
 
+        $rand_shops = Shop::orderByRaw('RAND()')->take(4)->get();
+
         // Select all products with the newest one first, and where featured = 0,
         // order by random rows, and only take 8 rows from table so we can display them on the New Product section in the homepage.
-        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(4)->get();
+        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(8)->get();
 
         
-        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_brands','categories'));
+        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
     }
 
     /**
@@ -139,6 +141,7 @@ class PagesController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
+
         return view('brand.show', compact('products', 'brands', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
     }
 
@@ -146,6 +149,18 @@ class PagesController extends Controller {
     {
         $categories = Category::all();
         return view('pages.categories',compact('categories'));
+    }
+
+    public function displayAllBrands()
+    {
+        $brands = Brand::all();
+        return view('pages.partials.all-brands',compact('brands'));
+    }
+
+    public function displayAllShops()
+    {
+        $shops = Shop::all();
+        return view('pages.partials.all-shops',compact('shops'));
     }
 
 }

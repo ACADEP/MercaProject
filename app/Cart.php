@@ -28,5 +28,8 @@ class Cart extends Model {
         return $this->belongsTo(User::class);
     }
 
+    public function FormatDate() {
+        Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+    }
 
 }

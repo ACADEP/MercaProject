@@ -10,8 +10,9 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> 
-    
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>  --}}
+        <script src="{{asset('/js/bootstrap-datepicker.js')}}"></script>
+        
 
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -37,11 +38,12 @@
               </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px">
                   <label for="mes">Mes:</label>
-                  <input name="mes" class="date-own form-control" id="expiry_month" type="text" required class="form-control">
+                  <input name="mes" class="date-own form-control" id="expiry_month" type="text" value="" required class="form-control">
+                  
                   <script type="text/javascript">
                       $('.date-own').datepicker({
                         minViewMode: 1,
-                        format: 'mm'
+                        format: 'mm',
                       });
                   </script>
                 </div>
@@ -52,6 +54,10 @@
                       $('.date-own').datepicker({
                         minViewMode: 2,
                         format: 'yy'
+                      });
+                      $('.date-own').datepicker({
+                        "setDate": new Date(),
+                        "autoclose": true
                       });
                   </script>
                 </div>

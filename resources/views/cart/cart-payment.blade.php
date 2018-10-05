@@ -24,7 +24,6 @@
                 </div>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-<<<<<<< HEAD
                         
                         <form action="/cart/confirmation" method="POST">
                             {{ csrf_field() }}
@@ -40,10 +39,6 @@
                           </form>
 
                         {{-- <div class="globalContent">
-=======
-                        <!-- incio strippe -->
-                        <div class="globalContent">
->>>>>>> Nuevo-Inicio
                             <!--Example 2-->
                             
                             <div class="hola cell example example2">
@@ -97,7 +92,6 @@
                             </div>
                         </div> --}}
 
-                        </div>
                         <!-- strippe-->
                     </div>
                 </div>
@@ -184,6 +178,73 @@
 
                     </div>
                 </div>
+
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Pago en Banco
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion"> 
+                    <div class="card-body">
+                        {{-- <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script> --}}
+                        <form action="/cart/confirmation-banco" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary" formtarget="_blank">Depositar en Bancomer</button>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Pago Tiendas de Conveniencia
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/cart/confirmation-store" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary"  formtarget="_blank">Pagar en Tiendas de Conveniencia</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card-header" id="headingFive">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Notificaciones OpenPay
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/notificacions/openpay" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary">Notificacion</button>
+                        </form>    
+                    </div>
+                </div>
+                
+                <div class="card-header" id="headingSix">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Notificaciones Paypal
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/notificacions/paypal" method="post">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn btn-primary">Notificacion</button>
+                        </form>    
+                    </div>
+                </div>    
+
                 
             </div>
 
@@ -192,6 +253,7 @@
     </div>
     
     <script>
+        //stripe
         var elements = stripe.elements({
               fonts: [
                 {
@@ -271,6 +333,15 @@
             
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
     </script>
+
+    {{-- <script type="text/javascript">
+        $(document),ready(function() {
+            OpenPay.setId('mk5lculzgzebbpxpam6x');
+            OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+            OpenPay.setSandboxMode(true);
+        });
+    </script> --}}
+
 
 </div>
 

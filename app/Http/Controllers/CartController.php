@@ -7,7 +7,10 @@ use Validator;
 use App\Product;
 use App\User;
 use App\Sale;
+use App\Address;
 use App\CustomerHistory;
+use App\Customer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -278,5 +281,264 @@ class CartController extends Controller {
             echo("Mensaje no enviado");
         }
     }
+
+    public function addUserOpenpay() {
+
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+
+        $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
+        $useraddresses = Address::where("usuario",Auth::user()->id)->first();
+            $customerData = array(
+            'external_id' => Auth::user()->id,
+            'name' => $usercustomer->nombre,
+            'last_name' => $usercustomer->apellidos,
+            'email' => Auth::user()->email,
+            'phone_number' => $usercustomer->telefono,
+            'address' => array(
+                    'line1' => $useraddresses->calle,
+                    'line2' => $useraddresses->calle2,
+                    'line3' => $useraddresses->calle3,
+                    'postal_code' => $useraddresses->cp,
+                    'state' => $useraddresses->estado,
+                    'city' => $useraddresses->ciudad,
+                    'country_code' => 'MX'));
+        $customer = $openpay->customers->add($customerData);
+
+    }
+
+    public function PagosBanco() {
+
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+        $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
+        $useraddresses = Address::where("usuario",Auth::user()->id)->first();
+
+        try {
+        $random = rand(0, 99999);
+
+        $customerData = array(
+            // 'external_id' => Auth::user()->id,
+            'name' => $usercustomer->nombre,
+            'last_name' => $usercustomer->apellidos,
+            'email' => Auth::user()->email,
+            'phone_number' => $usercustomer->telefono,
+            'address' => array(
+                    'line1' => $useraddresses->calle,
+                    'line2' => $useraddresses->calle2,
+                    'line3' => $useraddresses->calle3,
+                    'postal_code' => $useraddresses->cp,
+                    'state' => $useraddresses->estado,
+                    'city' => $useraddresses->ciudad,
+                    'country_code' => 'MX'));
+
+        $chargeData = array(
+            'method' => 'bank_account',
+            'amount' => 50.00,
+            'description' => 'Cargo con Bancomer',
+            'order_id' => 'oid-'.$random, //oid-00051 id del carrito
+            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'customer' => $customerData );
+        $charge = $openpay->charges->create($chargeData);
+
+        if($charge){
+            return redirect('https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
+        }
+        
+        } catch (OpenpayApiTransactionError $e) {
+            error_log('ERROR on the transaction: ' . $e->getMessage() . 
+                  ' [error code: ' . $e->getErrorCode() . 
+                  ', error category: ' . $e->getCategory() . 
+                  ', HTTP code: '. $e->getHttpCode() . 
+                  ', request ID: ' . $e->getRequestId() . ']', 0);
+            echo "ERROR A";
+        
+        } catch (OpenpayApiRequestError $e) {
+            error_log('ERROR on the request: ' . $e->getMessage(), 0);
+            echo "ERROR B";
+            echo $e;
+        
+        } catch (OpenpayApiConnectionError $e) {
+            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
+            echo "ERROR C";
+        
+        } catch (OpenpayApiAuthError $e) {
+            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
+            echo "ERROR D";
+        } catch (OpenpayApiError $e) {
+            error_log('ERROR on the API: ' . $e->getMessage(), 0);
+            echo "ERROR E";
+            
+        } catch (Exception $e) {
+            error_log('Error on the script: ' . $e->getMessage(), 0);
+            echo "ERROR F";
+        }
+        
+    }
+
+    public function PagosStore() {
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+        $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
+        $useraddresses = Address::where("usuario",Auth::user()->id)->first();
+        Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+
+        try {
+        $random = rand(0, 99999);
+
+        $customerData = array(
+            // 'external_id' => Auth::user()->id,
+            'name' => $usercustomer->nombre,
+            'last_name' => $usercustomer->apellidos,
+            'email' => Auth::user()->email,
+            'phone_number' => $usercustomer->telefono,
+            'address' => array(
+                    'line1' => $useraddresses->calle,
+                    'line2' => $useraddresses->calle2,
+                    'line3' => $useraddresses->calle3,
+                    'postal_code' => $useraddresses->cp,
+                    'state' => $useraddresses->estado,
+                    'city' => $useraddresses->ciudad,
+                    'country_code' => 'MX'));
+
+        $chargeData = array(
+            'method' => 'store',
+            'amount' => 10.00,
+            'description' => 'Cargo a tienda',
+            'order_id' => 'oid-'.$random, //oid-00051 id del carrito
+            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'customer' => $customerData );
+        
+        $charge = $openpay->charges->create($chargeData);
+
+        if($charge){
+            return redirect('https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
+        }
+        
+        } catch (OpenpayApiTransactionError $e) {
+            error_log('ERROR on the transaction: ' . $e->getMessage() . 
+                  ' [error code: ' . $e->getErrorCode() . 
+                  ', error category: ' . $e->getCategory() . 
+                  ', HTTP code: '. $e->getHttpCode() . 
+                  ', request ID: ' . $e->getRequestId() . ']', 0);
+            echo "ERROR A";
+        
+        } catch (OpenpayApiRequestError $e) {
+            error_log('ERROR on the request: ' . $e->getMessage(), 0);
+            echo "ERROR B";
+            echo $e;
+        
+        } catch (OpenpayApiConnectionError $e) {
+            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
+            echo "ERROR C";
+        
+        } catch (OpenpayApiAuthError $e) {
+            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
+            echo "ERROR D";
+        } catch (OpenpayApiError $e) {
+            error_log('ERROR on the API: ' . $e->getMessage(), 0);
+            echo "ERROR E";
+            
+        } catch (Exception $e) {
+            error_log('Error on the script: ' . $e->getMessage(), 0);
+            echo "ERROR F";
+        }
+
+    }
+
+    public function OpnepayWebhook() {
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+
+        try {
+            $webhook = array(
+                'url' => 'http://requestb.in/11vxrsf1',
+                'user' => 'juanito',
+                'password' => 'passjuanito',
+                'event_types' => array(
+                  'charge.refunded',
+                  'charge.failed',
+                  'charge.cancelled',
+                  'charge.created',
+                  'chargeback.accepted'
+                )
+                );
+            
+            $webhooks = $openpay->webhooks->create($webhook);
+            dd($webhooks);
+            if($webhooks){
+                return view('cart.cart-confirmation');
+            }
+        
+        } catch (OpenpayApiRequestError $e) {
+            error_log('ERROR on the request: ' . $e->getMessage(), 0);
+            echo "ERROR A";
+            echo $e;
+        
+        } catch (OpenpayApiConnectionError $e) {
+            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
+            echo "ERROR B";
+        
+        } catch (OpenpayApiAuthError $e) {
+            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
+            echo "ERROR C";
+        } catch (OpenpayApiError $e) {
+            error_log('ERROR on the API: ' . $e->getMessage(), 0);
+            echo "ERROR D";
+            
+        } catch (Exception $e) {
+            error_log('Error on the script: ' . $e->getMessage(), 0);
+            echo "ERROR E";
+        }
+
+    }
+
+    public function PaypalWebhook() {
+        $webhook = new \PayPal\Api\Webhook();
+
+        // Set webhook notification URL     
+        $webhook->setUrl("https://mercageek.com/notificacions/paypal" . uniqid());
+        
+        // # Event Types
+        // Event types correspond to what kind of notifications you want to receive on the given URL.
+        $webhookEventTypes = array();
+        $webhookEventTypes[] = new \PayPal\Api\WebhookEventType(
+            '{
+                "name":"PAYMENT.AUTHORIZATION.CREATED"
+            }'
+        );
+        $webhookEventTypes[] = new \PayPal\Api\WebhookEventType(
+            '{
+                "name":"PAYMENT.AUTHORIZATION.VOIDED"
+            }'
+        );
+        // dd($webhookEventTypes);
+        $webhook->setEventTypes($webhookEventTypes);
+        // dd($webhook);
+
+        // For Sample Purposes Only.
+        $request = clone $webhook;
+        // ### Create Webhook
+        try {
+            $output = $webhook->create($apiContext);
+            dd($output);
+        } catch (Exception $ex) {
+            if ($ex instanceof \PayPal\Exception\PayPalConnectionException) {
+                $data = $ex->getData();
+                if (strpos($data, 'WEBHOOK_NUMBER_LIMIT_EXCEEDED') !== false) {
+                    // require 'DeleteAllWebhooks.php';
+                    try {
+                        $output = $webhook->create($apiContext);
+                        dd($output);
+                    } catch (Exception $ex) {
+                        exit(1);
+                    }
+                } else {
+                    exit(1);
+                }
+            } else {
+                exit(1);
+            }
+        }
+        return $output;
+
+    }    
+
     
 }

@@ -38,10 +38,10 @@
 
                  <div class="col-md-4 text-center">
                     <p>Formas de pago</p>
-                    <img src="/images/WaystoPays/PayPal.png">
-                    <img src="/images/WaystoPays/Visa.png">
-                    <img src="/images/WaystoPays/OXXO.png">
                     <img src="/images/WaystoPays/Mastercard.png">
+                    <img src="/images/WaystoPays/Visa.png">
+                    <img src="/images/WaystoPays/PayPal.png">
+                    <img src="/images/WaystoPays/OXXO.png">
                     <img src="/images/WaystoPays/Dollar.png">
                 </div>
                 

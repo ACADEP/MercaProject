@@ -32,10 +32,30 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('allcategory','PagesController@displayAllCategories')->name('categories.all');
 
     /** Display Products by Brand Route **/
-    Route::get('brand/{id}','PagesController@displayProductsByBrand');
+    // Route::get('/brand/{id}','PagesController@displayProductsByBrand');
+    Route::get('/brand/{id}', [
+        'uses' => '\App\Http\Controllers\PagesController@displayProductsByBrand',
+        'as'   => 'brand',
+    ]);
 
-    /** Display all products for shop Route **/
-    Route::get('shop/{id}','ShopController@showproducts');
+    /** Display all products by shop Route **/
+    // Route::get('shop/{id}','ShopController@showproducts');
+    Route::get('/shop/{id}', [
+        'uses' => '\App\Http\Controllers\ShopController@showproducts',
+        'as'   => 'shop',
+    ]);
+
+    /** Display all Brands Route **/
+    Route::get('/brands', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllBrands',
+        'as'   => 'all.brands',
+    ]);
+
+    /** Display all Shops Route **/
+    Route::get('/shops', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllShops',
+        'as'   => 'all.shops',
+    ]);
 
     /** Route to post search results **/
     Route::post('/queries', [
@@ -323,6 +343,10 @@ Route::group(["middleware" => 'customer'], function(){
     // Route::post('/deletecards','PaymentInformationController@deleteCard')->name('delete-Cards');
     
     
+
+
+
+
     /*************************************************** payment items in the cart ***************************************************/
     Route::get('/cart/payment', [
         'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
@@ -334,7 +358,7 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'cart.payment',
     ]);
 
-    /** payment items confirmation in the cart **/
+    /** payment items confirmation in the cart with Stripe **/
     Route::post('/cart/confirmation', [
         'uses' => '\App\Http\Controllers\CartController@confirmation',
         'as'   => 'cart.confirmation.stripe',
@@ -345,6 +369,28 @@ Route::group(["middleware" => 'customer'], function(){
     //     'as'   => 'cart.confirmation.paypal',
     // ]);
 
+    /** payment items confirmation in the cart with Openpay Banco **/
+    Route::post('/cart/confirmation-banco', [
+        'uses' => '\App\Http\Controllers\CartController@PagosBanco',
+        'as'   => 'openpay.banco',
+    ]);
+
+    /** payment items confirmation in the cart with Openpay Tiendas **/
+    Route::post('/cart/confirmation-store', [
+        'uses' => '\App\Http\Controllers\CartController@PagosStore',
+        'as'   => 'openpay.store',
+    ]);    
+
+    Route::post('/notificacions/openpay', [
+        'uses' => '\App\Http\Controllers\CartController@OpnepayWebhook',
+        'as'   => 'openpay.notificacions',
+    ]);    
+
+    Route::post('/notificacions/paypal', [
+        'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',
+        'as'   => 'paypal.notificacions',
+    ]);    
+
 
         
     Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');
@@ -352,7 +398,14 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('customer/profile/reclame','CustomerHistoryController@reclame')->name('make-reclame');
 
     Route::post('/addphotoreclame','CustomerHistoryController@store')->name('add-Photo-reclame');
+
 });
+
+
+
+
+
+
 /*********************************************Shipmeents GoShoppo**********************************/
     Route::get('/testShipment',"ShipmentController@test");
 
