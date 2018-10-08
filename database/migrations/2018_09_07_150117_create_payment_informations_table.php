@@ -16,10 +16,12 @@ class CreatePaymentInformationsTable extends Migration
         Schema::create('payment_informations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('usuario');
-            $table->string('numtarjeta');
+            $table->string('idCardOpenpay')->nullable();
+            $table->string('idCustomerOpenpay')->nullable();
+            $table->string('numtarjeta')->nullable();
             $table->string('titular')->nullable();
-            $table->string('vigencia');
-            $table->string('cvc');
+            $table->string('vigencia')->nullable();
+            $table->string('cvc')->nullable();
             $table->string('marca')->nullable();
             $table->string('ultimosdigitos')->nullable();
             $table->timestamps();

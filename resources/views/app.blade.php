@@ -34,7 +34,9 @@
         <!-- <link rel="stylesheet" href="{{ asset('/css/typeahead.css') }}"> -->
         <!-- Include lity ligh-tbox file -->
         <link rel="stylesheet" href="{{ asset('/css/lity.css') }}">
-        
+        {{-- css openpay         --}}
+        <link rel="stylesheet" href="{{ asset('/css/openpay.css') }}">
+
         <!-- Added the main.css file that combines app.scss and app.css togather -->
         
 
@@ -69,9 +71,18 @@
             }
         </script>       
         <script src="/js/index-stripe.js" data-rel-js></script>
-        {{-- Openpay --}}
+
+        <!-- Openpay -->
         <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
-                
+        <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                   OpenPay.setId('mk5lculzgzebbpxpam6x');
+                   OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+                   OpenPay.setSandboxMode(true);
+           });
+       </script>
+
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
