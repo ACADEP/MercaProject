@@ -21,7 +21,7 @@ $(document).ready(function(){
                                 }
                             ]}
                         ,};
-            
+        console.log(formData);  
         $.ajax({
             url: 'https://enviaya.com.mx/api/v1/rates',
             method: 'POST',
@@ -114,8 +114,8 @@ $(document).ready(function(){
             },
            
             error: function(response){
-                console.log(response);
-                alert("Intente de nuevo");
+                alert("No se pudieron cargar las paqueterias");
+                $('#loader').remove();
             }
     
         });

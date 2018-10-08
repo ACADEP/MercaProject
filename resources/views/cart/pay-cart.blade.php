@@ -448,7 +448,7 @@ $(document).ready(function () {
             }
             else if($("#defaultUnchecked6").prop("checked"))
             {
-                alert("Metodo en desarollo");
+                $('#pay-pal').modal('show');
                 
             }
             else if($("#defaultUnchecked7").prop("checked"))
@@ -619,6 +619,85 @@ $(document).ready(function () {
 
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
 </script>
+@stop
+
+@section('modal-paypal')
+<div class="modal fade" id="pay-pal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title text-center" id="exampleModalLongTitle">Pay Pal</h1>
+      </div>
+      <div class="modal-body text-center">
+      <div id="paypal-button-container"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        // Render the PayPal button
+                        paypal.Button.render({
+                        // Set your environment
+                        env: 'sandbox', // sandbox | production
+
+                        // Specify the style of the button
+                        style: {
+                        layout: 'vertical',  // horizontal | vertical
+                        size:   'responsive',    // medium | large | responsive
+                        shape:  'pill',      // pill | rect
+                        color:  'black'       // gold | blue | silver | white | black
+                        },
+
+                        // Specify allowed and disallowed funding sources
+                        //
+                        // Options:
+                        // - paypal.FUNDING.CARD
+                        // - paypal.FUNDING.CREDIT
+                        // - paypal.FUNDING.ELV
+                        funding: {
+                        allowed: [
+                            paypal.FUNDING.CARD,
+                            paypal.FUNDING.CREDIT
+                        ],
+                        disallowed: []
+                        },
+
+                        // PayPal Client IDs - replace with your own
+                        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                        client: {
+                        sandbox: 'AcbJmhLyQjcEbqe44-pfFrSk3UrV03SwoFSgFgwwoFfiCl8Qjda6ePlsHIyb0nCjzhOQDkUgsya5EHXn',
+                        production: '<insert production client id>'
+                        },
+
+                        payment: function (data, actions) {
+                        return actions.payment.create({
+                            payment: {
+                            transactions: [
+                                {
+                                amount: {
+                                    total: '10.00',
+                                    currency: 'MXN'
+                                }
+                                }
+                            ]
+                            }
+                        });
+                        },
+
+                        onAuthorize: function (data, actions) {
+                        return actions.payment.execute()
+                            .then(function () {
+                            window.alert('Payment Complete!');
+                            });
+                        }
+                        }, '#paypal-button-container');
+                        </script>
+
+                        {{-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="9VMXDFPYPU7EL">
+                            <input type="image" src="https://www.paypalobjects.com/es_XC/MX/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+                        </form> --}}
+                        
+      </div> <!-- fin del modal -->
 @stop
 
 @section('ajax-shipment')

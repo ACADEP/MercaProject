@@ -11,6 +11,7 @@ use App\Address;
 use App\CustomerHistory;
 use App\Customer;
 use Carbon\Carbon;
+use App\EnviaYa;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -49,6 +50,9 @@ class CartController extends Controller {
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
+        $enviaYa=new EnviaYa;
+        $enviaYa->getRates();
+        dd($enviaYa);
         return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
     }
 
@@ -451,23 +455,23 @@ class CartController extends Controller {
 
     public function OpnepayWebhook() {
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-
         try {
             $webhook = array(
-                'url' => 'http://requestb.in/11vxrsf1',
-                'user' => 'juanito',
-                'password' => 'passjuanito',
+                'url' => 'http://mercaproject.oo/webhook',
+                'user' => 'Mercadata',
+                'password' => 'Acadep.2018$$',
                 'event_types' => array(
-                  'charge.refunded',
-                  'charge.failed',
-                  'charge.cancelled',
-                  'charge.created',
-                  'chargeback.accepted'
+                    'charge.refunded',
+                    'charge.failed',
+                    'charge.cancelled',
+                    'charge.created',
+                    'chargeback.accepted'
                 )
-                );
-            
+                
+            );
             $webhooks = $openpay->webhooks->create($webhook);
             dd($webhooks);
+
             if($webhooks){
                 return view('cart.cart-confirmation');
             }
@@ -544,7 +548,12 @@ class CartController extends Controller {
         }
         return $output;
 
-    }    
+    } 
+    
+    public function notify(Request $request)
+    {
+        dd($request);
+    } 
 
     
 }

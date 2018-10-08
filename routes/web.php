@@ -13,7 +13,7 @@
 
 //precio bajo
 Route::post('/priceLow', 'testController@order');
-
+Route::post('/webhook', 'CartController@notify');
 /** Route to get typehead results **/
 Route::get('/data', [
     'uses' => 'QueryController@data',

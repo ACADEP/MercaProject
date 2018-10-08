@@ -222,6 +222,7 @@
     </script>
    
     @yield('modal-debit')
+    @yield('modal-paypal')
     @yield('styles')
     @yield('js')
     @yield('css-pay')

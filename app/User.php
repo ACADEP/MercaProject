@@ -104,6 +104,20 @@ class User extends Authenticatable
         return $this->hasMany(Address::class, 'usuario');
     }
 
+    public function addressActive()
+    {
+        $addresses=$this->address()->get();
+        $address_active="";
+        foreach($addresses as $address)
+        {
+            if($address->activo==1)
+            {
+                $address_active=$address;
+            }
+        }
+        return $address_active;
+    }
+
     public function updateAddressActive($id)
     {
         $addresses=$this->address()->get();
@@ -121,9 +135,6 @@ class User extends Authenticatable
         
 
         return $addressActive;
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'usuario');
     }
 
     public function paymentscard()
