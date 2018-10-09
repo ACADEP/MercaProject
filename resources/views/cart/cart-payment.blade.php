@@ -243,8 +243,171 @@
                             <button type="submit" class="btn btn-primary">Notificacion</button>
                         </form>    
                     </div>
-                </div>    
+                </div>   
+                
+                <div class="card-header" id="headingSeven">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                            Tarjeta de credito o debito OpenPay
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion"> 
+                    <div class="card-body">
 
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+
+                                /*OpenPay.setId('mk5lculzgzebbpxpam6x');
+                                OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+                                OpenPay.setSandboxMode(true);*/
+                                //Se genera el id de dispositivo
+                                var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
+                                
+                                $('#pay-button').on('click', function(event) {
+                                    event.preventDefault();
+                                    $("#pay-button").prop( "disabled", true);
+                                    OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);                
+                                });
+
+                                var sucess_callbak = function(response) {
+                                var token_id = response.data.id;
+                                $('#token_id').val(token_id);
+                                $('#payment-form').submit();
+                                };
+
+                                var error_callbak = function(response) {
+                                    var desc = response.data.description != undefined ? response.data.description : response.message;
+                                    alert("ERROR [" + response.status + "] " + desc);
+                                    $("#pay-button").prop("disabled", false);
+                                };
+
+                            });
+                        </script>
+
+                        <div class="bkng-tb-cntnt">
+                            <div class="pymnts">
+                                <form action="/cart/payment/openpay" method="POST" id="payment-form">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="token_id" id="token_id">
+                                    <div class="pymnt-itm card active">
+                                        <h2>Tarjeta de crédito o débito</h2>
+                                        <div class="pymnt-cntnt">
+                                            <div class="card-expl">
+                                                <div class="credit"><h4>Tarjetas de crédito</h4></div>
+                                                <div class="debit"><h4>Tarjetas de débito</h4></div>
+                                            </div>
+                                            <div class="sctn-row">
+                                                <div class="sctn-col l">
+                                                    <label>Nombre del titular</label><input type="text" placeholder="Como aparece en la tarjeta" autocomplete="off" data-openpay-card="holder_name">
+                                                </div>
+                                                <div class="sctn-col">
+                                                    <label>Número de tarjeta</label><input type="text" autocomplete="off" data-openpay-card="card_number"></div>
+                                                </div>
+                                                <div class="sctn-row">
+                                                    <div class="sctn-col l">
+                                                        <label>Fecha de expiración</label>
+                                                        <div class="sctn-col half l"><input type="text" placeholder="Mes" data-openpay-card="expiration_month"></div>
+                                                        <div class="sctn-col half l"><input type="text" placeholder="Año" data-openpay-card="expiration_year"></div>
+                                                    </div>
+                                                    <div class="sctn-col cvv"><label>Código de seguridad</label>
+                                                        <div class="sctn-col half l"><input type="text" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="openpay"><div class="logo">Transacciones realizadas vía:</div>
+                                                <div class="shield">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
+                                            </div>
+                                            <div class="sctn-row">
+                                                    <a class="button rght" id="pay-button">Pagar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> 
+
+                <div class="card-header" id="headingEight">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                            Agregar Cliente Openpay
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion"> 
+                    <div class="card-body">
+
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+
+                                var deviceSessionId = OpenPay.deviceData.setup("customer-form", "device_session_id");
+
+                                $('#save-button').on('click', function(event) {
+                                    event.preventDefault();
+                                    $("#save-button").prop( "disabled", true);
+                                    OpenPay.token.extractFormAndCreate('customer-form', success_callbak, error_callbak);
+                                });
+
+                                var success_callbak = function(response) {
+                                    var token_id = response.data.id;
+                                    //$('#token_id').val(token_id);
+                                    document.addClient.token_id.value = token_id;
+                                    $('#customer-form').submit();
+                                };
+
+                                var error_callbak = function(response) {
+                                    var desc = response.data.description != undefined ? response.data.description : response.message;
+                                    alert("ERROR [" + response.status + "] " + desc);
+                                    $("#save-button").prop("disabled", false);
+                                };
+
+                            });
+                        </script>
+
+                        <form action="/save_customer_card" method="POST" id="customer-form" name="addClient">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="token_id" id="token_id">
+                            <fieldset>
+                                <legend>Datos del cliente</legend>
+                            <p>
+                                <label>Nombre</label>
+                                <input type="text" size="20" autocomplete="on" name="client_name"/>
+                            </p>
+                            <p>
+                                <label>Correo Electr&oacute;nico</label>
+                                <input type="text" size="20" autocomplete="on" name="cliente_email"/>
+                            </p>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Datos de la tarjeta</legend>
+                            <p>
+                                <label>Nombre</label>
+                                <input type="text" size="20" autocomplete="off"
+                                data-openpay-card="holder_name" />
+                            </p>
+                            <p>
+                                <label>N&uacute;mero</label>
+                                <input type="text" size="20" autocomplete="off"
+                                data-openpay-card="card_number" />
+                            </p>
+                            <p>
+                                <label>CVV2</label>
+                                <input type="text" size="4" autocomplete="off"
+                                data-openpay-card="cvv2" />
+                            </p>
+                            <p>
+                                <label>Fecha de expiraci&oacute;n (MM/YY)</label>
+                                <input type="text" size="2" data-openpay-card="expiration_month" /> /
+                                <input type="text" size="2" data-openpay-card="expiration_year" />
+                            </p>
+                            </fieldset>
+                            <input type="submit" id="save-button" value="Pagar"/>
+                        </form>
+
+                    </div>
+                </div>   
                 
             </div>
 
@@ -252,7 +415,7 @@
         </div>
     </div>
     
-    <script>
+    {{-- <script>
         //stripe
         var elements = stripe.elements({
               fonts: [
@@ -332,14 +495,6 @@
             cardCvc.mount('#example2-card-cvc');
             
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
-    </script>
-
-    {{-- <script type="text/javascript">
-        $(document),ready(function() {
-            OpenPay.setId('mk5lculzgzebbpxpam6x');
-            OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
-            OpenPay.setSandboxMode(true);
-        });
     </script> --}}
 
 

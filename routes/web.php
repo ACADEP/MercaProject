@@ -20,6 +20,11 @@ Route::get('/data', [
     'as'   => 'data.json',
 ]);
 
+Route::post('/notificaciones/openpay', [
+    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhook',
+    'as'   => 'openpay.notificacions',
+]); 
+
 Route::group(['middleware' => ['web']], function () {
 
     /** Get the Home Page **/
@@ -342,6 +347,12 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'customer.payments.delete',
     ]);
 
+    /** Add client with Openpay **/
+    Route::post('/save_customer_card', [
+        'uses' => '\App\Http\Controllers\CartController@AddClientOpenpay',
+        'as'   => 'add.card.openpay',
+    ]);
+
     // Route::post('/deletecards','PaymentInformationController@deleteCard')->name('delete-Cards');
     
     
@@ -383,16 +394,17 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'openpay.store',
     ]);    
 
-    Route::post('/notificacions/openpay', [
-        'uses' => '\App\Http\Controllers\CartController@OpnepayWebhook',
-        'as'   => 'openpay.notificacions',
-    ]);    
+       
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',
         'as'   => 'paypal.notificacions',
     ]);    
 
+    Route::post('/cart/payment/openpay', [
+        'uses' => '\App\Http\Controllers\CartController@CardOpenpay',
+        'as'   => 'cart.payment.openpay',
+    ]);
 
         
     Route::get('customer/profile/myshopping','CustomerHistoryController@show')->name('my-shopping');

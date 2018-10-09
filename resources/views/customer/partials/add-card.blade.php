@@ -4,14 +4,7 @@
       <div class="modal-header">
         <h1 class="modal-title text-center" id="exampleModalLongTitle">Agregar tarjeta de crédito o débito</h1>
       </div>
-      <div class="modal-body">
-
-
-        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>  -->
-    
+      <div class="modal-body">        
 
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -24,61 +17,63 @@
         @endif
       </div>
 
-        <form action="{{ route('customer.payments.add') }}" method="POST" id="paymentForm">
-            {{csrf_field()}}
-            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
-                <label for="numcard">Número de tarjeta:</label>
-                <input type="text" id="card_number" name="numcard" maxLength='16' minLength="13" autocomplete="off" required class="form-control" value="{{old('numcard')}}">
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
-                <label for="name">Titular:</label>
-                <input type="text" id="name_on_card" name="name" maxLength='100' autocomplete="off" required class="form-control" value="{{old('name')}}">
-              </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px">
-                  <label for="mes">Mes:</label>
-                  <input name="mes" class="date-own form-control" id="expiry_month" type="text" value="" required class="form-control">
-                  
-                  <script type="text/javascript">
-                      $('.date-own').datepicker({
-                        minViewMode: 1,
-                        format: 'mm',
-                      });
-                  </script>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px">
-                  <label for="año">Año:</label>
-                  <input name="año" class="date-own form-control" id="expiry_year" type="text" required class="form-control">
-                  <script type="text/javascript">
-                      $('.date-own').datepicker({
-                        minViewMode: 2,
-                        format: 'yy'
-                      });
-                      $('.date-own').datepicker({
-                        "setDate": new Date(),
-                        "autoclose": true
-                      });
-                  </script>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px">
-                  <label for="cvccode">CVC:</label>
-                  <input type="text" id="cvv" name="cvccode" data-toggle="tooltip" data-placement="bottom" title="Este número aparece en el reverso de la tarjeta, en la zona de la firma. Son los tres últimos dígitos (después del número de cuenta)." maxLength='3' autocomplete="off" required class="form-control" value="{{old('cvccode')}}">
-                  <script>
-                    $(function () {
-                      $('[data-toggle="tooltip"]').tooltip()
-                    })
-                  </script>
-                </div>
-            </div>
-            
-            <div class="text-center" style="padding-bottom: 30px;">
-                <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Aceptar</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            </div>
-            
-        </form>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-        <script src="{{ asset('/js/creditCardValidator.js') }}"></script>
+      <script type="text/javascript">
+        $(document).ready(function() {
+
+            var deviceSessionId = OpenPay.deviceData.setup("customer-form", "device_session_id");
+
+            $('#save-button').on('click', function(event) {
+                event.preventDefault();
+                $("#save-button").prop( "disabled", true);
+                OpenPay.token.extractFormAndCreate('customer-form', success_callbak, error_callbak);
+            });
+
+            var success_callbak = function(response) {
+                var token_id = response.data.id;
+                alert(token_id);
+                //$('#token_id').val(token_id);
+                document.addClient.token_id.value = token_id;
+                $('#customer-form').submit();
+            };
+
+            var error_callbak = function(response) {
+                var desc = response.data.description != undefined ? response.data.description : response.message;
+                alert("ERROR [" + response.status + "] " + desc);
+                $("#save-button").prop("disabled", false);
+            };
+
+        });
+      </script>
+
+      <form action="/save_customer_card" method="POST" id="customer-form" name="addClient">
+        {{ csrf_field() }}
+        <input type="hidden" name="token_id" id="token_id">
+        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+            <label>Nombre</label>
+            <input type="text" class="form-control" size="20" autocomplete="off" data-openpay-card="holder_name" />
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+            <label>N&uacute;mero</label>
+            <input type="text" class="form-control" size="20" autocomplete="off" data-openpay-card="card_number" />
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+              <label>CVV2</label>
+              <input type="text" class="form-control" size="4" autocomplete="off" data-openpay-card="cvv2" />
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+              <label>Fecha de expiraci&oacute;n (MM/YY)</label>
+              <input type="text" class="form-control" size="2" data-openpay-card="expiration_month" /> /
+              <input type="text" class="form-control" size="2" data-openpay-card="expiration_year" />
+          </div>
+        </div>
+        
+        <div class="text-center" style="padding-bottom: 30px;">
+            <input type="submit" id="save-button" value="Pagar"/> 
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>
