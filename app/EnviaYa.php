@@ -33,7 +33,7 @@ class EnviaYa extends Model
         $shipment=[ 'shipment_type'=>"Package",
                     'content'=> "Productos",
                     'parcels'=>[
-                       
+                            [
                             'quantity'=>"1",
                             'weight'=>"1",
                             'weight_unit'=>"kg",
@@ -41,19 +41,25 @@ class EnviaYa extends Model
                             'height'=>"10",
                             'width'=>"15",
                             'dimension_unit'=>"cm"
+                            ]
                         
-                        ] ]; 
-       $res=$client->request('POST', $endpoint, [ \GuzzleHttp\RequestOptions::JSON => [
-            'api_key' => $api_key, 
-            'origin_direction' => $origin,
-            'destination_direction'=>$destination,
-            'carrier'=>$carrier,
-            'carrier_service_code'=>$carrier_service_code,
-            'shipment'=> $shipment
-        ]]);
-        
-        dd($res);
-        return $res->getStatusCode();
+                        ] ];
+        $requestContent = [
+            'headers' => [
+            ],
+            'json' => [
+                'api_key' => $api_key, 
+                'origin_direction' => $origin,
+                'destination_direction'=>$destination,
+                'carrier'=>$carrier,
+                'carrier_service_code'=>$carrier_service_code,
+                'shipment'=> $shipment
+                // 'debug' => true
+            ]
+        ]; 
+       $res=$client->request('POST', $endpoint, $requestContent);
+       
+        return json_decode($res->getBody());
     }
 
     public function getRates()
@@ -80,7 +86,6 @@ class EnviaYa extends Model
                 // 'debug' => true
             ]
         ];
-        // dd($requestContent);
         $res=$client->request('POST', $url, $requestContent);
         
         dd(json_decode($res->getBody()));

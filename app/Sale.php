@@ -25,11 +25,12 @@ class Sale extends Model
         return $this->hasMany(PhotosReclame::class);
     }
 
-    public function Insert($total)
+    public function Insert($total, $shipment_method)
     {
         $this->user_id=Auth::user()->id;
         $this->date=Carbon::now();
         $this->url_fact="#";
+        $this->shipment_method=$shipment_method;
         $this->status_pago="Acreditado";
         $this->status_envio="En preparación";
         $this->status_reclamo="Abrir un reclamo";

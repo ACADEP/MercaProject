@@ -407,7 +407,12 @@ Route::group(["middleware" => 'customer'], function(){
     /** payment items confirmation in the cart with Stripe **/
     Route::post('/cart/confirmation', [
         'uses' => '\App\Http\Controllers\CartController@confirmation',
-        'as'   => 'cart.confirmation.stripe',
+        'as'   => 'cart.confirmation',
+    ]);
+
+    Route::get('/cart/confirmation', [
+        'uses' => '\App\Http\Controllers\CartController@confirmation',
+        'as'   => 'cart.confirmation',
     ]);
 
     // Route::post('/cart/confirmation', [

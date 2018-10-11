@@ -1,11 +1,4 @@
-@charset "US-ASCII";
-@import "http://fonts.googleapis.com/css?family=Lato:300,400,700";
-* {
-    color: #444;
-    font-family: Lato;
-    font-size: 16px;
-    font-weight: 300;
-}
+
 ::-webkit-input-placeholder {
    font-style: italic;
 }
@@ -19,7 +12,7 @@
    font-style: italic;
 }
 
-body {
+/* body {
     float: left;
     margin: 0;
     padding: 0;
@@ -32,7 +25,7 @@ a {
     cursor: pointer;
     display: block;
     text-decoration: none;
-}
+} */
 a.button {
     border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
@@ -52,16 +45,20 @@ a.button {
     background: linear-gradient(top,  #E51F04 0%,#A60000 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E51F04', endColorstr='#A60000',GradientType=0 );
 }
-a.button i {
+/* a.button i {
     margin-right: 10px;
 }
 a.button.disabled {
     background: none repeat scroll 0 0 #ccc;
     cursor: default;
+} */
+@media screen and (min-width: 992px) {
+    .modal-lg {
+      width: 9500px; /* New width for large modal */
+    }
 }
 .bkng-tb-cntnt {
     float: left;
-    width: 800px;
 }
 .bkng-tb-cntnt a.button {
     color: #fff;
@@ -139,11 +136,11 @@ a.button.disabled {
     float: right;
 }
 .pymnts-sctn {
-    width: 800px;
+    width: 100%;
 }
 .pymnt-itm {
     margin: 0 0 3px;
-    width: 800px;
+    width: 100%;
 }
 .pymnt-itm h2 {
     background-color: #e9e9e9;

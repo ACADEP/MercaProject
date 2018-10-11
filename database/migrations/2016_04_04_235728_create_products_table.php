@@ -26,6 +26,11 @@ class CreateProductsTable extends Migration
             $table->integer('cat_id')->unsigned()->nullable();
             $table->integer('brand_id')->unsigned()->nullable();
 
+            $table->integer('weight')->unsigned()->nullable();
+            $table->integer('length')->unsigned()->nullable();
+            $table->integer('height')->unsigned()->nullable();
+            $table->integer('width')->unsigned()->nullable();
+
             $table->integer('featured')->default(0);
             $table->text('description')->nullable();
             $table->text('product_spec')->nullable();
