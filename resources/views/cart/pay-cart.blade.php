@@ -1,22 +1,24 @@
 @extends('app')
 
 @section('content')
+<div id="loader-contener"><div id="loader"></div></div>
+    
+<br>
 
-
-<h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
 <!-- Stepper -->
 <div class="row">
 <div class="col-md-8 border" >
+    <h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
     <div class="steps-form-2">
         <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
             <div class="steps-step-2">
                 <a href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Dirección"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
             </div>
             <div class="steps-step-2">
-                <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paqueteria"><i class="fa fa-truck" aria-hidden="true"></i></a>
+                <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
             </div>
             <div class="steps-step-2">
-                <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Metodo de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
+                <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Método de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
             </div>
             <div class="steps-step-2">
                 <a href="#step-4" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect mr-0" data-toggle="tooltip" data-placement="top" title="Verificar"><i class="fa fa-check" aria-hidden="true"></i></a>
@@ -28,16 +30,36 @@
     <!-- <form role="form" action="" method="post"> -->
         <div class="row setup-content-2" id="step-1">
             <div class="col-md-12">
+           
             <h3 class="font-weight-bold pl-0 my-4"><strong>Dirección</strong></h3>
-                @if($address != null)
-                
-                    <div class="text-right"><a href="{{ url('/customer/address') }}" style="color:blue;">Cambiar de dirección</a></div>
+            @php $i=1;@endphp
+                @if($addresses->count() > 0)
+                    @if($addresses->count() < 3 )
+                        <div class="text-right"><a data-toggle="modal" data-target="#add_address" style="color:blue;">Agregar una dirección</a></div>
+                    @endif
+                    <h4>Será enviado a:</h4>
+                    @foreach($addresses as $address)
                     
-                    <h4>Sera enviado a:</h4>
-                    <div class="border" style="font-size:23px;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> <strong>CP:</strong>{{$address->cp}} <strong>Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
-                    <strong>Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} Colonia: {{ $address->colonia }}
-
+                    <div class="border" style="font-size:15px;">
+                    <div class="custom-control custom-radio" style="margin-top: 10px;">
+                    &nbsp;<input type="radio" class="custom-control-input radio-address" {{ $address->activo==1 ? 'id=defaultChecked checked' : 'id=defaultUnchecked'.$i }} value="{{ $address->id }}"   name="defaultExampleRadios3">
+                        <label class="custom-control-label" {{ $address->activo==1 ? 'for=defaultChecked' : 'for=defaultUnchecked'.$i }} >Activar dirección</label>
                     </div>
+                    <hr>
+                    &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
+                    <strong>CP:</strong>{{$address->cp}} <br>
+                    <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
+                    <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
+                    <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
+                    <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
+                    <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
+                    <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
+                    </div>
+                   
+                    <br>
+
+                     @php $i++; @endphp
+                    @endforeach
                     
                 @else
                     <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una dirección</a>
@@ -51,24 +73,24 @@
     <!-- Second Step -->
         <div class="row setup-content-2" id="step-2">
             <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Envio</strong></h3>
-                <div class="row">
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Envío</strong></h3>
+                <div class="row" id="shipments">
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria <br><br></div>
+                        <div class="card-header">Paquetería <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/estafeta.jpg" style="width:100%;" alt="">
                                 
                             </p>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    <input type="radio" class="custom-control-input" id="paqueteria1" name="defaultExampleRadios">
+                                    <label class="custom-control-label" for="paqueteria1"></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria <br><br></div>
+                        <div class="card-header">Paquetería <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/dhl.jpg" style="width:100%;" alt="">
@@ -76,14 +98,14 @@
                             </p>
                             <br>
                             <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="defaultUnchecked2"></label>
+                                    <input type="radio" class="custom-control-input" id="paqueteria2" name="defaultExampleRadios">
+                                    <label class="custom-control-label" for="paqueteria2"></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paqueteria <br><br></div>
+                        <div class="card-header">Paquetería <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="/images/shipments/fedex.jpg" style="width:100%;" alt="">
@@ -91,8 +113,8 @@
                             </p>
                             <br>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultUnchecked3" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="defaultUnchecked3"></label>
+                                    <input type="radio" class="custom-control-input" id="paqueteria3" name="defaultExampleRadios">
+                                    <label class="custom-control-label" for="paqueteria3"></label>
                                 </div>
                         </div>
                     </div>
@@ -105,8 +127,8 @@
                                 
                             </p>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked>
-                                    <label class="custom-control-label" for="defaultChecked"></label>
+                                    <input type="radio" class="custom-control-input" id="paqueteria4" name="defaultExampleRadios" checked>
+                                    <label class="custom-control-label" for="paqueteria4"></label>
                             </div>
                         </div>
                     </div>
@@ -121,7 +143,7 @@
         <!-- Third Step -->
         <div class="row setup-content-2" id="step-3">
             <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Metodo de pago</strong></h3>
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Método de pago</strong></h3>
             <div class="row">
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
                         <div class="card-header">Débito <br><br></div>
@@ -190,27 +212,41 @@
         <div class="row setup-content-2" id="step-4">
             <div class="col-md-12">
                 <h3 class="font-weight-bold pl-0 my-4"><strong>Verificar compra</strong></h3>
-                    <h4> <i class="fa fa-truck fa-lg" aria-hidden="true"></i> Metodo de envio:</h4>
-                    <div id="shipment" style="font-size:15px;"> Seleccionar un metodo</div>
+                    <h4> <i class="fa fa-truck fa-lg" aria-hidden="true"></i> Método de envío:</h4>
+                    <div id="shipment" style="font-size:15px;"> Seleccionar un método</div>
                     <br>
-                    @if($address != null)
-                        <h4>Sera enviado a:</h4>
-                        <div class="border" style="font-size:15px;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> <strong>CP:</strong>{{$address->cp}} <strong>Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
-                        <strong>Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} Colonia: {{ $address->colonia }}
+                    @if($addresses->count() > 0)
+                        @php $address=$addresses->where('activo',1)->first();@endphp
+                        @if($address!=null)
+                        <h4>Será enviado a:</h4>
+                        <input type="hidden" id="address-active" value="{{$address}}">
+                        <input type="hidden" id="customer" value="{{ $customer }}">
+                        <div class="border" style="font-size:15px;" id="address-ship">
+                            &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
+                            <strong>CP:</strong>{{$address->cp}} <br>
+                            <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
+                            <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
+                            <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
+                            <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
+                            <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
+                            <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
                         </div>
+
+                        @else
+                        <div class="alert alert-danger">Usted no tiene dirección definida </div>
+                        @endif
                     @else
-                        <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una direccion</a>
                         <div class="alert alert-danger">Usted no tiene dirección definida </div>
                     @endif
                     <br>
-                    <h4><i class="fa fa-usd" aria-hidden="true"></i> Metodo de pago:</h4>
-                    <div id="pay" style="font-size:15px;">Seleccionar un metodo</div>
+                    <h4>Método de pago:</h4>
+                    <div id="pay" style="font-size:15px;">Seleccionar un método</div>
                     
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-                @if($address != null)
+                @if($addresses->count() > 0)
                     <button class="btn btn-success btn-rounded float-right" id="btn-conf"type="submit">Confirmar</button>
                 @endif
-                
+                <button class="btn btn-success btn-rounded float-right" id="btn-testship" type="button">Test envio</button>
                 
             </div>
         </div>
@@ -230,13 +266,14 @@
 
     <div class="h5">
         Total de productos: ${{ number_format($subtotal, 2) }} <br>
-        Envio + inpuestos: $0,00 <br>
+        Envío + impuestos: <div id="ship-rate">$0,00</div> <br>
     </div>
     
     <hr>
 
     <div class="h5">
-        Total: ${{ number_format($subtotal, 2) }}
+        <input type="hidden" id="total-cart" value="{{ $subtotal }}">
+        Total: <div id="total">${{ number_format($subtotal, 2) }}</div> 
     </div>
     
  
@@ -291,6 +328,17 @@
     background-color: white !important; }
 .steps-form-2 .steps-row-2 .steps-step-2 .btn-circle-2 .fa {
     font-size: 1.7rem; }
+    #loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
+
 </style>
 @stop
 
@@ -370,6 +418,7 @@ $(document).ready(function () {
         //Metodos de pago
         $("#defaultUnchecked4").click(function(){
             $("#pay").html("Débito");
+            // $("#loader-contener").html("<div id='loader'></div>");
         });
 
         $("#defaultUnchecked5").click(function(){
@@ -389,16 +438,17 @@ $(document).ready(function () {
             if($("#defaultUnchecked4").prop("checked"))
             {
                 $('#debit-card').modal('show');
-              
+               
             }
             else if($("#defaultUnchecked5").prop("checked"))
             {
                 $('#debit-card').modal('show');
+             
                 
             }
             else if($("#defaultUnchecked6").prop("checked"))
             {
-                alert("Metodo en desarollo");
+                $('#pay-pal').modal('show');
                 
             }
             else if($("#defaultUnchecked7").prop("checked"))
@@ -410,6 +460,9 @@ $(document).ready(function () {
                 alert("Elegir un metodo de pago");
             }
         });
+
+        $(".loader").fadeOut("slow");
+        
 
     });
 </script>
@@ -425,8 +478,8 @@ $(document).ready(function () {
       <div class="modal-body text-center">
              <!-- incio strippe -->
              <div class="globalContent">
-                            <!--Example 2-->
-                            
+                            <!--Example 2 -->
+                           
                             <div class="hola cell example example2">
                                 <form action="/cart/confirmation" method="post" id="payment-form"> 
                                 {{ csrf_field() }}
@@ -467,6 +520,7 @@ $(document).ready(function () {
                                     </div>
                                 </form>
                                 <div class="success" id="successful" hidden>
+                                
                                     <div class="icon">
                                         <svg style="margin-left: 150px; padding-top: 20px;" width="84px" height="84px" viewBox="0 0 84 84" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <circle class="border" cx="42" cy="42" r="40" stroke-linecap="round" stroke-width="4" stroke="#000" fill="none"></circle>
@@ -565,4 +619,87 @@ $(document).ready(function () {
 
             registerElements([cardNumber, cardExpiry, cardCvc], 'example2');
 </script>
+@stop
+
+@section('modal-paypal')
+<div class="modal fade" id="pay-pal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title text-center" id="exampleModalLongTitle">Pay Pal</h1>
+      </div>
+      <div class="modal-body text-center">
+      <div id="paypal-button-container"></div>
+                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        <script>
+                        // Render the PayPal button
+                        paypal.Button.render({
+                        // Set your environment
+                        env: 'sandbox', // sandbox | production
+
+                        // Specify the style of the button
+                        style: {
+                        layout: 'vertical',  // horizontal | vertical
+                        size:   'responsive',    // medium | large | responsive
+                        shape:  'pill',      // pill | rect
+                        color:  'black'       // gold | blue | silver | white | black
+                        },
+
+                        // Specify allowed and disallowed funding sources
+                        //
+                        // Options:
+                        // - paypal.FUNDING.CARD
+                        // - paypal.FUNDING.CREDIT
+                        // - paypal.FUNDING.ELV
+                        funding: {
+                        allowed: [
+                            paypal.FUNDING.CARD,
+                            paypal.FUNDING.CREDIT
+                        ],
+                        disallowed: []
+                        },
+
+                        // PayPal Client IDs - replace with your own
+                        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                        client: {
+                        sandbox: 'AcbJmhLyQjcEbqe44-pfFrSk3UrV03SwoFSgFgwwoFfiCl8Qjda6ePlsHIyb0nCjzhOQDkUgsya5EHXn',
+                        production: '<insert production client id>'
+                        },
+
+                        payment: function (data, actions) {
+                        return actions.payment.create({
+                            payment: {
+                            transactions: [
+                                {
+                                amount: {
+                                    total: '10.00',
+                                    currency: 'MXN'
+                                }
+                                }
+                            ]
+                            }
+                        });
+                        },
+
+                        onAuthorize: function (data, actions) {
+                        return actions.payment.execute()
+                            .then(function () {
+                            window.alert('Payment Complete!');
+                            });
+                        }
+                        }, '#paypal-button-container');
+                        </script>
+
+                        {{-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="9VMXDFPYPU7EL">
+                            <input type="image" src="https://www.paypalobjects.com/es_XC/MX/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
+                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+                        </form> --}}
+                        
+      </div> <!-- fin del modal -->
+@stop
+
+@section('ajax-shipment')
+<script type="text/javascript" src="{{ asset('/js/ajax-shipment.js') }}"></script>
 @stop

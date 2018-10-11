@@ -11,6 +11,7 @@ use App\Address;
 use App\CustomerHistory;
 use App\Customer;
 use Carbon\Carbon;
+use App\EnviaYa;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -46,10 +47,14 @@ class CartController extends Controller {
 
     public function payCart()
     {
-        $address=Auth::user()->address()->where('Activo',1)->first();
+        $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
-        return view('cart.pay-cart', compact('address','cartItems','subtotal'));
+        $customer=Auth::user()->customer;
+        $enviaYa=new EnviaYa;
+        $enviaYa->getRates();
+        dd($enviaYa);
+        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
     }
 
     /**
@@ -229,24 +234,29 @@ class CartController extends Controller {
 
         $sale= new Sale;
         $sale->insert(Auth::user()->total);
-      
-        
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
-        //Vendedor
+
+        //Administrador
         $user=User::find(7);
         $mailer->sendReceiptPayment($user);
         if($mailer)
         {
-            //borrar productos del carrito
-            Auth::user()->carts()->delete();
-            return redirect("/")->with('pay-success','Pago exitoso');;
-
-            
+            $mailer->sendReceiptPaymentClient(Auth::user());
+            if($mailer)
+            {
+                //borrar productos del carrito
+                Auth::user()->carts()->delete();
+                return redirect("/")->with('pay-success','Pago exitoso');
+            }
+            else
+            {
+                echo("Mensaje no enviado");
+            } 
         }
         else
         {
@@ -444,26 +454,39 @@ class CartController extends Controller {
 
     }
 
-    public function OpnepayWebhook(Request $request) {
+    public function OpnepayWebhookCatch() {
+        $body = file_get_contents('php://input');        
+        $json = json_decode($body);   
+        if (isset($json->type)) {
+            if ($json->type == 'charge.succeeded' && ($json->transaction->method == 'store' || 
+            $json->transaction->method == 'bank_account')) {
+                echo('ok');
+                return view('cart.cart-confirmation');
+            }     
+        }
+        header('HTTP/1.1 200 OK');
+    }
+
+    public function OpnepayWebhookCreate(Request $request) {
         dd($request);
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-        // dd($openpay->webhooks);
-
         try {
             $webhook = array(
-                'url' => 'http://requestb.in/11vxrsf1',
-                'user' => 'juanito',
-                'password' => 'passjuanito',
+                'url' => 'http://mercaproject.oo/notificaciones/openpay',
+                'user' => 'Mercadata',
+                'password' => 'Acadep.2018$$',
                 'event_types' => array(
-                  'charge.refunded',
-                  'charge.failed',
-                  'charge.cancelled',
-                  'charge.created',
-                  'chargeback.accepted'
+                    'charge.refunded',
+                    'charge.failed',
+                    'charge.cancelled',
+                    'charge.created',
+                    'chargeback.accepted'
                 )
-                );
-            $webhook = $openpay->webhooks->create($webhook);
+                
+            );
+            $webhooks = $openpay->webhooks->create($webhook);
             dd($webhooks);
+
             if($webhooks){
                 return view('cart.cart-confirmation');
             }
@@ -545,61 +568,61 @@ class CartController extends Controller {
 
     }
 
-    public function AddClientOpenpay(Request $request) {
-        try {
-            $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-            $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
-            $useraddresses = Address::where("usuario",Auth::user()->id)->first();
+    // public function AddClientOpenpay(Request $request) {
+    //     try {
+    //         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+    //         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
+    //         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
 
-            $customerData = array(
-                // 'external_id' => auth::user()->id,
-                'name' => $_POST["client_name"],
-                'last_name' => $usercustomer->apellidos,
-                'email' => $_POST["cliente_email"],
-                'requires_account' => false,
-                'phone_number' => $usercustomer->telefono,
-                'address' => array(
-                    'line1' => $useraddresses->calle,
-                    'line2' => $useraddresses->colonia,
-                    'line3' => $useraddresses->calle2,
-                    'state' => $useraddresses->estado,
-                    'city' => $useraddresses->ciudad,
-                    'postal_code' => $useraddresses->cp,
-                    'country_code' => 'MX'
-                 )
-              );
+    //         $customerData = array(
+    //             // 'external_id' => auth::user()->id,
+    //             'name' => $_POST["client_name"],
+    //             'last_name' => $usercustomer->apellidos,
+    //             'email' => $_POST["cliente_email"],
+    //             'requires_account' => false,
+    //             'phone_number' => $usercustomer->telefono,
+    //             'address' => array(
+    //                 'line1' => $useraddresses->calle,
+    //                 'line2' => $useraddresses->colonia,
+    //                 'line3' => $useraddresses->calle2,
+    //                 'state' => $useraddresses->estado,
+    //                 'city' => $useraddresses->ciudad,
+    //                 'postal_code' => $useraddresses->cp,
+    //                 'country_code' => 'MX'
+    //              )
+    //           );
            
-           $customer = $openpay->customers->add($customerData);
+    //        $customer = $openpay->customers->add($customerData);
 
-           $cardData = array(
-            'token_id' => $_POST["token_id"],
-            'device_session_id' => $_POST["device_session_id"]
-            );
+    //        $cardData = array(
+    //         'token_id' => $_POST["token_id"],
+    //         'device_session_id' => $_POST["device_session_id"]
+    //         );
           
-          $card = $customer->cards->add($cardData);
+    //       $card = $customer->cards->add($cardData);
 
-          $tarjeta = new PaymentInformation;
-          $tarjeta->usuario = Auth::user()->id;
-          $tarjeta->idCardOpenpay = $card->id;
-          $tarjeta->idCustomerOpenpay = $card->customer_id;
-          $tarjeta->save();
+    //       $tarjeta = new PaymentInformation;
+    //       $tarjeta->usuario = Auth::user()->id;
+    //       $tarjeta->idCardOpenpay = $card->id;
+    //       $tarjeta->idCustomerOpenpay = $card->customer_id;
+    //       $tarjeta->save();
 
-        } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
+    //     } catch (OpenpayApiRequestError $e) {
+    //         error_log('ERROR on the request: ' . $e->getMessage(), 0);
         
-        } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
+    //     } catch (OpenpayApiConnectionError $e) {
+    //         error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
         
-        } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
+    //     } catch (OpenpayApiAuthError $e) {
+    //         error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
             
-        } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
+    //     } catch (OpenpayApiError $e) {
+    //         error_log('ERROR on the API: ' . $e->getMessage(), 0);
             
-        } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
-        }        
-    }
+    //     } catch (Exception $e) {
+    //         error_log('Error on the script: ' . $e->getMessage(), 0);
+    //     }        
+    // }
 
     public function PaypalWebhook() {
         $webhook = new \PayPal\Api\Webhook();
@@ -650,7 +673,12 @@ class CartController extends Controller {
         }
         return $output;
 
-    }    
+    } 
+    
+    public function notify(Request $request)
+    {
+        dd($request);
+    } 
 
     
 }

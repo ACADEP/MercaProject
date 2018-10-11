@@ -49,8 +49,6 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
          <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
-
-        <script src="https://js.stripe.com/v3/"></script>
         
         <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
@@ -64,12 +62,13 @@
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
+        @yield("ajax-shipment")
         <script>
             function borrarCache()
             {
                 Cookies.remove("productos");
             }
-        </script>       
+        </script>   
         <script src="/js/index-stripe.js" data-rel-js></script>
 
         <!-- Openpay -->
@@ -100,7 +99,6 @@
 
     </head>
 <body>
-    
             
     @include('partials.nav')
             
@@ -202,11 +200,6 @@
     transition: 1s ease;
 }
 
-#form-add-cart{
-
-
-  
-}
 
         
 </style>
@@ -238,6 +231,7 @@
     </script>
    
     @yield('modal-debit')
+    @yield('modal-paypal')
     @yield('styles')
     @yield('js')
     @yield('css-pay')
@@ -245,6 +239,7 @@
     @yield('show-modal')
     @include('partials.flash')
     @include('partials.special_search')
+    @include('customer.partials.add-address')
 
 </body>
 </html>

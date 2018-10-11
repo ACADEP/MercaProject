@@ -17,7 +17,6 @@ class CreatePaymentInformationsTable extends Migration
             $table->increments('id');
             $table->integer('usuario');
             $table->string('idCardOpenpay')->nullable();
-            $table->string('idCustomerOpenpay')->nullable();
             $table->string('numtarjeta')->nullable();
             $table->string('titular')->nullable();
             $table->string('vigencia')->nullable();

@@ -52,6 +52,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRegister(RegistrationRequest $request, AppMailers $mailer) {
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         // Create the user in the DB.
         $user = User::create([
             'email' => $request->input('email'),
@@ -60,6 +61,7 @@ class AuthController extends Controller
             'verified' => 0,
             'admin' => $request->input('account'),
         ]);
+
         //Agregar productos del cookie al carrito
         $items=json_decode($request->get('cookieProductos'));
         if($items!=null)

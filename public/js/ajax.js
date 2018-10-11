@@ -1,4 +1,7 @@
 $(document).ready(function(){
+
+    
+
     $('#tbody').on('click', '.show-product', function(e){
         e.preventDefault();
         window.location.replace("/product/"+$(this).attr('id'));
@@ -92,7 +95,14 @@ $(document).ready(function(){
                                 var total=parseInt(response.item.total);
                                 var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                 $('#total-items-client').html("<strong>Total</strong>: "+num);
-                            
+                                $.notify({
+                                    // options
+                                    message: 'Producto agregado al carrito' 
+                                },{
+                                    // settings
+                                    type: 'success',
+                                    delay:1000
+                                });
                             }
                             else
                             {
@@ -107,6 +117,15 @@ $(document).ready(function(){
                                     var total=parseInt(response.item.total);
                                     var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                     $('#total-items-client').html("<strong>Total</strong>: "+num);
+
+                                    $.notify({
+                                        // options
+                                        message: 'Producto agregado al carrito' 
+                                    },{
+                                        // settings
+                                        type: 'success',
+                                        delay:1000
+                                    });
                                 }
                                 
                             }
@@ -138,6 +157,16 @@ $(document).ready(function(){
                                 $('.badge').html(productosCart.length);
                                 var num = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                 $('#total-items').html("<strong>Total</strong>: "+num);
+                                
+                                //Notificacion
+                                $.notify({
+                                    // options
+                                    message: 'Producto agregado al carrito' 
+                                },{
+                                    // settings
+                                    type: 'success',
+                                    delay:1000
+                                });
                             }
                           
                         }

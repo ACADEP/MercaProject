@@ -16,10 +16,21 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('usuario');
+            $table->string('idCustomerOpenpay')->nullable();
             $table->string('nombre');
             $table->string('apellidos')->nullable();
             $table->string('telefono');
-            $table->string('stripe_id')->nullable();
+            $table->string('razonSocial')->nullable();
+            $table->string('tipoFacturacion')->nullable();
+            $table->string('rfc')->nullable();
+            $table->string('calle')->nullable();
+            $table->string('numInterior')->nullable();
+            $table->string('numExterior')->nullable();
+            $table->string('cp')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('ciudad')->nullable();
+            $table->string('colonia')->nullable();
+            $table->string('cfdi')->nullable();
             $table->timestamps();
         });
     }

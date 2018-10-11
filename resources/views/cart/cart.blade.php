@@ -46,7 +46,9 @@
                             </select>
                         </td>
                         <script>document.getElementById("{{ $cart->id }}").value = "{{ $cart->qty }}";</script>
-                        <td id="total-client{{ $cart->id }}">${{number_format($cart->total, 2)}}</td>
+                        <td id="total-client{{ $cart->id }}">${{number_format($cart->total, 2)}} 
+                       
+                        </td>
                         <input type="hidden" id="url" value="/cart/delete">
                         <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                     </tr>
@@ -57,12 +59,13 @@
         </tbody>
         
     </table>
-    
-    <div class="text-center" {{ Auth::check() ? 'id=client-total' : 'id=general-total' }}>
-            @if(Auth::check())
-                El total de su carrito es: ${{ number_format(Auth::user()->total, 2)  }}
-            @endif
-    </div>
+<div class="text-right" {{ Auth::check() ? 'id=client-total' : 'id=general-total' }}>
+    @if(Auth::check())
+        El total de su carrito es: ${{ number_format(Auth::user()->total, 2)  }}
+    @endif
+</div>
+                        
+   
     
     
    

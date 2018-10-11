@@ -55,4 +55,8 @@ $(document).ready(function(){
             });
    });
 
+   $(".radio-address").click(function(){
+        alert("radio-address");
+    });
+
 });

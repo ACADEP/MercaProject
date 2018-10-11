@@ -96,5 +96,12 @@ class AddressController extends Controller
         $address->update();
     }
 
+    public function updateAddressActive(Request $request)
+    {
+       $addressActive= Auth::user()->updateAddressActive($request->address_id);
+       return response($addressActive,200);
+       
+    }
+
 
 }

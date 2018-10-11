@@ -24,11 +24,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
 
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
+
   <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}"> -->
 
+  <!-- include summernote css/js-->
 
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/summernote/summernote.css')}}">
-  <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet"> -->
+
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,6 +44,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+        
   
 </head>
 <!--
@@ -275,8 +281,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-address-card"></i>Datos Personales</a></li>
-            <li><a href="#"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
+            <li class="{{ Request::path() == '/customer/personal' ? 'active' : '' }}"><a href="{{ route('customer.personal') }}"><i class="fa fa-address-card"></i>Datos Personales</a></li>
+            <li class="{{ Request::path() == '/customer/profiledates' ? 'active' : '' }}"><a href="{{ route('customer.profiledates') }}"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
             <li class="{{ Request::path() == '/customer/address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
             <li class="{{ Request::path() == '/customer/payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
           </ul>
@@ -412,7 +418,20 @@ desired effect
 {{-- @stack('scripts') --}}
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
-<!-- include summernote css/js -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+
+<!-- Openpay -->
+<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+           OpenPay.setId('mk5lculzgzebbpxpam6x');
+           OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+           OpenPay.setSandboxMode(true);
+   });
+</script>
+
+{{-- <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script> --}}
 
 
 
@@ -422,6 +441,9 @@ desired effect
 
 @include('customer.partials.add-card')
 @include('customer.partials.add-address')
+@include('customer.partials.add-personaldate')
+{{-- @include('customer.partials.update-personaldate') --}}
+
 @yield('mostrar-modal')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
