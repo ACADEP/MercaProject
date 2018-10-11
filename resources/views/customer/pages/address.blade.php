@@ -36,14 +36,6 @@
         <!-- <form action="#" method="POST"> -->
             <div class="panel-group col-xs-6 col-sm-6 col-md-6 col-lg-6" id="accordion" style="width: 100%;" role="tablist" aria-multiselectable="true" >
                 
-                
-                
-                
-                
-                
-                
-                
-                
                 @foreach($useraddresses as $address)
                         <div class="panel panel-default" id="address{{ $address->id }}">
                             <div class="panel-heading" role="tab" id="heading{{ $id }}">
@@ -114,9 +106,6 @@
                             $id++;
                         @endphp
                 @endforeach
-
-
-
 
             </div>
         <!-- </form> -->

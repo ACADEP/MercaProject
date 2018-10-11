@@ -4,8 +4,7 @@
       <div class="modal-header">
         <h1 class="modal-title text-center" id="exampleModalLongTitle">Agregar tarjeta de crédito o débito</h1>
       </div>
-      <div class="modal-body">        
-
+      <div class="modal-body"> 
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible" role="alert">
               <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
@@ -30,7 +29,7 @@
 
             var success_callbak = function(response) {
                 var token_id = response.data.id;
-                alert(token_id);
+                // alert(token_id);
                 //$('#token_id').val(token_id);
                 document.addClient.token_id.value = token_id;
                 $('#customer-form').submit();
@@ -49,27 +48,29 @@
         {{ csrf_field() }}
         <input type="hidden" name="token_id" id="token_id">
         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-bottom: 10px;">
             <label>Nombre</label>
             <input type="text" class="form-control" size="20" autocomplete="off" data-openpay-card="holder_name" />
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-bottom: 10px;">
             <label>N&uacute;mero</label>
             <input type="text" class="form-control" size="20" autocomplete="off" data-openpay-card="card_number" />
           </div>
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px; padding-top: 21px;">
               <label>CVV2</label>
               <input type="text" class="form-control" size="4" autocomplete="off" data-openpay-card="cvv2" />
           </div>
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px;">
               <label>Fecha de expiraci&oacute;n (MM/YY)</label>
-              <input type="text" class="form-control" size="2" data-openpay-card="expiration_month" /> /
+              <input type="text" class="form-control" size="2" data-openpay-card="expiration_month" />
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px; padding-top: 45px;">
               <input type="text" class="form-control" size="2" data-openpay-card="expiration_year" />
           </div>
         </div>
         
         <div class="text-center" style="padding-bottom: 30px;">
-            <input type="submit" id="save-button" value="Pagar"/> 
+            <input type="submit" id="save-button" value="Aceptar" class="btn btn-primary"/> 
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </div>
       </form>

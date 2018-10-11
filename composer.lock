@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "82aa3f2c74dbc6f787d66241d7b0bbe9",
@@ -1985,7 +1985,7 @@
                 }
             ],
             "description": "This is a client implementing the payment services for Openpay at openpay.mx",
-            "time": "2018-03-16T01:49:45+00:00"
+            "time": "2018-03-16 01:49:45"
         },
         {
             "name": "paragonie/random_compat",
@@ -2701,16 +2701,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.19.1",
+            "version": "v6.19.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "b1e9f8a25253de2cd527a5c776011ba9120f355a"
+                "reference": "ef6b3efdc61b377d5e4fd1433eaef8d040d3dd3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b1e9f8a25253de2cd527a5c776011ba9120f355a",
-                "reference": "b1e9f8a25253de2cd527a5c776011ba9120f355a",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ef6b3efdc61b377d5e4fd1433eaef8d040d3dd3f",
+                "reference": "ef6b3efdc61b377d5e4fd1433eaef8d040d3dd3f",
                 "shasum": ""
             },
             "require": {
@@ -2752,7 +2752,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2018-09-25T12:21:14+00:00"
+            "time": "2018-10-09T07:28:04+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

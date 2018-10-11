@@ -20,10 +20,16 @@ Route::get('/data', [
     'as'   => 'data.json',
 ]);
 
+Route::post('/notificaciones/openpay/create', [
+    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhookCreate',
+    'as'   => 'openpay.notificacions.create',
+]); 
+
 Route::post('/notificaciones/openpay', [
-    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhook',
+    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhookCatch',
     'as'   => 'openpay.notificacions',
 ]); 
+
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -290,6 +296,33 @@ Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/
     Route::get('/customer/profile', 'CustomerController@index');
 
+    /*********************** CRUD Personal Dates Profile ***********************/
+    Route::get('/customer/personal', [
+        'uses' => '\App\Http\Controllers\CustomerController@personal',
+        'as'   => 'customer.personal',
+    ]);
+
+    Route::post('/customer/personal/add', [
+        'uses' => '\App\Http\Controllers\CustomerController@addpersonal',
+        'as'   => 'customer.personal.add',
+    ]);
+
+    Route::get('/customer/personal/update/{id}', [
+        'uses' => '\App\Http\Controllers\CustomerController@showUpdate',
+        'as'   => 'customer.personal.showUpdate',
+    ]);
+
+    Route::post('/customer/personal/update', [
+        'uses' => '\App\Http\Controllers\CustomerController@personalUpdate',
+        'as'   => 'customer.personal.update',
+    ]);
+
+    /*********************** CRUD Dates Profile ***********************/
+    Route::get('/customer/profiledates', [
+        'uses' => '\App\Http\Controllers\CustomerController@profile',
+        'as'   => 'customer.profiledates',
+    ]);
+
     /*********************** CRUD Address Profile ***********************/
     Route::get('/customer/address', [
         'uses' => '\App\Http\Controllers\AddressController@address',
@@ -349,7 +382,7 @@ Route::group(["middleware" => 'customer'], function(){
 
     /** Add client with Openpay **/
     Route::post('/save_customer_card', [
-        'uses' => '\App\Http\Controllers\CartController@AddClientOpenpay',
+        'uses' => '\App\Http\Controllers\PaymentInformationController@AddCardOpenpay',
         'as'   => 'add.card.openpay',
     ]);
 

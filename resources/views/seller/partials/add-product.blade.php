@@ -39,7 +39,7 @@
                     <div class="tab-content">
                        
                             <div class="tab-pane fade in active" id="tab1primary">
-                            <div class="form-group col-md-12">
+                                <div class="form-group col-md-12">
                                         <label for="product_name">Nombre del producto:</label>
                                         <input type="text" name="product_name" maxLength='75' autocomplete="off" required class="form-control" value="{{old('product_name')}}">
                                         <label for="product_qty">Cantidad:</label>

@@ -7,16 +7,9 @@
             Métodos de pago
         </h1>        
 </section><br>
-@if ($usercustomer != null)
-    <div class="text-center" style="margin-right: 14%; padding-bottom: 20px;">
-        <button class="btn btn-success"  data-toggle="modal" data-target="#add_card"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
-    </div>
-@else
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Error!</strong> Por favor, primero ingrese sus datos personales.
-    </div>        
-@endif
+<div class="text-center" style="margin-right: 14%; padding-bottom: 20px;">
+    <button class="btn btn-success"  data-toggle="modal" data-target="#add_card"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
+</div>
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
     @if($cardList != null)
         @php
