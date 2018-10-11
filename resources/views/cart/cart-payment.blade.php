@@ -504,3 +504,6 @@
 
 @endsection
 
+@section('css-openpay')
+    <link rel="stylesheet" href="{{ asset('/css/openpay.css') }}">
+@stop

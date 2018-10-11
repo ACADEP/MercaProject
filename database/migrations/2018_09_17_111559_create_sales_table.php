@@ -18,6 +18,7 @@ class CreateSalesTable extends Migration
             $table->integer("user_id");
             $table->dateTime("date");
             $table->string("url_fact");
+            $table->string("shipment_method")->nullable();
             $table->string("status_pago");
             $table->string("status_envio");
             $table->string("status_reclamo");

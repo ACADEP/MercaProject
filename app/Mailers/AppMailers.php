@@ -90,13 +90,13 @@ class AppMailers {
         $this->deliverPDF();
     }
 
-    public function sendReceiptPaymentClient(User $user) {
+    public function sendReceiptPaymentClient(User $user,$guia) {
         // Send this to the users email.
         $this->to = $user->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
         // The data that is required
-        $this->data = compact('user');
+        $this->data = compact('user','guia');
 
         $this->deliverPDF();
     }

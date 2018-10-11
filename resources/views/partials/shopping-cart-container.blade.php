@@ -31,7 +31,7 @@
             @endif
         </li>
         <li class="text-center">
-            <a href="{{ route('cart') }}" id="cart-detail">Ir a detalles</a>      
+            <a href="{{ route('cart') }}"  id="cart-detail">Ir a detalles</a>      
         </li>
            
     </ul>

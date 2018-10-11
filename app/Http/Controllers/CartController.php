@@ -29,6 +29,7 @@ use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 use App\Mailers\AppMailers;
 use App\PaymentInformation;
@@ -51,9 +52,9 @@ class CartController extends Controller {
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
-        $enviaYa=new EnviaYa;
-        $enviaYa->getRates();
-        dd($enviaYa);
+        // $enviaYa=new EnviaYa;
+        // $enviaYa->getRates();
+        // dd($enviaYa);
         return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
     }
 
@@ -231,9 +232,10 @@ class CartController extends Controller {
     }
 
     public function confirmation(Request $request, AppMailers $mailer) {
-
         $sale= new Sale;
-        $sale->insert(Auth::user()->total);
+        $enviaYa=new EnviaYa;
+        $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'));
+        $sale->insert(Auth::user()->total,$request->get('carrie'));
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
@@ -246,7 +248,7 @@ class CartController extends Controller {
         $mailer->sendReceiptPayment($user);
         if($mailer)
         {
-            $mailer->sendReceiptPaymentClient(Auth::user());
+            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number);
             if($mailer)
             {
                 //borrar productos del carrito
@@ -349,7 +351,7 @@ class CartController extends Controller {
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);
-
+       
         if($charge){
             return redirect('https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
         }
@@ -395,7 +397,6 @@ class CartController extends Controller {
         $random = rand(0, 99999);
 
         $customerData = array(
-            // 'external_id' => Auth::user()->id,
             'name' => $usercustomer->nombre,
             'last_name' => $usercustomer->apellidos,
             'email' => Auth::user()->email,
@@ -411,14 +412,14 @@ class CartController extends Controller {
 
         $chargeData = array(
             'method' => 'store',
-            'amount' => 10.00,
+            'amount' => Auth::user()->total,
             'description' => 'Cargo a tienda',
             'order_id' => 'oid-'.$random, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
-
+       
         if($charge){
             return redirect('https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
         }
@@ -502,7 +503,8 @@ class CartController extends Controller {
 
     }
 
-    public function CardOpenpay() {
+    //pago con targeta de crédito o débito
+    public function CardOpenpay(Request $request) {
         try {
             $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
@@ -518,7 +520,7 @@ class CartController extends Controller {
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
-                'amount' => '500.00',
+                'amount' => $request->get("ship_rate_total"),
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
@@ -527,7 +529,12 @@ class CartController extends Controller {
                 );
 
             $charge = $openpay->charges->create($chargeData);
-            // dd($charge->status);
+           if($charge->status=='completed')
+           {
+                return redirect()->action(
+                    'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id')]
+                );
+           }
         } catch (OpenpayApiTransactionError $e) {
             error_log('ERROR on the transaction: ' . $e->getMessage() . 
                 ' [error code: ' . $e->getErrorCode() . 

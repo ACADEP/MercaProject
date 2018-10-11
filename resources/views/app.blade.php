@@ -14,7 +14,7 @@
 
         <title>{{ config('app.name') }}</title>
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
         <!-- Bootstrap core CSS -->
         <!-- <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"> -->
         <!-- Material Design Bootstrap -->
@@ -33,9 +33,9 @@
         <!-- Include typeahead file -->
         <!-- <link rel="stylesheet" href="{{ asset('/css/typeahead.css') }}"> -->
         <!-- Include lity ligh-tbox file -->
-        <link rel="stylesheet" href="{{ asset('/css/lity.css') }}">
-        {{-- css openpay         --}}
-        <link rel="stylesheet" href="{{ asset('/css/openpay.css') }}">
+        <!-- <link rel="stylesheet" href="{{ asset('/css/lity.css') }}"> -->
+      
+       @yield('css-openpay')
 
         <!-- Added the main.css file that combines app.scss and app.css togather -->
         
@@ -88,7 +88,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <!-- Font Awesome -->
-        <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" > -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
      
         <script>
             // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -106,11 +106,11 @@
             
    
     <div class="container">
-        @if(Session::has('pay-success'))
+    @if(Session::has('pay-success'))
         <script> 
-            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><strong>Recibo de pago enviado</strong> Revisar su correo</div>', { allow_dismiss: false });
+            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
         </script>
-        @endif
+    @endif
         @yield('content')
           
     </div>

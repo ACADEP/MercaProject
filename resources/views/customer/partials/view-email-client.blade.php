@@ -17,6 +17,7 @@
 <body>
 <h1>Hola {{$user->username}}</h1>
 <h3>Se le ajunta un recibo de pago de su compra</h3>
+<h3>Número de guía: </h3>{{$guia}}
 <h3>Gracias!! por comprar en Mercadata</h3>
 
 </body>

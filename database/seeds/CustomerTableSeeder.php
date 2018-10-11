@@ -28,8 +28,15 @@ class CustomerTableSeeder extends Seeder
         DB::table('customers')->insert([
             'usuario'   => 7,
             'nombre'    => 'Luis Bernardo',
-            'apellidos' => 'Perez Torres',
+            'apellidos' => 'Pérez Torres',
             'telefono'  => '6121428497'
+        ]);
+
+        DB::table('customers')->insert([
+            'usuario'   => 9,
+            'nombre'    => 'Luis Bernardo',
+            'apellidos' => 'Pérez Torres',
+            'telefono'  => '6121986156'
         ]);
 
     }
