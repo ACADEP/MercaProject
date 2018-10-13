@@ -92,4 +92,26 @@ class EnviaYa extends Model
         dd(json_decode($res->getBody()));
         return $res->getStatusCode();
     }
+
+    public function getTracking($carrie_name, $shipment_num)
+    {
+        $endpoint = "https://enviaya.com.mx/api/v1/trackings";
+        $client = new \GuzzleHttp\Client();
+
+        $api_key = 'c3704460afdf5f0a6e53b71c48a2f736';
+        $carrier=$carrie_name;
+        $shipment_number=$shipment_num;
+        $requestContent = [
+            'headers' => [
+                'Accept'     => 'application/json'
+            ],
+            'json' => [
+                'api_key' => $api_key, 
+                'carrier'=>$carrier,
+                'shipment_number'=> $shipment_number,
+            ]
+        ]; 
+       $res=$client->request('POST', $endpoint, $requestContent);
+        return json_decode($res->getBody());
+    }
 }

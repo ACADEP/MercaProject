@@ -22,8 +22,6 @@ function post(path, params, method) {
     form.submit();
 }
 $(document).ready(function(){
-    
-
     var ratedhl=0;
     var ratefedex=0;
     var rateups=0;
@@ -45,7 +43,6 @@ $(document).ready(function(){
                                 }
                             ]}
                         ,};
-        console.log(formData);  
         $.ajax({
             url: 'https://enviaya.com.mx/api/v1/rates',
             method: 'POST',

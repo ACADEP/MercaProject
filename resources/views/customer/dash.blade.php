@@ -281,10 +281,10 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{ Request::path() == '/customer/personal' ? 'active' : '' }}"><a href="{{ route('customer.personal') }}"><i class="fa fa-address-card"></i>Datos Personales</a></li>
-            <li class="{{ Request::path() == '/customer/profiledates' ? 'active' : '' }}"><a href="{{ route('customer.profiledates') }}"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
-            <li class="{{ Request::path() == '/customer/address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
-            <li class="{{ Request::path() == '/customer/payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
+            <li class="{{ Request::path() == 'customer/personal' ? 'active' : '' }}"><a href="{{ route('customer.personal') }}"><i class="fa fa-address-card"></i>Datos Personales</a></li>
+            <li class="{{ Request::path() == 'customer/profiledates' ? 'active' : '' }}"><a href="{{ route('customer.profiledates') }}"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
+            <li class="{{ Request::path() == 'customer/address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
+            <li class="{{ Request::path() == 'customer/payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
           </ul>
         </li>
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
@@ -431,14 +431,15 @@ desired effect
    });
 </script>
 
-{{-- <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script> --}}
+<script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
 
 
 
 @yield('modal-reclame')
 @yield('add-images')
 @yield('js-dropzone')
-
+@yield('msg-tracking')
+@yield('ajax-refresh')
 @include('customer.partials.add-card')
 @include('customer.partials.add-address')
 @include('customer.partials.add-personaldate')

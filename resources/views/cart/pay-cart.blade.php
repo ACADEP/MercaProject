@@ -455,21 +455,59 @@ $(document).ready(function () {
         
         // $("#btn-next-pay")
         $("#btn-conf").click(function(){
-            if($("#credit-method-r").prop("checked"))
+            if($("#credit-method-r").prop("checked") || $("#debit-method-r").prop("checked"))
             {
-                $('#debit-card').modal('show');
-                $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
-                $("#openpay_carrie_id").val($('#carrie_id').val());
-                $("#rate_delivered").val($("#total-pursh").val());
+                var payment="{{ $customer->paymentactive() }}";
+                if(payment=="1")
+                {
+                    var token=OpenPay.token.create({
+                        "card_number":"4111111111111111",
+                        "holder_name":"Juan Perez Ramirez",
+                        "expiration_year":"20",
+                        "expiration_month":"12",
+                        "cvv2":"110",
+                        "address":{
+                            "city":"Querétaro",
+                            "line3":"Queretaro",
+                            "postal_code":"76900",
+                            "line1":"Av 5 de Febrero",
+                            "line2":"Roble 207",
+                            "state":"Queretaro",
+                            "country_code":"MX"
+                        }
+                    }, onSuccess, onError);
+                    var onSuccess = function(response) {
+                                    var token_id = response.data.id;
+                                    $('#token_id').val(token_id);
+                                    $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
+                                    $('#payment-form').submit();
+                                };
+
+                    var onError = function(response) {
+                                    var desc = response.data.description != undefined ? response.data.description : response.message;
+                                    alert("ERROR [" + response.status + "] " + desc);
+                                    $("#pay-button").prop("disabled", false);
+                                };
+                   console.log(token);
+                    // post("{{url('/cart/payment/openpay')}}",{_token:"{{csrf_token()}}"   } );
+                }
+                else
+                {
+                    $('#debit-card').modal('show');
+                    $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                    $("#openpay_carrie_id").val($('#carrie_id').val());
+                    $("#rate_delivered").val($("#total-pursh").val());
+                }
+               
             }
-            else if($("#debit-method-r").prop("checked"))
-            {
-                $('#debit-card').modal('show');
-                $("#openpay_carrie").val($("#shipment").html());
-                $("#openpay_carrie_id").val($('#carrie_id').val());
-                $("#rate_delivered").val($("#total-pursh").val());
+            // else if($("#debit-method-r").prop("checked"))
+            // {
+            //     $('#debit-card').modal('show');
+            //     $("#openpay_carrie").val($("#shipment").html());
+            //     $("#openpay_carrie_id").val($('#carrie_id').val());
+            //     $("#rate_delivered").val($("#total-pursh").val());
                 
-            }
+            // }
             else if($("#paypal-method-r").prop("checked"))
             {
                 $('#pay-pal').modal('show');
@@ -501,6 +539,7 @@ $(document).ready(function () {
         <h1 class="modal-title text-center" id="exampleModalLongTitle">Información de pago</h1>
       </div>
       <div class="modal-body text-center">
+       
             <script type="text/javascript">
                             $(document).ready(function() {
                                 
@@ -517,10 +556,10 @@ $(document).ready(function () {
                                 });
 
                                 var sucess_callbak = function(response) {
-                                var token_id = response.data.id;
-                                $('#token_id').val(token_id);
-                                $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                $('#payment-form').submit();
+                                    var token_id = response.data.id;
+                                    $('#token_id').val(token_id);
+                                    $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
+                                    $('#payment-form').submit();
                                 };
 
                                 var error_callbak = function(response) {
@@ -575,7 +614,7 @@ $(document).ready(function () {
                                 </form>
                             </div>
                         </div>
-                        
+               
       </div> <!-- fin del modal -->
       
     </div>

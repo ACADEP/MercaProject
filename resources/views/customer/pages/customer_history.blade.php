@@ -6,7 +6,7 @@
             Mi historial de compras
         </h1>
     </section><br>
-
+   
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 @php $i=1;@endphp
 <div class="panel panel-default">
@@ -22,8 +22,13 @@
     </div>
     <div id="collapse{{$i}}" class="{{ $i==1 ? 'panel-collapse collapse in' : 'panel-collapse collapse' }}" role="tabpanel" aria-labelledby="heading{{$i}}">
       <div class="panel-body">
-        <div class="text-left">
-            Envío: <span class="label label-primary">{{$sale->status_envio}}</span>
+        <div class="text-left" >
+            Envío: <span class="label label-primary" id="status_ship">{{$sale->status_envio}}</span>&nbsp <button class="btn btn-primary btn-xs btn-refresh "  data-toggle="tooltip"  data-placement="top" title="Actualizar estado" value="{{ $sale->id }}"><i class="fa fa-refresh" id="refreshing" aria-hidden="true"></i></button> &nbsp
+            <form action="/customer/tracking" method="post" style="display: inline;">
+                <input type="hidden" name="sale" id="sale" value="{{ $sale->id }}">
+                {{ csrf_field()}}
+                <button type="submit"class="btn btn-info btn-xs">Ver detalles</button>
+            </form> 
         </div>
         <div class="text-right">
             <button class="btn btn-warning btn-sm btn-reclame" data-toggle="modal" value="{{$sale->id}}" data-target="#reclame">Iniciar reclamo</button>
@@ -73,6 +78,21 @@
                 {{ $sales->links() }}
             </div> 
            
+@stop
+
+@section('msg-tracking')
+@if(Session::has('flash'))
+        <script> 
+        $.notify({
+            // options
+            message: '<strong>{{ Session("flash") }}</strong>' 
+        },{
+            // settings
+            type: 'danger',
+            delay:3000
+        });
+        </script>
+@endif
 @stop
 
 @section('mostrar-modal')
@@ -202,6 +222,52 @@
     </div>
   </div>
 </div>
+
+@stop
+@section('ajax-refresh')
+<script>
+    $(".btn-refresh").click(function(){
+       $("#refreshing").addClass("glyphicon-refresh-animate");
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+         $.ajax({
+                url: "/customer/status",
+                method: 'POST',
+                data: { sale:  $(this).val()},
+                success: function(response){   
+                    $("#status_ship").html(response)
+                    $("#refreshing").removeClass("glyphicon-refresh-animate");
+                },
+
+                error: function(response){
+                    alert("Intente de nuevo");
+                    $("#refreshing").removeClass("glyphicon-refresh-animate");
+                }
+
+         });
+    });
+
+</script>
+<style>
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+</style>
 
 @stop
 

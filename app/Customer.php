@@ -10,4 +10,14 @@ class Customer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function paymentActive()
+    {
+        $band="0";
+        if($this->idCustomerOpenpay != null)
+        {
+            $band="1";
+        }
+        return $band;
+    }
 }
