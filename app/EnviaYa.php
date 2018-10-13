@@ -46,6 +46,7 @@ class EnviaYa extends Model
                         ] ];
         $requestContent = [
             'headers' => [
+                'Accept'     => 'application/json'
             ],
             'json' => [
                 'api_key' => $api_key, 

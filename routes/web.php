@@ -25,11 +25,8 @@ Route::post('/notificaciones/openpay/create', [
     'as'   => 'openpay.notificacions.create',
 ]); 
 
-Route::post('/notificaciones/openpay', [
-    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhookCatch',
-    'as'   => 'openpay.notificacions',
-]); 
 
+Route::post('/notificaciones/openpay', 'CartController@OpnepayWebhookCatch');
 
 Route::group(['middleware' => ['web']], function () {
 
