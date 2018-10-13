@@ -292,7 +292,9 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/
     Route::get('/customer/profile', 'CustomerController@index');
-
+    Route::post('/customer/tracking', 'CustomerController@tracking');
+    Route::get('/customer/tracking', 'CustomerController@tracking');
+    Route::post('/customer/status','CustomerController@getStatus');
     /*********************** CRUD Personal Dates Profile ***********************/
     Route::get('/customer/personal', [
         'uses' => '\App\Http\Controllers\CustomerController@personal',

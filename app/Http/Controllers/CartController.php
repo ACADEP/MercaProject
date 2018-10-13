@@ -53,11 +53,12 @@ class CartController extends Controller {
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
-        // $enviaYa=new EnviaYa;
-        // $enviaYa->getRates();
-        // dd($enviaYa);
+        // $customer = $openpay->customers->get($usercustomer->idCustomerOpenpay);
+        // $customerCard=$customer->cards->getList($findDataRequest);
         return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
     }
+
+   
 
     /**
      * Agregar productos al carrito
@@ -236,7 +237,8 @@ class CartController extends Controller {
         $sale= new Sale;
         $enviaYa=new EnviaYa;
         $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'));
-        $sale->insert(Auth::user()->total,$request->get('carrie'));
+        
+        $sale->insert(Auth::user()->total,$request->get('carrie'),$envio->shipment_status,$envio->carrier_shipment_number);
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
@@ -488,8 +490,6 @@ class CartController extends Controller {
     public function OpnepayWebhookCreate() {
         // dd($request);
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-        // dd($openpay->webhooks);
-
         try {
             $webhook = array(
                 'url' => 'http://mercaproject.oo/notificaciones/openpay',
@@ -547,6 +547,7 @@ class CartController extends Controller {
                 'phone_number' => $usercustomer->telefono,
                 'email' => Auth::user()->email,);
 
+            
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
@@ -555,8 +556,9 @@ class CartController extends Controller {
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
                 'device_session_id' => $_POST["deviceIdHiddenFieldName"],
-                'customer' => $customer
-                );
+                'customer' => $customer);
+            
+            
 
             $charge = $openpay->charges->create($chargeData);
            if($charge->status=='completed')

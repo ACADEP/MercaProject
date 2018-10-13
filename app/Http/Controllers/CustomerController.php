@@ -10,6 +10,8 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Shop;
+use App\Sale;
+use App\EnviaYa;
 use App\Address;
 use App\Customer;
 use App\PaymentInformation;
@@ -106,6 +108,48 @@ class CustomerController extends Controller
 
     public function profile() {
         return view('customer.pages.profile');
+    }
+    public function tracking(Request $request)
+    {   
+        if($request->method()=="GET")
+        {
+            return redirect('/customer/profile');
+        }
+        else if($request->method()=="POST"){
+            $sale=Sale::find($request->get('sale'));
+            if($sale->shipment_tracking != null)
+            {
+                $enviaYa= new EnviaYa;
+                $carrie = $sale->shipment_method;
+                $track=json_encode($enviaYa->getTracking($carrie,$sale->shipment_tracking));
+            
+                return view('customer.partials.tracking', compact('track', 'carrie'));
+            }
+            else
+            {
+                return back()->with("flash","No existe número de guía");
+            }
+        }
+        
+    }
+
+    public function getStatus(Request $request)
+    {
+        $sale=Sale::find($request->get('sale'));
+        $enviaYa= new EnviaYa;
+        if($sale->shipment_tracking!=null)
+        {
+            $track=$enviaYa->getTracking($sale->shipment_method,$sale->shipment_tracking);
+            $sale->updateStatusShip($track->shipment_status);
+            return response($track->shipment_status,200);
+        }
+        else
+        {
+            return response($sale->status_envio,200);
+        }
+        
+
+
     }
 
 }
