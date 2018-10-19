@@ -60,7 +60,7 @@ class Product extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function brand() {
-        return $this->belongsTo('App\Brand');
+        return $this->belongsTo('App\Brand',"brand_id");
     }
 
 

@@ -66,7 +66,7 @@ $(document).ready(function(){
     
     $('.btn-addcart').click(function(e){
         e.preventDefault(); 
-       
+      
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -81,9 +81,6 @@ $(document).ready(function(){
                 method: 'POST',
                 data: formData,
                 success: function(response){
-                    console.log(response);
-                    console.log(response.item);
-                    
                         if(response.user==1)
                         {
                             
@@ -108,7 +105,14 @@ $(document).ready(function(){
                             {
                                 if(response.itemcount==0)
                                 {
-                                    alert("Este producto ya ha sido agregado");
+                                    $.notify({
+                                        // options
+                                        message: '<strong>Este producto ya ha sido agregado</strong>' 
+                                    },{
+                                        // settings
+                                        type: 'warning',
+                                        delay:1000
+                                    });
                                 }
                                 else
                                 {
@@ -135,7 +139,14 @@ $(document).ready(function(){
                         {
                             if(productoAgregado(response.item.id))
                             {
-                                alert("Este producto ya ha sido agregado");
+                                $.notify({
+                                    // options
+                                    message: '<strong>Este producto ya ha sido agregado</strong>' 
+                                },{
+                                    // settings
+                                    type: 'warning',
+                                    delay:1000
+                                });
                             }
                             else
                             {

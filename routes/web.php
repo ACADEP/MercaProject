@@ -15,7 +15,7 @@
 Route::post('/priceLow', 'testController@order');
 Route::post('/webhook', 'CartController@notify');
 /** Route to get typehead results **/
-Route::get('/data', [
+Route::get('/getDatas', [
     'uses' => 'QueryController@data',
     'as'   => 'data.json',
 ]);
@@ -69,7 +69,7 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
     /** Route to post search results **/
-    Route::post('/queries', [
+    Route::get('/queries', [
         'uses' => 'QueryController@search',
         'as'   => 'queries.search',
     ]);
@@ -295,9 +295,19 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/
     Route::get('/customer/profile', 'CustomerController@index');
+    /* Funciones de la paquetería */
     Route::post('/customer/tracking', 'CustomerController@tracking');
     Route::get('/customer/tracking', 'CustomerController@tracking');
     Route::post('/customer/status','CustomerController@getStatus');
+    /* Recibo pdf */
+    Route::post('/customer/pdf', 'CustomerController@PDF');
+    /* Mostrar progreso */
+    Route::get('/progressConfirmation','CartController@progressConfirmation');
+    /************************CRUD productos favoritos****************************/
+    Route::get("/customer/favorites","CustomerController@favorites")->name("my-favorites");
+    Route::post('/customer/addfavorite','CustomerController@addFavorite');
+    Route::post('/customer/deletefavorite','CustomerController@deleteFavorite')->name("delete-favorite");
+
     /*********************** CRUD Personal Dates Profile ***********************/
     Route::get('/customer/personal', [
         'uses' => '\App\Http\Controllers\CustomerController@personal',

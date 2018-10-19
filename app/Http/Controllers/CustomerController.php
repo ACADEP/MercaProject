@@ -10,11 +10,14 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Shop;
+use App\Favorite;
 use App\Sale;
 use App\EnviaYa;
 use App\Address;
 use App\Customer;
 use App\PaymentInformation;
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 class CustomerController extends Controller
@@ -51,6 +54,12 @@ class CustomerController extends Controller
         $userpersonal = Auth::user()->customer;
         // dd($userpersonal);
         return view('customer.pages.persanaldate', compact('userpersonal'));
+    }
+
+    public function favorites()
+    {
+        $favorites=Auth::user()->favorites()->paginate(5);
+        return view('customer.pages.favorites', compact('favorites'));
     }
 
     public function addpersonal(Request $request) {
@@ -150,6 +159,35 @@ class CustomerController extends Controller
         
 
 
+    }
+
+    public function PDF(Request $request)
+    {
+        $sale = Auth::user()->sale()->find($request->get('sale'));
+        $Items=$sale->customerHistories()->with("product")->get();
+        $subtotal=$sale->total;
+        $pdf = PDF::loadView('customer.partials.recibe-download',compact('Items','subtotal','address'));
+        return $pdf->download('Recibo de pago.pdf');
+    }
+    
+    public function addFavorite(Request $request)
+    {
+        $favorite_repeat=Auth::user()->valFavorite($request->get("product_id"));
+       
+        if($favorite_repeat)
+        {
+            $favorite= New Favorite;
+            $favorite->insert($request->get("product_id"));
+        }
+        
+        return response(["favorite_val"=>$favorite_repeat],200);
+    }
+    public function deleteFavorite(Request $request)
+    {
+        $favorite= Favorite::find($request->get("favorite"));
+        $product_name=$favorite->product->product_name;
+        $favorite->delete();
+        return back()->with('success','El producto con nombre '.$product_name.' ha sido borrado de favoritos');
     }
 
 }

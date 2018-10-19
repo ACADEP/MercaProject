@@ -83,6 +83,10 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class);
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
     public function customer()
     {
         return $this->hasOne(Customer::class,"usuario");
@@ -136,7 +140,19 @@ class User extends Authenticatable
 
         return $addressActive;
     }
-
+    public function valFavorite($product_id)
+    {
+        $band=true;
+        $favorites=$this->favorites()->get();
+        foreach($favorites as $favorite)
+        {
+            if($favorite->product->id == $product_id)
+            {
+                $band=false;
+            }
+        }
+        return $band;
+    }
     public function paymentscard()
     {
         return $this->hasMany(PaymentInformation::class, 'usuario');

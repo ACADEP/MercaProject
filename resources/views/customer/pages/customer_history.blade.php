@@ -32,7 +32,11 @@
         </div>
         <div class="text-right">
             <button class="btn btn-warning btn-sm btn-reclame" data-toggle="modal" value="{{$sale->id}}" data-target="#reclame">Iniciar reclamo</button>
-            <button class="btn btn-danger btn-sm" data-toggle="tooltip"  data-placement="top" title="Descargar recibo"><i class="fa fa-file-pdf-o" aria-hidden="true" ></i></button>
+            <form action="/customer/pdf" method="post" style="display: inline;">
+                {{ csrf_field()}}
+                <input type="hidden"  name="sale" value="{{$sale->id}}">
+                <button class="btn btn-danger btn-sm btn-dpdf" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar recibo"><i class="fa fa-file-pdf-o" aria-hidden="true" ></i></button>
+            </form>
             <button class="btn btn-danger btn-sm" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
         </div>
             
@@ -77,10 +81,10 @@
             <div class="text-center" style="position: absolute; bottom: 10px;">
                 {{ $sales->links() }}
             </div> 
-           
+        
 @stop
 
-@section('msg-tracking')
+@section('msg')
 @if(Session::has('flash'))
         <script> 
         $.notify({
@@ -92,7 +96,24 @@
             delay:3000
         });
         </script>
+
 @endif
+<script>
+    $(".btn-dpdf").click(function(){
+    var notify=$.notify({
+            // options
+            message: '<strong>Preparando PDF</strong> por favor esperar...',
+            showProgressbar: true
+        },{
+            // settings
+            
+            type: 'warning',
+            delay:3000
+        });
+       
+    });
+
+</script> 
 @stop
 
 @section('mostrar-modal')

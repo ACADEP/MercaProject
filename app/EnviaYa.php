@@ -59,8 +59,26 @@ class EnviaYa extends Model
             ]
         ]; 
        $res=$client->request('POST', $endpoint, $requestContent);
-       
-        return json_decode($res->getBody());
+       $url_carrie="";
+        if($carrie_name=="DHL")
+        {
+                $url_carrie="http://www.dhl.com.mx/es/express/rastreo.html";
+        }
+        else if($carrie_name=="Fedex")
+        {
+                $url_carrie="https://www.fedex.com/apps/fedextrack/?action=track&cntry_code=mx";
+        }
+        else if($carrie_name=="UPS")
+        {
+                $url_carrie="https://www.ups.com/track?loc=es_MX&requester=WT/";
+        }
+        else if($carrie_name=="Redpack")
+        {
+            $url_carrie="http://www.redpack.com.mx/";
+        }
+        $response=json_decode($res->getBody());
+        $response->{"carrie_url"} = $url_carrie;
+        return $response;
     }
 
     public function getRates()
