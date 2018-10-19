@@ -62,6 +62,7 @@
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/ajax-products.js') }}"></script>
         @yield("ajax-shipment")
         <script>
             function borrarCache()
@@ -69,7 +70,6 @@
                 Cookies.remove("productos");
             }
         </script>   
-        <script src="/js/index-stripe.js" data-rel-js></script>
 
         <!-- Openpay -->
         <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>

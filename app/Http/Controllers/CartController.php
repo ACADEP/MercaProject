@@ -351,7 +351,7 @@ class CartController extends Controller {
             'amount' => 50.00,
             'description' => 'Cargo con Bancomer',
             'order_id' => 'oid-'.$random, //oid-00051 id del carrito
-            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);
        
@@ -418,7 +418,7 @@ class CartController extends Controller {
             'amount' => Auth::user()->total,
             'description' => 'Cargo a tienda',
             'order_id' => 'oid-'.$random, //oid-00051 id del carrito
-            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
@@ -479,57 +479,6 @@ class CartController extends Controller {
         //     fwrite($myfile, $d);
         // }
         // fclose($myfile); 
-
-    }
-
-    public function Lol() {
-        // $json = $this->OpnepayWebhookCatch();
-        // log_message('info', 'verification code: '.$json);
-    }
-
-    public function OpnepayWebhookCreate() {
-        // dd($request);
-        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-        try {
-            $webhook = array(
-                'url' => 'http://mercaproject.oo/notificaciones/openpay',
-                'user' => 'Mercadata',
-                'password' => 'Acadep.2018$$',
-                'event_types' => array(
-                    'charge.refunded',
-                    'charge.failed',
-                    'charge.cancelled',
-                    'charge.created',
-                    'chargeback.accepted'
-                )
-                );
-            $webhook = $openpay->webhooks->add($webhook);
-            dd($webhooks);
-
-            if($webhooks){
-                return view('cart.cart-confirmation');
-            }
-        
-        } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
-            echo "ERROR A";
-            echo $e;
-        
-        } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
-            echo "ERROR B";
-        
-        } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
-            echo "ERROR C";
-        } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
-            echo "ERROR D";
-            
-        } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
-            echo "ERROR E";
-        }
 
     }
 
@@ -651,6 +600,19 @@ class CartController extends Controller {
         }        
     }
 
+    public function PagosOxxo() {
+        $subtotal = Auth::user()->getTotalAttribute();
+        $address = Auth::user()->addressActive();
+        // $expiry = substr(Carbon::now()->addDay(1), 0 , 10);
+        $expiry = Carbon::now()->addDay(1);
+        if(Auth::check())
+        {
+            $cartItems=Auth::user()->cart->with("product")->get();
+        }
+        $pdf = PDF::loadView('cart.Print-payment-receipt',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        return $pdf->stream('Recibo.pdf');
+    }
+
     public function PaypalWebhook() {
         $webhook = new \PayPal\Api\Webhook();
 
@@ -701,6 +663,7 @@ class CartController extends Controller {
         return $output;
 
     } 
+
     
     public function notify(Request $request)
     {

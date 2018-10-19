@@ -65,12 +65,30 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'all.shops',
     ]);
 
+    /** Display all New Products Route **/
+    Route::get('/new-products', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllNewProducts',
+        'as'   => 'all.new-products',
+    ]);
+
+    /** Display all Offer Products Route **/
+    Route::get('/offers', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllOffersProducts',
+        'as'   => 'all.offers',
+    ]);
+
     /** Route to post search results **/
-    Route::post('/queries', [
+    Route::get('/queries', [
         'uses' => 'QueryController@search',
         'as'   => 'queries.search',
     ]);
 
+    /** Breadcrum Products Route **/
+    // Route::get('/bread', [
+    //     'uses' => '\App\Http\Controllers\PagesController@displayAllOffersProducts',
+    //     'as'   => 'all.offers',
+    // ]);
+    
     
 
     /** Route to Products show page **/
@@ -431,7 +449,11 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'openpay.store',
     ]);    
 
-       
+    /** payment items confirmation in the cart with Oxxo o Bancomer **/
+    Route::post('/cart/confirmation-oxxo', [
+        'uses' => '\App\Http\Controllers\CartController@PagosOxxo',
+        'as'   => 'openpay.oxxo',
+    ]);    
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',

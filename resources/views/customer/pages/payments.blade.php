@@ -2,6 +2,14 @@
 
 @section('content')
 
+<nav aria-label="breadcrumb" style="padding-top: 5px;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/customer/profile') }}">Perfil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Métodos de Pago</li>
+    </ol>
+</nav>        
+    
 <section class="content-header">
         <h1>
             Métodos de pago

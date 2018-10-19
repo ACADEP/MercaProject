@@ -45,7 +45,7 @@ class QueryController extends Controller {
         {
             // Returns an array of products that have the query string located somewhere within
             // our products product name. Paginate them so we can break up lots of search results.
-            $search = Product::where('product_name', 'LIKE', "%$query%")->paginate(200);
+            $search = Product::where('product_name', 'LIKE', "%$query%")->paginate(20);
         }
         
         // If no results come up, flash info message with no results found message.

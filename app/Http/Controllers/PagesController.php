@@ -44,18 +44,21 @@ class PagesController extends Controller {
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(8)->get();
+        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(12)->get();
 
-        $rand_brands = Brand::orderByRaw('RAND()')->take(6)->get();
+        $rand_brands = Brand::orderByRaw('RAND()')->take(8)->get();
 
-        $rand_shops = Shop::orderByRaw('RAND()')->take(4)->get();
+        $rand_shops = Shop::orderByRaw('RAND()')->take(8)->get();
+
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
 
         // Select all products with the newest one first, and where featured = 0,
         // order by random rows, and only take 8 rows from table so we can display them on the New Product section in the homepage.
-        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(8)->get();
+        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(12)->get();
 
         
-        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
+        return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
     }
 
     /**
@@ -110,7 +113,8 @@ class PagesController extends Controller {
     public function displayProductsByBrand($id) {
 
         // Get the Brand ID , so we can display the brand name under each list view
-        $brands = Brand::where('id', '=', $id)->get();
+        // $brands = Brand::where('id', '=', $id)->get();
+        $brands = Brand::find($id);
 
         $brands_find = Brand::where('id', '=', $id)->find($id);
 
@@ -141,26 +145,49 @@ class PagesController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
 
-        return view('brand.show', compact('products', 'brands', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
+        return view('brand.show', compact('products', 'brands', 'previousURL', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
     }
 
     public function displayAllCategories()
     {
         $categories = Category::all();
-        return view('pages.categories',compact('categories'));
+        $previousURL = url()->previous();
+        return view('pages.categories',compact('categories', 'previousURL'));
     }
 
     public function displayAllBrands()
     {
-        $brands = Brand::all();
-        return view('pages.partials.all-brands',compact('brands'));
+        $brands = Brand::orderBy('brand_name')->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-brands',compact('brands', 'previousURL'));
     }
 
     public function displayAllShops()
     {
-        $shops = Shop::all();
-        return view('pages.partials.all-shops',compact('shops'));
+        $shops = Shop::orderBy('name')->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-shops',compact('shops', 'previousURL'));
+    }
+
+    public function displayAllNewProducts()
+    {
+        $news = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-newProducts',compact('news', 'previousURL'));
+    }
+
+    public function displayAllOffersProducts()
+    {
+        $offers = Product::where('featured', '=', 1)->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-offersProducts',compact('offers', 'previousURL'));
     }
 
 }

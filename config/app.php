@@ -163,6 +163,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        Aftab\Sepomex\SepomexServiceProvider::class
         // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 
@@ -215,7 +216,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        'QRCode' => LaravelQRCode\Facades\QRCode::class,   
+        'QRCode' => LaravelQRCode\Facades\QRCode::class,  
+        'Sepomex' => Aftab\Sepomex\Facades\Sepomex::class, 
 
     ],
 

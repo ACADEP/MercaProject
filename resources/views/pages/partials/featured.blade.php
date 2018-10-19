@@ -1,8 +1,8 @@
 
 <div class="col-12 col-sm-12 col-md-12 col-lg-12" id="product_featured">
     <h4 class="text-left animated zoomIn" id="title-product">Productos destacados</h4>
-    <a href="{{ route('all.shops') }}">Ver todas</a>
-    <div class="text-center row">                     
+    <a href="{{ route('all.offers') }}">Ver todos</a>
+    <div class="text-center row mt-3">                     
         @foreach($products as $product)
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-2" style="max-width: 23%;">
                 <div id="product-container">

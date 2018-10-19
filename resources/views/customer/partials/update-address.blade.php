@@ -22,6 +22,13 @@
         {{ Session::get('msg') }}
     </div>
 @endif
+
+@if(session('flash'))
+    <div class="alert alert-danger">
+        {{session('flash')}}
+    </div>
+@endif
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <form  action="{{ route('customer.address.update') }}" method="POST">
         {{csrf_field()}}
@@ -75,5 +82,6 @@
         </div>    
     </form>
 </div>
+
 
 @endsection 

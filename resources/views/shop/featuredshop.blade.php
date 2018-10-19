@@ -18,8 +18,10 @@
         </div>
     </form>
 
+    @include('partials.filters')
+
     {{-- <h4 class="text-center animated zoomIn" id="title-product">Productos #</h4> --}}
-    <div class="text-center row">  
+    <div class="text-center row mt-5">  
         @if($relacion)  
             @include('shop.featuredsold')
         @else                 

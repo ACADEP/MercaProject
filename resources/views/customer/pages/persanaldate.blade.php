@@ -2,16 +2,24 @@
 
 @section('content')
 
+<nav aria-label="breadcrumb" style="padding-top: 5px;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/customer/profile') }}">Perfil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Datos Personales</li>
+    </ol>
+</nav>    
+
 <section class="content-header">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h1>
+        <h2>
             Datos Personales 
-        </h1> 
+        </h2> 
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h1>
+        <h2>
             Dirección de Facturación 
-        </h1> 
+        </h2> 
     </div>    
 </section><br>     
 <div class="text-center" style="margin-right: 90%; padding-bottom: 20px;">
