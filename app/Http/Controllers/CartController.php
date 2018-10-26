@@ -218,6 +218,7 @@ class CartController extends Controller {
     }
 
     public function confirmation(Request $request, AppMailers $mailer) {
+        dd($request);
         Session::put('progress', "Preparando envío");
         Session::save(); 
         

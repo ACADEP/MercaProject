@@ -4,19 +4,20 @@
 <div class="col-md-12" id="body-cart">
 
 <div class="row col-md-12">
-    <nav aria-label="breadcrumb" class="col-4 col-sm-4 col-md-4 col-offset-4 col-sm-offset-4 col-md-offset-4 pt-2">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="">Carrito</a></li>
-        </ol>
-    </nav>  
-    
     @if(Auth::check()==false)
         <div class="alert alert-primary" role="alert">
             Inicie sesión o Regístrese para completar su compra.
         </div>
     @endif
-    <form class="form-inline text-center"  method="get" action="{{ route('cart.pdf') }}">
+    <div class="text-center col-10 col-sm-10 col-md-10 pt-2">
+        <nav aria-label="breadcrumb" style="width: 20%;">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="">Carrito</a></li>
+            </ol>
+        </nav>  
+    </div>
+    <form class="form-inline text-right"  method="get" action="{{ route('cart.pdf') }}">
         <div class="text-right" style="width:100%;">
             <input type="hidden" name="Items" id="items-carts">
             <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">

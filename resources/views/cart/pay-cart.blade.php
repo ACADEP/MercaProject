@@ -418,7 +418,7 @@ $(document).ready(function () {
                     $('#debit-card').modal('show');
                     $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
                     $("#openpay_carrie_id").val($('#carrie_id').val());
-                    $(".rate_delivered").val($("#total-pursh").val());
+                    $("#total-credit").val($("#total-pursh").val());
                 
                
             }
@@ -511,7 +511,7 @@ $(document).ready(function () {
                                 <form action="/cart/payment/openpay" method="POST" id="payment-form">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="token_id" id="token_id">
-                                    <input type="hidden" name="ship_rate_total" class="rate_delivered">
+                                    <input type="hidden" name="ship_rate_total" id="total-credit">
                                     <input type="hidden" name="carrie" id="openpay_carrie">
                                     <input type="hidden" name="carrie_id" id="openpay_carrie_id">
                                     <div class="pymnt-itm card active">
@@ -651,7 +651,7 @@ $(document).ready(function () {
                                 var ship=$("#shipment").html();
                                 var carrie_id=$('#carrie_id').val();
                                 $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                post("{{url('/cart/confirmation')}}",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id  } );
+                                post("/cart/confirmation",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id  } );
                                 setInterval(function(){
                                     $.getJSON('/progressConfirmation', function(data) {
                                         $("#loader").html(data["progress"]);
