@@ -1,132 +1,338 @@
 <!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Mercadata | Administrador</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css')}}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/Ionicons/css/ionicons.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/AdminLTE.min.css')}}">
+  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect. -->
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.css')}}">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="{!! asset('/src/public/images/slider/fav-icon.png') !!}" />
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/checkbox.css')}}">
 
-    <title>Store Dashboard</title>
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}">
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="{{ asset('src/public/css/bootstrap.min.css') }}">
-    <!-- Bootstrap core mdb.css -->
-    <link rel="stylesheet" href="{{ asset('src/public/css/mdb.css') }}">
-    <!-- Include admin.less file -->
-    <link rel="stylesheet" href="{{ asset('src/public/less/admin.less') }}">
-    <link rel="stylesheet" href="{{ asset('src/public/less/app.less') }}">
-    <!-- Include app.scss file -->
-    <link rel="stylesheet" href="{{ asset('src/public/sass/app.scss') }}">
-    <!-- Include sweet alert file -->
-    <link rel="stylesheet" href="{{ asset('src/public/css/sweetalert.css') }}">
-    <!-- Include lity light-tbox file -->
-    <link rel="stylesheet" href="{{ asset('src/public/css/lity.css') }}">
-    <!-- Include drop-zone file -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/dropzone.css">
-    <!-- Include Froala Editor style. -->
-    <link href="{{ asset('src/public/css/froala_editor.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- Material Design Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-    <!-- Font Awesome -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"  rel="stylesheet" >
+  <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
 
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-76800406-1', 'auto');
-        ga('send', 'pageview');
-    </script>
+  <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/summernote.css')}}"> -->
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 
+  <!-- Compiled and minified CSS -->
+  
+
+<!-- Compiled and minified JavaScript -->
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
 </head>
-<body>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue  sidebar-mini">
+<div class="wrapper">
 
-@include('admin.pages.partials.nav')
-@include('admin.pages.partials.side-nav')
+  <!-- Main Header -->
+  <header class="main-header">
 
-@yield('content')
+   <a href="{{ url('/') }}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><img class="img-responsive" src="/images/logo-home.png" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
+    </a>
 
-<!-- jQuery -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/jquery.js') }}"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/bootstrap.min.js') }}"></script>
-<!-- MDB core JavaScript -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/mdb.js') }}"></script>
-<!-- Include sweet-alert.js file -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/sweetalert.js') }}"></script>
-<!-- Include main app.js file -->
-<script type="application/javascript" src="{{ asset('src/public/js/app.js') }}"></script>
-<!-- Include lity light-box js file -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/lity.js') }}"></script>
-<!-- Include moment.js for chart.js -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/moment.js') }}"></script>
-<!-- Chart.js plugin -->
-<script type="application/javascript" src="{{ asset('src/public/js/libs/Chart.js') }}"></script>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+         
+          <!-- /.messages-menu -->
 
-@yield('footer')
+         
+          <!-- Tasks Menu -->
+         
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+             
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs">{{ Auth::user()->username }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <img src="/images/admin.png" style="margin-left:80px;" class="img-responsive" alt="User Image">
 
-<script>
-    (function(w,d,s,g,js,fs){
-        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-        js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-        js.src='https://apis.google.com/js/platform.js';
-        fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-    }(window,document,'script'));
-</script>
-<script>
-    gapi.analytics.ready(function() {
-        /**
-         * Authorize the user immediately if the user has already granted access.
-         * If no access has been created, render an authorize button inside the
-         * element with the ID "embed-api-auth-container".
-         */
-        gapi.analytics.auth.authorize({
-            container: 'embed-api-auth-container',
-            clientid: 'YOUR CLIENT ID'
-        });
-        /**
-         * Create a new ViewSelector instance to be rendered inside of an
-         * element with the id "view-selector-container".
-         */
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector-container'
-        });
-        // Render the view selector to the page.
-        viewSelector.execute();
-        /**
-         * Create a new DataChart instance with the given query parameters
-         * and Google chart options. It will be rendered inside an element
-         * with the id "chart-container".
-         */
-        var dataChart = new gapi.analytics.googleCharts.DataChart({
-            query: {
-                metrics: 'ga:sessions',
-                dimensions: 'ga:date',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday'
-            },
-            chart: {
-                container: 'chart-container',
-                type: 'LINE',
-                options: {
-                    width: '100%'
-                }
-            }
-        });
-        /**
-         * Render the dataChart on the page whenever a new view is selected.
-         */
-        viewSelector.on('change', function(ids) {
-            dataChart.set({query: {ids: ids}}).execute();
-        });
-    });
-</script>
+                <p>
+                {{ Auth::user()->email }} - Administrador
+                  
+                </p>
+              </li>
+              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">Salir</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
 
-@include('partials.flash')
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
 
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="/images/admin.png"    alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>{{ Auth::user()->username }}</p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+
+      <!-- search form (Optional) -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">HEADER</li>
+        <!-- Optionally, you can add icons to the links -->     
+        <li class="treeview {{ Request::segment(2) == 'products' ? 'active' : '' }}">
+          <a href="#"><i class="fa fa-bars"></i> <span>Productos</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu ">
+            <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        @yield('content')
+    
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">
+      Mercadata
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2018 <a href="#">Acadep</a>.</strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane active" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:;">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:;">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="pull-right-container">
+                    <span class="label label-danger pull-right">70%</span>
+                  </span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+  immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="{{asset('/AdminLTE/bower_components/jquery/dist/jquery.min.js')}}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{asset('/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
+
+<script src="{{asset('/AdminLTE/dist/js/admin.js')}}"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+
+<script src="{{asset('/js/dropzone.js')}}"></script>
+
+
+<script src="{{asset('/AdminLTE/dist/js/checkbox.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/moment-with-locales.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script>
+<script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
+
+
+ <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    
+                });
+            });
+  </script>
+
+@yield('show-modal')
+@yield('modal-add-category')
+@yield('msg-success')
+@yield('show-inputs')
+
+
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
 </body>
 </html>

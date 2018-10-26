@@ -314,12 +314,13 @@ class CartController extends Controller {
 
     }
 
-    public function PagosBanco() {
+    //Pagos en banco
+    public function PagosBanco(Request $request) {
 
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
-
+     
         try {
         $random = rand(0, 99999);
 
@@ -340,7 +341,7 @@ class CartController extends Controller {
 
         $chargeData = array(
             'method' => 'bank_account',
-            'amount' => 50.00,
+            'amount' => $request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
             'order_id' => 'oid-'.$random, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),

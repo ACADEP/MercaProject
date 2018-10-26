@@ -414,57 +414,14 @@ $(document).ready(function () {
         $("#btn-conf").click(function(){
             if($("#credit-method-r").prop("checked") || $("#debit-method-r").prop("checked"))
             {
-                var payment="{{ $customer->paymentactive() }}";
-                if(payment=="1")
-                {
-                    var token=OpenPay.token.create({
-                        "card_number":"4111111111111111",
-                        "holder_name":"Juan Perez Ramirez",
-                        "expiration_year":"20",
-                        "expiration_month":"12",
-                        "cvv2":"110",
-                        "address":{
-                            "city":"Querétaro",
-                            "line3":"Queretaro",
-                            "postal_code":"76900",
-                            "line1":"Av 5 de Febrero",
-                            "line2":"Roble 207",
-                            "state":"Queretaro",
-                            "country_code":"MX"
-                        }
-                    }, onSuccess, onError);
-                    var onSuccess = function(response) {
-                                    var token_id = response.data.id;
-                                    $('#token_id').val(token_id);
-                                    $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                    $('#payment-form').submit();
-                                };
-
-                    var onError = function(response) {
-                                    var desc = response.data.description != undefined ? response.data.description : response.message;
-                                    alert("ERROR [" + response.status + "] " + desc);
-                                    $("#pay-button").prop("disabled", false);
-                                };
-                   console.log(token);
-                    // post("{{url('/cart/payment/openpay')}}",{_token:"{{csrf_token()}}"   } );
-                }
-                else
-                {
+              
                     $('#debit-card').modal('show');
                     $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
                     $("#openpay_carrie_id").val($('#carrie_id').val());
-                    $("#rate_delivered").val($("#total-pursh").val());
-                }
+                    $(".rate_delivered").val($("#total-pursh").val());
+                
                
             }
-            // else if($("#debit-method-r").prop("checked"))
-            // {
-            //     $('#debit-card').modal('show');
-            //     $("#openpay_carrie").val($("#shipment").html());
-            //     $("#openpay_carrie_id").val($('#carrie_id').val());
-            //     $("#rate_delivered").val($("#total-pursh").val());
-                
-            // }
             else if($("#paypal-method-r").prop("checked"))
             {
                 $('#pay-pal').modal('show');
@@ -473,7 +430,9 @@ $(document).ready(function () {
             }
             else if($("#bank-method-r").prop("checked"))
             {
-                alert("Metodo en desarollo");
+               
+                $(".rate_delivered").val($("#total-pursh").val());
+                $('#transfer').modal('show');
             }
             else
             {
@@ -552,7 +511,7 @@ $(document).ready(function () {
                                 <form action="/cart/payment/openpay" method="POST" id="payment-form">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="token_id" id="token_id">
-                                    <input type="hidden" name="ship_rate_total" id="rate_delivered">
+                                    <input type="hidden" name="ship_rate_total" class="rate_delivered">
                                     <input type="hidden" name="carrie" id="openpay_carrie">
                                     <input type="hidden" name="carrie_id" id="openpay_carrie_id">
                                     <div class="pymnt-itm card active">
@@ -597,6 +556,29 @@ $(document).ready(function () {
   </div>
 </div>
 
+@stop
+
+@section('modal-transfer')
+<div class="modal fade" id="transfer" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="/cart/confirmation-banco" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <button type="submit" class="btn btn-primary" formtarget="_blank">Depositar en Bancomer</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 
 @section('modal-paypal')
@@ -689,6 +671,8 @@ $(document).ready(function () {
                         
       </div> <!-- fin del modal -->
 @stop
+
+
 
 @section('ajax-shipment')
 

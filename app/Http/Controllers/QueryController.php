@@ -68,15 +68,20 @@ class QueryController extends Controller {
     {
         if(request()->ajax())
         {   
-            $query=Product::select("*")->join('brands', 'brand_id', '=', 'brands.id')
+            $query1=Product::select("*")->join('brands', 'brand_id', '=', 'brands.id')
                                         ->join('categories', 'cat_id', '=', 'categories.id');
-          
+            $query2=Product::select("*")->join('brands', 'brand_id', '=', 'brands.id')
+                                        ->join('categories', 'cat_id', '=', 'categories.id');
+            $query3=Product::select("*")->join('brands', 'brand_id', '=', 'brands.id')
+                                        ->join('categories', 'cat_id', '=', 'categories.id');
+        
             $data="";
             $cont=1;
-            $queries=[$query->select("brand_name")->groupBy('brand_name')->pluck('brand_name'),
-                        $query->select("category")->groupBy('category')->pluck('category'),
-                        $query->select("product_name")->groupBy('product_name')->pluck('product_name')];
-            while($cont<=3)
+            $queries=[  $query1->select("brand_name")->groupBy('brand_name')->pluck('brand_name'),
+                        $query2->select("category")->groupBy('category')->pluck('category'),
+                        $query3->select("product_name")->groupBy('product_name')->pluck('product_name')];
+            
+            while($cont<=count($queries))
             {
                 $string=(string)$queries[$cont-1];
                 $newstring="";
@@ -95,6 +100,7 @@ class QueryController extends Controller {
                 $data.=",";
                 $cont++;
             }
+            
             $array=explode(",", $data);
             return response($array,200);
            

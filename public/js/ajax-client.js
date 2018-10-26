@@ -114,7 +114,7 @@ $(document).ready(function(){
                         nBadge++;
                         total+=parseInt(element.total);
                     });
-                    $('.badge').html(nBadge);
+                    $('#badge-cart').html(nBadge);
                     var num = '$' + response.totalUser.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $('#total-items-client').html("<strong>Total</strong>: $"+num);
                     $('#client-total').html("El total de su carrito es $ "+num);

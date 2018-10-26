@@ -1,7 +1,7 @@
 <li class="nav-item dropdown" >
                             
     <a class="nav-link hidden-md-down"  role="button" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons"> shopping_cart</i><span class="badge">{{ Auth::check() ? Auth::user()->cart->count() : '0' }}</span>
+        <i class="material-icons"> shopping_cart</i><span class="badge" id="badge-cart">{{ Auth::check() ? Auth::user()->cart->count() : '0' }}</span>
     </a>
     
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

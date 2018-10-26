@@ -215,10 +215,15 @@
                 
               datumTokenizer: Bloodhound.tokenizers.whitespace,
               queryTokenizer: Bloodhound.tokenizers.whitespace,
-              
-              prefetch: "/getDatas"
+            
+             prefetch: {
+                url: '/getData',
+                ttl:0,
+                cache: false,
+            }
+             
             }); 
-                     
+            
             // inicializar typeahead sobre nuestro input de búsqueda
             $('#search').typeahead({
                 hint: true,
@@ -233,16 +238,19 @@
     </script>
    
     @yield('modal-debit')
-    @yield('modal-paypal')
+   
+   
     @yield('styles')
     @yield('js')
     @yield('css-pay')
     @yield('js-pay')
     @yield('show-modal')
+    @yield('modal-transfer')
     @yield('scripts-progress')
     @include('partials.flash')
     @include('partials.special_search')
     @include('customer.partials.add-address')
+    @yield('modal-paypal')
 
 </body>
 </html>

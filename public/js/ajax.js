@@ -61,7 +61,7 @@ $(document).ready(function(){
         }
         Cookies.remove("numProductos");
         $('#product_container').html("");
-        $('.badge').html(0);
+        $('#badge-cart').html(0);
     });
     
     $('.btn-addcart').click(function(e){
@@ -88,7 +88,7 @@ $(document).ready(function(){
                             {
                     
                                 $('#client-container').append(response.item.product_name+"<br>---------------------<br>");
-                                $('.badge').html(response.itemcount);
+                                $('#badge-cart').html(response.itemcount);
                                 var total=parseInt(response.item.total);
                                 var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                 $('#total-items-client').html("<strong>Total</strong>: "+num);
@@ -117,7 +117,7 @@ $(document).ready(function(){
                                 else
                                 {
                                     $('#cart-detail').html("Ver todos");
-                                    $('.badge').html(response.itemcount);
+                                    $('#badge-cart').html(response.itemcount);
                                     var total=parseInt(response.item.total);
                                     var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                     $('#total-items-client').html("<strong>Total</strong>: "+num);
@@ -165,7 +165,7 @@ $(document).ready(function(){
                                 {
                                     $('#cart-detail').html("Ver todos");
                                 }
-                                $('.badge').html(productosCart.length);
+                                $('#badge-cart').html(productosCart.length);
                                 var num = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                 $('#total-items').html("<strong>Total</strong>: "+num);
                                 
@@ -251,7 +251,7 @@ $(document).ready(function(){
                    
                 
             }
-            $('.badge').html(nBadge);
+            $('#badge-cart').html(nBadge);
             var numTotal = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $('#total-items').html("<strong>Total</strong>: "+numTotal);
             $('#general-total').html("El total de su carrito es "+numTotal);
