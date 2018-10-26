@@ -53,9 +53,16 @@ class CartController extends Controller {
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
-        // $customer = $openpay->customers->get($usercustomer->idCustomerOpenpay);
-        // $customerCard=$customer->cards->getList($findDataRequest);
-        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer'));
+        if(Auth::user()->addressActive() != null)
+        {
+            $cpUser=Auth::user()->addressActive()->cp;
+        }
+        else
+        {
+            $cpUser="";
+        }
+        
+        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer','cpUser'));
     }
 
    
@@ -200,44 +207,27 @@ class CartController extends Controller {
     }
 
 
-    public function stripe() {
-        // Set your secret key: remember to change this to your live secret key in production
-        // See your keys here: https://dashboard.stripe.com/account/apikeys
-
-        // Token is created using Checkout or Elements!
-        // Get the payment token ID submitted by the form:
-        try {
-            if(!isset($_POST['stripeToken'])) {
-                throw new \Exception("El token de Stripe no fue generado correctamente");
-            } else {
-                $token = $_POST['stripeToken'];
-                // dd($token);
-                $charge = \Stripe\Charge::create([
-                    'amount' => 1000, // Ingresar cantidad en centavos 100 centavos = $1 peso, 
-                    'currency' => 'mxn', // monto minimo que acepta Stripe es de $10 pesos
-                    'description' => 'Pago de Xbox One',
-                    'source' => $token,
-                ]);  
-                dd($charge);  
-                return view('cart.cart-confirmation');
-                echo("Pago realizado con exito");
-            }    
-        }
-        catch(Exeption $e) {
-            $error = $e->getMessage();
-        }
-
-    }
+    
     
     public function paypal(Request $request) {
         return view('cart.cart-confirmation');
     }
+    public function progressConfirmation()
+    {
+        return response(['progress'=>Session::get('progress')],200);
+    }
 
     public function confirmation(Request $request, AppMailers $mailer) {
+        Session::put('progress', "Preparando envío");
+        Session::save(); 
+        
         $sale= new Sale;
         $enviaYa=new EnviaYa;
         $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'));
         
+        Session::put('progress', $envio->status_message);
+        Session::save();
+
         $sale->insert(Auth::user()->total,$request->get('carrie'),$envio->shipment_status,$envio->carrier_shipment_number);
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
@@ -246,12 +236,14 @@ class CartController extends Controller {
             $customerHistory->insert($cartItem,$sale);
         }
 
+        
         //Administrador
         $user=User::find(7);
         $mailer->sendReceiptPayment($user);
         if($mailer)
         {
-            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number);
+            
+            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url);
             if($mailer)
             {
                 //borrar productos del carrito
@@ -484,6 +476,8 @@ class CartController extends Controller {
 
     //pago con targeta de crédito o débito
     public function CardOpenpay(Request $request) {
+        Session::put('progress', "Generando el cargo");
+        Session::save(); 
         try {
             $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();

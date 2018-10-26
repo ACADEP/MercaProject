@@ -288,7 +288,7 @@ desired effect
           </ul>
         </li>
         <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
+        <li class="{{ Request::path() == 'customer/favorites' ? 'active' : '' }}"><a href="{{ route('my-favorites') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
         <li class="{{ Request::path() == 'customer/profile/myshopping' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
 
       </ul>
@@ -429,15 +429,15 @@ desired effect
            OpenPay.setSandboxMode(true);
    });
 </script>
-
 <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/AdminLTE/dist/js/ajax-favorites.js') }}"></script>
 
 
 
 @yield('modal-reclame')
 @yield('add-images')
 @yield('js-dropzone')
-@yield('msg-tracking')
+@yield('msg')
 @yield('ajax-refresh')
 @include('customer.partials.add-card')
 @include('customer.partials.add-address')

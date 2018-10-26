@@ -104,9 +104,10 @@
             
    
     <div class="container">
-    @if(Session::has('pay-success'))
+    @if(Session::has('pay-success') || Session::has('progress'))
+        @php Session::forget('progress');  @endphp
         <script> 
-            var notify = $.notify('<div class="alet alert-success" style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
+            var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
         </script>
     @endif
         @yield('content')
@@ -209,13 +210,15 @@
            
    
             $(function () {
-            // 
+            
             var datos = new Bloodhound({
+                
               datumTokenizer: Bloodhound.tokenizers.whitespace,
               queryTokenizer: Bloodhound.tokenizers.whitespace,
-              prefetch: "/data"
-            });            
-
+              
+              prefetch: "/getDatas"
+            }); 
+                     
             // inicializar typeahead sobre nuestro input de búsqueda
             $('#search').typeahead({
                 hint: true,
@@ -225,8 +228,7 @@
                 name: 'datos',
                 source: datos
             });
-
-             
+            
         });
     </script>
    
@@ -237,6 +239,7 @@
     @yield('css-pay')
     @yield('js-pay')
     @yield('show-modal')
+    @yield('scripts-progress')
     @include('partials.flash')
     @include('partials.special_search')
     @include('customer.partials.add-address')

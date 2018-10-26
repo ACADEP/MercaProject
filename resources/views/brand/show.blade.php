@@ -7,17 +7,17 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url('/brands') }}">Marcas</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ $brands->brand_name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ $orden->brand_name }}</li>
     </ol>
 </nav>    
 
 <h1 class="text-center">
     {{-- @foreach($brands as $brand) --}}
-        {{ $brands->brand_name }}
+        {{ $orden->brand_name }}
     {{-- @endforeach --}}
 </h1>
 
-<div class="dropdown">
+{{-- <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Ordenar por
         <span class="caret"></span></button>
     <ul class="dropdown-menu">
@@ -27,12 +27,16 @@
         <li><a href="{{ route('brand.alpha.lowest', $brands->id) }}">Productos A-Z</a></li>
         <li><a href="{{ route('brand.alpha.highest', $brands->id) }}">Productos Z-A</a></li>
     </ul>
+</div> --}}
+
+<div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-5">
+    @include('partials.filters')
 </div>
 
 
 
 <br>
-<p class="text-md-left">{{ $count }} {{ str_plural('productos', $count) }}</p>
+{{-- <p class="text-md-left">{{ $count }} {{ str_plural('productos', $count) }}</p> --}}
 
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     @foreach($products as $product)

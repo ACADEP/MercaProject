@@ -5,6 +5,7 @@ namespace App\Mailers;
 use App\User;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -87,18 +88,18 @@ class AppMailers {
         // The data that is required
         $this->data = compact('user');
 
-        $this->deliverPDF();
+        $this->deliverPDF("administración");
     }
 
-    public function sendReceiptPaymentClient(User $user,$guia) {
+    public function sendReceiptPaymentClient(User $user,$guia, $url, $img_carrie) {
         // Send this to the users email.
         $this->to = $user->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
         // The data that is required
-        $this->data = compact('user','guia');
+        $this->data = compact('user','guia','url','img_carrie');
 
-        $this->deliverPDF();
+        $this->deliverPDF("cliente");
     }
 
     /**
@@ -115,11 +116,18 @@ class AppMailers {
 
     }
 
-    public function deliverPDF() {
+    public function deliverPDF($user) {
+        Session::put('progress', "Generando recibo para ".$user);
+        Session::save();
+
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $address=Auth::user()->address()->where("Activo",1)->first(); 
         $pdf = PDF::loadView('customer.partials.recibe',compact('cartItems','subtotal','address'));
+
+        Session::put('progress', "Enviando correo a ".$user);
+        Session::save();
+        
         $this->mailer->send($this->view, $this->data, function($message) use($pdf){
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)

@@ -15,7 +15,7 @@
 Route::post('/priceLow', 'testController@order');
 Route::post('/webhook', 'CartController@notify');
 /** Route to get typehead results **/
-Route::get('/data', [
+Route::get('/getDatas', [
     'uses' => 'QueryController@data',
     'as'   => 'data.json',
 ]);
@@ -127,10 +127,48 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
     /** Route to sort products by alpha highest */
-    Route::get('shop/{id}/alpha/lowest', [
+    Route::get('/shop/{id}/alpha/lowest', [
         'uses' => '\App\Http\Controllers\testController@orderaz',
         'as'   => 'shop.alpha.lowest',
     ]);
+
+
+
+
+    /************************************** Order By Routes for Products By Brand, Category and Range Price *****************************/
+    
+    /** Route to filter products for categories */
+    Route::post('category/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for destacados */
+    Route::post('offers/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for news */
+    Route::post('new-products/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for brans */
+    Route::get('bran/{id}/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'bran.filter',
+    ]);
+
+        /** Route to filter products for shops */
+    Route::get('/shop/{id}/filter', [
+        'uses' => '\App\Http\Controllers\ShopController@filter',
+        'as'   => 'shop.filter',
+    ]);
+
+
+
 
 
     /************************************** Order By Routes for Products By Category ***********************************/
@@ -310,9 +348,19 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(["middleware" => 'customer'], function(){
     /** Resource route for Profile **/
     Route::get('/customer/profile', 'CustomerController@index');
+    /* Funciones de la paquetería */
     Route::post('/customer/tracking', 'CustomerController@tracking');
     Route::get('/customer/tracking', 'CustomerController@tracking');
     Route::post('/customer/status','CustomerController@getStatus');
+    /* Recibo pdf */
+    Route::post('/customer/pdf', 'CustomerController@PDF');
+    /* Mostrar progreso */
+    Route::get('/progressConfirmation','CartController@progressConfirmation');
+    /************************CRUD productos favoritos****************************/
+    Route::get("/customer/favorites","CustomerController@favorites")->name("my-favorites");
+    Route::post('/customer/addfavorite','CustomerController@addFavorite');
+    Route::post('/customer/deletefavorite','CustomerController@deleteFavorite')->name("delete-favorite");
+
     /*********************** CRUD Personal Dates Profile ***********************/
     Route::get('/customer/personal', [
         'uses' => '\App\Http\Controllers\CustomerController@personal',

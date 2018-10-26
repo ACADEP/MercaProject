@@ -1,5 +1,50 @@
 $(document).ready(function(){
+    $(".btn-favorite").click(function(){
+        var product_id=$(this).val();
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: '/customer/addfavorite',
+            method: 'POST',
+            data:{product_id:product_id},
+            success: function(response){ 
+              
+               if(response.favorite_val)
+               {
+                    $.notify({
+                        // options
+                        message: '<i class="fa fa-heart" aria-hidden="true"></i> <strong>Agregado a favoritos</strong>' 
+                    },{
+                        // settings
+                        type: 'success',
+                        delay:1000
+                    });
+                }
+                else
+                {
+                    $.notify({
+                        // options
+                        message: '<strong>Este producto ya existe en favoritos</strong>' 
+                    },{
+                        // settings
+                        type: 'warning',
+                        delay:1000
+                    });
+                }
+                
+            },
+
+            error: function(response){
+                alert("Intente de nuevo");
+            }
     
+        });
+        
+       
+    });
     
 
    $(".selectCtd").change(function(){
@@ -73,7 +118,10 @@ $(document).ready(function(){
                     var num = '$' + response.totalUser.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $('#total-items-client').html("<strong>Total</strong>: $"+num);
                     $('#client-total').html("El total de su carrito es $ "+num);
-                   
+                    if( response.totalUser==0)
+                    {
+                        $("#btn-pay-div").html("");
+                    }
                     if($("#body-cart").height()<=160)
                     {
                         $("#body-cart").height(300);

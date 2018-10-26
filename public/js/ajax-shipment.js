@@ -21,14 +21,31 @@ function post(path, params, method) {
     document.body.appendChild(form);
     form.submit();
 }
+
 $(document).ready(function(){
+   
+if($("#cp_user").val()!="")
+{
+    chargeShipments($("#cp_user").val());
+}
+else
+{
+    $('#loader').remove();
+}
+
+function chargeShipments(cp_user)
+{
     var ratedhl=0;
     var ratefedex=0;
     var rateups=0;
     var rateredpack=0;
+    var datedhl=0;
+    var datefedex=0;
+    var dateups=0;
+    var dateredpack=0;
     var formData = {    api_key : 'c3704460afdf5f0a6e53b71c48a2f736',
                         origin_direction:{country_code:"MX" ,postal_code:"23000"},
-                        destination_direction:{country_code:"MX" ,postal_code:"23000"},
+                        destination_direction:{country_code:"MX" ,postal_code: cp_user},
                         shipment:{
                         shipment_type:"Package",
                             parcels:[
@@ -55,29 +72,38 @@ $(document).ready(function(){
                 });
                 response.dhl.sort();
                 ratedhl=response.dhl[0].total_amount;
+                datedhl=$.date(response.dhl[0].estimated_delivery);
+
                 response.fedex.sort(function (a, b) {
                     return a.total_amount > b.total_amount ;
                 });
                 response.fedex.sort();
                 ratefedex=response.fedex[0].total_amount;
+                datefedex=$.date(response.fedex[0].estimated_delivery);
+
                 response.ups.sort(function (a, b) {
                     return a.total_amount > b.total_amount ;
                 });
                 response.ups.sort();
                 rateups=response.ups[0].total_amount;
+                dateups=$.date(response.ups[0].estimated_delivery);
+
                 response.redpack.sort(function (a, b) {
                     return a.total_amount > b.total_amount ;
                 });
                 response.redpack.sort();
                 rateredpack=response.redpack[0].total_amount;
+                dateredpack=$.date(response.redpack[0].estimated_delivery);
+                
+
                 var countPaq=1;
-                $("#shipments").html("<a id='paq-1'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px;'>"+
+                $("#shipments").html("<a id='paq-1'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px; height:310px;'>"+
                 "<div class='card-body'>"+
-                    "<p class='card-text' style='width:100%;'>"+
-                        "<img src='"+response.dhl[0].carrier_logo_url+"' style='width:100%; height:50px;'>"+
+                    "<p class='card-text' style='width:100%;' >"+
+                        "<img src='"+response.dhl[0].carrier_logo_url+"' class='img-fluid'>"+
                     "</p>"+
                     "<h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>$"+response.dhl[0].total_amount+"</div><br>"+
-                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+response.dhl[0].estimated_delivery+"</div>"+
+                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+datedhl+"</div>"+
                     "<div class='custom-control custom-radio'>"+
                             "<input type='radio' class='custom-control-input' value="+response.dhl[0].carrier_service_code+" id='paqueteria"+countPaq+"' name='defaultExampleRadios'>"+
                             "<label class='custom-control-label' for='paqueteria"+countPaq+"'></label>"+
@@ -85,13 +111,13 @@ $(document).ready(function(){
                 "</div>"+
                 "</div></a>");
                 countPaq++;
-                $("#shipments").append("<a id='paq-2'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px;'>"+
+                $("#shipments").append("<a id='paq-2'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px; height:310px;'>"+
                 "<div class='card-body'>"+
                     "<p class='card-text'>"+
-                        "<img src='"+response.fedex[0].carrier_logo_url+"' style='width:100%; height:50px;'>"+
+                        "<img src='"+response.fedex[0].carrier_logo_url+"' class='img-fluid'>"+
                     "</p>"+
                     "<h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>$"+response.fedex[0].total_amount+"</div><br>"+
-                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+response.fedex[0].estimated_delivery+"</div>"+
+                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+datefedex+"</div>"+
                     "<div class='custom-control custom-radio'>"+
                             "<input type='radio' class='custom-control-input' value="+response.fedex[0].carrier_service_code+" id='paqueteria"+countPaq+"' name='defaultExampleRadios'>"+
                             "<label class='custom-control-label' for='paqueteria"+countPaq+"'></label>"+
@@ -99,13 +125,13 @@ $(document).ready(function(){
                 "</div>"+
                 "</div></a>");
                 countPaq++;
-                $("#shipments").append("<a id='paq-3'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px;'>"+
+                $("#shipments").append("<a id='paq-3'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px; height:310px;'>"+
                 "<div class='card-body'>"+
                     "<p class='card-text'>"+
-                        "<img src='"+response.ups[0].carrier_logo_url+"' style='width:100%; height:50px;'>"+
+                        "<img src='"+response.ups[0].carrier_logo_url+"' class='img-fluid'>"+
                     "</p>"+
                     "<h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>$"+response.ups[0].total_amount+"</div><br>"+
-                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+response.ups[0].estimated_delivery+"</div>"+
+                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+dateups+"</div>"+
                     "<div class='custom-control custom-radio'>"+
                             "<input type='radio' class='custom-control-input' value="+response.ups[0].carrier_service_code+" id='paqueteria"+countPaq+"' name='defaultExampleRadios'>"+
                             "<label class='custom-control-label' for='paqueteria"+countPaq+"'></label>"+
@@ -113,25 +139,25 @@ $(document).ready(function(){
                 "</div>"+
                 "</div></a>");
                 countPaq++;
-                $("#shipments").append("<a id='paq-4'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px;'>"+
+                $("#shipments").append("<a id='paq-4'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px; height:310px;'>"+
                 "<div class='card-body'>"+
                     "<p class='card-text'>"+
-                        "<img src='"+response.redpack[0].carrier_logo_url+"' style='width:100%; height:50px;'>"+
+                        "<img class='img-fluid' src='"+response.redpack[0].carrier_logo_url+"'>"+
                     "</p>"+
                     "<h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>$"+response.redpack[0].total_amount+"</div><br>"+
-                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+response.redpack[0].estimated_delivery+"</div>"+
+                    "Llegada aprox:<div class='badge badge-pill badge-primary'>"+dateredpack+"</div>"+
                     "<div class='custom-control custom-radio'>"+
                             "<input type='radio' class='custom-control-input' value="+response.redpack[0].carrier_service_code+" id='paqueteria"+countPaq+"' name='defaultExampleRadios'>"+
                             "<label class='custom-control-label' for='paqueteria"+countPaq+"'></label>"+
                    " </div>"+
                 "</div>"+
                 "</div></a>");
-               
                 $('#loader').remove();
             },
            
             error: function(response){
                 alert("No se pudieron cargar las paqueterias");
+                $("#shipments").html("No hay paqueterías disponibles vuelva a intertarlo")
                 $('#loader').remove();
             }
     
@@ -141,50 +167,55 @@ $(document).ready(function(){
             e.preventDefault();
             $("#paqueteria1").prop("checked",true);
             var num = '$' + (ratedhl).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-            $("#ship-rate").html(num);
+            $(".ship-rate").html(num);
             $("#total-pursh").val(ratedhl+total);
             $("#shipment").html("DHL");
             num = '$' + (ratedhl+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $("#total").html(num);
             $('#carrie_id').val($("#paqueteria1").val());
+            $("#date_aprox").html(datedhl);
         });
 
         $('#step-2').on('click', '#paq-2', function(e){
             e.preventDefault();
             $("#paqueteria2").prop("checked",true);
             var num = '$' + (ratefedex).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-            $("#ship-rate").html(num);
+            $(".ship-rate").html(num);
             $("#total-pursh").val(ratefedex+total);
             $("#shipment").html("Fedex");
             num = '$' + (ratefedex+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $("#total").html(num);
             $('#carrie_id').val($("#paqueteria2").val());
+            $("#date_aprox").html(datefedex);
         });
 
         $('#step-2').on('click', '#paq-3', function(e){
             e.preventDefault();
             $("#paqueteria3").prop("checked",true);
             var num = '$' + (rateups).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-            $("#ship-rate").html(num);
+            $(".ship-rate").html(num);
             $("#total-pursh").val(rateups+total);
             $("#shipment").html("UPS");
             num = '$' + (rateups+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $("#total").html(num);
             $('#carrie_id').val($("#paqueteria3").val());
+            $("#date_aprox").html(dateups);
         });
 
         $('#step-2').on('click', '#paq-4', function(e){
             e.preventDefault();
             $("#paqueteria4").prop("checked",true);
             var num = '$' + (rateredpack).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-            $("#ship-rate").html(num);
+            $(".ship-rate").html(num);
             $("#total-pursh").val(rateredpack+total);
             $("#shipment").html("Redpack");
             num = '$' + (rateredpack+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             $("#total").html(num);
             $('#carrie_id').val($("#paqueteria4").val());
+            $("#date_aprox").html(dateredpack);
         });
-
+}
+    // $('#loader').remove();
     $("#btn-testship").click(function(){
         var carrie_id=""; //id de la tarifa de la paqueteria
         var band=true; //Seleccion de una paqueteria 
@@ -279,4 +310,19 @@ $(document).ready(function(){
         }
        
     });
+    $.date = function(dateObject) {
+        var d = new Date(dateObject);
+        var day = d.getDate();
+        var month = d.getMonth() + 1;
+        var year = d.getFullYear();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var date = day + "/" + month + "/" + year;
+    
+        return date;
+    };
 });

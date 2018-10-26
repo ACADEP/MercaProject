@@ -10,7 +10,13 @@
             <li class="breadcrumb-item"><a href="">Carrito</a></li>
         </ol>
     </nav>  
-    <form class="form-inline text-center col-8 col-sm-8 col-md-8"  method="get" action="{{ route('cart.pdf') }}">
+    
+    @if(Auth::check()==false)
+        <div class="alert alert-primary" role="alert">
+            Inicie sesión o Regístrese para completar su compra.
+        </div>
+    @endif
+    <form class="form-inline text-center"  method="get" action="{{ route('cart.pdf') }}">
         <div class="text-right" style="width:100%;">
             <input type="hidden" name="Items" id="items-carts">
             <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
@@ -18,12 +24,11 @@
             </button>
             @if(Auth::check())
                 @if(Auth::user()->carts()->count()>0)
-                    <a href="{{ route('pay-cart') }}" class="btn btn-success text-center">Pagar</a>
+                    <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success text-center">Pagar</a></div>  
                 @endif
             @endif
-        </div>               
+        </div>
     </form>
-                
 </div>
         
 

@@ -116,6 +116,8 @@ class PagesController extends Controller {
         // $brands = Brand::where('id', '=', $id)->get();
         $brands = Brand::find($id);
 
+        $orden = Brand::find($id); 
+
         $brands_find = Brand::where('id', '=', $id)->find($id);
 
         // If no brand exists with that particular ID, then redirect back to Home page.
@@ -145,10 +147,32 @@ class PagesController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
         //previous URL for breadcrumbs
         $previousURL = url()->previous();
 
-        return view('brand.show', compact('products', 'brands', 'previousURL', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
+        return view('brand.show', compact('products', 'brands', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden', 'previousURL', 'brand', 'category', 'search', 'cart_count'));
     }
 
     public function displayAllCategories()
@@ -179,15 +203,55 @@ class PagesController extends Controller {
         $news = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->paginate(12);
         //previous URL for breadcrumbs
         $previousURL = url()->previous();
-        return view('pages.partials.all-newProducts',compact('news', 'previousURL'));
+
+        $ordenamiento = "Ordenar Por";
+
+        $orden = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->get();
+
+        $query = $orden;
+        $querybrands = $orden;
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = null;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = 1;
+        $categoryRoute = null;
+
+        return view('pages.partials.all-newProducts',compact('news', 'previousURL', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
     public function displayAllOffersProducts()
     {
-        $offers = Product::where('featured', '=', 1)->paginate(12);
+        $products = Product::where('featured', '=', 1)->paginate(12);
         //previous URL for breadcrumbs
         $previousURL = url()->previous();
-        return view('pages.partials.all-offersProducts',compact('offers', 'previousURL'));
+
+        $ordenamiento = "Ordenar Por";
+
+        $orden = null;
+
+        $categorias = Category::all();
+
+        $marcas = Brand::all();
+        // dd($marcas);
+        $brandRoute = null;
+        $shopRoute = null;
+        $offersRoute = 1;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+        return view('pages.partials.all-offersProducts',compact('products', 'previousURL', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 }

@@ -1,30 +1,14 @@
 
 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
    
-    <form action="/pricelow" method="post">
-        {{csrf_field()}}
-        <div class="dropdown">
-            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ $orden }}
-                <!--Ordenar por-->
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
-                <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
-            </div>
-        </div>
-    </form>
+    <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+        @include('shop.shop-filters')
+    </div>
 
-    @include('partials.filters')
-
-    {{-- <h4 class="text-center animated zoomIn" id="title-product">Productos #</h4> --}}
     <div class="text-center row mt-5">  
         @if($relacion)  
             @include('shop.featuredsold')
-        @else                 
+        @else                
             @foreach($products as $product)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-2" style="max-width: 23%;">
                     <div id="product-container">

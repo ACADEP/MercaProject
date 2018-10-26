@@ -13,15 +13,19 @@ class Brand extends Model {
         'brand_name',
     ];
 
+    public function product()
+    {
+        return $this->hasMany(Product::class);
+    }
 
     /**
      * One Brand can have Many Products
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function productBrand() {
-        return $this->hasMany('App\Product', 'brand_id');
-    }
+    // public function productBrand() {
+    //     return $this->hasMany('App\Product', 'brand_id');
+    // }
 
 
 

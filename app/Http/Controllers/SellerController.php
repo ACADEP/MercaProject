@@ -62,7 +62,6 @@ class SellerController extends Controller
     }
     public function orderDate(Request $request)
     { 
-    
         $seleHistories;
         $histories;
         if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)

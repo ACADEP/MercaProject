@@ -4,7 +4,7 @@
 <div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px;'>Espere por favor.....</div></div>
     
 <br>
-<script> </script>
+
 <!-- Stepper -->
 <div class="row">
 <div class="col-md-8 border" >
@@ -48,6 +48,7 @@
                     <hr>
                     &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
                     <strong>CP:</strong>{{$address->cp}} <br>
+                     <input type="hidden" id="cp_user" value="{{ $cpUser }}">
                     <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
                     <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
                     <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
@@ -63,7 +64,7 @@
                     
                 @else
                     <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una dirección</a>
-                    <div class="alert alert-danger">Usted no tiene dirección definida </div>
+                    <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
                     
                 @endif
                 <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Siguiente</button>
@@ -73,65 +74,9 @@
     <!-- Second Step -->
         <div class="row setup-content-2" id="step-2">
             <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Envío</strong></h3>
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
                 <div class="row" id="shipments">
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paquetería <br><br></div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="/images/shipments/estafeta.jpg" style="width:100%;" alt="">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="paqueteria1" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="paqueteria1"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paquetería <br><br></div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="/images/shipments/dhl.jpg" style="width:100%;" alt="">
-                                
-                            </p>
-                            <br>
-                            <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="paqueteria2" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="paqueteria2"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Paquetería <br><br></div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="/images/shipments/fedex.jpg" style="width:100%;" alt="">
-                                
-                            </p>
-                            <br>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="paqueteria3" name="defaultExampleRadios">
-                                    <label class="custom-control-label" for="paqueteria3"></label>
-                                </div>
-                        </div>
-                    </div>
-
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">A acordar con el vendedor</div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="/images/shipments/vendedor.png" style="width:100%; height:65px;" alt="">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="paqueteria4" name="defaultExampleRadios" checked>
-                                    <label class="custom-control-label" for="paqueteria4"></label>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Paqueterias disponibles -->
                 </div>
                 
 
@@ -143,7 +88,7 @@
         <!-- Third Step -->
         <div class="row setup-content-2" id="step-3">
             <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Método de pago</strong></h3>
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de pago</strong></h3>
             <div class="row">
                     <a id="debit-method">
                     <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
@@ -220,42 +165,54 @@
         <!-- Fourth Step -->
         <div class="row setup-content-2" id="step-4">
             <div class="col-md-12">
-                <h3 class="font-weight-bold pl-0 my-4"><strong>Verificar compra</strong></h3>
-                    <h4> <i class="fa fa-truck fa-lg" aria-hidden="true"></i> Método de envío:</h4>
-                    <div id="shipment" style="font-size:15px;"> Seleccionar un método</div>
-                    <input type="hidden" id="carrie_id">
-                    <br>
-                    @if($addresses->count() > 0)
-                        @php $address=$addresses->where('activo',1)->first();@endphp
-                        @if($address!=null)
-                        <h4>Será enviado a:</h4>
-                        <input type="hidden" id="address-active" value="{{$address}}">
-                        <input type="hidden" id="customer" value="{{ $customer }}">
-                        <div class="border" style="font-size:15px;" id="address-ship">
-                            &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
-                            <strong>CP:</strong>{{$address->cp}} <br>
-                            <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
-                            <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
-                            <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
-                            <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
-                            <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
-                            <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
-                        </div>
+            <h3 class="font-weight-bold pl-0 my-4"><strong>Verificar compra</strong></h3>
+                 <!-- inicio -->
+                 <div class="card text-center">
+                    <div class="card-header">
+                        Método de pago: <div id="pay" style="font-size:15px; display:inline;">Seleccionar un método</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Datos de envío</strong></h5>
+                        <p class="card-text">
+                            @if($addresses->count() > 0)
+                                @php $address=$addresses->where('activo',1)->first();@endphp
+                                @if($address!=null)
+                                <h4>Será enviado a:</h4>
+                                <input type="hidden" id="address-active" value="{{$address}}">
+                                <input type="hidden" id="customer" value="{{ $customer }}">
+                                <div class="" style="font-size:15px;" id="address-ship">
+                                    &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
+                                    <strong>CP:</strong>{{$address->cp}} <br>
+                                    <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
+                                    <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
+                                    <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
+                                    <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
+                                    <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
+                                    <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
+                                </div>
 
-                        @else
-                        <div class="alert alert-danger">Usted no tiene dirección definida </div>
+                                @else
+                                <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
+                                @endif
+                            @else
+                                <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
+                            @endif
+                        </p>
+                        @if($addresses->count() > 0)
+                            <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pago</button><br>
+                            
                         @endif
-                    @else
-                        <div class="alert alert-danger">Usted no tiene dirección definida </div>
-                    @endif
-                    <br>
-                    <h4>Método de pago:</h4>
-                    <div id="pay" style="font-size:15px;">Seleccionar un método</div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Paquetería:  <div id="shipment" style="font-size:15px; display:inline;"> Seleccionar un método</div> <input type="hidden" id="carrie_id"> Costo: <div class="ship-rate" style="display:inline;">$0,00</div> Llegada aproximada: <div id="date_aprox" style="display:inline;"></div> 
+    
+                    </div>
+                </div>
+                 <!-- fin -->
+                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 text-center" type="button">Anterior</button>
                     
-                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-                @if($addresses->count() > 0)
-                    <button class="btn btn-success btn-rounded float-right" id="btn-conf"type="submit">Confirmar</button>
-                @endif
+                
+
                 
             </div>
         </div>
@@ -275,7 +232,7 @@
 
     <div class="h5">
         Total de productos: ${{ number_format($subtotal, 2) }} <br>
-        Envío + impuestos: <div id="ship-rate">$0,00</div> <br>
+        Envío + impuestos: <div class="ship-rate">$0,00</div> <br>
     </div>
     
     <hr>
@@ -530,7 +487,20 @@ $(document).ready(function () {
     });
 </script>
 @stop
-
+@section('scripts-progress')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#pay-button').submit(function() {
+            // setInterval(function(){
+            //     $.getJSON('/progressConfirmation', function(data) {
+            //         $("#loader").html(data["progress"]);
+            //     });
+            // }, 1000);
+           
+        });
+    });
+</script>   
+@stop
 @section('modal-debit')
 <div class="modal fade" id="debit-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -552,14 +522,20 @@ $(document).ready(function () {
                                 $('#pay-button').on('click', function(event) {
                                     event.preventDefault();
                                     $("#pay-button").prop( "disabled", true);
-                                    OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);                
+                                    OpenPay.token.extractFormAndCreate('payment-form', success_callbak, error_callbak);                
                                 });
 
-                                var sucess_callbak = function(response) {
+                                var success_callbak = function(response) {
                                     var token_id = response.data.id;
                                     $('#token_id').val(token_id);
                                     $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
                                     $('#payment-form').submit();
+                                    setInterval(function(){
+                                        $.getJSON('/progressConfirmation', function(data) {
+                                            $("#loader").html(data["progress"]);
+                                        });
+                                    }, 1000);
+
                                 };
 
                                 var error_callbak = function(response) {
@@ -694,6 +670,11 @@ $(document).ready(function () {
                                 var carrie_id=$('#carrie_id').val();
                                 $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
                                 post("{{url('/cart/confirmation')}}",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id  } );
+                                setInterval(function(){
+                                    $.getJSON('/progressConfirmation', function(data) {
+                                        $("#loader").html(data["progress"]);
+                                    });
+                                }, 1000);
                             });
                         }
                         }, '#paypal-button-container');
@@ -710,6 +691,7 @@ $(document).ready(function () {
 @stop
 
 @section('ajax-shipment')
+
 <script type="text/javascript" src="{{ asset('/js/ajax-shipment.js') }}"></script>
 @stop
 @section('css-openpay')
