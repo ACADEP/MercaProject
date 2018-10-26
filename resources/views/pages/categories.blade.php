@@ -2,11 +2,25 @@
 
 @section('content')
 <div class="col-md-12">
-    <h1 class="text-center">Categorias</h1>
-    @foreach($categories as $category)
-        <ul>
-           <li><a href="#" style="text-decoration: none;">{{ $category->category }}</a></li>
+    <h1 class="text-center">Categorías</h1>
+    @foreach($categoriesall as $category)
+        @if($category->totalSubcategories() > 0)
+        <ul >
+            <li> <a href="#" >{{ $category->category }}</a></li>
+           <ul style="text-decoration: none;">
+           @foreach($category->children()->get() as $sub)
+           <li><a href="#" >{{ $sub->category }}</a></li>
+           @endforeach
+          
+           
+           </ul>
         </ul>
+        @else
+        <ul >
+           <li style="text-decoration: none;"><a href="#" >{{ $category->category }}</a></li>
+        </ul>
+        @endif
+        
 
     @endforeach
 </div>

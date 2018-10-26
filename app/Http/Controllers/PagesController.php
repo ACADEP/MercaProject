@@ -147,8 +147,9 @@ class PagesController extends Controller {
 
     public function displayAllCategories()
     {
-        $categories = Category::all();
-        return view('pages.categories',compact('categories'));
+        $categoriesall = Category::where('parent_id', 0)->get();
+      
+        return view('pages.categories',compact('categoriesall'));
     }
 
     public function displayAllBrands()

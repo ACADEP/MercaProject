@@ -19,7 +19,7 @@
                     
                        
                     </li>
-                   
+                @php $categories=App\Category::where('parent_id',0)->take(5)->get(); @endphp
                 <div id="search_down">
                     <li class="nav-item dropdown" >
                             
@@ -29,25 +29,21 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <!-- Categorias y subcategorias -->
                                 
-                                    
-                                    <li><a class="dropdown-item" href="#">Categoría 1</a></li>
-                                    <!-- Subcategorias dropdown -->
-                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoría 2</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Subcategoría 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Subcategoría 2</a></li>
-                                    </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Categoría 3</a></li>
-                                    
-                                    <!-- <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Categoria 4</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Subcategoria 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Subcategoria 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Subcategoria 3</a></li>
-                                    </ul>
-                                    </li> -->
-                                    <li><a class="dropdown-item" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
+                                    @foreach($categories as $category)
+                                        @if($category->totalSubcategories() >0)
+                                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{$category->category}}</a>
+                                            <ul class="dropdown-menu">
+                                            @foreach($category->children()->get() as $sub)
+                                            <li><a class="dropdown-item" href="#">{{$sub->category}}</a></li>
+                                            @endforeach
+                                            </ul>
+                                        </li>
+                                        @else
+                                        <li><a class="dropdown-item" href="#">{{$category->category}}</a></li>
+                                        @endif
+                                    @endforeach
+                                   
+                                    <li><a class="dropdown-item" style="color:blue;" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
                                 </ul>
                         </li>
                     </div>
@@ -63,7 +59,11 @@
                                         @if(Auth::user()->admin==2)
                                             <a href="{{ url('/seller/admin') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
+                                        @if(Auth::user()->admin==1)
+                                            <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        @else
                                             <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        @endif
                                         @endif
                                         <a href="{{ url('/logout') }}">Salir</a>
                                     </div>
