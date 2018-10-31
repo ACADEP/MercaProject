@@ -1,53 +1,52 @@
 <style>
 .ajuste {
-    float: left;
 }
 .alineado {
-    padding-top: 2em;
+}
+.ordenado {
+}
+.filters {
+    padding-left: 3px;
 }
 </style>
-<div class="col-sm-2 col-md-2 col-lg-2" >
-    <div class="alineado">
-        <form action="/pricelow" method="post">
-            {{csrf_field()}}
-            <div class="dropdown">
-                <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ $ordenamiento }}
-                    <!--Ordenar por -->
-                </button>        
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
-                    <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
-                    <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
-                    <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
-                    <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
-                </div>
+<div class="alineado ordenado col-sm-2 col-md-2 col-lg-2">
+    <form action="/pricelow" method="post">
+        {{csrf_field()}}
+        <div class="dropdown">
+            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ $ordenamiento }}
+                <!--Ordenar por -->
+            </button>        
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
+                <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
+                <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
+                <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
+                <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
-<div class="col-sm-10 col-md-10 col-lg-10 pr-5">
-    <form action="{{route('shop.filter', $banner->id)}}" method="GET">
-        <div class="col-sm-3 col-md-3 col-lg-3 ajuste alineado">
-            <div class="dropdown " style="display: inline;">
+<div class="filters col-sm-10 col-md-10 col-lg-10">
+    <form class="form-inline" action="{{route('shop.filter', $banner->id)}}" method="GET">
+        <div class="form-row align-items-center">
+            <div class="dropdown ajuste alineado" >
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     Marcas
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check" aria-labelledby="dropdownMenu1" style="background-color: #616161;">
+                <ul class="dropdown-menu check text-left" aria-labelledby="dropdownMenu1" style="background-color: #616161;">
                     @php
                         $contador = count($marcas['brand_name']);
                         $b = 'bra';
                     @endphp
                     @for ($i = 0; $i < $contador; $i++)
-                        <li><label for="{{$b.$i}}"><input class="ml-2" type="checkbox" name="brand[]" value="{{$marcas['id'][$i]}}" id="{{$b.$i}}" /><strong class="ml-1">{{$marcas['brand_name'][$i]}}</strong></label></li>
+                        <li><label for="{{$b.$i}}"><input class="text-left" type="checkbox" name="brand[]" value="{{$marcas['id'][$i]}}, {{$marcas['brand_name'][$i]}}" id="{{$b.$i}}" /><strong class="ml-1">{{$marcas['brand_name'][$i]}}</strong></label></li>
                     @endfor
                 </ul>
             </div>
-        </div>
 
-        <div class="col-sm-3 col-md-3 col-lg-3 ajuste alineado">
-            <div class="dropdown " style="display: inline;">
+            <div class="dropdown ajuste alineado" >
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     Por Categoria   
                     <span class="caret"></span>
@@ -58,25 +57,23 @@
                         $c = 'cat';
                     @endphp
                     @for ($i = 0; $i < $contador; $i++)
-                        <li><label for="{{$c.$i}}"><input class="ml-2" type="checkbox" name="categories[]" value="{{$categorias['id'][$i]}}" id="{{$c.$i}}" /><strong class="ml-1">{{$categorias['category'][$i]}}</strong></label></li>
+                        <li><label for="{{$c.$i}}"><input class="text-left" type="checkbox" name="categories[]" value="{{$categorias['id'][$i]}}, {{$categorias['category'][$i]}}" id="{{$c.$i}}" /><strong class="ml-1">{{$categorias['category'][$i]}}</strong></label></li>
                     @endfor
                 </ul>
             </div>
-        </div>
 
-        <div class="col-sm-2 col-md-2 col-lg-2 ajuste">
-            <label for="desde">Desde</label>
-            <input type="text" name="desde" class="form-control" placeholder="$ Mínimo">
-        </div>
+            <div class="ajuste minimo">
+                <input type="text" name="desde" class="form-control" placeholder="$ Mínimo" style="width: 100px;">
+            </div>
 
-        <div class="col-sm-2 col-md-2 col-lg-2 ajuste">
-            <label for="hasta">Hasta</label>
-            <input type="text" name="hasta" class="form-control" placeholder="$ Máximo">
-        </div>
+            <div class="ajuste maximo">
+                <input type="text" name="hasta" class="form-control ml-2" placeholder="$ Máximo" style="width: 100px;">
+            </div>    
 
-        <div class="col-sm-2 col-md-2 col-lg-2 ajuste alineado">
-            <input type="hidden" name="id" value="{{$banner->id}}">
-            <button class="btn btn-info" type="submit">Buscar</button>
+            <div class="ajuste alineado">
+                <input type="hidden" name="id" value="{{$banner->id}}">
+                <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
+            </div> 
         </div>
     </form>
 </div>

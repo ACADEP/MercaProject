@@ -465,14 +465,14 @@ class CartController extends Controller {
 
         header('HTTP/1.1 200 OK');        
 
-        // $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
-        // $json = file_get_contents("php://input");
-        // $a = json_decode($json);
-        // foreach($a as $b=>$c){
-        //     $d = $b.'=>'.$c.'<br>';
-        //     fwrite($myfile, $d);
-        // }
-        // fclose($myfile); 
+        $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+        $json = file_get_contents("php://input");
+        $a = json_decode($json);
+        foreach($a as $b=>$c){
+            $d = $b.'=>'.$c.'<br>';
+            fwrite($myfile, $d);
+        }
+        fclose($myfile); 
 
     }
 
@@ -605,8 +605,12 @@ class CartController extends Controller {
         {
             $cartItems=Auth::user()->cart->with("product")->get();
         }
-        $pdf = PDF::loadView('cart.Print-payment-receipt',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        // dd($cartItems);
+        $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        // $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems', 'subtotal', 'address', 'expiry'));
         return $pdf->stream('Recibo.pdf');
+        // return view('cart.Print-Oxxo', compact('cartItems', 'subtotal', 'address', 'expiry'));
     }
 
     public function PaypalWebhook() {

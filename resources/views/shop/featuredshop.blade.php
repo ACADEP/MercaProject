@@ -5,7 +5,55 @@
         @include('shop.shop-filters')
     </div>
 
-    <div class="text-center row mt-5">  
+    <style>
+        .badge {
+            margin-right: .3rem;
+        }
+        /***** REQUIRED STYLES *****/
+        .badge-labeled {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-right: 0.2rem;
+        }
+        .badge-labeled i {
+            padding: 0.25em  0.3rem;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            right: -0.2em;
+            border-left: solid 1px rgba(255,255,255,.5);
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+    </style>
+
+    <div class="pt-3">
+        <form id="filter" action="" method="post">
+            @if ($brandFilter)
+                @foreach ($brandFilter as $brand)
+                    <span class="badge badge-primary badge-labeled activo" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times"></i></span>  
+                @endforeach
+            @endif
+            @if ($catFilter)
+                @foreach ($catFilter as $cat)
+                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times"></i></span>  
+                @endforeach
+            @endif
+            @if ($maxfilter && $minFilter)
+                <span class="badge badge-primary badge-labeled" style="font-size:15px;">${{$minFilter}}a ${{$maxfilter}}<i class="fa fa-times"></i></span>
+            @else
+                @if ($maxfilter)
+                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times"></i></span>  
+                @else
+                    @if ($minFilter)
+                        <span class="badge badge-primary badge-labeled" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times"></i></span>
+                    @endif
+                @endif
+            @endif
+
+        </form>
+    </div>
+
+    <div class="text-center row mt-4">  
         @if($relacion)  
             @include('shop.featuredsold')
         @else                
@@ -62,12 +110,20 @@
         @endif
     </div>
     <div class="row justify-content-center mt-3 pl-5">
-        {{ $products->links() }}
+        {{ $products->appends(Request::input())->links() }}
     </div>
 </div>
 
 <script>
     $(function () {
+        $('i').on('click', function(e) {
+            var form = document.getElementById("filter");
+            var span = form.getElementsByTagName("span");
+            for(i = 0; i < span.length; i++) {
+                console.log(span[i].innerText);
+            }
+            $(e.target).closest('span').remove();
+        })
         /*$(".dropdown-menu a").click(function () {
             var text_selected = $(this).text();
             $("#order").text(text_selected);

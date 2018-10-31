@@ -89,7 +89,7 @@
             <h4><strong>{{ $now->format('d-m-Y') }}</strong></h4><br>
         </div>
         <div class="row text-center">
-            <div class="col-md-12 text-left">
+            <div class="back-acount col-md-12 text-left">
                 <h2>Recibo de pago</h2>
                 <h4>Depósito a través de OXXO o BBVA Bancomer</h4>
                 <h5>Propietario de la cuenta: German Leonardo Lage Suarez</h5>
@@ -102,8 +102,8 @@
         </div>
         <div class="row text-center">
             <div class="col-md-6 text-left">
-                <h5>Cliente: {{ Auth::User()->username}}</h5>
-                <h5>Teléfono(s): 612 1225174</h5>
+                <h5>Cliente: {{Auth::User()->customer->nombre}}</h5>
+                <h5>Teléfono(s): {{Auth::User()->customer->telefono}}</h5>
             </div>
         </div><!-- fin row 2-->
         <br>

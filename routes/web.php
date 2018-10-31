@@ -163,7 +163,7 @@ Route::group(['middleware' => ['web']], function () {
 
         /** Route to filter products for shops */
     Route::get('/shop/{id}/filter', [
-        'uses' => '\App\Http\Controllers\ShopController@filter',
+        'uses' => '\App\Http\Controllers\ShopController@filtros',
         'as'   => 'shop.filter',
     ]);
 
