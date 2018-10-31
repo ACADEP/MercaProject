@@ -104,8 +104,11 @@
             
    
     <div class="container">
-    @if(Session::has('pay-success') || Session::has('progress'))
-        @php Session::forget('progress');  @endphp
+    @if(Session::has('progress'))
+    @php Session::forget('progress'); @endphp
+    @endif
+    @if(Session::has('pay-success'))
+       
         <script> 
             var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
         </script>

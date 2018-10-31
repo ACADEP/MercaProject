@@ -184,6 +184,7 @@ desired effect
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
           </ul>
         </li>
+        <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

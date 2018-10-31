@@ -9,7 +9,9 @@ use App\User;
 use App\Sale;
 use App\Address;
 use App\CustomerHistory;
+use App\SeleHistory;
 use App\Customer;
+use App\ProductSeller;
 use Carbon\Carbon;
 use App\EnviaYa;
 use Illuminate\Http\Request;
@@ -42,6 +44,7 @@ class CartController extends Controller {
 
     public function showCart() {
 
+      
         return view('cart.cart'); 
             
     }
@@ -227,10 +230,26 @@ class CartController extends Controller {
         Session::put('progress', $envio->status_message);
         Session::save();
 
-        $sale->insert(Auth::user()->total,$request->get('carrie'),$envio->shipment_status,$envio->carrier_shipment_number);
+        $sale->insert(Auth::user()->total,$request->get('carrie'),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado");
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
+            $productseller=ProductSeller::find( $cartItem->product->id);
+           
+            if($productseller != null)
+            {
+                $saleHistory=new SaleHistory;
+                $saleHistory->insert($cartItem,$productseller->id,Auth::user()->customer->nombre);
+            }
+            else
+            {
+                $admins=User::where("admin",1)->get();
+                foreach($admins as $admin)
+                {   
+                    $saleHistory=new SeleHistory;
+                    $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre);
+                }
+            }
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
@@ -247,6 +266,7 @@ class CartController extends Controller {
             {
                 //borrar productos del carrito
                 Auth::user()->carts()->delete();
+                Session::forget('progress');
                 return redirect("/")->with('pay-success','Pago exitoso');
             }
             else
@@ -316,6 +336,7 @@ class CartController extends Controller {
     //Pagos en banco
     public function PagosBanco(Request $request) {
 
+      
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
@@ -337,12 +358,21 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        foreach($cartItems->get() as $cartItem)
+        {
+           
+           
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
         $chargeData = array(
             'method' => 'bank_account',
             'amount' => $request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
-            'order_id' => 'oid-'.$random, //oid-00051 id del carrito
+            'order_id' => $sale->id, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);

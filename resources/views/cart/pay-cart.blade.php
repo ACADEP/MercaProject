@@ -90,9 +90,9 @@
             <div class="col-md-12">
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de pago</strong></h3>
             <div class="row">
-                    <a id="debit-method">
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Débito <br><br></div>
+                    <a id="mpay-1">
+                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                        <div class="card-header">Débito o crédito</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="images/shipments/debit-credit.png" style="width:100%;">
@@ -100,36 +100,19 @@
                             </p>
                             <br>
                             <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="debit-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="debit-method-r"></label>
+                                    <input type="radio" class="custom-control-input" id="credit-debit-method-r" name="defaultExampleRadios2">
+                                    <label class="custom-control-label" for="credit-debit-method-r"></label>
                             </div>
                         </div>
                     </div>
                     </a>
 
-                    <a id="credit-method">
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
-                        <div class="card-header">Crédito <br><br></div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/debit-credit.png" style="width:100%;">
-                                
-                            </p>
-                            <br>
-                            <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="credit-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="credit-method-r"></label>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-
-                    <a id="paypal-method">
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
+                    <a id="mpay-2">
+                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">PayPal <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <img src="images/shipments/paypal.png" style="width:100%; height:60px;">
+                                <img src="images/shipments/paypal.png" style="width:100%;">
                                 
                             </p>
                             <div class="custom-control custom-radio">
@@ -140,12 +123,12 @@
                     </div>
                     </a>
 
-                    <a id="bank-method">
-                    <div class="card border-primary mb-3 text-center col-md-4" style="max-width: 10rem; margin:10px;">
+                    <a id="mpay-3">
+                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Tranferencia bancaria</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
-                                <img src="images/shipments/transfer.png" style="width:100%; height:60px;">
+                                <img src="images/shipments/transfer.png" style="width:100%;">
                                 
                             </p>
                             <div class="custom-control custom-radio">
@@ -154,9 +137,43 @@
                             </div>
                         </div>
                     </div>
-                </div>
+             
                 </a>
 
+                <a id="mpay-4">
+                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                        <div class="card-header">Tiendas</div>
+                        <div class="card-body text-primary">
+                            <p class="card-text">
+                                <img src="images/shipments/store.png" style="width:100%;">
+                                
+                            </p>
+                            <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="stores-method-r" name="defaultExampleRadios2">
+                                    <label class="custom-control-label" for="stores-method-r"></label>
+                            </div>
+                        </div>
+                    </div>
+               
+                </a>
+
+                <a id="mpay-5" style="width: 24%;">
+                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                        <div class="card-header">Oxxo</div>
+                        <div class="card-body text-primary">
+                            <p class="card-text">
+                                <img src="images/shipments/oxxo.png" style="width:100%;">
+                                
+                            </p>
+                            <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="oxxo-method-r" name="defaultExampleRadios2">
+                                    <label class="custom-control-label" for="oxxo-method-r"></label>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+               
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>
                 <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-pay" type="button">Siguiente</button>
             </div>
@@ -376,43 +393,55 @@ $(document).ready(function () {
 @section('show-modal')
 <script>
     $(function() {
+        function reset_pay_css()
+        {
+            for(var i=1;i<=5;i++)
+            {
+                $("#mpay-"+i).css("background-color", "white");
+            }
+        }
         $("#shipment").html("A acordar con el vendedor");
         // Paqueterias
 
         //Metodos de pago
-        $("#debit-method").click(function(){
-            $("#pay").html("Débito");
+        $("#mpay-1").click(function(){
+            reset_pay_css();
+            $(this).css("background-color", "green");
+            $("#pay").html("Débito o crédito");
+            $("#credit-debit-method-r").prop("checked",true);
         });
 
-        $("#credit-method").click(function(){
-            $("#pay").html("Crédito");
-        });
-
-         $("#paypal-method").click(function(){
+        $("#mpay-2").click(function(){
+            reset_pay_css();
+            $(this).css("background-color", "green");
             $("#pay").html("PayPal");
-        });
-
-         $("#bank-method").click(function(){
-            $("#pay").html("Tranferencia bancaria");
-        });
-        
-        //radio-checked metodos de pago
-        $("#credit-method").click(function(){
-            $("#credit-method-r").prop("checked",true);
-        });
-        $("#debit-method").click(function(){
-            $("#debit-method-r").prop("checked",true);
-        });
-        $("#paypal-method").click(function(){
             $("#paypal-method-r").prop("checked",true);
         });
-        $("#bank-method").click(function(){
+
+        $("#mpay-3").click(function(){
+            reset_pay_css();
+            $(this).css("background-color", "green");
+            $("#pay").html("Tranferencia bancaria");
             $("#bank-method-r").prop("checked",true);
         });
-        
+
+         $("#mpay-4").click(function(){
+            reset_pay_css();
+            $(this).css("background-color", "green");
+            $("#pay").html("Tienda de convenencia");
+            $("#stores-method-r").prop("checked",true);
+        });
+
+         $("#mpay-5").click(function(){
+            reset_pay_css();
+            $(this).css("background-color", "green");
+            $("#pay").html("Oxxo");
+            $("#oxxo-method-r").prop("checked",true);
+        });
+    
         // $("#btn-next-pay")
         $("#btn-conf").click(function(){
-            if($("#credit-method-r").prop("checked") || $("#debit-method-r").prop("checked"))
+            if($("#credit-debit-method-r").prop("checked"))
             {
               
                     $('#debit-card').modal('show');
@@ -432,6 +461,7 @@ $(document).ready(function () {
             {
                
                 $(".rate_delivered").val($("#total-pursh").val());
+                $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
                 $('#transfer').modal('show');
             }
             else
@@ -563,8 +593,8 @@ $(document).ready(function () {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title">Transferencia Bancaria</h5>
+      
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -572,7 +602,8 @@ $(document).ready(function () {
       <form action="/cart/confirmation-banco" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
-            <button type="submit" class="btn btn-primary" formtarget="_blank">Depositar en Bancomer</button>
+            <input type="hidden" name="carrie" id="bank_carrie">
+            <button type="submit" class="btn btn-primary" formtarget="_blank">Generar recibo</button>
         </form>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>

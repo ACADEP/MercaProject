@@ -43,8 +43,8 @@ class Category extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function product() {
-        return $this->hasMany('App\Product', 'id');
+    public function products() {
+        return $this->hasMany('App\Product', 'cat_id');
     }
 
 

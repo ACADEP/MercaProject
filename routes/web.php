@@ -37,7 +37,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'PagesController@index');
 
     /** Display Products by category Route **/
-    Route::get('category/{id}','PagesController@displayProducts');
+    Route::get('/Category/{category}','PagesController@displayProducts')->name('productsByCategory');
+
+    Route::get('/Category/{category}/order','PagesController@orderCategories')->name('orderCategory');
 
     /** Display all category Route **/
     Route::get('allcategory','PagesController@displayAllCategories')->name('categories.all');
@@ -492,6 +494,8 @@ Route::group(["middleware" => 'customer'], function(){
 
     Route::get('print_pdf_seller','SellerController@printPdf');
 
+    Route::get('print_excel_seller','SellerController@printExcel');
+
     Route::post('seller/respond-reclame','SellerController@respondReclame')->name('respond-reclame');
 
 
@@ -516,11 +520,21 @@ Route::group(["middleware" => 'customer'], function(){
 
 Route::group(["middleware" => 'admin'], function(){
     //Dashboard del administrador
-    Route::get("/admin/index", "AdminController@index");
+    Route::get("admin/index", "AdminController@index");
     //Edicion de categorías
-    Route::get("/admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit");
+    Route::get("admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit");
+    //Regalias
+    Route::get("admin/sales", "AdminController@showSales")->name("show-sales");
+    //Descargar PDF
+    Route::get('print_pdf_seller','AdminController@printPdf');
+    //Descargar Excel
+    Route::get('print_excel_seller','AdminController@printExcel');
+    //Ordenar por
+    Route::get('admin/sales/{order}','AdminController@orderSales')->name('order-admin');
+    //Ordenar por fecha
+    Route::post('admin/sales/orderDate','AdminController@orderDate')->name('orderDate-admin');
    
-    //CRUDS Categorias
+    //CRUD Categorias
     //Mostrar todas las categorias
     Route::get("/admin/products/categories", "AdminController@showCategories");
     //Agregar subcategorias

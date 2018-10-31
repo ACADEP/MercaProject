@@ -14,7 +14,7 @@ class ProductsTableSeeder extends Seeder
     {
         DB::table('products')->insert([
             'product_name' => 'Xbox One - Turtle Beach X-40 Headset',
-            'product_qty'        =>  30,
+            'product_qty' =>  30,
             'product_sku' => 1,
             'price'=> 10000,
             'reduced_price'=>1000,
