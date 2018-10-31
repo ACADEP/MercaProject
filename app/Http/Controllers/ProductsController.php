@@ -283,17 +283,40 @@ class ProductsController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        
+        //previous URL for breadcrumbs
+        // $URL = url()->previous();
+        // $URLoffers = substr($URL, 27, 7);
+        // $URLnewprod = substr($URL, 27, 13);
+        // $URLsearch = substr($URL, 27, 8);
+        // $previousURL = substr($URL, 27);
+        // dd($URLnewprod);
+
         //Codigo QR
         
-        
+        //previous URL for breadcrumbs
+        $URL = $this->Breadcrumb();
+       
         $similar_product = Product::where('id', '!=', $product->id)
             ->where(function ($query) use ($product) {
                 $query->where('brand_id', '=', $product->brand_id)
                     ->orWhere('cat_id', '=', $product->cat_id);
             })->get();
 
-        return view('pages.show_product', compact('product', 'search', 'brands', 'categories', 'similar_product', 'cart_count'));
+        return view('pages.show_product', compact('product', 'URL', 'search', 'brands', 'categories', 'similar_product', 'cart_count'));
+    }
+
+    public function Breadcrumb() {
+        //previous URL for breadcrumbs
+        $URL = url()->previous();
+        $URLoffers = substr($URL, 27, 7);
+        $URLnewprod = substr($URL, 27, 13);
+        $URLsearch = substr($URL, 27, 8);
+        $previousURL = substr($URL, 27);
+        $URLbrand = substr($URL, 27, 8);
+        $URLshop = substr($URL, 27, 7);
+        $URLprevious = [$URLoffers, $URLnewprod, $URLsearch, $previousURL, $URLbrand, $URLshop];
+
+        return $URLprevious;
     }
 
     public function qr_code()

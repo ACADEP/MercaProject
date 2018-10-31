@@ -235,7 +235,32 @@ class OrderByController extends ProductsController {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'brand', 'category', 'search', 'count', 'cart_count'));
+        $orden = Brand::find($id); 
+
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+
+        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'brand', 'category', 'search', 'count', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 
@@ -270,7 +295,32 @@ class OrderByController extends ProductsController {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count'));
+        $orden = Brand::find($id); 
+
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+
+        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 
@@ -305,7 +355,32 @@ class OrderByController extends ProductsController {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count'));
+        $orden = Brand::find($id); 
+        
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+
+        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 
@@ -339,7 +414,32 @@ class OrderByController extends ProductsController {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count'));
+        $orden = Brand::find($id); 
+
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+
+        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
     /**
@@ -372,7 +472,32 @@ class OrderByController extends ProductsController {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
-        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count'));
+        $orden = Brand::find($id); 
+
+        $ordenamiento = "Ordenar Por";
+
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+
+        return view('brand.show', ['products' => $products], compact('brands', 'shop', 'category', 'brand', 'search', 'count', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 

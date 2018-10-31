@@ -1,21 +1,20 @@
 <div class="row">
     <div class="col-md-1">
-    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Ordenar
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color: black;">
-        <li><a href="{{url('seller/sales/7') }}">Todos</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="{{url('seller/sales/1') }}">Mas vendido</a></li>
-        <li><a href="{{url('seller/sales/2') }}">Vendidos reciente</a></li>
-        <li><a href="{{url('seller/sales/3') }}">Precio mas alto</a></li>
-        <li><a href="{{url('seller/sales/4') }}">Productos de A-Z</a></li>
-        <li><a href="{{url('seller/sales/5') }}">Clientes de A-Z</a></li>
-        <li><a href="{{url('seller/sales/6') }}">Mayor total</a></li>
-        
-        
-    </ul>
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Ordenar
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color: black;">
+            <li><a href="{{url('seller/sales/7') }}">Todos</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{url('seller/sales/1') }}">Mas vendido</a></li>
+            <li><a href="{{url('seller/sales/2') }}">Vendidos reciente</a></li>
+            <li><a href="{{url('seller/sales/3') }}">Precio mas alto</a></li>
+            <li><a href="{{url('seller/sales/4') }}">Productos de A-Z</a></li>
+            <li><a href="{{url('seller/sales/5') }}">Clientes de A-Z</a></li>
+            <li><a href="{{url('seller/sales/6') }}">Mayor total</a></li>
+            
+        </ul>
     </div>
 
     <div class="col-md-3 form-inline" >

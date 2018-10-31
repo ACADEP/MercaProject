@@ -19,6 +19,13 @@
 }
 </style>
 
+<nav aria-label="breadcrumb" style="padding-top: 5px;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/customer/profile') }}">Perfil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Direcciones</li>
+    </ol>
+</nav>        
 
 <section class="content-header">
         <h1>
@@ -73,27 +80,27 @@
                                     @if(trim($address->calle2)) 
                                         <label class="lead" for="">Segunda callle: {{ $address->calle2 }}</label><br>
                                     @else 
-                                        <label class="lead" for="">Segunda callle: Sin segunda calle</label><br>
+                                        <label class="lead" for="">Segunda callle: Sin especificar.</label><br>
                                     @endif
                                     @if(trim($address->calle3)) 
                                         <label class="lead" for="">Tercera callle: {{ $address->calle3 }}</label><br>
                                     @else 
-                                        <label class="lead" for="">Tercera callle: Sin tercera calle</label><br>
+                                        <label class="lead" for="">Tercera callle: Sin especificar.</label><br>
                                     @endif
                                     @if(trim($address->numInterior)) 
                                         <label class="lead" for="">Número interior: {{ $address->numInterior }}</label><br>
                                     @else 
-                                        <label class="lead" for="">Número interior: Sin número interior</label><br>
+                                        <label class="lead" for="">Número interior: Sin especificar.</label><br>
                                     @endif
                                     @if(trim($address->numExterior)) 
                                         <label class="lead" for="">Número exterior: {{ $address->numExterior }}</label><br>
                                     @else 
-                                        <label class="lead" for="">Número exterior: Sin número exterior</label><br>
+                                        <label class="lead" for="">Número exterior: Sin especificar.</label><br>
                                     @endif
                                     @if(trim($address->numExterior)) 
                                         <label class="lead" for="">Referecias: {{ $address->referencias }}</label>
                                     @else 
-                                        <label class="lead" for="">Referecias: Sin referencias</label><br>
+                                        <label class="lead" for="">Referecias: Sin especificar.</label><br>
                                     @endif
 
                                 </div>

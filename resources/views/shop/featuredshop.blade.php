@@ -1,28 +1,62 @@
 
 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
    
-    <form action="/pricelow" method="post">
-        {{csrf_field()}}
-        <div class="dropdown">
-            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ $orden }}
-                <!--Ordenar por-->
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
-                <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
-            </div>
-        </div>
-    </form>
+    <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+        @include('shop.shop-filters')
+    </div>
 
-    {{-- <h4 class="text-center animated zoomIn" id="title-product">Productos #</h4> --}}
-    <div class="text-center row">  
+    <style>
+        .badge {
+            margin-right: .3rem;
+        }
+        /***** REQUIRED STYLES *****/
+        .badge-labeled {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-right: 0.2rem;
+        }
+        .badge-labeled i {
+            padding: 0.25em  0.3rem;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            right: -0.2em;
+            border-left: solid 1px rgba(255,255,255,.5);
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+    </style>
+
+    <div class="pt-3">
+        <form id="filter" action="" method="post">
+            @if ($brandFilter)
+                @foreach ($brandFilter as $brand)
+                    <span class="badge badge-primary badge-labeled activo" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times"></i></span>  
+                @endforeach
+            @endif
+            @if ($catFilter)
+                @foreach ($catFilter as $cat)
+                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times"></i></span>  
+                @endforeach
+            @endif
+            @if ($maxfilter && $minFilter)
+                <span class="badge badge-primary badge-labeled" style="font-size:15px;">${{$minFilter}}a ${{$maxfilter}}<i class="fa fa-times"></i></span>
+            @else
+                @if ($maxfilter)
+                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times"></i></span>  
+                @else
+                    @if ($minFilter)
+                        <span class="badge badge-primary badge-labeled" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times"></i></span>
+                    @endif
+                @endif
+            @endif
+
+        </form>
+    </div>
+
+    <div class="text-center row mt-4">  
         @if($relacion)  
             @include('shop.featuredsold')
-        @else                 
+        @else                
             @foreach($products as $product)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-2" style="max-width: 23%;">
                     <div id="product-container">
@@ -76,12 +110,20 @@
         @endif
     </div>
     <div class="row justify-content-center mt-3 pl-5">
-        {{ $products->links() }}
+        {{ $products->appends(Request::input())->links() }}
     </div>
 </div>
 
 <script>
     $(function () {
+        $('i').on('click', function(e) {
+            var form = document.getElementById("filter");
+            var span = form.getElementsByTagName("span");
+            for(i = 0; i < span.length; i++) {
+                console.log(span[i].innerText);
+            }
+            $(e.target).closest('span').remove();
+        })
         /*$(".dropdown-menu a").click(function () {
             var text_selected = $(this).text();
             $("#order").text(text_selected);

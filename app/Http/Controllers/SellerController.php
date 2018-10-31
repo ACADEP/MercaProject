@@ -63,26 +63,25 @@ class SellerController extends Controller
     }
     public function orderDate(Request $request)
     { 
-    
         $seleHistories;
         $histories;
         if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
         {
             $años=$request->get("año");
-            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(10);
+            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(5);
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->get();
             
         }
         else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")==null)
         {
             $meses=$request->get("mes");
-            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(10); 
+            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(5); 
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->get();   
         }
         else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")==null)
         {
             $dias=$request->get("dia");
-            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(10);
+            $seleHistories=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(5);
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->get();
            
         }
@@ -121,7 +120,7 @@ class SellerController extends Controller
         }
         else
         {
-            $seleHistories=Auth::user()->selehistories()->paginate(10);
+            $seleHistories=Auth::user()->selehistories()->paginate(5);
             $histories=Auth::user()->selehistories()->get();
         }
         return view('seller.pages.sales_history',compact('seleHistories','histories'));
@@ -164,12 +163,12 @@ class SellerController extends Controller
         }
         else if($order==7)
         {
-            $seleHistories=Auth::user()->selehistories()->paginate(10);
+            $seleHistories=Auth::user()->selehistories()->paginate(5);
             $histories=Auth::user()->selehistories()->get();
         }
         else
         {
-            $seleHistories=Auth::user()->selehistories()->paginate(10);
+            $seleHistories=Auth::user()->selehistories()->paginate(5);
             $histories=Auth::user()->selehistories()->get();
         }
        

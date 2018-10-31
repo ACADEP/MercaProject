@@ -12,6 +12,7 @@ use App\CustomerHistory;
 use App\SeleHistory;
 use App\Customer;
 use App\ProductSeller;
+use App\Webhook;
 use Carbon\Carbon;
 use App\EnviaYa;
 use Illuminate\Http\Request;
@@ -220,6 +221,7 @@ class CartController extends Controller {
     }
 
     public function confirmation(Request $request, AppMailers $mailer) {
+        dd($request);
         Session::put('progress', "Preparando envío");
         Session::save(); 
         
@@ -440,7 +442,7 @@ class CartController extends Controller {
             'amount' => Auth::user()->total,
             'description' => 'Cargo a tienda',
             'order_id' => 'oid-'.$random, //oid-00051 id del carrito
-            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
@@ -480,63 +482,27 @@ class CartController extends Controller {
 
     }
 
-    public function OpnepayWebhookCatch() {
-        $body = file_get_contents('php://input');        
-        $json = json_decode($body);   
-        if (isset($json->type)) {
-            if ($json->type == 'charge.succeeded' && ($json->transaction->method == 'store' || 
-            $json->transaction->method == 'bank_account')) {
-                echo('ok');
-                return view('cart.cart-confirmation');
-            }     
-        }
-        header('HTTP/1.1 200 OK');
-    }
-
-    public function OpnepayWebhookCreate(Request $request) {
-        dd($request);
-        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-        try {
-            $webhook = array(
-                'url' => 'http://mercaproject.oo/notificaciones/openpay',
-                'user' => 'Mercadata',
-                'password' => 'Acadep.2018$$',
-                'event_types' => array(
-                    'charge.refunded',
-                    'charge.failed',
-                    'charge.cancelled',
-                    'charge.created',
-                    'chargeback.accepted'
-                )
-                
-            );
-            $webhooks = $openpay->webhooks->create($webhook);
-            dd($webhooks);
-
-            if($webhooks){
-                return view('cart.cart-confirmation');
+    public function OpnepayWebhookCatch(Request $request) {
+        if($request != null)
+        {
+            if($request->type=="charge.succeeded")
+            {
+                $webhook = new Webhook;
+                $webhook->idWebhookOpenpay=$request->type;
+                $webhook->save();
             }
-        
-        } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
-            echo "ERROR A";
-            echo $e;
-        
-        } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
-            echo "ERROR B";
-        
-        } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
-            echo "ERROR C";
-        } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
-            echo "ERROR D";
-            
-        } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
-            echo "ERROR E";
         }
+
+        header('HTTP/1.1 200 OK');        
+
+        $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+        $json = file_get_contents("php://input");
+        $a = json_decode($json);
+        foreach($a as $b=>$c){
+            $d = $b.'=>'.$c.'<br>';
+            fwrite($myfile, $d);
+        }
+        fclose($myfile); 
 
     }
 
@@ -660,6 +626,23 @@ class CartController extends Controller {
         }        
     }
 
+    public function PagosOxxo() {
+        $subtotal = Auth::user()->getTotalAttribute();
+        $address = Auth::user()->addressActive();
+        // $expiry = substr(Carbon::now()->addDay(1), 0 , 10);
+        $expiry = Carbon::now()->addDay(1);
+        if(Auth::check())
+        {
+            $cartItems=Auth::user()->cart->with("product")->get();
+        }
+        // dd($cartItems);
+        $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        // $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems', 'subtotal', 'address', 'expiry'));
+        return $pdf->stream('Recibo.pdf');
+        // return view('cart.Print-Oxxo', compact('cartItems', 'subtotal', 'address', 'expiry'));
+    }
+
     public function PaypalWebhook() {
         $webhook = new \PayPal\Api\Webhook();
 
@@ -710,6 +693,7 @@ class CartController extends Controller {
         return $output;
 
     } 
+
     
     public function notify(Request $request)
     {

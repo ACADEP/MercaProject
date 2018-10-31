@@ -4,7 +4,8 @@
       <div class="modal-header">
         <h1 class="modal-title text-center" id="exampleModalLongTitle">Agregar tarjeta de crédito o débito</h1>
       </div>
-      <div class="modal-body"> 
+      <div class="modal-body">        
+
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible" role="alert">
               <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>

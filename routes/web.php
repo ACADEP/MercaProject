@@ -25,11 +25,8 @@ Route::post('/notificaciones/openpay/create', [
     'as'   => 'openpay.notificacions.create',
 ]); 
 
-Route::post('/notificaciones/openpay', [
-    'uses' => '\App\Http\Controllers\CartController@OpnepayWebhookCatch',
-    'as'   => 'openpay.notificacions',
-]); 
 
+Route::post('/notificaciones/openpay', 'CartController@OpnepayWebhookCatch');
 
 Route::group(['middleware' => ['web']], function () {
 
@@ -70,12 +67,30 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'all.shops',
     ]);
 
+    /** Display all New Products Route **/
+    Route::get('/new-products', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllNewProducts',
+        'as'   => 'all.new-products',
+    ]);
+
+    /** Display all Offer Products Route **/
+    Route::get('/offers', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllOffersProducts',
+        'as'   => 'all.offers',
+    ]);
+
     /** Route to post search results **/
     Route::get('/queries', [
         'uses' => 'QueryController@search',
         'as'   => 'queries.search',
     ]);
 
+    /** Breadcrum Products Route **/
+    // Route::get('/bread', [
+    //     'uses' => '\App\Http\Controllers\PagesController@displayAllOffersProducts',
+    //     'as'   => 'all.offers',
+    // ]);
+    
     
 
     /** Route to Products show page **/
@@ -114,10 +129,48 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
     /** Route to sort products by alpha highest */
-    Route::get('shop/{id}/alpha/lowest', [
+    Route::get('/shop/{id}/alpha/lowest', [
         'uses' => '\App\Http\Controllers\testController@orderaz',
         'as'   => 'shop.alpha.lowest',
     ]);
+
+
+
+
+    /************************************** Order By Routes for Products By Brand, Category and Range Price *****************************/
+    
+    /** Route to filter products for categories */
+    Route::post('category/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for destacados */
+    Route::post('offers/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for news */
+    Route::post('new-products/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'filter',
+    ]);
+
+    /** Route to filter products for brans */
+    Route::get('bran/{id}/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filter',
+        'as'   => 'bran.filter',
+    ]);
+
+        /** Route to filter products for shops */
+    Route::get('/shop/{id}/filter', [
+        'uses' => '\App\Http\Controllers\ShopController@filtros',
+        'as'   => 'shop.filter',
+    ]);
+
+
+
 
 
     /************************************** Order By Routes for Products By Category ***********************************/
@@ -446,7 +499,11 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'openpay.store',
     ]);    
 
-       
+    /** payment items confirmation in the cart with Oxxo o Bancomer **/
+    Route::post('/cart/confirmation-oxxo', [
+        'uses' => '\App\Http\Controllers\CartController@PagosOxxo',
+        'as'   => 'openpay.oxxo',
+    ]);    
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',

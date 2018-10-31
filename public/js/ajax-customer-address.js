@@ -55,8 +55,10 @@ $(document).ready(function(){
             });
    });
 
-   $(".radio-address").click(function(){
-        alert("radio-address");
+   $(".radio-address").ready(function(){
+        // alert("radio-address");
     });
+
+    
 
 });

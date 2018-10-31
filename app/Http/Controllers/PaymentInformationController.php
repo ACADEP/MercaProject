@@ -66,7 +66,7 @@ class PaymentInformationController extends Controller
 
             if ($usercustomer->idCustomerOpenpay == null) {
                 $customerData = array(
-                    'external_id' => Auth::user()->id,
+                    // 'external_id' => Auth::user()->id,
                     'name' => $usercustomer->nombre,
                     'last_name' => $usercustomer->apellidos,
                     'email' => Auth::user()->email,

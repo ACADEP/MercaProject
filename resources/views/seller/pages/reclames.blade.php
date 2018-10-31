@@ -2,6 +2,14 @@
 
 @section('content')
 
+<nav aria-label="breadcrumb" style="padding-top: 5px;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/seller/admin') }}">Perfil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Historial de Reclamos</li>
+    </ol>
+</nav>          
+
 <section class="content-header">
         <h1>
             Historial del reclamos

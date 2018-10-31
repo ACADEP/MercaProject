@@ -45,18 +45,21 @@ class PagesController extends Controller {
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(8)->get();
+        $products = Product::where('featured', '=', 1)->orderByRaw('RAND()')->take(12)->get();
 
-        $rand_brands = Brand::orderByRaw('RAND()')->take(6)->get();
+        $rand_brands = Brand::orderByRaw('RAND()')->take(8)->get();
 
-        $rand_shops = Shop::orderByRaw('RAND()')->take(4)->get();
+        $rand_shops = Shop::orderByRaw('RAND()')->take(8)->get();
+
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
 
         // Select all products with the newest one first, and where featured = 0,
         // order by random rows, and only take 8 rows from table so we can display them on the New Product section in the homepage.
-        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(8)->get();
+        $new = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->orderByRaw('RAND()')->take(12)->get();
 
         
-        return view('pages.index', compact('products', 'brands', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
+        return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
     }
 
    
@@ -119,7 +122,10 @@ class PagesController extends Controller {
     public function displayProductsByBrand($id) {
 
         // Get the Brand ID , so we can display the brand name under each list view
-        $brands = Brand::where('id', '=', $id)->get();
+        // $brands = Brand::where('id', '=', $id)->get();
+        $brands = Brand::find($id);
+
+        $orden = Brand::find($id); 
 
         $brands_find = Brand::where('id', '=', $id)->find($id);
 
@@ -150,8 +156,32 @@ class PagesController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
+        $ordenamiento = "Ordenar Por";
 
-        return view('brand.show', compact('products', 'brands', 'brand', 'category', 'search', 'cart_count'))->with('count', $count);
+        $query = $orden->product();
+        $querybrands = $orden->product();
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = 1;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+
+        return view('brand.show', compact('products', 'brands', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden', 'previousURL', 'brand', 'category', 'search', 'cart_count'));
     }
 
     public function displayAllCategories()
@@ -163,14 +193,74 @@ class PagesController extends Controller {
 
     public function displayAllBrands()
     {
-        $brands = Brand::all();
-        return view('pages.partials.all-brands',compact('brands'));
+        $brands = Brand::orderBy('brand_name')->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-brands',compact('brands', 'previousURL'));
     }
 
     public function displayAllShops()
     {
-        $shops = Shop::all();
-        return view('pages.partials.all-shops',compact('shops'));
+        $shops = Shop::orderBy('name')->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+        return view('pages.partials.all-shops',compact('shops', 'previousURL'));
+    }
+
+    public function displayAllNewProducts()
+    {
+        $news = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+
+        $ordenamiento = "Ordenar Por";
+
+        $orden = Product::orderBy('created_at', 'desc')->where('featured', '=', 0)->get();
+
+        $query = $orden;
+        $querybrands = $orden;
+
+        $query = $query->join('categories', 'cat_id', '=', 'categories.id');  
+        $querybrands = $querybrands->join('brands', 'brand_id', '=', 'brands.id');  
+
+        $categorias = array();
+        $categorias['id'] = $query->select("categories.id")->groupBy('categories.id')->pluck('categories.id');
+        $categorias['category'] = $query->select("category")->groupBy('category')->pluck('category');
+
+        $marcas = array();
+        $marcas['id'] = $querybrands->select("brands.id")->groupBy('brands.id')->pluck('brands.id');
+        $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
+
+        $brandRoute = null;
+        $shopRoute = null;
+        $offersRoute = null;
+        $newsRoute = 1;
+        $categoryRoute = null;
+
+        return view('pages.partials.all-newProducts',compact('news', 'previousURL', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
+    }
+
+    public function displayAllOffersProducts()
+    {
+        $products = Product::where('featured', '=', 1)->paginate(12);
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+
+        $ordenamiento = "Ordenar Por";
+
+        $orden = null;
+
+        $categorias = Category::all();
+
+        $marcas = Brand::all();
+        // dd($marcas);
+        $brandRoute = null;
+        $shopRoute = null;
+        $offersRoute = 1;
+        $newsRoute = null;
+        $categoryRoute = null;
+
+        return view('pages.partials.all-offersProducts',compact('products', 'previousURL', 'marcas', 'categorias', 'ordenamiento', 'brandRoute', 'shopRoute', 'offersRoute', 'newsRoute', 'categoryRoute', 'orden'));
     }
 
 }

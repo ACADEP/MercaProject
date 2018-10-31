@@ -407,6 +407,23 @@
                         </form>
 
                     </div>
+                </div> 
+                
+                <div class="card-header" id="headingNine">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                            Pago en Bancomer u Oxxo
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion"> 
+                    <div class="card-body">
+                        <form action="/cart/confirmation-oxxo" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="Items" id="items-carts">
+                            <button type="submit" class="btn btn-primary" formtarget="_blank">Pagar</button>
+                        </form>    
+                    </div>
                 </div>   
                 
             </div>

@@ -1,7 +1,7 @@
 
 <div class="col-md-12" id="new_product">
 <h4 class="text-left animated zoomIn" id="title-product">Nuevos productos</h4>
-<a href="{{ route('all.shops') }}">Ver todas</a>
+<a href="{{ route('all.new-products') }}">Ver todos</a>
     <div class="text-center row">
         <div class="container-fluid" id="Index-Main-Container">
             <div id="featured-products-sub-container">

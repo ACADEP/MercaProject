@@ -10,11 +10,11 @@
 </div> -->
 <h3>Comprar por marcas</h3>
 <a href="{{ route('all.brands') }}">Ver todas</a>
-<div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" >
+<div id="carouselExampleControls2" class="carousel slide col-sm-12 col-md-12" data-ride="carousel" >
     <div class="carousel-inner">
       
 
-      <div class="carousel-item active animated fadeInLeft">
+      <div class="carousel-item active animated fadeInLeft col-sm-12 col-md-12">
           <img class="d-block w-100" src="/images/slider/brand-store.jpg" height="300px" alt="First slide">
           <div class="carousel-caption hidden-xs">
             <h1><strong>Comprar por marcas</strong></h1>
@@ -22,24 +22,28 @@
           </div>
       </div>
     
-    @foreach($rand_brands as $rand)
-    <div class="carousel-item animated fadeInLeft">
-        <a href="{{ url('brand', $rand->id) }}">
-            <div class="carousel-caption hidden-xs">
-                    <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
+        @foreach($rand_brands as $rand)
+            <div class="carousel-item animated fadeInLeft col-sm-12 col-md-12">
+                <a href="{{ url('brand', $rand->id) }}">
+                    <div class="carousel-caption hidden-xs">
+                        <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
+                    </div>                
+                    {{-- <div> --}}
+                        <img class="rounded d-block" src="{{$rand->path}}" alt="Second slide" height="300px" >
+                    {{-- </div> --}}
+                </a>
             </div>
-            <img class="" src="/images/hp_logo.png" alt="Second slide" height="300px" >
-         </a>
-    </div>
-    @endforeach
+        @endforeach
 
+        {{-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a> --}}
       
-
-      
-
-    </div>
-  
-
-   
+    </div> 
 
 </div>
