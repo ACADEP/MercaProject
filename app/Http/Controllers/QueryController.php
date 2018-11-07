@@ -209,10 +209,10 @@ class QueryController extends Controller {
         $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
         ->join('categories', 'cat_id', '=', 'categories.id');  
 
-        // $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-        // $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-        // $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-        // $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+        $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
+        $query = $query->orWhere("category", 'LIKE', "%$search_find%");
+        $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
+        $query = $query->orWhere("description", 'LIKE', "%$search_find%");
         // dd($query->get());
 
         // $products = Product::OrderBy('price')->where('shop_id', '=', $request->id)->where('price', '>=', $request->desde)->Paginate(5);
@@ -221,15 +221,7 @@ class QueryController extends Controller {
         if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta);
-        
+                $query = $query->OrderByRaw('(price - reduced_price) <='.$request->hasta);
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
@@ -248,14 +240,23 @@ class QueryController extends Controller {
         else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
+                // $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                // $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                // $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                // $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                ->orderByRaw('(price - reduced_price) >='.$request->desde);
                 $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                ->orderByRaw('(price - reduced_price) >='.$request->desde);
                 $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                ->orderByRaw('(price - reduced_price) >='.$request->desde);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
+                ->orderByRaw('(price - reduced_price) >='.$request->desde);
         
                 $search = $query->paginate(4);
             } else {
@@ -365,14 +366,23 @@ class QueryController extends Controller {
         else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
+                // $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
+                // $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
+                // $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
+                // $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand);
+
+                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) >='.$request->desde)
+                ->whereIn('brand_id', $request->brand);
+                $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) >='.$request->desde)
+                ->whereIn('brand_id', $request->brand);
+                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) >='.$request->desde)
+                ->whereIn('brand_id', $request->brand);
+                $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) >='.$request->desde)
+                ->whereIn('brand_id', $request->brand);
 
                 $search = $query->paginate(4);
             } else {

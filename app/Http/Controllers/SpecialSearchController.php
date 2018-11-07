@@ -100,7 +100,8 @@ class SpecialSearchController extends Controller
         else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)->paginate(12);
+                $products = Product::orderByRaw('(price - reduced_price) >='.$request->desde)->paginate(12);
+                // $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)->paginate(12);
             } else {
                 $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)->paginate(12);
             }       

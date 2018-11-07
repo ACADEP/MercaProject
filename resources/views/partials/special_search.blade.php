@@ -64,7 +64,8 @@
                           <input type="text" name="hasta" class="form-control ml-2" placeholder="$ Máximo" style="width: 100px;">
                       </div>     
                       <div class="ajuste alineado">
-                          <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
+                            <input type="hidden" name="fil" value="1">
+                            <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
                       </div>                    
                   </div>
               </form>

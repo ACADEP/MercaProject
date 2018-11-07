@@ -35,7 +35,7 @@
                     <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
                 @endif
                 <hr>
-                
+               
                 @if($product->shipments()->count()>0)
                     <h5>Metodos de envio por:</h5>
                     @foreach($product->shipments()->get() as $shipment)

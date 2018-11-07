@@ -48,7 +48,9 @@
         
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
-         <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
+        <link href="{{ asset('/css/filters.css') }}" rel="stylesheet">
+
+        <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
         
         <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">

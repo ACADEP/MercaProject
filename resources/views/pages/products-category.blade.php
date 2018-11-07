@@ -21,7 +21,7 @@
 
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
 @foreach($products as $product)
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 wow animated zoomIn  m-2" id="product-sub-container" style="max-width: 23%;">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 wow animated zoomIn  m-2" id="product-sub-container" style="max-width: 23%; ">
         <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand->brand_name}}</span> </div>
             <div class="row">
                 

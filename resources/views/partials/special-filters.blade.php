@@ -61,7 +61,7 @@
             </div>    
 
             <div class="ajuste alineado">
-                <input type="hidden" name="fil" value="1">
+                <input type="text" class="form-control" name="fil" value="1">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
             </div> 
         </div>

@@ -93,7 +93,7 @@ class testController extends Controller
         /*$products = DB::table('products')->leftjoin('shop_solds', 'shop_solds.shop_id', '=', 'products.shop_id')
                     ->where('products.shop_id', '=', $id)->where('products.id', '=', 'shop_solds.product_id')->get();
         */
-        $products = ShopSold::OrderBy('sold', 'desc')->where('shop_id', '=', $id)->Paginate(3);
+        $products = Product::orderBy('created_at', 'desc')->where('shop_id', '=', $id)->paginate(15);
         /*foreach($products as $prod) {
             dd($prod->product->product_name);
         }*/

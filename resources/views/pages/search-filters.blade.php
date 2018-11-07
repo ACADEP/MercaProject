@@ -1,5 +1,5 @@
 <style>
-    .ajuste {
+    /* .ajuste {
     }
     .alineado {
     }
@@ -7,7 +7,7 @@
     }
     .filters {
         padding-left: 3px;
-    }
+    } */
 </style>
 <div class="alineado ordenado col-sm-2 col-md-2 col-lg-2">
     <form action="/queries/order" method="get">
