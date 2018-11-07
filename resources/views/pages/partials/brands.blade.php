@@ -2,9 +2,9 @@
         <div id="brand-caption">
             <div class="animated fadeInDown">
                 <h3>Comprar por marcas</h3>
-                @foreach($rand_brands as $rand)
+                {{-- @foreach($rand_brands as $rand)
                     <h6 id="random_brands"><a href="{{ url('brand', $rand->id) }}">{{ $rand->brand_name }}</a></h6>
-                @endforeach
+                @endforeach --}}
             </div>
         </div>
 </div> -->

@@ -41,6 +41,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('price')->where('shop_id', '=', $id)->Paginate(12);
         $relacion = false;
+        $labels = 2;
+
         $query = $banner->product();
         $querybrands = $banner->product();
 
@@ -56,7 +58,7 @@ class testController extends Controller
         $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
 
         $ordenamiento = "Menor Precio";
-        return view('shop.index', compact('products', 'banner', 'marcas', 'categorias', 'relacion', 'ordenamiento'));
+        return view('shop.index', compact('products', 'banner', 'marcas', 'categorias', 'relacion', 'ordenamiento', 'labels'));
     }
 
     public function orderhigh($id)
@@ -64,6 +66,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('price', 'desc')->where('shop_id', '=', $id)->Paginate(12);
         $relacion = false;
+        $labels = 2;
+
         $query = $banner->product();
         $querybrands = $banner->product();
 
@@ -79,12 +83,13 @@ class testController extends Controller
         $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
 
         $ordenamiento = "Mayor Precio";
-        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento'));
+        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento', 'labels'));
     }
 
     public function ordernewst($id)
     {
         $banner = Shop::find($id);
+        $labels = 2;
         /*$products = DB::table('products')->leftjoin('shop_solds', 'shop_solds.shop_id', '=', 'products.shop_id')
                     ->where('products.shop_id', '=', $id)->where('products.id', '=', 'shop_solds.product_id')->get();
         */
@@ -109,7 +114,7 @@ class testController extends Controller
         $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
 
         $ordenamiento = "Popularidad";
-        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento'));
+        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento', 'labels'));
     }
 
     public function orderaz($id)
@@ -117,6 +122,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('product_name')->where('shop_id', '=', $id)->Paginate(12);
         $relacion = false;
+        $labels = 2;
+
         $query = $banner->product();
         $querybrands = $banner->product();
 
@@ -132,7 +139,7 @@ class testController extends Controller
         $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
 
         $ordenamiento = "Productos A-Z";
-        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento'));
+        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento', 'labels'));
     }
 
     public function orderza($id)
@@ -140,6 +147,8 @@ class testController extends Controller
         $banner = Shop::find($id);
         $products = Product::OrderBy('product_name', 'desc')->where('shop_id', '=', $id)->Paginate(12);
         $relacion = false;
+        $labels = 2;
+
         $query = $banner->product();
         $querybrands = $banner->product();
 
@@ -155,7 +164,7 @@ class testController extends Controller
         $marcas['brand_name'] = $querybrands->select("brand_name")->groupBy('brand_name')->pluck('brand_name');
 
         $ordenamiento = "Productos Z-A";
-        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento'));
+        return view('shop.index', compact('products', 'banner', 'categorias', 'marcas', 'relacion', 'ordenamiento', 'labels'));
     }
 
 

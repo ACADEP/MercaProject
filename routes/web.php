@@ -138,33 +138,44 @@ Route::group(['middleware' => ['web']], function () {
     /************************************** Order By Routes for Products By Brand, Category and Range Price *****************************/
     
     /** Route to filter products for categories */
-    Route::post('category/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/category/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filtros',
+        'as'   => 'category.filter',
+    ]);
+
+    Route::get('/queries/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filtros',
+        'as'   => 'queries.filter',
     ]);
 
     /** Route to filter products for destacados */
-    Route::post('offers/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/offers/filter', [
+        'uses' => '\App\Http\Controllers\PagesController@filtrosOffer',
+        'as'   => 'offer.filter',
     ]);
 
     /** Route to filter products for news */
-    Route::post('new-products/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/new-products/filter', [
+        'uses' => '\App\Http\Controllers\PagesController@filtrosNuevos',
+        'as'   => 'new.filter',
     ]);
 
     /** Route to filter products for brans */
-    Route::get('bran/{id}/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
+    Route::get('/bran/{id}/filter', [
+        'uses' => '\App\Http\Controllers\BrandsController@filtros',
         'as'   => 'bran.filter',
     ]);
 
-        /** Route to filter products for shops */
+    /** Route to filter products for shops */
     Route::get('/shop/{id}/filter', [
         'uses' => '\App\Http\Controllers\ShopController@filtros',
         'as'   => 'shop.filter',
+    ]);
+
+    /** Route to filter products for Special Search */
+    Route::get('/special/filter', [
+        'uses' => '\App\Http\Controllers\SpecialSearchController@specialFilters',
+        'as'   => 'special.filter',
     ]);
 
 
@@ -237,6 +248,82 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => '\App\Http\Controllers\OrderByController@productsNewestBrand',
         'as'   => 'brand.newest',
     ]);
+
+
+    /************************************** Order By Routes for Products By Offer Products ***********************************/
+
+    /** Route to sort products by price lowest */
+    Route::get('/offers/price/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceLowestOffers',
+        'as'   => 'offers.lowest',
+    ]);
+
+    /**Route to sort products by price highest */
+    Route::get('/offers/price/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceHighestOffers',
+        'as'   => 'offers.highest',
+    ]);
+
+
+    /** Route to sort products by alphabetical A-Z */
+    Route::get('/offers/alpha/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaHighestOffers',
+        'as'   => 'offers.alpha.highest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/offers/alpha/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaLowestOffers',
+        'as'   => 'offers.alpha.lowest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/offers/newest', [
+        'uses' => '\App\Http\Controllers\OrderByController@NewestOffers',
+        'as'   => 'offers.newest',
+    ]);
+
+    
+    /************************************** Order By Routes for Products By New Products ***********************************/
+
+    /** Route to sort products by price lowest */
+    Route::get('/new-products/price/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceLowestNew',
+        'as'   => 'new.lowest',
+    ]);
+
+    /**Route to sort products by price highest */
+    Route::get('/new-products/price/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceHighestNew',
+        'as'   => 'new.highest',
+    ]);
+
+
+    /** Route to sort products by alphabetical A-Z */
+    Route::get('/new-products/alpha/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaHighestNew',
+        'as'   => 'new.alpha.highest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/new-products/alpha/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaLowestNew',
+        'as'   => 'new.alpha.lowest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/new-products/newest', [
+        'uses' => '\App\Http\Controllers\OrderByController@NewestNew',
+        'as'   => 'new.newest',
+    ]);
+    
+
+    /************************************** Order By Routes for Products By Search Products ***********************************/
+    Route::get('/queries/order', [
+        'uses' => '\App\Http\Controllers\OrderByController@OrderQueries',
+        'as'   => 'queries.order',
+    ]);
+
 
 
     /**************************************** Login & Registration Routes *********************************************/

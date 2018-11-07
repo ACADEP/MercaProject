@@ -27,30 +27,53 @@
     </style>
 
     <div class="pt-3">
-        <form id="filter" action="" method="post">
+        @if ($labels == 1)          
             @if ($brandFilter)
                 @foreach ($brandFilter as $brand)
-                    <span class="badge badge-primary badge-labeled activo" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times"></i></span>  
+                    <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times activo"></i></span>  
                 @endforeach
             @endif
             @if ($catFilter)
                 @foreach ($catFilter as $cat)
-                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times"></i></span>  
+                    <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
                 @endforeach
             @endif
             @if ($maxfilter && $minFilter)
-                <span class="badge badge-primary badge-labeled" style="font-size:15px;">${{$minFilter}}a ${{$maxfilter}}<i class="fa fa-times"></i></span>
+                <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
             @else
                 @if ($maxfilter)
-                    <span class="badge badge-primary badge-labeled" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times"></i></span>  
+                    <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
                 @else
                     @if ($minFilter)
-                        <span class="badge badge-primary badge-labeled" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times"></i></span>
+                        <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
                     @endif
                 @endif
             @endif
-
-        </form>
+        @else
+            @if ($labels == 0)
+                @if ($brandFilter)
+                    @foreach ($brandFilter as $brand)
+                        <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{$brand->brand_name}}<i class="fa fa-times activo"></i></span>  
+                    @endforeach
+                @endif
+                @if ($catFilter)
+                    @foreach ($catFilter as $cat)
+                        <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
+                    @endforeach
+                @endif
+                @if ($maxfilter && $minFilter)
+                    <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+                @else
+                    @if ($maxfilter)
+                        <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                    @else
+                        @if ($minFilter)
+                            <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                        @endif
+                    @endif
+                @endif
+            @endif
+        @endif    
     </div>
 
     <div class="text-center row mt-4">  
@@ -116,19 +139,81 @@
 
 <script>
     $(function () {
-        $('i').on('click', function(e) {
-            var form = document.getElementById("filter");
-            var span = form.getElementsByTagName("span");
-            for(i = 0; i < span.length; i++) {
-                console.log(span[i].innerText);
-            }
+        $('.activo').on('click', function(e) {
             $(e.target).closest('span').remove();
+            var marca =  document.getElementsByClassName("brand");
+            var categoria =  document.getElementsByClassName("cat");
+            var priceAll =  document.getElementsByClassName("priceAll");
+            var priceMax =  document.getElementsByClassName("priceMax");
+            var priceMin =  document.getElementsByClassName("priceMin");
+            var brand = new Array();
+            var categories = new Array();
+            var price;
+            var desde = null;
+            var hasta = null;
+            var fil = 0;
+
+            for(i = 0; i < marca.length; i++) {
+                brand[i] = marca[i].innerText;
+            }
+            for(i = 0; i < categoria.length; i++) {
+                categories[i] = categoria[i].innerText;
+            }
+            if (priceAll.length > 0) {
+                for(i = 0; i < priceAll.length; i++) {
+                    price = priceAll[i].innerText;
+                }
+                for(i = 0; i < price.length; i++) {
+                    if (price[i+1] == 'a') {
+                        desde = price.substring(1, i);
+                        if (price[i+3] == '$') {
+                            hasta = price.substring(i+4);
+                        }
+                    }
+                }
+            } 
+            if (priceMax) {
+                for(i = 0; i < priceMax.length; i++) {
+                    price = priceMax[i].innerText;
+                    hasta = price.substring(7);
+                }
+            } 
+            if (priceMin) {
+                for(i = 0; i < priceMin.length; i++) {
+                    price = priceMin[i].innerText;
+                    desde = price.substring(7);
+                }
+            }
+            // console.log(brand);
+            // console.log(categories);
+            // console.log(hasta);
+            // console.log(desde);
+            get('/shop/{{$banner->id}}/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil, id:{{$banner->id}}});
         })
-        /*$(".dropdown-menu a").click(function () {
-            var text_selected = $(this).text();
-            $("#order").text(text_selected);
-        });
-        $(".order").text($orden);*/
     });
+    
+    function get(path, params, method) {
+        method = method || "get"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 

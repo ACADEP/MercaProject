@@ -13,9 +13,8 @@
     <form action="/pricelow" method="post">
         {{csrf_field()}}
         <div class="dropdown">
-            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-info btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ $ordenamiento }}
-                <!--Ordenar por -->
             </button>        
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
@@ -72,6 +71,7 @@
 
             <div class="ajuste alineado">
                 <input type="hidden" name="id" value="{{$banner->id}}">
+                <input type="hidden" name="fil" value="1">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
             </div> 
         </div>

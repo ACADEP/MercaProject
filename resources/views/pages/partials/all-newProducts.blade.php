@@ -12,18 +12,80 @@
 
 <h1 class="text-center">Productos Nuevos</h1>
 
-<div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Ordenar por
-        <span class="caret"></span></button>
-    <ul class="dropdown-menu">
-        <li><a href="">Precio mas bajo</a></li>
-        <li><a href="">Precio mas alto</a></li>
-        <li><a href="">Productos A-Z</a></li>
-        <li><a href="">Productos Z-A</a></li>
-    </ul>
+<div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+        @include('pages.partials.new-filters')
 </div>
 
-<br>
+    <style>
+        .badge {
+            margin-right: .3rem;
+        }
+        /***** REQUIRED STYLES *****/
+        .badge-labeled {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-right: 0.2rem;
+        }
+        .badge-labeled i {
+            padding: 0.25em  0.3rem;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            right: -0.2em;
+            border-left: solid 1px rgba(255,255,255,.5);
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+    </style>
+
+<div class="pt-3 pb-3">
+    @if ($labels == 1)          
+        @if ($brandFilter)
+            @foreach ($brandFilter as $brand)
+                <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times activo"></i></span>  
+            @endforeach
+        @endif
+        @if ($catFilter)
+            @foreach ($catFilter as $cat)
+                <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
+            @endforeach
+        @endif
+        @if ($maxfilter && $minFilter)
+            <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+        @else
+            @if ($maxfilter)
+                <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+            @else
+                @if ($minFilter)
+                    <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                @endif
+            @endif
+        @endif
+    @else
+        @if ($labels == 0)
+            @if ($brandFilter)
+                @foreach ($brandFilter as $brand)
+                    <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{$brand->brand_name}}<i class="fa fa-times activo"></i></span>  
+                @endforeach
+            @endif
+            @if ($catFilter)
+                @foreach ($catFilter as $cat)
+                    <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
+                @endforeach
+            @endif
+            @if ($maxfilter && $minFilter)
+                <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+            @else
+                @if ($maxfilter)
+                    <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                @else
+                    @if ($minFilter)
+                        <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                    @endif
+                @endif
+            @endif
+        @endif
+    @endif    
+</div>
 
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     @foreach($news as $product)
@@ -55,7 +117,7 @@
             <div class="text-center">
                 <a href="{{ route('show.product', $product->product_name) }}">
                 <h5 class="center-on-small-only">{{ $product->product_name }}</h5>
-                <h6 class="center-on-small-only">Brand: {{ $product->brand->brand_name }}</h6>
+                <h6 class="center-on-small-only">Marca: {{ $product->brand->brand_name }}</h6>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
                 </a>
             </div>
@@ -76,9 +138,88 @@
     @endforeach
 </div>
 <div class="row justify-content-center mt-3 pl-5">
-    {{ $news->links() }}
+    {{ $news->appends(Request::input())->links() }}
 </div>
 
+<script>
+    $(function () {
+        $('.activo').on('click', function(e) {
+            $(e.target).closest('span').remove();
+            var marca =  document.getElementsByClassName("brand");
+            var categoria =  document.getElementsByClassName("cat");
+            var priceAll =  document.getElementsByClassName("priceAll");
+            var priceMax =  document.getElementsByClassName("priceMax");
+            var priceMin =  document.getElementsByClassName("priceMin");
+            var brand = new Array();
+            var categories = new Array();
+            var price;
+            var desde = null;
+            var hasta = null;
+            var fil = 0;
+
+            for(i = 0; i < marca.length; i++) {
+                brand[i] = marca[i].innerText;
+            }
+            for(i = 0; i < categoria.length; i++) {
+                categories[i] = categoria[i].innerText;
+            }
+            if (priceAll.length > 0) {
+                for(i = 0; i < priceAll.length; i++) {
+                    price = priceAll[i].innerText;
+                }
+                for(i = 0; i < price.length; i++) {
+                    if (price[i+1] == 'a') {
+                        desde = price.substring(1, i);
+                        if (price[i+3] == '$') {
+                            hasta = price.substring(i+4);
+                        }
+                    }
+                }
+            } 
+            if (priceMax) {
+                for(i = 0; i < priceMax.length; i++) {
+                    price = priceMax[i].innerText;
+                    hasta = price.substring(7);
+                }
+            } 
+            if (priceMin) {
+                for(i = 0; i < priceMin.length; i++) {
+                    price = priceMin[i].innerText;
+                    desde = price.substring(7);
+                }
+            }
+            console.log(brand);
+            console.log(categories);
+            console.log(hasta);
+            console.log(desde);
+            get('/new-products/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil});
+        })
+    });
+    
+    function get(path, params, method) {
+        method = method || "get"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 
 @endsection
 

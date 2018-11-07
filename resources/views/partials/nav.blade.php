@@ -79,7 +79,8 @@
                     @include('partials.shopping-cart-container')
                     <br><br>
                         <li class="nav-item">
-                            <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a>
+                            {{-- <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a> --}}
+                            <a data-toggle="modal"  data-target=".bd-example-modal-lg">Búsqueda especial</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
