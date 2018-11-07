@@ -31,7 +31,10 @@ class AdminController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        return view("admin.dash");       
+        $sales=Auth::user()->selehistories()->paginate(10);
+        $histories=Auth::user()->selehistories()->get();
+        return view("admin.sales.index", compact("sales", "histories"));
+        // return view("admin.dash");       
     }
 
     public function showSales() {
@@ -44,6 +47,13 @@ class AdminController extends Controller {
     public function showEdit(Category $category)
     {
         return view("admin.products.categories.edit-categories", compact("category"));
+    }
+
+    public function showOrderOxxo()
+    {
+        $orders=Auth::user()->ordersOxxo()->get();
+        
+        return view("admin.orderoxxo.index", compact("orders"));
     }
     
     public function showCategories()

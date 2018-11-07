@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class EnviaYa extends Model
 {
-    public function makeShipment($carrie_name, $carrier_code)
+    public function makeShipment($carrie_name, $carrier_code, $user)
     {
         $endpoint = "https://enviaya.com.mx/api/v1/shipments";
         $client = new \GuzzleHttp\Client();
@@ -20,14 +20,14 @@ class EnviaYa extends Model
                     'direction_1'=> "Allende",
                     'city'=> "La Paz",
                     'phone'=> "6121225174"];
-        $destination=[  'full_name'=> Auth::user()->customer->nombre." ".Auth::user()->customer->apellidos,
+        $destination=[  'full_name'=> $user->customer->nombre." ".$user->customer->apellidos,
                         'country_code'=> "MX",
-                        'postal_code'=> Auth::user()->addressActive()->cp,
-                        'direction_1'=> Auth::user()->addressActive()->calle,
-                        'direction_2'=> Auth::user()->addressActive()->calle2,
-                        'direction_3'=> Auth::user()->addressActive()->calle3,
-                        'city'=> Auth::user()->addressActive()->ciudad,
-                        'phone'=> Auth::user()->customer->telefono];
+                        'postal_code'=> $user->addressActive()->cp,
+                        'direction_1'=> $user->addressActive()->calle,
+                        'direction_2'=> $user->addressActive()->calle2,
+                        'direction_3'=> $user->addressActive()->calle3,
+                        'city'=> $user->addressActive()->ciudad,
+                        'phone'=> $user->customer->telefono];
         $carrier=$carrie_name;
         $carrier_service_code=$carrier_code;
         $shipment=[ 'shipment_type'=>"Package",
@@ -60,19 +60,19 @@ class EnviaYa extends Model
         ]; 
        $res=$client->request('POST', $endpoint, $requestContent);
        $url_carrie="";
-        if($carrie_name=="DHL")
+        if($carrie_name=="dhl")
         {
                 $url_carrie="http://www.dhl.com.mx/es/express/rastreo.html";
         }
-        else if($carrie_name=="Fedex")
+        else if($carrie_name=="fedex")
         {
                 $url_carrie="https://www.fedex.com/apps/fedextrack/?action=track&cntry_code=mx";
         }
-        else if($carrie_name=="UPS")
+        else if($carrie_name=="ups")
         {
                 $url_carrie="https://www.ups.com/track?loc=es_MX&requester=WT/";
         }
-        else if($carrie_name=="Redpack")
+        else if($carrie_name=="redpack")
         {
             $url_carrie="http://www.redpack.com.mx/";
         }

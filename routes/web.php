@@ -503,7 +503,9 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('/cart/confirmation-oxxo', [
         'uses' => '\App\Http\Controllers\CartController@PagosOxxo',
         'as'   => 'openpay.oxxo',
-    ]);    
+    ]); 
+
+    Route::get('/show-pdf-oxxo','CartController@showPDFOxxo');  
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',
@@ -590,6 +592,10 @@ Route::group(["middleware" => 'admin'], function(){
     Route::get('admin/sales/{order}','AdminController@orderSales')->name('order-admin');
     //Ordenar por fecha
     Route::post('admin/sales/orderDate','AdminController@orderDate')->name('orderDate-admin');
+    
+    //Ordenes por Oxxo
+    //Mostrar disponibles
+    Route::get("admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
    
     //CRUD Categorias
     //Mostrar todas las categorias

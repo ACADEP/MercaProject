@@ -149,8 +149,8 @@
                                 
                             </p>
                             <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="stores-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="stores-method-r"></label>
+                                    <input type="radio" class="custom-control-input" id="store-method-r" name="defaultExampleRadios2">
+                                    <label class="custom-control-label" for="store-method-r"></label>
                             </div>
                         </div>
                     </div>
@@ -194,6 +194,7 @@
                             @if($addresses->count() > 0)
                                 @php $address=$addresses->where('activo',1)->first();@endphp
                                 @if($address!=null)
+                              
                                 <h4>Será enviado a:</h4>
                                 <input type="hidden" id="address-active" value="{{$address}}">
                                 <input type="hidden" id="customer" value="{{ $customer }}">
@@ -207,7 +208,7 @@
                                     <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
                                     <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
                                 </div>
-
+                               
                                 @else
                                 <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
                                 @endif
@@ -216,7 +217,11 @@
                             @endif
                         </p>
                         @if($addresses->count() > 0)
+                        @if(Auth::user()->customer !=null)
                             <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pago</button><br>
+                        @else
+                            <div class="alert alert-danger">Agregar sus datos personales para continuar su proceso de pago</div>
+                        @endif
                             
                         @endif
                     </div>
@@ -249,7 +254,7 @@
 
     <div class="h5">
         Total de productos: ${{ number_format($subtotal, 2) }} <br>
-        Envío + impuestos: <div class="ship-rate">$0,00</div> <br>
+        Envío + impuestos: <div id="ship_rate_choosed" class="ship-rate">$0,00</div> <br>
     </div>
     
     <hr>
@@ -429,7 +434,7 @@ $(document).ready(function () {
             reset_pay_css();
             $(this).css("background-color", "green");
             $("#pay").html("Tienda de convenencia");
-            $("#stores-method-r").prop("checked",true);
+            $("#store-method-r").prop("checked",true);
         });
 
          $("#mpay-5").click(function(){
@@ -462,7 +467,26 @@ $(document).ready(function () {
                
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                $("#bank_carrie_id").val($('#carrie_id').val());
                 $('#transfer').modal('show');
+            }
+            else if($("#store-method-r").prop("checked"))
+            {
+               
+                $(".rate_delivered").val($("#total-pursh").val());
+                $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                $("#store_carrie_id").val($('#carrie_id').val());
+                $('#store').modal('show');
+            }
+            else if($("#oxxo-method-r").prop("checked"))
+            {
+               
+                $(".rate_delivered").val($("#total-pursh").val());
+                $("#oxxo_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                $("#oxxo_carrie_id").val($('#carrie_id').val());
+                $("#ship_rate_oxxo").val($('#ship_rate_choosed').html());
+                $("#date_ship_oxxo").val($('#date_aprox').html());
+                $('#oxxo').modal('show');
             }
             else
             {
@@ -594,8 +618,6 @@ $(document).ready(function () {
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Transferencia Bancaria</h5>
-      
-          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -603,13 +625,68 @@ $(document).ready(function () {
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
             <input type="hidden" name="carrie" id="bank_carrie">
-            <button type="submit" class="btn btn-primary" formtarget="_blank">Generar recibo</button>
+            <input type="hidden" name="carrie_id" id="bank_carrie_id">
+            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         </form>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
       </div>
     </div>
   </div>
 </div>
+
+@stop
+
+@section('modal-store')
+<div class="modal fade" id="store" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tiendas de convenencia</h5>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="/cart/confirmation-store" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="carrie" id="store_carrie">
+            <input type="hidden" name="carrie_id" id="store_carrie_id">
+            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+@stop
+
+@section('modal-oxxo')
+<div class="modal fade" id="oxxo" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Oxxo</h5>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="/cart/confirmation-oxxo" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="ship_rate" id="ship_rate_oxxo">
+            <input type="hidden" name="date_ship" id="date_ship_oxxo">
+            <input type="hidden" name="carrie" id="oxxo_carrie">
+            <input type="hidden" name="carrie_id" id="oxxo_carrie_id">
+            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 @stop
 
 @section('modal-paypal')

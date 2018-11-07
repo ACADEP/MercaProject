@@ -107,6 +107,18 @@
     @if(Session::has('progress'))
     @php Session::forget('progress'); @endphp
     @endif
+    @if(Session::has('pay-oxxo'))
+    <script>
+        var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+        window.open('/show-pdf-oxxo', '_blank');
+    </script>
+    @endif
+    @if(Session::has('recibe'))
+    <script> 
+            var notify = $.notify('<div>Recibo para pagar generado favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+            window.open('{{session("recibe")}}', '_blank')
+        </script>
+    @endif
     @if(Session::has('pay-success'))
        
         <script> 
@@ -249,6 +261,8 @@
     @yield('js-pay')
     @yield('show-modal')
     @yield('modal-transfer')
+    @yield('modal-store')
+    @yield('modal-oxxo')
     @yield('scripts-progress')
     @include('partials.flash')
     @include('partials.special_search')

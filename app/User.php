@@ -91,6 +91,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Customer::class,"usuario");
     }
+    public function ordersOxxo()
+    {
+        return $this->hasMany(OrderOxxo::class);
+    }
     
     public function payments()
     {

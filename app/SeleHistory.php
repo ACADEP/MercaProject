@@ -29,4 +29,15 @@ class SeleHistory extends Model
         $this->total=$cart->total;
         $this->save();
     }
+
+    public function insert_pCustomer(CustomerHistory $item, $id_prov, $client)
+    {
+        $this->user_id=$id_prov;
+        $this->product_id=$item->product_id;
+        $this->client=$client;
+        $this->date=Carbon::now();
+        $this->amount=$item->amount;
+        $this->total=$item->amount*$item->product_price;
+        $this->save();
+    }
 }

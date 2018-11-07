@@ -15,7 +15,7 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
 <body>
-<h1>Hola {{$user->username}}</h1>
+<h1>Hola {{$admin->username}}</h1>
 <h3>Se le ajunta un recibo de pago para el envio del producto</h3>
 
 </body>

@@ -28,20 +28,20 @@
 
       <div id="project">
         <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
-        <div><span><strong>Dirección</strong></span> {{$address->calle}}, {{$address->ciudad}} {{$address->cp}}, {{$address->estado}}</div>
+        <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
         <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
         <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
-        <div><span><strong>Expiración</strong></span> {{$expiry}}</div>
+        <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
       </div>
 
-      <div class="bank">
+      <div class="bank col-md-12">
         <div><h3>Depósito a través de OXXO a cuenta BBVA Bancomer</h3></div>
         <div><span><strong>Propietario de la cuenta: </strong>Leonardo Lage Suarez</span></div>
         <div><span><strong>Cuenta: </strong>0136602037</span></div>
         <div><span><strong>Clave: </strong>012040001366020373</span></div>
         <div><span><strong>Teléfono: </strong>612 122 5174</span></div>
         <div><span><strong>Correo: </strong><a href="mailto:administracion@acadep.com">administracion@acadep.com</a></span></div>
-        <div><span><strong>Fecha límite de pago: </strong>{{$expiry}}</span></div>
+        <div><span><strong>Fecha límite de pago: </strong>{{Carbon\Carbon::now()->addDay(1)}}</span></div>
       </div> 
 
     </header>
@@ -69,25 +69,25 @@
           @endforeach
           <tr>
             <td colspan="4">Subtotal</td>
-            <td class="total">${{number_format($subtotal, 2) }}</td>
+            <td class="total">${{number_format( Auth::user()->total, 2) }}</td>
           </tr>
           <tr>
             <td colspan="4">IVA</td>
-            <td class="total">$ 00.00</td>
+            <td class="total">Incluido</td>
           </tr>
           <tr>
             <td colspan="4">Costo de envío</td>
-            <td class="total">$ 00.00</td>
+            <td class="total">{{$ship_rate}}</td>
           </tr>    
           <tr>
             <td colspan="4" class="grand total">Total</td>
-            <td class="grand total">${{number_format($subtotal, 2) }}</td>
+            <td class="grand total">${{number_format( $ship_rate_total, 2) }}</td>
           </tr>
         </tbody>
       </table>
       <div id="notices">
-        <div><strong>Forma de pago: </strong></div>
-        <div><strong>Tiempo de Entrega: </strong></div>
+        <div><strong>Forma de pago: </strong>Oxxo</div>
+        <div><strong>Tiempo de Entrega: </strong>{{$date_ship}}</div>
         <div><strong>¡Gracias por hacer su compra!</strong></div>
         <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
         <div class="notice">En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.</div>

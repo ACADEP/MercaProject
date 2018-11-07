@@ -174,7 +174,11 @@ function chargeShipments(cp_user)
 
         
       
-}  
+}
+$("#btn-bank-method").submit(function( event ) {
+    alert( "Handler for .submit() called." );
+    event.preventDefault();
+  });
 
 
    
