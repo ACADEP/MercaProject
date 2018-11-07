@@ -22,4 +22,6 @@ class CustomerHistory extends Model
         $this->amount=$cart->qty;
         $this->save();
     }
+
+   
 }

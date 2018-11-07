@@ -135,6 +135,8 @@ function chargeShipments(cp_user)
                 var cont=1;
                 shipments.forEach(element =>{
                     $('#step-2').on('click', '#paq-'+cont, { i : cont }, function(e){
+                        reset_paq_css();
+                        $(this).css("background-color", "green");
                         e.preventDefault();
                         var cont = e.data;
                         $('#paqueteria'+cont.i).prop("checked",true);
@@ -161,8 +163,22 @@ function chargeShipments(cp_user)
 
     
         });
+
+        function reset_paq_css()
+        {
+            for(var i=1;i<=shipments.length;i++)
+            {
+                $("#paq-"+i).css("background-color", "white");
+            }
+        }
+
+        
       
-}  
+}
+$("#btn-bank-method").submit(function( event ) {
+    alert( "Handler for .submit() called." );
+    event.preventDefault();
+  });
 
 
    

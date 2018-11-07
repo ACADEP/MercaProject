@@ -15,6 +15,7 @@
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.6",
+        "maatwebsite/excel": "^3.1",
         "openpay/sdk": "dev-master",
         "paypal/rest-api-sdk-php": "*",
         "shippo/shippo-php": "^1.4",

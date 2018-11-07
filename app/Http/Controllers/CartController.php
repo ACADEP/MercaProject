@@ -9,8 +9,11 @@ use App\User;
 use App\Sale;
 use App\Address;
 use App\CustomerHistory;
+use App\SeleHistory;
 use App\Customer;
+use App\ProductSeller;
 use App\Webhook;
+use App\OrderOxxo;
 use Carbon\Carbon;
 use App\EnviaYa;
 use Illuminate\Http\Request;
@@ -32,6 +35,7 @@ use App\Http\Traits\SearchTrait;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
+
 use App\Mailers\AppMailers;
 use App\PaymentInformation;
 
@@ -40,9 +44,10 @@ use Barryvdh\DomPDF\Facade as PDF;
 class CartController extends Controller {
 
     use BrandAllTrait, CategoryTrait, SearchTrait;
-
+    
+    protected $mailer;
     public function showCart() {
-
+    
         return view('cart.cart'); 
             
     }
@@ -218,37 +223,55 @@ class CartController extends Controller {
     }
 
     public function confirmation(Request $request, AppMailers $mailer) {
-        dd($request);
+        
         Session::put('progress', "Preparando envío");
         Session::save(); 
         
         $sale= new Sale;
         $enviaYa=new EnviaYa;
-        $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'));
-        
+        $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'),Auth::user());
+       
         Session::put('progress', $envio->status_message);
         Session::save();
 
-        $sale->insert(Auth::user()->total,$request->get('carrie'),$envio->shipment_status,$envio->carrier_shipment_number);
+        $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado");
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
+            $productseller=ProductSeller::find( $cartItem->product->id);
+           
+            if($productseller != null)
+            {
+                $saleHistory=new SeleHistory;
+                $saleHistory->insert($cartItem,$productseller->id,Auth::user()->customer->nombre);
+            }
+            else
+            {
+                $admins=User::where("admin",1)->get();
+                foreach($admins as $admin)
+                {   
+                    $saleHistory=new SeleHistory;
+                    $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre);
+                }
+            }
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
 
         
         //Administrador
-        $user=User::find(7);
-        $mailer->sendReceiptPayment($user);
+        $user=User::find(6);
+        
+        $mailer->sendReceiptPayment($user,Auth::user(), null);
         if($mailer)
         {
             
-            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url);
+            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url,null);
             if($mailer)
             {
                 //borrar productos del carrito
                 Auth::user()->carts()->delete();
+                Session::forget('progress');
                 return redirect("/")->with('pay-success','Pago exitoso');
             }
             else
@@ -318,6 +341,7 @@ class CartController extends Controller {
     //Pagos en banco
     public function PagosBanco(Request $request) {
 
+      
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
@@ -339,18 +363,27 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'bank_account',
             'amount' => $request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
-            'order_id' => 'oid-'.$random, //oid-00051 id del carrito
-            'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
+            'order_id' => $sale->id, //oid-00051 id del carrito
+            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);
        
         if($charge){
-            return redirect('https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
+            
+            return redirect('/')->with("recibe", 'https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
         }
         
         } catch (OpenpayApiTransactionError $e) {
@@ -384,14 +417,15 @@ class CartController extends Controller {
         
     }
 
-    public function PagosStore() {
+    //Pagos en tienda
+    public function PagosStore(Request $request) {
         $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
         Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
 
         try {
-        $random = rand(0, 99999);
+       
 
         $customerData = array(
             'name' => $usercustomer->nombre,
@@ -407,18 +441,28 @@ class CartController extends Controller {
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
 
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' => Auth::user()->total,
+            'amount' =>  $request->get("ship_rate_total"),
             'description' => 'Cargo a tienda',
-            'order_id' => 'oid-'.$random, //oid-00051 id del carrito
+            'order_id' =>$sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
        
         if($charge){
-            return redirect('https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
+          
+            return redirect('/')->with("recibe",'https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
         }
         
         } catch (OpenpayApiTransactionError $e) {
@@ -452,27 +496,64 @@ class CartController extends Controller {
 
     }
 
-    public function OpnepayWebhookCatch(Request $request) {
+    public function OpnepayWebhookCatch(Request $request, AppMailers $mailer) 
+    {
+        echo "HTTP 200 OK"; 
         if($request != null)
-        {
-            if($request->type=="charge.succeeded")
-            {
-                $webhook = new Webhook;
-                $webhook->idWebhookOpenpay=$request->type;
-                $webhook->save();
+        { 
+            $json = file_get_contents("php://input");
+            $transfer = json_decode($json);
+             if($transfer->type=="charge.succeeded")
+             {
+                 $sale=Sale::find($transfer->transaction->order_id);
+                 if($sale->status_pago=="Acreditado")
+                 { }
+                 else
+                 {
+                    $enviaYa=new EnviaYa;
+                    $client=$sale->client;
+                    $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+                    $sale->updateStatusShip($envio->shipment_status);
+                    $sale->updateTracking($envio->carrier_shipment_number);
+                    $sale->updatePay();
+   
+                    //Admin
+                    $userAdmin=User::find(6);
+                    //Enviar correos
+                    $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+                   foreach($sale->customerHistories()->get() as $item)
+                   {
+                       $productseller=ProductSeller::find( $item->product_id);
+                       if($productseller != null)
+                       {
+                           $saleHistory=new SeleHistory;
+                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+                       }
+                       else
+                       {
+                           $admins=User::where("admin",1)->get();
+                           foreach($admins as $admin)
+                           {   
+                               $saleHistory=new SeleHistory;
+                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                           }
+                       }
+                   }
+                }
+                 
             }
-        }
+         }
+       
+       
+       
 
-        header('HTTP/1.1 200 OK');        
+        // header('HTTP/1.1 200 OK');        
 
-        $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
-        $json = file_get_contents("php://input");
-        $a = json_decode($json);
-        foreach($a as $b=>$c){
-            $d = $b.'=>'.$c.'<br>';
-            fwrite($myfile, $d);
-        }
-        fclose($myfile); 
+        // $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+        // $json = file_get_contents("php://input");
+        // $a = json_decode($json);
+        //     fwrite($myfile, json_encode($a));
+        // fclose($myfile); 
 
     }
 
@@ -596,21 +677,50 @@ class CartController extends Controller {
         }        
     }
 
-    public function PagosOxxo() {
-        $subtotal = Auth::user()->getTotalAttribute();
-        $address = Auth::user()->addressActive();
-        // $expiry = substr(Carbon::now()->addDay(1), 0 , 10);
-        $expiry = Carbon::now()->addDay(1);
+    //Pagos por Oxxo
+    public function PagosOxxo(Request $request, AppMailers $mailer) {
+        $ship_rate=$request->get("ship_rate");
+        $ship_rate_total=$request->get("ship_rate_total");
+        $date_ship=$request->get("date_ship");
         if(Auth::check())
         {
             $cartItems=Auth::user()->cart->with("product")->get();
         }
-        // dd($cartItems);
-        $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems', 'subtotal', 'address', 'expiry'));
-        // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems', 'subtotal', 'address', 'expiry'));
-        // $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems', 'subtotal', 'address', 'expiry'));
-        return $pdf->stream('Recibo.pdf');
-        // return view('cart.Print-Oxxo', compact('cartItems', 'subtotal', 'address', 'expiry'));
+        
+        $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
+        $mailer->sendOxxoReceipt(Auth::user(),$pdf);
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        $admins=User::where("admin",1)->get();
+        foreach($admins as $admin)
+        {   
+            $orOxxo=new OrderOxxo;
+            $orOxxo->insert($admin->id,$sale->id);
+        }
+        Auth::user()->carts()->delete();
+        Session::put('pay-oxxo',  $pdf->stream('Recibo-Oxxo.pdf'));
+        Session::save(); 
+        return redirect("/");
+      
+    }
+    public function showPDFOxxo()
+    {
+        if(Session::has('pay-oxxo'))
+        {
+            $pdf=session("pay-oxxo");
+            Session::forget('pay-oxxo');
+            return $pdf;
+        }
+        else
+        {
+            return redirect("/");
+        }
     }
 
     public function PaypalWebhook() {

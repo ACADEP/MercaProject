@@ -1,0 +1,1 @@
+{"type":"verification","event_date":"2018-11-06T15:55:29-06:00","verification_code":"jISsFr0B","id":"w31qpavqaox3x6gsj5mf"}

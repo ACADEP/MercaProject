@@ -3,6 +3,8 @@
 namespace App\Mailers;
 
 use App\User;
+use App\Sale;
+use Carbon\Carbon;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -31,7 +33,6 @@ class AppMailers {
      */
     protected $view;
 
-    protected $pathPDF;
     /**
      * What data are we passing through.
      */
@@ -80,26 +81,76 @@ class AppMailers {
         $this->deliver();
     }
 
-    public function sendReceiptPayment(User $user) {
+    public function sendReceiptPayment(User $user, User $client, $sale) {
         // Send this to the users email.
         $this->to = $user->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email';
         // The data that is required
         $this->data = compact('user');
-
-        $this->deliverPDF("administración");
+        if($sale!=null)
+        {
+            $this->deliverPDF("administración", $client, $sale);
+        }else
+        {
+            $this->deliverPDF2("administración", $client);
+        }
     }
 
-    public function sendReceiptPaymentClient(User $user,$guia, $url, $img_carrie) {
+    public function sendReceiptPaymentClient(User $user,$guia, $url, $img_carrie, $sale) {
+       
         // Send this to the users email.
         $this->to = $user->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
         // The data that is required
         $this->data = compact('user','guia','url','img_carrie');
+      
+        if($sale!=null)
+        {
+            $this->deliverPDF("cliente", $user, $sale);
+        }
+        else
+        {
+            $this->deliverPDF2("cliente", $user);
+        }
+        
+    }
+    public function sendOxxoReceipt(User $client, $pdf)
+    {
+        $this->to=$client->email;
+        //Enviar a cliente
+        $this->mailer->send("customer.partials.view-email-oxxo-payment", compact('client') , function($message) use($pdf){
+            $message->from($this->from, 'Administrator')
+            ->subject("Recibo para pagar en Oxxo")
+            ->to($this->to)            
+            ->attachData($pdf->output(), "Recibo-Oxxo.pdf");
+        });
+    }
+    public function sendReceiptClientAdmin(User $admin, User $client,$guia, $url, $img_carrie, $sale)
+    {
+        $Items=$sale;
+        $subtotal=$sale->total;
+        $address=$client->address()->where("Activo",1)->first();
+        $expiry = Carbon::now()->addDay(1); 
+        $pdf = PDF::loadView('cart.Print-Receipt',compact('Items','subtotal','address','client','expiry'));
+        $this->to=$admin->email;
+        //Enviar a administracion
+        $this->mailer->send("customer.partials.view-email", compact('admin') , function($message) use($pdf){
+            $message->from($this->from, 'Administrator')
+            ->subject("Recibo de pago para envio")
+            ->to($this->to)            
+            ->attachData($pdf->output(), "recibo de pago.pdf");
+        });
 
-        $this->deliverPDF("cliente");
+        $this->to=$client->email;
+         //Enviar a cliente
+         $this->mailer->send("customer.partials.view-email-client", compact('client','guia','url','img_carrie') , function($message) use($pdf){
+            $message->from($this->from, 'Administrator')
+            ->subject("Recibo de compra")
+            ->to($this->to)            
+            ->attachData($pdf->output(), "Recibo de compra.pdf");
+        });   
     }
 
     /**
@@ -116,14 +167,33 @@ class AppMailers {
 
     }
 
-    public function deliverPDF($user) {
+    public function deliverPDF($user, User $client, $sale) 
+    {
+
+        $Items=$sale;
+        $subtotal=$sale->total;
+        $address=$client->address()->where("Activo",1)->first();
+        $expiry = Carbon::now()->addDay(1); 
+        $pdf = PDF::loadView('cart.Print-Receipt',compact('Items','subtotal','address','client','expiry'));
+
+        $this->mailer->send($this->view, $this->data, function($message) use($pdf){
+                $message->from($this->from, 'Administrator')
+                ->subject($this->subject)
+                ->to($this->to)            
+                ->attachData($pdf->output(), "recibo de pago.pdf");
+        });    
+
+    }
+
+    public function deliverPDF2($user, User $client) {
         Session::put('progress', "Generando recibo para ".$user);
         Session::save();
 
-        $cartItems=Auth::user()->carts()->get();
-        $subtotal=Auth::user()->total;
-        $address=Auth::user()->address()->where("Activo",1)->first(); 
-        $pdf = PDF::loadView('customer.partials.recibe',compact('cartItems','subtotal','address'));
+        $ItemsCarts=$client->carts()->get();
+        $subtotal=$client->total;
+        $address=$client->address()->where("Activo",1)->first(); 
+        $expiry = Carbon::now()->addDay(1); 
+        $pdf = PDF::loadView('cart.Print-Receipt',compact('ItemsCarts','subtotal','address','client','expiry'));
 
         Session::put('progress', "Enviando correo a ".$user);
         Session::save();

@@ -151,6 +151,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -216,6 +217,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'QRCode' => LaravelQRCode\Facades\QRCode::class, 
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,  
         'QRCode' => LaravelQRCode\Facades\QRCode::class,  
         'Sepomex' => Aftab\Sepomex\Facades\Sepomex::class, 
 

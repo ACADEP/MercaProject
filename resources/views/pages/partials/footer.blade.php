@@ -25,7 +25,7 @@
 
                             <li>
                             <i class="fa fa-whatsapp"></i>
-                                Whatsapp: <a href="#" target="_blank">6121578112</a>
+                                Whatsapp: <a href="tel:6121225174" target="_blank">6121578112</a>
                             <li><br>
 
                             <li class="footer-sprite email">

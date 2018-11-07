@@ -19,7 +19,7 @@
                     
                        
                     </li>
-                @php $categories=App\Category::where('parent_id',0)->take(5)->get(); @endphp
+                @php $categories=App\Category::where('parent_id',0)->take(7)->get(); @endphp
                 <div id="search_down">
                     <li class="nav-item dropdown" >
                             
@@ -31,15 +31,15 @@
                                 
                                     @foreach($categories as $category)
                                         @if($category->totalSubcategories() >0)
-                                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{$category->category}}</a>
+                                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="{{route('productsByCategory',$category)}}">{{$category->category}}</a>
                                             <ul class="dropdown-menu">
                                             @foreach($category->children()->get() as $sub)
-                                            <li><a class="dropdown-item" href="#">{{$sub->category}}</a></li>
+                                            <li><a class="dropdown-item" href="{{route('productsByCategory',$sub)}}">{{$sub->category}}</a></li>
                                             @endforeach
                                             </ul>
                                         </li>
                                         @else
-                                        <li><a class="dropdown-item" href="#">{{$category->category}}</a></li>
+                                        <li><a class="dropdown-item" href="{{route('productsByCategory',$category)}}">{{$category->category}}</a></li>
                                         @endif
                                     @endforeach
                                    

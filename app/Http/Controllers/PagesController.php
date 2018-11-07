@@ -62,47 +62,55 @@ class PagesController extends Controller {
         return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories'));
     }
 
-    /**
-     * Display Products by Category.
-     *
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function displayProducts($id) {
-
-        // Get the Category ID , so we can display the category name under each list view
-        $categories = Category::where('id', '=', $id)->get();
-
-        $categories_find = Category::where('id', '=', $id)->find($id);
-
-        // If no category exists with that particular ID, then redirect back to Home page.
-        if (!$categories_find) {
-            return redirect('/');
+   
+    public function displayProducts(Category $category) {
+        $productscat=$category->products();
+        if($category->totalSubcategories() > 0)
+        {
+            foreach($category->children()->get() as $sub)
+            {
+                $productscat=$productscat->union($sub->products());
+            }
+        }
+        $products=$productscat->get();
+        return view("pages.products-category", compact('products'));
+       
+    }
+    public function orderCategories(Category $category ,Request $request)
+    {
+      
+        $productscat=$category->products();
+        $products=null;
+        $order=$request->get("orderBy");
+        if($category->totalSubcategories() > 0)
+        {
+            foreach($category->children()->get() as $sub)
+            {
+                $productscat=$productscat->union($sub->products());
+            }
+        }
+        if($request->get("orderBy")==1)
+        {
+            $products= $productscat->orderByRaw('(price - reduced_price)')->get();
+        }
+        else if($request->get("orderBy")==2)
+        {
+            $products= $productscat->orderByRaw('(price - reduced_price) DESC')->get();
+        }
+        else if($request->get("orderBy")==3)
+        {
+            $products= $productscat->orderBy("product_name")->get();
+        }
+        else if($request->get("orderBy")==4)
+        {
+            $products= $productscat->orderBy("product_name", "desc")->get();
+        }
+        else
+        {
+            $products= $productscat->get();
         }
 
-        // From Traits/CategoryTrait.php
-        // ( Show Categories in side-nav )
-        $category = $this->categoryAll();
-
-        // From Traits/BrandAll.php
-        // Get all the Brands
-        $brands = $this->brandsAll();
-
-        // From Traits/SearchTrait.php
-        // ( Enables capabilities search to be preformed on this view )
-        $search = $this->search();
-
-        // Get the Products under the Category ID
-        $products = Product::where('cat_id','=', $id)->get();
-
-        // Count the products under a certain category
-        $count = $products->count();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        return view('category.show', compact('products', 'categories','brands', 'category', 'search', 'cart_count'))->with('count', $count);
+        return view("pages.products-category", compact('products','order'));
     }
 
 

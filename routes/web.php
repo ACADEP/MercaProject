@@ -34,7 +34,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'PagesController@index');
 
     /** Display Products by category Route **/
-    Route::get('category/{id}','PagesController@displayProducts');
+    Route::get('/Category/{category}','PagesController@displayProducts')->name('productsByCategory');
+
+    Route::get('/Category/{category}/order','PagesController@orderCategories')->name('orderCategory');
 
     /** Display all category Route **/
     Route::get('allcategory','PagesController@displayAllCategories')->name('categories.all');
@@ -588,7 +590,9 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('/cart/confirmation-oxxo', [
         'uses' => '\App\Http\Controllers\CartController@PagosOxxo',
         'as'   => 'openpay.oxxo',
-    ]);    
+    ]); 
+
+    Route::get('/show-pdf-oxxo','CartController@showPDFOxxo');  
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',
@@ -636,6 +640,8 @@ Route::group(["middleware" => 'customer'], function(){
 
     Route::get('print_pdf_seller','SellerController@printPdf');
 
+    Route::get('print_excel_seller','SellerController@printExcel');
+
     Route::post('seller/respond-reclame','SellerController@respondReclame')->name('respond-reclame');
 
 
@@ -660,11 +666,25 @@ Route::group(["middleware" => 'customer'], function(){
 
 Route::group(["middleware" => 'admin'], function(){
     //Dashboard del administrador
-    Route::get("/admin/index", "AdminController@index");
+    Route::get("admin/index", "AdminController@index");
     //Edicion de categorías
-    Route::get("/admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit");
+    Route::get("admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit");
+    //Regalias
+    Route::get("admin/sales", "AdminController@showSales")->name("show-sales");
+    //Descargar PDF
+    Route::get('print_pdf_seller','AdminController@printPdf');
+    //Descargar Excel
+    Route::get('print_excel_seller','AdminController@printExcel');
+    //Ordenar por
+    Route::get('admin/sales/{order}','AdminController@orderSales')->name('order-admin');
+    //Ordenar por fecha
+    Route::post('admin/sales/orderDate','AdminController@orderDate')->name('orderDate-admin');
+    
+    //Ordenes por Oxxo
+    //Mostrar disponibles
+    Route::get("admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
    
-    //CRUDS Categorias
+    //CRUD Categorias
     //Mostrar todas las categorias
     Route::get("/admin/products/categories", "AdminController@showCategories");
     //Agregar subcategorias

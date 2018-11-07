@@ -1,24 +1,25 @@
 <div class="row">
     <div class="col-md-1">
-        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Ordenar
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color: black;">
-            <li><a href="{{url('seller/sales/7') }}">Todos</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="{{url('seller/sales/1') }}">Mas vendido</a></li>
-            <li><a href="{{url('seller/sales/2') }}">Vendidos reciente</a></li>
-            <li><a href="{{url('seller/sales/3') }}">Precio mas alto</a></li>
-            <li><a href="{{url('seller/sales/4') }}">Productos de A-Z</a></li>
-            <li><a href="{{url('seller/sales/5') }}">Clientes de A-Z</a></li>
-            <li><a href="{{url('seller/sales/6') }}">Mayor total</a></li>
-            
-        </ul>
+    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Ordenar
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color: black;">
+        <li><a href="{{url('admin/sales/7') }}">Todos</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{{url('admin/sales/1') }}">Mas vendido</a></li>
+        <li><a href="{{url('admin/sales/2') }}">Vendidos reciente</a></li>
+        <li><a href="{{url('admin/sales/3') }}">Precio mas alto</a></li>
+        <li><a href="{{url('admin/sales/4') }}">Productos de A-Z</a></li>
+        <li><a href="{{url('admin/sales/5') }}">Clientes de A-Z</a></li>
+        <li><a href="{{url('admin/sales/6') }}">Mayor total</a></li>
+        
+        
+    </ul>
     </div>
 
     <div class="col-md-3 form-inline" >
-        <form action="{{url('seller/sales/orderDate')}}" method="POST">
+        <form action="{{url('admin/sales/orderDate')}}" method="POST">
             {{csrf_field()}}
             <div class="dropdown " style="display: inline;">
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -103,7 +104,6 @@
         </form>
         
     </div>
-
     @if($histories->count()>0)
     <div class="col-md-2 text-left">
         @php 
@@ -129,7 +129,7 @@
             </button>
         </form>
     </div>
-    
+   
     <div class="text-right" style="margin-right:10px;">
        <h4><strong>Total:</strong> <span class="label label-success">${{ number_format($total, 2) }}</span></h4>      
     </div>

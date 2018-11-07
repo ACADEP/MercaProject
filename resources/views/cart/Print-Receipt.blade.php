@@ -26,11 +26,11 @@
         <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
       </div>
       <div id="project">
-        <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->nombre}}</div>
+        <div><span><strong>Cliente</strong></span> {{$client->customer->nombre}}</div>
         <div><span><strong>Dirección</strong></span> {{$address->calle}}, {{$address->ciudad}} {{$address->cp}}, {{$address->estado}}</div>
-        <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
+        <div><span><strong>Correo</strong></span> <a href="mailto:{{$client->email}}">{{$client->email}}</a></div>
         <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
-        <div><span><strong>Expiración</strong></span> {{$expiry}}</div>
+        <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
       </div>
     </header>
     <main>
@@ -45,22 +45,34 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($cartItems as $item)
+        @if(isset($ItemsCarts))
+          @foreach($ItemsCarts as $item)
             <tr>
                 <td class="service">{{$item->qty}}</td>
                 <td class="desc">{{$item->product->product_sku}}</td>
                 <td class="unit">{{$item->product->description}}</td>
                 <td class="qty">${{number_format($item->product_price, 2)}}</td>
-                <td class="total">${{number_format($item->total, 2)}}</td>
+                <td class="total">${{number_format(($item->total), 2)}}</td>
             </tr>
           @endforeach
+        @else
+          @foreach($Items->customerHistories()->get() as $item)
+            <tr>
+                <td class="service">{{$item->amount}}</td>
+                <td class="desc">{{$item->product->product_sku}}</td>
+                <td class="unit">{{$item->product->description}}</td>
+                <td class="qty">${{number_format($item->product_price, 2)}}</td>
+                <td class="total">${{number_format(($item->product_price*$item->amount), 2)}}</td>
+            </tr>
+          @endforeach
+        @endif
           <tr>
             <td colspan="4">Subtotal</td>
             <td class="total">${{number_format($subtotal, 2) }}</td>
           </tr>
           <tr>
             <td colspan="4">IVA</td>
-            <td class="total">$ 00.00</td>
+            <td class="total">Incluido</td>
           </tr>
           <tr>
             <td colspan="4">Costo de envío</td>

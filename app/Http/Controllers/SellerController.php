@@ -13,7 +13,8 @@ use App\ShipmentProduct;
 use App\Http\Controllers\DB;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Crypt;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SellerExport;
 class SellerController extends Controller
 {
     
@@ -150,7 +151,7 @@ class SellerController extends Controller
             $seleHistories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(10);
             $histories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->get();
         }
-        else if($order==5)
+        else if($order==10)
         {
             $seleHistories=Auth::user()->selehistories()->orderBy('client')->paginate(10);
             $histories=Auth::user()->selehistories()->orderBy('client')->get();
@@ -325,5 +326,14 @@ class SellerController extends Controller
         $seleHistories=SeleHistory::whereIn('id',$items)->orderByRaw(\DB::raw("FIELD(id,$itemsOrden)"))->get();
         $pdf = PDF::loadView('seller.partials.print-pdf',compact('seleHistories'));
         return $pdf->stream('Carrito.pdf');
+    }
+
+    public function printExcel(Request $request)
+    { 
+        // $items=explode( ", ", $request->get("histories") );
+        // $itemsOrden=$request->get('histories');
+        // $seleHistories=SeleHistory::whereIn('id',$items)->orderByRaw(\DB::raw("FIELD(id,$itemsOrden)"))->get();
+        $export=new SellerExport($request->get("histories"));
+        return Excel::download( $export, 'Ventas.xlsx');
     }
 }
