@@ -1,68 +1,108 @@
 <style>
-#menu * { list-style:none; height: 100%;}
-#menu li{ line-height:180%;}
-#menu li a{color:#222; text-decoration:none;}
-#menu li a:before{ content:"\025b8"; color:#ddd; margin-right:1px;}
-#menu input[name="list"] {
-	position: absolute;
-	left: -1000em;
-	}
-#menu label:before{ /*content:"\025b8";*/ margin-right:1px;}
-/*#menu input:checked ~ label:before{ content:"\025be";}*/
-#menu .interior{display: none;}
-#menu input:checked ~ ul{display:block;}
-right {
+/* .listings {
+    width: 100%; */
 }
 </style>
-
-<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-        <ul id="menu" style="width: 280px;">
-            <li class="list-group-item"><input type="checkbox" name="list" id="nivel1-1"><label for="nivel1-1">Ordenar</label>
-                <ul class="interior">
-                    <li><a href="#r">Populares</a></li>
-                    <li><a href="">Menor Precio</a></li>
-                    <li><a href="">Mayor Precio</a></li>
-                </ul>
-            </li>
-            <li class="list-group-item"><input type="checkbox" name="list" id="nivel1-2" checked=""><label for="nivel1-2">Filtros</label>
-                <ul class="interior">
-                    <li><input type="checkbox" name="list" id="nivel2-6"><label for="nivel2-6">Marca</label>
-                        <ul class="interior">
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Microsoft</a></li>
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Apple</a></li>
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Toshiba</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-4"><label for="nivel2-4">Precio</label>
-                        <ul class="interior">
-                            <li><a href="#r">Menor a $200</a></li>
-                            <li><a href="#r">Mayor a $200</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-5"><label for="nivel2-5">Calificación</label>
-                        <ul class="interior">
-                            <li><a href="#r">*</a></li>
-                            <li><a href="#r">**</a></li>
-                            <li><a href="#r">***</a></li>
-                            <li><a href="#r">****</a></li>
-                            <li><a href="#r">*****</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-6"><label for="nivel2-6">Populares</label>
-                        <ul class="interior">
-                            <li><a href="#r">#</a></li>
-                            <li><a href="#r">#</a></li>
-                            <li><a href="#r">#</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-7"><label for="nivel2-7">Existencia</label>
-                        <ul class="interior">
-                            <li><a href="#r">10</a></li>
-                            <li><a href="#r">50</a></li>
-                            <li><a href="#r">100</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-</div>
+<section class="listings">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>Buscar</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form>
+                                            <div class="form-group">
+                                                <select class="form-control" id="conditionsselect1">
+                                                <option>Conditions</option>
+                                                <option>New</option>
+                                                <option>Used</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="conditionsselect2">
+                                                <option>Body</option>
+                                                <option>Compact</option>
+                                                <option>Convertible</option>
+                                                <option>Coupe</option>
+                                                <option>Off-road</option>
+                                                <option>Sedan</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="make1">
+                                                <option>Make</option>
+                                                <option>Ford</option>
+                                                <option>Hyundai</option>
+                                                <option>Kia</option>
+                                                <option>Honda</option>
+                                                <option>Skoda</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="make1">
+                                                <option>Model</option>
+                                                <option>Accord</option>
+                                                <option>Camry</option>
+                                                <option>Civic</option>
+                                                <option>Rapid</option>
+                                                <option>Octavia</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="mileage1">
+                                                <option>Max Mileage</option>
+                                                <option>< 5000</option>
+                                                <option>5000-10000</option>
+                                                <option>10000-15000</option>
+                                                <option>15000-20000</option>
+                                                <option>20000-25000</option>
+                                                <option>> 25000</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="year1">
+                                                <option>Year</option>
+                                                <option>2000</option>
+                                                <option>2001</option>
+                                                <option>2002</option>
+                                                <option>2003</option>
+                                                <option>2004</option>
+                                                <option>2005</option>
+                                                <option>2006</option>
+                                                <option>2007</option>
+                                                <option>2008</option>
+                                                <option>2009</option>
+                                                <option>2010</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="make1">
+                                                <option>Transmission</option>
+                                                <option>Automatic</option>
+                                                <option>Manaul</option>
+                                                <option>Semi-Automatic</option>
+                                                </select>
+                                            </div>
+                                            <hr>
+                                            <button type="btn" class="btn btn-primary">Buscar</button>
+                                            <button type="btn" class="btn btn-primary">Limpiar filtro</button>
+                                            <div class="pb-3"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

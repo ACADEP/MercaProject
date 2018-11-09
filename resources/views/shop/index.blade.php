@@ -36,7 +36,7 @@ img.imgbanner {
             <img class="img-fluid imgbanner float-left" src="{{$banner->path}}" alt="First slide">
     </div>
 
-    <div class="productsshop col-12 col-sm-12 col-md-12 col-sm-12 col-lg-12">
+    <div class="row col-12 col-sm-12 col-md-12 col-sm-12 col-lg-12">
         @include('shop.featuredshop')
     </div>
 </div>
