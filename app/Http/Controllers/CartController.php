@@ -48,6 +48,7 @@ class CartController extends Controller {
     protected $mailer;
     public function showCart() {
     
+       
         return view('cart.cart'); 
             
     }
@@ -79,7 +80,10 @@ class CartController extends Controller {
 
         //Buscar el producto para agregar al carrito
         $product_id=Product::find($request->product_id);
+        //$product_id=Product::where("id",$request->product_id);
         $product_id->setAttribute('qty', 1);
+        $img_product=$product_id->photos()->first()->path;
+        $product_id->setAttribute('img', $img_product);
         // Identificar si es visitante o usuario registrado
         $user=0;
         $itemCount=0;
@@ -107,7 +111,7 @@ class CartController extends Controller {
             
         }
         
-        return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount],200);
+        return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount, 'img_product'=>$img_product],200);
     
 
     }
@@ -193,7 +197,7 @@ class CartController extends Controller {
         $cartItems;
         if(Auth::check())
         {
-            $cartItems=Auth::user()->cart->with('product')->get();
+            $cartItems=Auth::user()->cart->with('product')->with('product.photos')->get();
             $TotalUser=Auth::user()->total;
         }
        

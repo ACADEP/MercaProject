@@ -184,7 +184,18 @@ desired effect
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
           </ul>
         </li>
-        <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="fa fa-cube"></i> <span>Ordenes Oxxo</span></a></li>
+        <li class="treeview {{ Request::segment(2) == 'users' ? 'active' : '' }}">
+          <a href="#"><i class="fa fa-users"></i> <span>Usuarios</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+          <ul class="treeview-menu ">
+            <li class="{{ Request::segment(3) == 'users' ? 'active' : '' }}"><a href="{{ url('admin/users/users') }}"><i class="fa fa-user" aria-hidden="true"></i><span>Usuarios</span></a></li>
+          </ul>
+        </li>
+        @php $orders=Auth::user()->ordersOxxo()->count(); @endphp
+        <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
         <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->

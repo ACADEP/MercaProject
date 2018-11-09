@@ -115,4 +115,51 @@ $(document).ready(function(){
            
         } 
     });
+
+    $(".btn-order-delete").click(function(){
+        if (confirm('Seguro que quiere eliminar esta orden')) {
+            $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+              });
+                var order_id=$(this).val();
+                var formData = { order_id:order_id }
+                $.ajax({
+                    url: "/admin/OrderOxxo/deleteOrder",
+                    method: 'POST',
+                    data: formData,
+                    success: function(response){
+                       
+                        $("#order"+order_id).remove();
+                        $("#b-order").html(response.num_orders);
+                        if(response.num_orders<=0)
+                        {
+                            $("#body-orders-oxxo").html("<div class='alert alert-info'>No hay ordenes</div>");
+                        }
+                        
+                        
+                       
+                        $.notify({
+                            // options
+                            message: '<strong>'+response.msg+'</strong>' 
+                        },{
+                            // settings
+                            type: 'success',
+                            delay:3000
+                        });
+                       
+                       
+                    },
+    
+                    error: function(response){
+                        console.log(response);
+                        alert("Intente de nuevo");
+                    }
+            
+                });
+        } else {
+           
+        } 
+    });
 });

@@ -683,7 +683,12 @@ Route::group(["middleware" => 'admin'], function(){
     //Ordenes por Oxxo
     //Mostrar disponibles
     Route::get("admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
-   
+    //Acreditar pago
+    Route::post("/admin/OrderOxxo/accreditedPay", "AdminController@accreditedPay")->name("accreditedPay");
+    //Eliminar orden
+    Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
+
+
     //CRUD Categorias
     //Mostrar todas las categorias
     Route::get("/admin/products/categories", "AdminController@showCategories");
@@ -695,9 +700,14 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/products/addCategory","AdminController@addCategory")->name("add-category");
     //Editar las categorías
     Route::post("/admin/products/editCategory","AdminController@editCategory")->name("edit-category");
-     //Eliminar categoría
-     Route::post("/admin/products/deleteCategory","AdminController@deleteCategory")->name("delete-category");
+    //Eliminar categoría
+    Route::post("/admin/products/deleteCategory","AdminController@deleteCategory")->name("delete-category");
     
+     //CRUD Usuarios
+     //Mostrar todas las categorias
+    Route::get("/admin/users/users", "AdminController@showUsers")->name("show-users");
+     //Eliminar usuario
+     Route::post("/admin/users/deleteUser","AdminController@deleteUser")->name("delete-User");
    
 
 });
