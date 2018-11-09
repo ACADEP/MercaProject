@@ -115,7 +115,7 @@ function chargeShipments(cp_user)
                 var countPaq=1;
                 $("#shipments").html("");
                 shipments.forEach(element => {
-                    $("#shipments").append("<a id='paq-"+countPaq+"'><div class='card border-primary mb-3 text-center col-md-4' style='max-width: 10rem; margin:10px; height:310px;'>"+
+                    $("#shipments").append("<a id='paq-"+countPaq+"'><div class='card border-primary mb-3 text-center col-md-4' id='card-body"+countPaq+"' style='max-width: 10rem; margin:10px; height:310px;'>"+
                     "<div class='card-body'>"+
                         "<p class='card-text' style='width:100%;' >"+
                             "<img src='"+element.carrier_logo_url+"' class='img-fluid'>"+
@@ -135,10 +135,11 @@ function chargeShipments(cp_user)
                 var cont=1;
                 shipments.forEach(element =>{
                     $('#step-2').on('click', '#paq-'+cont, { i : cont }, function(e){
-                        reset_paq_css();
-                        $(this).css("background-color", "green");
                         e.preventDefault();
                         var cont = e.data;
+                        reset_paq_css();
+                        $("#card-body"+cont.i).css("border", "solid blue 5px");
+                        
                         $('#paqueteria'+cont.i).prop("checked",true);
                         var num = '$' + (element.total_amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                         $(".ship-rate").html(num);
@@ -168,7 +169,7 @@ function chargeShipments(cp_user)
         {
             for(var i=1;i<=shipments.length;i++)
             {
-                $("#paq-"+i).css("background-color", "white");
+                $("#card-body"+i).css("border", "solid white 1px");
             }
         }
 

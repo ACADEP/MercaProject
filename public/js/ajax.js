@@ -25,7 +25,7 @@ $(document).ready(function(){
                 Cookies.set("productos",productosJson,1);
                 $("#items-carts").val(JSON.stringify(productosJson));
                 var numTotal = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                $('#total-items').html("<strong>Total</strong>: "+numTotal);
+                // $('#total-items').html("<strong>Total</strong>: "+numTotal);
                 $('#general-total').html("El total de su carrito es "+numTotal);
             }
         }
@@ -81,17 +81,19 @@ $(document).ready(function(){
                 method: 'POST',
                 data: formData,
                 success: function(response){
+                       
                         if(response.user==1)
                         {
                             
                             if(response.itemcount<=5 && response.itemcount>0)
                             {
-                    
-                                $('#client-container').append(response.item.product_name+"<br>---------------------<br>");
+                                
+                                var num = '$' +(response.item.price-response.item.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                $('#client-container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
+                                '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
+                                '<span class="badge badge-success">'+num+'</span> </div>'+
+                                '<div class="col-md-12"><hr></div>');
                                 $('#badge-cart').html(response.itemcount);
-                                var total=parseInt(response.item.total);
-                                var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                $('#total-items-client').html("<strong>Total</strong>: "+num);
                                 $.notify({
                                     // options
                                     message: 'Producto agregado al carrito' 
@@ -118,9 +120,7 @@ $(document).ready(function(){
                                 {
                                     $('#cart-detail').html("Ver todos");
                                     $('#badge-cart').html(response.itemcount);
-                                    var total=parseInt(response.item.total);
-                                    var num = '$' + total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                    $('#total-items-client').html("<strong>Total</strong>: "+num);
+                                    
 
                                     $.notify({
                                         // options
@@ -159,16 +159,18 @@ $(document).ready(function(){
                                 Cookies.set("productos",productosCart,1);
                                 if(productosCart.length<=5)
                                 {
-                                    $('#product_container').append(response.item.product_name+"<br>---------------------<br>");
+                                    var num = '$' +(response.item.price-response.item.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                    $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
+                                    '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
+                                    '<span class="badge badge-success">'+num+'</span> </div>'+
+                                    '<div class="col-md-12"><hr></div>');
                                 }
                                 else
                                 {
                                     $('#cart-detail').html("Ver todos");
                                 }
                                 $('#badge-cart').html(productosCart.length);
-                                var num = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                $('#total-items').html("<strong>Total</strong>: "+num);
-                                
+                               
                                 //Notificacion
                                 $.notify({
                                     // options
@@ -202,8 +204,8 @@ $(document).ready(function(){
 
     function mostrarElementos()
     {   refresh();
-       
-        if(Cookies.get("productos")!=null)
+      
+        if(Cookies.get("productos")!=null  )
         {
             var i=0;
             var nBadge=0;
@@ -211,6 +213,11 @@ $(document).ready(function(){
             var productosArray=jQuery.parseJSON(Cookies.get("productos"));
             $("#items-carts").val(JSON.stringify(productosArray));
             var maxElements=parseInt(productosArray.length);
+            if(maxElements<=0)
+            {
+                $("#alert-cartP").html("No hay productos en el carrito");
+                $("#alert-cartP").css("height","230px");
+            }
             for(i;i<maxElements;i++)
             {
                
@@ -218,7 +225,11 @@ $(document).ready(function(){
                     var producto=productosArray[i];
                     if(i<=4)
                     {
-                        $('#product_container').append(producto.product_name+"<br>---------------------<br>");
+                        var num = '$' +(producto.price-producto.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                        $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+producto.img+'"></div>'+
+                        '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+producto.product_name+'</span> <br>'+
+                        '<span class="badge badge-success">'+num+'</span> </div>'+
+                        '<div class="col-md-12"><hr></div>');
                     }
                     else
                     {
@@ -253,7 +264,6 @@ $(document).ready(function(){
             }
             $('#badge-cart').html(nBadge);
             var numTotal = '$' + getTotal().toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-            $('#total-items').html("<strong>Total</strong>: "+numTotal);
             $('#general-total').html("El total de su carrito es "+numTotal);
            
            
@@ -261,7 +271,8 @@ $(document).ready(function(){
         }
         else
         {
-            
+            $("#alert-cartP").html("No hay productos en el carrito");
+            $("#alert-cartP").css("height","230px");
         }
         
     }

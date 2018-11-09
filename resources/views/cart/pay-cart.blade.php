@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-<div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px;'>Espere por favor.....</div></div>
+<div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px; '><span style="padding-top:300px;">Espere por favor <br>Cargando paqueterías</span> </div></div>
     
 <br>
 
@@ -91,7 +91,7 @@
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de pago</strong></h3>
             <div class="row">
                     <a id="mpay-1">
-                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay1" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Débito o crédito</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
@@ -108,7 +108,7 @@
                     </a>
 
                     <a id="mpay-2">
-                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay2" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">PayPal <br><br></div>
                         <div class="card-body text-primary">
                             <p class="card-text">
@@ -124,7 +124,7 @@
                     </a>
 
                     <a id="mpay-3">
-                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay3" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Tranferencia bancaria</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
@@ -141,7 +141,7 @@
                 </a>
 
                 <a id="mpay-4">
-                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay4" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Tiendas</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
@@ -158,7 +158,7 @@
                 </a>
 
                 <a id="mpay-5" style="width: 24%;">
-                    <div class="card border-primary mb-3 text-center col-md-2" style="max-width: 10rem; margin:10px; height:250px;">
+                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay5" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Oxxo</div>
                         <div class="card-body text-primary">
                             <p class="card-text">
@@ -402,7 +402,7 @@ $(document).ready(function () {
         {
             for(var i=1;i<=5;i++)
             {
-                $("#mpay-"+i).css("background-color", "white");
+                $("#card-pay"+i).css("border", "solid white 1px");
             }
         }
         $("#shipment").html("A acordar con el vendedor");
@@ -411,35 +411,35 @@ $(document).ready(function () {
         //Metodos de pago
         $("#mpay-1").click(function(){
             reset_pay_css();
-            $(this).css("background-color", "green");
+            $("#card-pay1").css("border", "solid blue 5px");
             $("#pay").html("Débito o crédito");
             $("#credit-debit-method-r").prop("checked",true);
         });
 
         $("#mpay-2").click(function(){
             reset_pay_css();
-            $(this).css("background-color", "green");
+            $("#card-pay2").css("border", "solid blue 5px");
             $("#pay").html("PayPal");
             $("#paypal-method-r").prop("checked",true);
         });
 
         $("#mpay-3").click(function(){
             reset_pay_css();
-            $(this).css("background-color", "green");
+            $("#card-pay3").css("border", "solid blue 5px");
             $("#pay").html("Tranferencia bancaria");
             $("#bank-method-r").prop("checked",true);
         });
 
          $("#mpay-4").click(function(){
             reset_pay_css();
-            $(this).css("background-color", "green");
+            $("#card-pay4").css("border", "solid blue 5px");
             $("#pay").html("Tienda de convenencia");
             $("#store-method-r").prop("checked",true);
         });
 
          $("#mpay-5").click(function(){
             reset_pay_css();
-            $(this).css("background-color", "green");
+            $("#card-pay5").css("border", "solid blue 5px");
             $("#pay").html("Oxxo");
             $("#oxxo-method-r").prop("checked",true);
         });
@@ -627,7 +627,7 @@ $(document).ready(function () {
             <input type="hidden" name="carrie" id="bank_carrie">
             <input type="hidden" name="carrie_id" id="bank_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </form>
        
       </div>
@@ -652,7 +652,7 @@ $(document).ready(function () {
             <input type="hidden" name="carrie" id="store_carrie">
             <input type="hidden" name="carrie_id" id="store_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </form>
        
       </div>
@@ -679,7 +679,7 @@ $(document).ready(function () {
             <input type="hidden" name="carrie" id="oxxo_carrie">
             <input type="hidden" name="carrie_id" id="oxxo_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </form>
        
       </div>

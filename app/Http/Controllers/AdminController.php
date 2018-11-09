@@ -9,6 +9,8 @@ use App\Product;
 use App\Category;
 use App\ProductSeller;
 use App\SeleHistory;
+use App\OrderOxxo;
+use App\EnviaYa;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Http\Traits\CartTrait;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Input;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SellerExport;
+use App\Mailers\AppMailers;
 
 class AdminController extends Controller {
 
@@ -62,6 +65,12 @@ class AdminController extends Controller {
         return view("admin.products.categories.index", compact("categories"));
     }
 
+    public function showUsers()
+    {
+        $users=User::all();
+        return view("admin.users.index", compact("users"));
+    }
+
     public function printPdf(Request $request)
     { 
         
@@ -76,6 +85,54 @@ class AdminController extends Controller {
     { 
         $export=new SellerExport($request->get("histories"));
         return Excel::download( $export, 'Ventas.xlsx');
+    }
+
+    public function accreditedPay(Request $request, AppMailers $mailer)
+    {
+        $order=OrderOxxo::find($request->get("order"));
+        $sale=$order->sale;
+        $enviaYa=new EnviaYa;
+        $client=$sale->client;
+        $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+        $sale->updateStatusShip($envio->shipment_status);
+        $sale->updateTracking($envio->carrier_shipment_number);
+        $sale->updatePay();
+
+        //Admin
+        $userAdmin=User::find(6);
+        //Enviar correos
+        $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+        foreach($sale->customerHistories()->get() as $item)
+        {
+            $productseller=ProductSeller::find( $item->product_id);
+            if($productseller != null)
+            {
+                $saleHistory=new SeleHistory;
+                $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+            }
+            else
+            {
+                $admins=User::where("admin",1)->get();
+                foreach($admins as $admin)
+                {   
+                    $saleHistory=new SeleHistory;
+                    $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                }
+            }
+        }
+        $order->delete();
+        return back()->with("success", "Pago acreditado a ".$client->customer->nombre);
+    }
+
+    public function deleteOrder(Request $request)
+    {
+        $order=OrderOxxo::find($request->get("order_id"));
+        $sale=$order->sale;
+        $name=$sale->client->customer->nombre;
+        $sale->customerHistories()->delete();
+        $sale->delete();
+        $order->delete();
+        return response(["msg"=>"La orden con el nombre ".$name." ha sido eliminada", "num_orders"=>Auth::user()->ordersOxxo()->count()],200);
     }
 
     public function addCategory(Request $request)
@@ -143,6 +200,11 @@ class AdminController extends Controller {
         $category->delete();
         return response("La categoría ".$category_name." ha sido eliminada",200);
     }
+    public function deleteUser(Request $request)
+    {
+        
+    }
+
     public function orderDate(Request $request)
     { 
         $sales;

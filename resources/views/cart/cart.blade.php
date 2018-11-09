@@ -36,6 +36,7 @@
 <table class="table text-center">
         <thead>
             <tr>
+                <th></th>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
@@ -47,10 +48,11 @@
         <tbody {{ Auth::check() ? 'id=client-body' : 'id=tbody' }}>
         
            @if(Auth::check())
+                
                 @foreach(Auth::user()->cart->with("product")->get() as $cart)
                     
                     <tr id="item-cart{{ $cart->id }}">
-                       
+                       <td style="width:100px;"><img style="width:100%;" src="{{ $cart->product->photos()->first()->path}}" alt=""></td>
                         <td> <a href="{{ route('show.product', $cart->product->product_name) }}">{{ $cart->product->product_name  }}</a></td>
                     
                         <td>${{ number_format(($cart->product_price), 2)  }}</td>
@@ -69,12 +71,20 @@
                         <td><button type='button' value="{{ $cart->id }}" class='btn btn-outline-danger btn-sm cart-delete'><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                     </tr>
                 @endforeach
+                
            @endif
           
            
         </tbody>
         
     </table>
+    @if(Auth::check())
+       <div class="col-md-12 text-center" id="alert-cartP-A" style="font-size:25px;{{ Auth::user()->cart->count()==0 ? 'height:250px': '' }}"> @if(Auth::user()->cart->count()==0) No hay productos en este carrito @endif</div>
+  
+    @else
+        <div class="col-md-12 text-center" id="alert-cartP" style="font-size:25px;"></div>
+    @endif
+    
 <div class="text-right" {{ Auth::check() ? 'id=client-total' : 'id=general-total' }}>
     @if(Auth::check())
         El total de su carrito es: ${{ number_format(Auth::user()->total, 2)  }}
