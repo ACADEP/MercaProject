@@ -3,7 +3,7 @@
 @section('content')
 
 <nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tiendas</li>
     </ol>

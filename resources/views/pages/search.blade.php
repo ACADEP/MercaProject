@@ -2,8 +2,8 @@
 
 @section('content')
 
-<nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" class="pt-3">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item active" aria-current="page">Busqueda</li>
     </ol>
@@ -14,30 +14,6 @@
         @include('pages.search-filters')
     </div>
 @endif
-
-<style>
-    /* .badge {
-        margin-right: .3rem;
-    }
-    .badge-labeled {
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-right: 0.2rem;
-    }
-    .badge-labeled i {
-        padding: 0.25em  0.3rem;
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-        right: -0.2em;
-        border-left: solid 1px rgba(255,255,255,.5);
-        border-radius: 0 0.25rem 0.25rem 0;
-    }
-    span.badge-filter {
-        background-color: #e0e0e0 !important;
-        color: #000 !important;
-    } */
-</style>
 
 <div class="pt-3 pb-3">
     @if ($labels == 1)          
@@ -90,7 +66,9 @@
 </div>
      
 <h4><br>
-    Resultados para:  <i class="search_find">{{ $search_find }}</i>
+    @if (count($search) != 0 || $search != null)
+    <i class="search_find">{{ $resultados }} resultados para {{ $search_find }}</i>
+    @endif
 </h4><br>
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     @if (count($search) == 0 || $search==null)
@@ -102,7 +80,7 @@
             <div class="row">
                 
                 <div class="col-md-12 text-center hoverable" style="width:100%;">
-                    <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                    <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                     @if ($product->photos->count() == 0)
                             <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag">
                     @else
@@ -122,7 +100,7 @@
                     $acorName = substr($product->product_name, 0, 25);
                     $acorDesc = substr($product->description, 0, 25);
                 @endphp
-                <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
                 </a>
@@ -173,17 +151,17 @@
             var priceAll =  document.getElementsByClassName("priceAll");
             var priceMax =  document.getElementsByClassName("priceMax");
             var priceMin =  document.getElementsByClassName("priceMin");
-            var search =  document.getElementsByClassName("search_find");
+            var search_find =  document.getElementsByClassName("search_find");
             var brand = new Array();
             var categories = new Array();
             var price;
             var desde = null;
             var hasta = null;
-            var search_find;
+            var search;
             var fil = 0;
 
-            for(i = 0; i < search.length; i++) {
-                search_find = search[i].innerText;
+            for(i = 0; i < search_find.length; i++) {
+                search = search_find[i].innerText;
             }
             for(i = 0; i < marca.length; i++) {
                 brand[i] = marca[i].innerText;
@@ -220,7 +198,7 @@
             // console.log(categories);
             // console.log(hasta);
             // console.log(desde);
-            get('/queries/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil, search_find:search_find});
+            get('/queries/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil, search:search});
         })
     });
     

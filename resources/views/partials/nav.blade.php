@@ -57,20 +57,20 @@
                                 @if(Auth::check())
                                     <div class="form-inline">
                                         @if(Auth::user()->admin==2)
-                                            <a href="{{ url('/seller/admin') }}">Mi Perfil</a>&nbsp | &nbsp
+                                            <a class="header-color" href="{{ url('/seller/admin') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
                                         @if(Auth::user()->admin==1)
-                                            <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
+                                            <a class="header-color" href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
-                                            <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                            <a class="header-color" href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @endif
                                         @endif
-                                        <a href="{{ url('/logout') }}">Salir</a>
+                                        <a class="header-color" href="{{ url('/logout') }}">Salir</a>
                                     </div>
                                     
                                 @else  
-                                    <a href="{{ url('/login') }}">Inicio de sesión </a>&nbsp &nbsp
-                                    <a href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
+                                    <a class="header-color" href="{{ url('/login') }}">Inicio de sesión </a>&nbsp &nbsp
+                                    <a class="header-color" href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
                                 @endif
                                 <!-- <a href="#" id="cart"><i class="material-icons"> shopping_cart</i><span class="badge">3</span></a> -->
                                 
@@ -80,15 +80,15 @@
                     <br><br>
                         <li class="nav-item">
                             {{-- <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a> --}}
-                            <a data-toggle="modal"  data-target=".bd-example-modal-lg">Búsqueda especial</a>
+                            <a data-toggle="modal"  data-target=".bd-example-modal-lg">Búsqueda avanzada</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a href="#">Nosotros</a>
+                            <a class="header-color" href="#">Nosotros</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a href="#">Ayuda</a>
+                            <a class="header-color" href="#">Ayuda</a>
                         </li>
                     </div>
                     

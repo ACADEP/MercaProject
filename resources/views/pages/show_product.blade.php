@@ -4,7 +4,9 @@
            
 <div class="col-md-12 row">
 
-    @include('partials.breadcrum')
+    <div class="col-sm-12 col-md-12 pt-3" >    
+        @include('partials.breadcrum')
+    </div>
             
     <div class="row">               
             <div class="col-md-8 gallery zoom-container">
@@ -94,7 +96,7 @@
 
             @foreach($similar_product->slice(0, 4) as $similar)
                 <div class="col-xs-6 col-md-2" id="Similar-Product-Sub-Container" >
-                    <a href="{{ route('show.product', $similar->product_name) }}">
+                    <a class="link-products" href="{{ route('show.product', $similar->product_name) }}">
                         @if ($similar->photos->count() === 0)
                             <p id="Similar-Title">{{ str_limit($similar->product_name, $limit = 28, $end = '...') }}</p>
                             <img src="/images/no-image-found.jpg" alt="Imagen no encontrada" id="Product-similar-Image">

@@ -83,7 +83,7 @@ class ProductsTableSeeder extends Seeder
             'product_qty'        =>  10,
             'product_sku' => 6,
             'price'=> 10000,
-            'reduced_price'=>100,
+            'reduced_price'=>0,
             'shop_id'=>1,
             'cat_id'=>10,
             'brand_id'=>6,

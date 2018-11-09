@@ -5,7 +5,7 @@
     @foreach($cart_products as $cart_item)
         <div class="col-sm-12 col-md-12" id="Cart-Products-Container">
             <div class="col-sm-3 col-md-3 center-on-small-only">
-                <a href="{{ route('show.product', $cart_item->products->product_name) }}">
+                <a class="link-products" href="{{ route('show.product', $cart_item->products->product_name) }}">
                     <h6 class="center-on-small-only" id="featured-product-name">{{ $cart_item->products->product_name }}</h6><br>
                     @if ($cart_item->products->photos->count() === 0)
                         <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image" style="width: 100px; height: 100px;" >

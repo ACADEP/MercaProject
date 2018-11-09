@@ -4,7 +4,7 @@
     <div class="row">
         
         <div class="col-md-12 text-center hoverable" style="width:100%;">
-            <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+            <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
             @if ($product->photos->count() == 0)
                     <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag">
             @else
@@ -24,7 +24,7 @@
             $acorName = substr($product->product_name, 0, 25);
             $acorDesc = substr($product->description, 0, 25);
         @endphp
-        <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+        <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
         <h5 class="center-on-small-only">{{ $acorName }}</h5>
         <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
         </a>
@@ -57,6 +57,6 @@
 </div>
 
 @endforeach
-    <div class="row justify-content-center mt-3 pl-5">
-                <!--{{ $products->links() }}-->
-            </div>
+<div class="row justify-content-center mt-3 pl-5">
+    <!--{{ $products->links() }}-->
+</div>

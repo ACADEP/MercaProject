@@ -41,6 +41,7 @@ class QueryController extends Controller {
         // Gets the query string from our form submission
 
         $search=null;
+        $resultados = null;
         $search_find=$peticion->searchname;
         if( $search_find!=null)
         {
@@ -53,9 +54,9 @@ class QueryController extends Controller {
             $query = $query->orWhere("category", 'LIKE', "%$search_find%");
             $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
             $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+            $resultados = count($query->get());
             // $search = $query->get();
             $search = $query->paginate(4);
-           
             
         }
 
@@ -76,7 +77,7 @@ class QueryController extends Controller {
         // If no results come up, flash info message with no results found message.
 
         // Return a view and pass the view the list of products and the original query.
-        return view('pages.search', compact('search', 'search_find', 'categorie', 'brands', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));
+        return view('pages.search', compact('search', 'search_find', 'categorie', 'brands', 'cart_count', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels', 'resultados'));
     }
 
     public function data()
@@ -129,24 +130,19 @@ class QueryController extends Controller {
 
     public function filtros(Request $request) {
         // dd($request);
-        // $products = "";
         $brandFilter = $request->brand;
         $catFilter = $request->categories;
         $minFilter = $request->desde;
         $maxfilter = $request->hasta;
         $labels = 1;
-        // dd($brandFilter);
-
         $search_find = $request->search;
-
         $categorias = Category::all();
         $marcas = Brand::all();
-
         $hasta = $request->hasta;
         $desde = $request->desde;
         $d = $request->desde;
         $h = $request->hasta;
-
+        $ordenamiento = "Menor Precio";
 
         $marc = array();
         $marca =  array();
@@ -173,9 +169,7 @@ class QueryController extends Controller {
                     $c++;
                 }
             }
-            // dd($marc);
             $marca = Brand::wherein('brand_name', $marc)->get();
-            // dd($marca);
 
             $cc = $request->categories;
             $ca = null;
@@ -192,19 +186,14 @@ class QueryController extends Controller {
                     $a++;
                 }
             }
-            // dd($marc);
             $categoria = Category::wherein('category', $cat)->get();
-            // dd($categoria);
 
             $brandFilter = $marca;
             $catFilter = $categoria;
             $minFilter = $desde;
             $maxfilter = $hasta;
             $labels = 0;
-            // dd($maxfilter);
         }
-
-        $ordenamiento = "Menor Precio";
 
         $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
         ->join('categories', 'cat_id', '=', 'categories.id');  
@@ -213,26 +202,17 @@ class QueryController extends Controller {
         $query = $query->orWhere("category", 'LIKE', "%$search_find%");
         $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
         $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-        // dd($query->get());
-
-        // $products = Product::OrderBy('price')->where('shop_id', '=', $request->id)->where('price', '>=', $request->desde)->Paginate(5);
 
         // Filtro por Precio Maximo
         if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $query = $query->OrderByRaw('(price - reduced_price) <='.$request->hasta);
+                $query = $query->OrderByRaw('(price - reduced_price) DESC', $request->hasta);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                ->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta);
-        
+                $query = $query->OrderByRaw('(price - reduced_price) DESC'.$hasta);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }        
 
@@ -240,35 +220,12 @@ class QueryController extends Controller {
         else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
-                // $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
-                // $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
-                // $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
-                // $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                // ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde);
-
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) >='.$request->desde);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) >='.$request->desde);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) >='.$request->desde);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) >='.$request->desde);
-        
+                $query = $query->orderByRaw('(price - reduced_price) ASC')->whereRaw('(price - reduced_price)', '>=', $request->desde);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")
-                ->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde);
-        
+                $query = $query->orderByRaw('(price - reduced_price) ASC'.$desde);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }       
 
@@ -276,15 +233,16 @@ class QueryController extends Controller {
         else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
-                $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
-        
+                // $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
+                // $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
+                // $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
+                // $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                // ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta);
+                $query = $query->orderByRaw('(price - reduced_price) >='.$request->desde.' and (price - reduced_price) <='.$request->hasta);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
@@ -295,7 +253,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $desde)->where('price', '<=', $hasta);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $desde)->where('price', '<=', $hasta);
-        
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }            
 
@@ -307,12 +265,14 @@ class QueryController extends Controller {
                 $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
                 $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
                 $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
                 $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }       
 
@@ -324,14 +284,14 @@ class QueryController extends Controller {
                 $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
 
@@ -347,7 +307,7 @@ class QueryController extends Controller {
                 ->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand)
                 ->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
@@ -358,7 +318,7 @@ class QueryController extends Controller {
                 ->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
                 ->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
 
@@ -383,7 +343,7 @@ class QueryController extends Controller {
                 ->whereIn('brand_id', $request->brand);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) >='.$request->desde)
                 ->whereIn('brand_id', $request->brand);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
@@ -394,7 +354,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $desde)->whereIn('brand_id', $marca);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $desde)->whereIn('brand_id', $marca);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }  
 
@@ -410,7 +370,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
@@ -421,7 +381,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
@@ -437,7 +397,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
@@ -448,7 +408,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $desde)->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $desde)->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
@@ -464,7 +424,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
@@ -475,7 +435,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
@@ -491,7 +451,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
@@ -502,7 +462,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
@@ -518,7 +478,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
@@ -529,7 +489,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
@@ -545,7 +505,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->where('price', '>=', $desde)->where('price', '<=', $hasta)
@@ -556,7 +516,7 @@ class QueryController extends Controller {
                 ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->where('price', '>=', $desde)->where('price', '<=', $hasta)
                 ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
-
+                $resultados = count($query->get());
                 $search =  $query->paginate(4);
             }
         }
@@ -572,7 +532,7 @@ class QueryController extends Controller {
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->where('price', '>=', $desde)->where('price', '<=', $hasta)
@@ -583,7 +543,7 @@ class QueryController extends Controller {
                 ->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->where('price', '>=', $desde)->where('price', '<=', $hasta)
                 ->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
-
+                $resultados = count($query->get());
                 $search =  $query->paginate(4);
             }
         } // Filtro por Marca, Categoria, Precio Minimo y Precio Maximo
@@ -598,7 +558,7 @@ class QueryController extends Controller {
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             } else {
                 $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
@@ -609,20 +569,18 @@ class QueryController extends Controller {
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
                 $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
-
+                $resultados = count($query->get());
                 $search = $query->paginate(4);
             }
             
         } 
         else if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta==null) {
-            $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+            $resultados = count($query->get());
             $search = $query->paginate(4);
         }
+        // dd($resultados);
 
-        return view('pages.search', compact('search', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels', 'search_find'));
+        return view('pages.search', compact('search', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels', 'search_find', 'resultados'));
     }
 
 

@@ -6,7 +6,7 @@ body {
     
 }
 
-a {
+a.link-products, a div.header-color, a.header-color {
     text-decoration: none;
     color: black;
 }
@@ -540,7 +540,7 @@ section {
 }
 /** Login.blade.php **/
 #Login-Register-Container {
-    background: #cfcfcf;/*#298eea;*/
+    /* background: #cfcfcf; */
     padding: 0;
     padding-bottom: 5%;
     margin: 0;

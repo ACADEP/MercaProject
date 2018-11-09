@@ -1,6 +1,6 @@
 <div class="col-md-12" id="breads">
-    <h4 class="text-left animated zoomIn" id="title-product">Tiendas</h4>
-    <a href="{{ route('all.shops') }}">Ver todas</a>
+    <h4 class="text-left animated zoomIn" id="title-product">Tiendas<a href="{{ route('all.shops') }}" class="ml-2" style="font-size: 15px;">Ver todas</a></h4>
+    
         <div class="text-center" >
             
 

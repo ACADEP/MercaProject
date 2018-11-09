@@ -44,7 +44,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 col-md-offset-3 text-center">
-                                    <button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Iniciar Sesión</button>
+                                    <button type="submit" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Iniciar Sesión</button>
                                 </div>
                                 <div class="col-md-12">
                                     <br><a href="{{ url('password/email') }}" class="d-block text-center" id="Forgot-Password">Olvidé mi contraseña</a>
@@ -53,7 +53,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 col-md-offset-3 text-center">
-                                    <a href="{{ url('/register') }}" id="Sign-up" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Registrase</a>
+                                    <a href="{{ url('/register') }}" id="Sign-up" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Registrase</a>
                                 </div>
                             </div>
 

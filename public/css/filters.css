@@ -14,7 +14,6 @@ span.badge-filter {
 .badge {
     margin-right: .3rem;
 }
-/***** REQUIRED STYLES *****/
 .badge-labeled {
     padding-top: 0;
     padding-bottom: 0;
@@ -29,3 +28,17 @@ span.badge-filter {
     border-left: solid 1px rgba(255,255,255,.5);
     border-radius: 0 0.25rem 0.25rem 0;
 }
+ul.filter-color {
+    background: #fff;
+    border: 1px solid #bdbdbd;
+}
+
+
+/* ******************* Breadcrumb ******************* */
+.breadcrumb-right-arrow .breadcrumb-item+.breadcrumb-item::before {
+    content: "›";
+  vertical-align:top;
+  font-size:40px;
+  line-height:15px;
+}
+

@@ -1,6 +1,6 @@
 <div class="row col-md-12">
-    <nav aria-label="breadcrumb" class="pt-2">
-        <ol class="breadcrumb">
+    <nav aria-label="breadcrumb" style="width: 100%; max-width: 100%;">
+        <ol class="breadcrumb breadcrumb-right-arrow">
             @if ($URL[3] == '/') 
                 <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Inicio</a></li>
             @endif

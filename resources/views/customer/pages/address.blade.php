@@ -20,7 +20,7 @@
 </style>
 
 <nav aria-label="breadcrumb" style="padding-top: 5px;">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url('/customer/profile') }}">Perfil</a></li>
         <li class="breadcrumb-item active" aria-current="page">Direcciones</li>

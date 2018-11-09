@@ -34,7 +34,7 @@
                     Marcas
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check text-left" aria-labelledby="dropdownMenu1" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color text-left" aria-labelledby="dropdownMenu1">
                     @foreach ($marcas as $marca)
                         <li><label for="{{'bra'.$marca->id}}"><input class="text-left" type="checkbox" name="brand[]" value="{{$marca->id}}, {{$marca->brand_name}}" id="{{'bra'.$marca->id}}" /><strong class="ml-1">{{$marca->brand_name}}</strong></label></li>
                     @endforeach
@@ -43,10 +43,10 @@
 
             <div class="dropdown ajuste alineado" >
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Por Categoria   
+                    Categorias   
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check" aria-labelledby="dropdownMenu2" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2">
                     @foreach ($categorias as $categoria)
                         <li><label for="{{'cat'.$categoria->id}}"><input class="text-left" type="checkbox" name="categories[]" value="{{$categoria->id}}, {{$categoria->category}}" id="{{'cat'.$categoria->id}}" /><strong class="ml-1">{{$categoria->category}}</strong></label></li>
                     @endforeach

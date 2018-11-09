@@ -50,7 +50,7 @@
         <div class="col-sm-3 col-md-3 col-lg-3 ajuste alineado">
             <div class="dropdown " style="display: inline;">
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Por Categoria   
+                    Categorias   
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu check" aria-labelledby="dropdownMenu2" style="background-color: #616161;">

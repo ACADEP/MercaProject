@@ -34,7 +34,7 @@
                     Marcas
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check text-left" aria-labelledby="dropdownMenu1" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color text-left" aria-labelledby="dropdownMenu1">
                     @php
                         $contador = count($marcas['brand_name']);
                         $b = 'bra';
@@ -47,10 +47,10 @@
 
             <div class="dropdown ajuste alineado" >
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Por Categoria   
+                    Categorias  
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check" aria-labelledby="dropdownMenu2" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2">
                     @php
                         $contador = count($categorias['category']);
                         $c = 'cat';

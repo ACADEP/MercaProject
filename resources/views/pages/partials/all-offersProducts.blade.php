@@ -3,8 +3,8 @@
 
 @section('content')
 
-<nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" class="pt-3">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item active" aria-current="page">Productos Destacados</li>
     </ol>
@@ -15,27 +15,6 @@
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
         @include('pages.partials.offers-filters')
 </div>
-
-    {{-- <style>
-        .badge {
-            margin-right: .3rem;
-        }
-        /***** REQUIRED STYLES *****/
-        .badge-labeled {
-            padding-top: 0;
-            padding-bottom: 0;
-            padding-right: 0.2rem;
-        }
-        .badge-labeled i {
-            padding: 0.25em  0.3rem;
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-            right: -0.2em;
-            border-left: solid 1px rgba(255,255,255,.5);
-            border-radius: 0 0.25rem 0.25rem 0;
-        }
-    </style> --}}
 
 <div class="pt-3 pb-3">
     @if ($labels == 1)          
@@ -97,7 +76,7 @@
             <div class="row">
                 
                 <div class="col-md-12 text-center hoverable" style="width:100%;">
-                    <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                    <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                     @if ($product->photos->count() == 0)
                             <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag">
                     @else
@@ -117,7 +96,7 @@
                     $acorName = substr($product->product_name, 0, 25);
                     $acorDesc = substr($product->description, 0, 25);
                 @endphp
-                <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
                 </a>

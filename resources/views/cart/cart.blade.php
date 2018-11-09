@@ -5,31 +5,36 @@
 
 <div class="row col-md-12">
     @if(Auth::check()==false)
-        <div class="alert alert-primary" role="alert">
+        <div class="alert alert-primary lert-dismissible fade show mt-3" role="alert">
             Inicie sesión o Regístrese para completar su compra.
+            <button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     @endif
-    <div class="text-center col-10 col-sm-10 col-md-10 pt-2">
-        <nav aria-label="breadcrumb" style="width: 20%;">
-            <ol class="breadcrumb">
+    <div class="text-center col-12 col-sm-12 col-md-12 pt-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-right-arrow">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="">Carrito</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Carrito</li>
             </ol>
         </nav>  
     </div>
-    <form class="form-inline text-right"  method="get" action="{{ route('cart.pdf') }}">
-        <div class="text-right" style="width:100%;">
-            <input type="hidden" name="Items" id="items-carts">
-            <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
-                    <i class="material-icons">local_printshop</i>
-            </button>
-            @if(Auth::check())
-                @if(Auth::user()->carts()->count()>0)
-                    <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success text-center">Pagar</a></div>  
+    <div class="col-sm-12 col-md-12">
+        <form class="form-inline text-right"  method="get" action="{{ route('cart.pdf') }}">
+            <div class="text-right" style="width:100%;">
+                <input type="hidden" name="Items" id="items-carts">
+                <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
+                        <i class="material-icons">local_printshop</i>
+                </button>
+                @if(Auth::check())
+                    @if(Auth::user()->carts()->count()>0)
+                        <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-warning btn-md text-center" style="font-size: 14px;">Pagar Todo</a></div>  
+                    @endif
                 @endif
-            @endif
-        </div>
-    </form>
+            </div>
+        </form>            
+    </div>
 </div>
         
 
@@ -51,7 +56,7 @@
                     
                     <tr id="item-cart{{ $cart->id }}">
                        
-                        <td> <a href="{{ route('show.product', $cart->product->product_name) }}">{{ $cart->product->product_name  }}</a></td>
+                        <td> <a class="link-products" href="{{ route('show.product', $cart->product->product_name) }}">{{ $cart->product->product_name  }}</a></td>
                     
                         <td>${{ number_format(($cart->product_price), 2)  }}</td>
                         <td>

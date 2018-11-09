@@ -3,76 +3,40 @@
 
 @section('content')
 
-<nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb">
+<nav aria-label="breadcrumb" class="pt-3">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url('/brands') }}">Marcas</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{ $orden->brand_name }}</li>
     </ol>
 </nav>    
 
-<h1 class="text-center">
-    {{-- @foreach($brands as $brand) --}}
-        {{ $orden->brand_name }}
-    {{-- @endforeach --}}
-</h1>
-    {{-- <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Ordenar por
-            <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <li><a href="{{ route('brand.newest', $orden->id)}}">Mas nuevos</a></li>
-            <li><a href="{{ route('brand.lowest', $orden->id)}}">Precio mas bajo</a></li>
-            <li><a href="{{ route('brand.highest', $orden->id)}}">Precio mas alto</a></li>
-            <li><a href="{{ route('brand.alpha.lowest', $orden->id)}}">Productos A-Z</a></li>
-            <li><a href="{{ route('brand.alpha.highest', $orden->id)}}">Productos Z-A</a></li>
-        </ul>
-    </div>             --}}
+<h1 class="text-center">{{ $orden->brand_name }}</h1>
 
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12">
     @include('brand.brand-filters')
 </div>
 
-<style>
-    .badge {
-        margin-right: .3rem;
-    }
-    /***** REQUIRED STYLES *****/
-    .badge-labeled {
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-right: 0.2rem;
-    }
-    .badge-labeled i {
-        padding: 0.25em  0.3rem;
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-        right: -0.2em;
-        border-left: solid 1px rgba(255,255,255,.5);
-        border-radius: 0 0.25rem 0.25rem 0;
-    }
-</style>
-
 <div class="pt-3">
     @if ($labels == 1)          
         @if ($brandFilter)
             @foreach ($brandFilter as $brand2)
-                <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{substr($brand2, 3)}}<i class="fa fa-times activo"></i></span>  
+                <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{substr($brand2, 3)}}<i class="fa fa-times activo"></i></span>  
             @endforeach
         @endif
         @if ($catFilter)
             @foreach ($catFilter as $cat)
-                <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
+                <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
             @endforeach
         @endif
         @if ($maxfilter && $minFilter)
-            <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+            <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
         @else
             @if ($maxfilter)
-                <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
             @else
                 @if ($minFilter)
-                    <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                    <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
                 @endif
             @endif
         @endif
@@ -80,22 +44,22 @@
         @if ($labels == 0)
             @if ($brandFilter)
                 @foreach ($brandFilter as $brand2)
-                    <span class="badge badge-primary badge-labeled brand" style="font-size:15px;">{{$brand2->brand_name}}<i class="fa fa-times activo"></i></span>  
+                    <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{$brand2->brand_name}}<i class="fa fa-times activo"></i></span>  
                 @endforeach
             @endif
             @if ($catFilter)
                 @foreach ($catFilter as $cat)
-                    <span class="badge badge-primary badge-labeled cat" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
+                    <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
                 @endforeach
             @endif
             @if ($maxfilter && $minFilter)
-                <span class="badge badge-primary badge-labeled priceAll" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+                <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
             @else
                 @if ($maxfilter)
-                    <span class="badge badge-primary badge-labeled priceMax" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                    <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
                 @else
                     @if ($minFilter)
-                        <span class="badge badge-primary badge-labeled priceMin" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                        <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
                     @endif
                 @endif
             @endif
@@ -114,7 +78,7 @@
             <div class="row">
                 
                 <div class="col-md-12 text-center hoverable" style="width:100%;">
-                    <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                    <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                     @if ($product->photos->count() == 0)
                             <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag">
                     @else
@@ -134,7 +98,7 @@
                     $acorName = substr($product->product_name, 0, 25);
                     $acorDesc = substr($product->description, 0, 25);
                 @endphp
-                <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
                 </a>
