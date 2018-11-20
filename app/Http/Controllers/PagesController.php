@@ -19,6 +19,8 @@ use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
 use App\Http\Traits\CartTrait;
 
+use Illuminate\Support\Facades\Auth;
+
 
 class PagesController extends Controller {
 
@@ -31,7 +33,7 @@ class PagesController extends Controller {
      * @return $this
      */
     public function index() {
-
+       
         $categories = Category::pluck('category')->take(5);
         
         // From Traits/BrandAll.php

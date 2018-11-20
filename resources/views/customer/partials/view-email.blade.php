@@ -15,6 +15,7 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
 <body>
+<div class="col-md-12"><img src="{{asset('/images/logo-home.png')}}" style="width:50%; height:150px;"></div>
 <h1>Hola {{$admin->username}}</h1>
 <h3>Se le ajunta un recibo de pago para el envio del producto</h3>
 

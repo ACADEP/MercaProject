@@ -15,6 +15,7 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
 <body>
+<div class="col-md-12"><img src="{{asset('/images/logo-home.png')}}" style="width:50%%; height:150px;"></div>
 <h1>Hola {{$client->username}}</h1>
 <h3>Se le ajunta el recibo para pagar en tiendas oxxo</h3>
 <img src="{{asset('/images/shipments/oxxo.png')}}" class="img-thumbnail">

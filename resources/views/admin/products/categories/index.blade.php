@@ -8,7 +8,9 @@
 </section><br>
 
 <div class="text-right">
+    @can('add_categories')
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_category"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar categoría</button>
+    @endcan
 </div>
 <table class="table text-center">
     <thead>
@@ -25,10 +27,14 @@
                     <td>{{$category->children()->count()}}</td>
                     <td>
                         <div class="form-inline">
+                            @can('delete_categories')
                             <button class="btn btn-danger btn-xs btn-delete-category" value="{{$category->id}}" data-toggle="tooltip" value="" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+                            @endcan
+                            @can('update_categories')
                             <form action="{{url('/admin/products/categories/edit',$category)}}" method="get" style="display:inline;">
                                 <button class="btn btn-info btn-xs" type="submit" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
                             </form>
+                            @endcan
                             
                         </div>   
                     </td>
@@ -88,7 +94,9 @@
       <form id="form-category" action="{{ route('add-category') }}" method="POST">
             {{csrf_field()}}
             <div class="text-right" style="margin-bottom:5px;">
+                @can('add_categories')
                 <button type="submit" class="btn btn-success">Agregar</button>
+                @endcan
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
            

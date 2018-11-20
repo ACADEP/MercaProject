@@ -162,4 +162,97 @@ $(document).ready(function(){
            
         } 
     });
+
+    $(".btn-delete-user").click(function(){
+        if (confirm('Seguro que quiere eliminar este usuario')) {
+            $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+              });
+                var user_id=$(this).val();
+                var formData = { user_id:user_id }
+                $.ajax({
+                    url: "/admin/users/deleteUser",
+                    method: 'POST',
+                    data: formData,
+                    success: function(response){
+                       
+                        $("#r-User"+user_id).remove();
+                       
+                        $.notify({
+                            // options
+                            message: '<strong>'+response+'</strong>' 
+                        },{
+                            // settings
+                            type: 'success',
+                            delay:3000
+                        });
+                       
+                       
+                    },
+    
+                    error: function(response){
+                        console.log(response);
+                        alert("Intente de nuevo");
+                    }
+            
+                });
+        } else {
+           
+        } 
+    });
+
+    $(".btn-delete-role").click(function(){
+        if (confirm('Seguro que quiere eliminar este rol')) {
+            $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+              });
+                var role_id=$(this).val();
+                var formData = { role_id:role_id }
+                $.ajax({
+                    url: "/admin/users/RolesPermissions/delete",
+                    method: 'POST',
+                    data: formData,
+                    success: function(response){
+                       if(response.msg_type==0)
+                       {
+                            $.notify({
+                                // options
+                                message: '<strong>'+response.msg+'</strong>' 
+                            },{
+                                // settings
+                                type: 'danger',
+                                delay:3000
+                            });
+                       }
+                       else
+                       {
+                            $("#r-role"+role_id).remove();
+                            $.notify({
+                                // options
+                                message: '<strong>'+response.msg+'</strong>' 
+                            },{
+                                // settings
+                                type: 'success',
+                                delay:3000
+                            });
+                       }
+                       
+                       
+                       
+                    },
+    
+                    error: function(response){
+                        console.log(response);
+                        alert("Intente de nuevo");
+                    }
+            
+                });
+        } else {
+           
+        } 
+    });
 });

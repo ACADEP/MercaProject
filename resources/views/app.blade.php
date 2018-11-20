@@ -106,6 +106,7 @@
             
    
     <div class="container">
+    
     @if(Session::has('progress'))
     @php Session::forget('progress'); @endphp
     @endif
