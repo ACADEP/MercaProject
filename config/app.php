@@ -165,7 +165,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
         Aftab\Sepomex\SepomexServiceProvider::class,
-        Dirape\Token\TokenServiceProvider::class
+        Dirape\Token\TokenServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 
