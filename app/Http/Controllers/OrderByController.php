@@ -694,8 +694,6 @@ class OrderByController extends ProductsController {
 
         return view('pages.search', compact('search', 'search_find', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));
     }
-    
-
 
 
 }

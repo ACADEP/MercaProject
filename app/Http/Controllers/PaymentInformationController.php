@@ -58,7 +58,7 @@ class PaymentInformationController extends Controller
 
     }
 
-    public function AddCardOpenpay() {
+    public function AddCardOpenpay(Request $request) {
         try {
             $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
@@ -88,23 +88,22 @@ class PaymentInformationController extends Controller
                $usercustomer = Customer::find($usercustomer->id);
                $usercustomer->idCustomerOpenpay = $customer->id;
                $usercustomer->update();
-
-            } else {
-                $customer = $openpay->customers->get($usercustomer->idCustomerOpenpay);
             }
 
-           $cardData = array(
-            'token_id' => $_POST["token_id"],
-            'device_session_id' => $_POST["device_session_id"]
+            // dd($openpay);
+            $cardData = array(
+                'token_id' => $_POST["token_id"],
+                'device_session_id' => $_POST["device_session_id"]
             );
-          
-          $card = $customer->cards->add($cardData);
 
-          $tarjeta = new PaymentInformation;
-          $tarjeta->usuario = Auth::user()->id;
-          $tarjeta->idCardOpenpay = $card->id;
-          $tarjeta->save();
-          return back()->with("msg",$tarjeta->id);
+            $customer = $openpay->customers->get($usercustomer->idCustomerOpenpay);
+            $card = $customer->cards->add($cardData);
+
+            $tarjeta = new PaymentInformation;
+            $tarjeta->usuario = Auth::user()->id;
+            $tarjeta->idCardOpenpay = $card->id;
+            $tarjeta->save();
+            return back()->with("msg",$tarjeta->id);
 
         } catch (OpenpayApiRequestError $e) {
             error_log('ERROR on the request: ' . $e->getMessage(), 0);

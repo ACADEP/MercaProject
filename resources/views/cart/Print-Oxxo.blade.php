@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Recibo de Pago</title>
-    <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
   </head>
   <body>
     @php  $now = new \DateTime(); @endphp
@@ -13,28 +13,33 @@
           <div class="mercaLogo">
             <img src="{{asset('/images/mercadata-footer.png')}}">
           </div>
-            <div class="slogan">
-                <strong><h3>MercaData</h3></strong>
+            <div class="slogan font">
+                <strong><h3 class="font">MercaData</h3></strong>
                 Tu tienda de tecnologia en línea 
             </div>
       </div>
-      <h1 class="tittle">Recibo de Pago</h1>
-      <div id="company" class="clearfix">
-        <div><strong>Mercadata</strong></div>
-        <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
-        <div>Tel: 612 122 5174</div>
-        <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
+      <h1 class="tittle font">Recibo de Pago</h1>
+      
+      <div class="row mb-3" id="dates">
+        <div class="col-sm-6 col-md-6" id="project">
+          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
+          <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
+          <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
+          <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
+          <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
+        </div>
+    
+        <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
+          <div><strong>Mercadata</strong></div>
+          <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
+          <div>Tel: 612 122 5174</div>
+          <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
+        </div>  
       </div>
 
-      <div id="project">
-        <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
-        <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
-        <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
-        <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
-        <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
-      </div>
+      <div class="row mt-5"></div>
 
-      <div class="bank col-md-12">
+      <div class="bank">
         <div><h3>Depósito a través de OXXO a cuenta BBVA Bancomer</h3></div>
         <div><span><strong>Propietario de la cuenta: </strong>Leonardo Lage Suarez</span></div>
         <div><span><strong>Cuenta: </strong>0136602037</span></div>

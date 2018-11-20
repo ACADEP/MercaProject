@@ -8,7 +8,7 @@
                 <div class="card" id="Login-Register-Panel">
                     <div class="card-body">
                     @if(session('flash'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-primary">
                             {{session('flash')}}
                         </div>
                     @endif

@@ -418,7 +418,7 @@
                 </div>
                 <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion"> 
                     <div class="card-body">
-                        <form action="/cart/confirmation-oxxo" method="post">
+                        <form action="/cart/payment/pruevaOxxo" method="get">
                             {{ csrf_field() }}
                             <input type="hidden" name="Items" id="items-carts">
                             <button type="submit" class="btn btn-primary" formtarget="_blank">Pagar</button>

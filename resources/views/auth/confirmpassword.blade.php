@@ -6,12 +6,15 @@
 </head>
 <body>
 
+<div>
+    <img src="{{asset('/images/logo-home.png')}}">
+</div>    
 
 <h1>Recuperación de contraseña!</h1>
 
 
 <p>
-    Solo necesitamos que <a href='{{ url("/password/reset") }}'>confirme su correo electrónico</a> gracias!
+    Solo necesitamos que <a href='{{ url("/password/reset",$user->token) }}'>confirme su correo electrónico</a> gracias!
 </p>
 
 

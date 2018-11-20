@@ -85,178 +85,200 @@ class SpecialSearchController extends Controller
         }
 
         $ordenamiento = "Ordenar Por";
-        // $products = Product::OrderBy('price')->where('shop_id', '=', $request->id)->where('price', '>=', $request->desde)->Paginate(5);
 
-        // Filtro por Precio Maximo
-        if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta)->paginate(12);
-            } else {
-                $products = Product::OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta)->paginate(12);
-            }        
-
-        } // Filtro por Precio Minimo
-        else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) >='.$request->desde)->paginate(12);
-                // $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)->paginate(12);
-            }       
-
-        } // Filtro por Precio Minimo y Precio Maximo
-        else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $desde)->where('price', '<=', $hasta)->paginate(12);
-            }            
-
-        } // Filtro por Marca
-        else if($request->get("brand")!=null && $request->get("categories")==null && $desde==null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::whereIn('brand_id', $request->brand)->paginate(12);
-            } else {
-                $products = Product::whereIn('brand_id', $marca)->paginate(12);
-            }       
-
-        } // Filtro por Categoria
-        else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::whereIn('cat_id', $categoria)->paginate(12);
-            }
-
-        } // Filtro por Marca y Categoria
-        else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-
-        } // Filtro por Marca y Precio Minimo
-        else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->paginate(12);
-            }  
-
-        } // Filtro por Marca y Precio Maximo
-        else if($request->get("brand")!=null && $request->get("categories")==null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->paginate(12);
-            }
+        if ($request->Popularidad == 1) {
+            $products = Product::OrderBy('created_at', 'desc')->paginate(12);
+            $ordenamiento = "Popularidad";
             
-        } // Filtro por Categoria y Precio Minimo
-        else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $desde)->whereIn('cat_id', $categoria)->paginate(12);
+        } elseif ($request->Menor == 2) {
+            $products = Product::OrderByRaw('(price - reduced_price) ASC')->paginate(12);
+            $ordenamiento = "Precio Menor";
+
+        } elseif ($request->Mayor == 3) {
+            $products = Product::OrderByRaw('(price - reduced_price) DESC')->paginate(12);
+            $ordenamiento = "Precio Mayor";
+
+        } elseif ($request->AZ == 4) {
+            $products = Product::OrderBy('product_name', 'asc')->paginate(12);
+            $ordenamiento = "Productos A-Z";
+
+        } elseif ($request->ZA == 5) {
+            $products = Product::OrderBy('product_name', 'desc')->paginate(12);
+            $ordenamiento = "Productos Z-A";    
+        } else {
+            // Filtro por Precio Maximo
+            if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta)->paginate(12);
+                } else {
+                    $products = Product::OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta)->paginate(12);
+                }        
+
+            } // Filtro por Precio Minimo
+            else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) >='.$request->desde)->paginate(12);
+                    // $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)->paginate(12);
+                }       
+
+            } // Filtro por Precio Minimo y Precio Maximo
+            else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $desde)->where('price', '<=', $hasta)->paginate(12);
+                }            
+
+            } // Filtro por Marca
+            else if($request->get("brand")!=null && $request->get("categories")==null && $desde==null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::whereIn('brand_id', $request->brand)->paginate(12);
+                } else {
+                    $products = Product::whereIn('brand_id', $marca)->paginate(12);
+                }       
+
+            } // Filtro por Categoria
+            else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::whereIn('cat_id', $categoria)->paginate(12);
+                }
+
+            } // Filtro por Marca y Categoria
+            else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria)->paginate(12);
+                }
+
+            } // Filtro por Marca y Precio Minimo
+            else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->paginate(12);
+                }  
+
+            } // Filtro por Marca y Precio Maximo
+            else if($request->get("brand")!=null && $request->get("categories")==null && $desde==null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->paginate(12);
+                }
+                
+            } // Filtro por Categoria y Precio Minimo
+            else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $desde)->whereIn('cat_id', $categoria)->paginate(12);
+                }
+                
+            } // Filtro por Categoria y Precio Maximo
+            else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria)->paginate(12);
+                }
+                
+            } // Filtro por Marca, Categoria y Precio Minimo
+            else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta==null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $desde)->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria)->paginate(12);
+                }
+                
+            } // Filtro por Marca, Categoria y Precio Maximo
+            else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) DESC')
+                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria)->paginate(12);
+                }
+                
+            } // Filtro por Marca, Precio Minimo y Precio Maximo
+            else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
+                    ->whereIn('brand_id', $request->brand)->paginate(12);
+                } else {
+                    $products =  Product::where('price', '>=', $desde)->where('price', '<=', $hasta)
+                    ->WhereIn('brand_id', $marca)
+                    ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
+                }
             }
-            
-        } // Filtro por Categoria y Precio Maximo
-        else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria)->paginate(12);
+            // Filtro por Categoria, Precio Minimo y Precio Maximo
+            else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')
+                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
+                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products =  Product::where('price', '>=', $desde)->where('price', '<=', $hasta)
+                    ->WhereIn('cat_id', $categoria)
+                    ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
+                }
+            } // Filtro por Marca, Categoria, Precio Minimo y Precio Maximo
+            else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
+            {
+                if ($request->fil == 1) {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)
+                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                } else {
+                    $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
+                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)
+                    ->paginate(12);
+                }
+                
+            } 
+            else if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta==null) {
+                $products = Product::orderByRaw('RAND()')->paginate(12);
+            } else if ($request->clear == 'clear') {
+                $products = Product::orderByRaw('RAND()')->paginate(12);
             }
-            
-        } // Filtro por Marca, Categoria y Precio Minimo
-        else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $desde)->whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Marca, Categoria y Precio Maximo
-        else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) DESC')
-                ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Marca, Precio Minimo y Precio Maximo
-        else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
-                ->whereIn('brand_id', $request->brand)->paginate(12);
-            } else {
-                $products =  Product::where('price', '>=', $desde)->where('price', '<=', $hasta)
-                ->WhereIn('brand_id', $marca)
-                ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
-            }
-        }
-        // Filtro por Categoria, Precio Minimo y Precio Maximo
-        else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products =  Product::where('price', '>=', $desde)->where('price', '<=', $hasta)
-                ->WhereIn('cat_id', $categoria)
-                ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
-            }
-        } // Filtro por Marca, Categoria, Precio Minimo y Precio Maximo
-        else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)
-                ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = Product::orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
-                ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)
-                ->paginate(12);
-            }
-            
-        } 
-        else if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta==null) {
-            $products = Product::orderByRaw('RAND()')->paginate(12);
         }
 
         return view('partials.specialized-search', compact('products', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));

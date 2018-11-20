@@ -12,88 +12,74 @@
                         <div class="card bg-light">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 mb-2">
                                         <h3>Buscar</h3>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <form>
+                                        <form action="{{route('shop.filter', $banner->id)}}" method="GET">
                                             <div class="form-group">
-                                                <select class="form-control" id="conditionsselect1">
-                                                <option>Conditions</option>
-                                                <option>New</option>
-                                                <option>Used</option>
-                                                </select>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary btn-block btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{ $ordenamiento }}
+                                                    </button>        
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <select class="form-control" id="conditionsselect2">
-                                                <option>Body</option>
-                                                <option>Compact</option>
-                                                <option>Convertible</option>
-                                                <option>Coupe</option>
-                                                <option>Off-road</option>
-                                                <option>Sedan</option>
-                                                </select>
+                                                <div class="dropdown" >
+                                                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        Marcas
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu1">
+                                                        @php
+                                                            $contador = count($marcas['brand_name']);
+                                                            $b = 'bra';
+                                                        @endphp
+                                                        @for ($i = 0; $i < $contador; $i++)
+                                                            <li><label for="{{$b.$i}}"><input class="" type="checkbox" name="brand[]" value="{{$marcas['id'][$i]}}, {{$marcas['brand_name'][$i]}}" id="{{$b.$i}}" /><strong class="ml-1">{{$marcas['brand_name'][$i]}}</strong></label></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <select class="form-control" id="make1">
-                                                <option>Make</option>
-                                                <option>Ford</option>
-                                                <option>Hyundai</option>
-                                                <option>Kia</option>
-                                                <option>Honda</option>
-                                                <option>Skoda</option>
-                                                </select>
+                                                <div class="dropdown" >
+                                                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        Categorias  
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu2">
+                                                        @php
+                                                            $contador = count($categorias['category']);
+                                                            $c = 'cat';
+                                                        @endphp
+                                                        @for ($i = 0; $i < $contador; $i++)
+                                                            <li><label for="{{$c.$i}}"><input class="" type="checkbox" name="categories[]" value="{{$categorias['id'][$i]}}, {{$categorias['category'][$i]}}" id="{{$c.$i}}" /><strong class="ml-1">{{$categorias['category'][$i]}}</strong></label></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <select class="form-control" id="make1">
-                                                <option>Model</option>
-                                                <option>Accord</option>
-                                                <option>Camry</option>
-                                                <option>Civic</option>
-                                                <option>Rapid</option>
-                                                <option>Octavia</option>
-                                                </select>
+                                                <label for="">Precio Mínimo</label>
+                                                <input type="text" name="desde" class="form-control" placeholder="00.00">
                                             </div>
                                             <div class="form-group">
-                                                <select class="form-control" id="mileage1">
-                                                <option>Max Mileage</option>
-                                                <option>< 5000</option>
-                                                <option>5000-10000</option>
-                                                <option>10000-15000</option>
-                                                <option>15000-20000</option>
-                                                <option>20000-25000</option>
-                                                <option>> 25000</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-control" id="year1">
-                                                <option>Year</option>
-                                                <option>2000</option>
-                                                <option>2001</option>
-                                                <option>2002</option>
-                                                <option>2003</option>
-                                                <option>2004</option>
-                                                <option>2005</option>
-                                                <option>2006</option>
-                                                <option>2007</option>
-                                                <option>2008</option>
-                                                <option>2009</option>
-                                                <option>2010</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-control" id="make1">
-                                                <option>Transmission</option>
-                                                <option>Automatic</option>
-                                                <option>Manaul</option>
-                                                <option>Semi-Automatic</option>
-                                                </select>
+                                                <label for="">Precio Máximo</label>
+                                                <input type="text" name="hasta" class="form-control" placeholder="00.00">
                                             </div>
                                             <hr>
-                                            <button type="btn" class="btn btn-primary">Buscar</button>
-                                            <button type="btn" class="btn btn-primary">Limpiar filtro</button>
+                                            <input type="hidden" name="id" value="{{$banner->id}}">
+                                            <input type="hidden" name="fil" value="1">                     
+                                            <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+                                            <button type="btn" class="btn btn-primary btn-block" name="clear" value="clear">Limpiar filtros</button>
                                             <div class="pb-3"></div>
                                         </form>
                                     </div>

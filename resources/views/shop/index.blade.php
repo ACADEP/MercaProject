@@ -20,7 +20,7 @@ img.imgbanner {
 }
 </style>
 
-<div class="row" id="shops">
+<div class="row mb-3" id="shops">
 
     <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <nav aria-label="breadcrumb" class="pt-3" style="width: 100%;">

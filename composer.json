@@ -9,6 +9,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "barryvdh/laravel-dompdf": "^0.8.2",
         "barryvdh/laravel-ide-helper": "^2.4",
+        "dirape/token": "^2.1",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "dev-master",

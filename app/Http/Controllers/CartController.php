@@ -681,6 +681,21 @@ class CartController extends Controller {
         }        
     }
 
+    public function pruevasRecibos() {
+        $ship_rate = 200;
+        $ship_rate_total;
+        $date_ship = '12/12/18';
+        $cartItems=Auth::user()->cart->with("product")->get();
+        $ship_rate_total = $ship_rate + Auth::user()->total;
+        $Items = $cartItems;
+        $subtotal = 200;
+        // $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
+        // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
+        $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
+        return $pdf->stream('Recibo-Oxxo.pdf');
+        // return view('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
+    }
+
     //Pagos por Oxxo
     public function PagosOxxo(Request $request, AppMailers $mailer) {
         $ship_rate=$request->get("ship_rate");
@@ -711,8 +726,8 @@ class CartController extends Controller {
         Session::put('pay-oxxo',  $pdf->stream('Recibo-Oxxo.pdf'));
         Session::save(); 
         return redirect("/");
-      
     }
+
     public function showPDFOxxo()
     {
         if(Session::has('pay-oxxo'))

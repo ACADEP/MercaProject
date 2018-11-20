@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Transformers\Json;
 use App\Mailers\AppMailers;
 use App\User;
+use App\Http\Requests\RegistrationRequest;
 
 class PasswordController extends Controller
 {
@@ -46,13 +47,6 @@ class PasswordController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getEmail() {
-        // Gets the query string from our form submission
-        $query = Input::get('search');
-
-        // Returns an array of products that have the query string located somewhere within
-        // our products product name. Paginates them so we can break up lots of search results.
-        $search = \DB::table('products')->where('product_name', 'LIKE', '%' . $query . '%')->paginate(10);
-
         return view('auth.password', compact('query', 'search'));
     }
 
@@ -65,35 +59,34 @@ class PasswordController extends Controller
      * @return \Illuminate\Http\Response
      * 
      */
-
     public function postEmail(Request $request, AppMailers $mailer) {
-
         // Validate email.
         $this->validate($request, ['email'    => 'required|email']);
         $user = User::where('email', $request->input('email'))->first();
-        $mailer->sendEmailResetPassword($user);
-        return redirect('/')->with('flash','Ahora revise su correo electronico gracias.');
+        if ($user) {
+            $user->token = \Token::Random(30);
+            $user->update();
+            $mailer->sendEmailResetPassword($user);
+            return back()->with('flash','Por favor, confirma tu correo electrónico en tu bandeja de entrada.');
+        } else {
+            return back()->with('flash','El correo ingresado no es correcto ingrese un correo nuevamente');
+        }
     }
 
-    public function getReset($token) {
+    public function getReset($remember_token) {
         // Get the user with token, or fail.
-        //User::whereToken($token)->firstOrFail()->confirmEmail();
-
-        //return back()->with('flash','Ahora esta registrado. Por favor, inicie sesión.');
-        //return redirect('/')->with('flash','Ahora puede cambiar su contraseña. Por favor, inicie sesión.');
-        return view('auth.password/reset');
-
+        User::whereToken($remember_token)->firstOrFail()->confirmEmail();
+        $token = $remember_token;
+        return view('auth.reset', compact('token'));
     }
 
-    public function postReset() {
-        // Gets the query string from our form submission
-        $query = Input::get('search');
-
-        // Returns an array of products that have the query string located somewhere within
-        // our products product name. Paginates them so we can break up lots of search results.
-        $search = \DB::table('products')->where('product_name', 'LIKE', '%' . $query . '%')->paginate(10);
-
-        return view('auth.password/reset', compact('query', 'search'));
+    public function postReset(Request $request, AppMailers $mailer) {
+        $this->validate($request, ['email'    => 'required|email']);
+        $user = User::where('email', $request->input('email'))->first();
+        $user->password = bcrypt($request->input('password'));
+        $user->update();
+        $mailer->sendEmailChangePassword($user);
+        return redirect('/login');
     }
 
 }

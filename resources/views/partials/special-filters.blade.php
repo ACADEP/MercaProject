@@ -21,6 +21,7 @@
                 <button class="dropdown-item" type="submit" value="3" name="Mayor">Mayor Precio</button>
                 <button class="dropdown-item" type="submit" value="4" name="AZ">Productos A-Z</button>
                 <button class="dropdown-item" type="submit" value="5" name="ZA">Productos Z-A</button>
+                <input type="hidden" name="filOrden" value="1">
             </div>
         </div>
     </form>

@@ -1,9 +1,9 @@
 
 <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
    
-    <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+    {{-- <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
         @include('shop.shop-filters')
-    </div>
+    </div> --}}
 
     <div class="row col-12 pt-3 pb-2">
         @if ($labels == 1)          
@@ -56,13 +56,13 @@
     </div>
 
     <div class="row">
-        {{-- <div class="row col-sm-3 col-md-3">
+        <div class="row col-sm-3 col-md-3">
             @include('shop.filter')
         </div>
     
-        <div class="row col-sm-9 col-md-9 text-center"> --}}
+        <div class="row col-sm-9 col-md-9 text-center ml-4">
                 @foreach($products as $product)
-                    <div class="wow animated zoomIn m-2" id="product-sub-container" style="width: 240px !important;">
+                    <div class="wow animated zoomIn m-2" id="product-sub-container" style="width: 235px !important;">
                         <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand->brand_name}}</span></div>
                         <div class="row">
                             <div class="text-center hoverable" style="width:100%;">
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                 @endforeach
-        {{-- </div> --}}
+        </div>
     </div>
     <div class="row justify-content-center" style="width: 100%;">
         {{ $products->appends(Request::input())->links() }}

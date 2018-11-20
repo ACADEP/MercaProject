@@ -79,6 +79,12 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'all.offers',
     ]);
 
+    /** Display all Selled Products Route **/
+    Route::get('/selled', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllSelledProducts',
+        'as'   => 'all.selled',
+    ]);    
+
     /** Route to post search results **/
     Route::get('/queries', [
         'uses' => 'QueryController@search',
@@ -140,8 +146,8 @@ Route::group(['middleware' => ['web']], function () {
     /************************************** Order By Routes for Products By Brand, Category and Range Price *****************************/
     
     /** Route to filter products for categories */
-    Route::get('/category/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filtros',
+    Route::get('/category/{id}/filter', [
+        'uses' => '\App\Http\Controllers\CategoriesController@filtros',
         'as'   => 'category.filter',
     ]);
 
@@ -319,13 +325,6 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'new.newest',
     ]);
     
-
-    /************************************** Order By Routes for Products By Search Products ***********************************/
-    Route::get('/queries/order', [
-        'uses' => '\App\Http\Controllers\OrderByController@OrderQueries',
-        'as'   => 'queries.order',
-    ]);
-
 
 
     /**************************************** Login & Registration Routes *********************************************/
@@ -557,6 +556,12 @@ Route::group(["middleware" => 'customer'], function(){
         'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
         'as'   => 'cart.payment',
     ]);
+
+    Route::get('/cart/payment/pruevaOxxo', [
+        'uses' => '\App\Http\Controllers\CartController@pruevasRecibos',
+        'as'   => 'cart.payment',
+    ]);
+
 
     /** payment items confirmation in the cart with Stripe **/
     Route::post('/cart/confirmation', [

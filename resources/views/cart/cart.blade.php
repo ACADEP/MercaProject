@@ -29,7 +29,7 @@
                 </button>
                 @if(Auth::check())
                     @if(Auth::user()->carts()->count()>0)
-                        <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-warning btn-md text-center" style="font-size: 14px;">Pagar Todo</a></div>  
+                        <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success btn-md text-center" style="font-size: 14px;"><strong>Pagar Todo</strong></a></div>  
                     @endif
                 @endif
             </div>

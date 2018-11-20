@@ -16,8 +16,8 @@ body {
   margin: 0 auto; 
   color: #001028;
   background: #FFFFFF; 
-  font-family: Arial, sans-serif; 
-  font-size: 12px; 
+  font-family: Arial !important; 
+  font-size: 14px; 
   font-family: Arial;
 }
 
@@ -58,9 +58,10 @@ h1.tittle {
 }
 
 #project {
-  float: left;
-  padding-right: 200px;
+  /* float: left; */
+  padding-left: 30px;
 }
+
 
 #project span {
   color: #000;
@@ -71,9 +72,16 @@ h1.tittle {
   font-size: 1em;
 }
 
+#dates {
+  width: 100%;
+  
+}
+
 #company {
-  float: right;
-  /* text-align: right; */
+  float: right !important;
+  padding-left: 50px;
+  /* margin-right: 150px !important; */
+  text-align: right !important;
 }
 
 #project div,
