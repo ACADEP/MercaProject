@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\validation\Rule;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SellerExport;
@@ -25,14 +28,7 @@ use App\Mailers\AppMailers;
 
 class AdminController extends Controller {
 
-   
-
-
-    /**
-     * Show the Admin Dashboard
-     * 
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+    
     public function index() {
         $sales=Auth::user()->selehistories()->paginate(10);
         $histories=Auth::user()->selehistories()->get();
@@ -46,16 +42,30 @@ class AdminController extends Controller {
         return view("admin.sales.index", compact("sales", "histories"));       
     }
 
+    public function showPermissions()
+    {
+        $permissions=Permission::all();
+        return view('admin.users.permissions', compact('permissions'));
+    }
+    public function showEditPermissions(Permission $permission)
+    {
+        return view('admin.users.edit-permission', compact('permission'));
+    }
 
     public function showEdit(Category $category)
     {
         return view("admin.products.categories.edit-categories", compact("category"));
     }
 
+    public function showEditRoles(Role $role)
+    {
+        $permissions=Permission::all();
+        return view('admin.users.edit-roles', compact('role', 'permissions'));
+    }
+
     public function showOrderOxxo()
     {
         $orders=Auth::user()->ordersOxxo()->get();
-        
         return view("admin.orderoxxo.index", compact("orders"));
     }
     
@@ -64,11 +74,82 @@ class AdminController extends Controller {
         $categories=Category::where("parent_id",0)->get();
         return view("admin.products.categories.index", compact("categories"));
     }
+    public function showRolesAPermissions()
+    {
+        // $roles=Role::all();
+        $roles=Role::with('permissions')->get();
+        $permissions=Permission::all();
+        return view("admin.users.roles-permissions", compact("roles","permissions"));
+    }
 
+    public function addRole(Request $request)
+    {
+        $request->validate([
+            'name'=>'required|unique:roles',
+            'display_name'=>'required'
+        ]);
+
+        $role=new Role;
+        $role->name=$request->get('name');
+        $role->display_name=$request->get('display_name');
+        $role->guard_name='web';
+        $role->save();
+
+        if($request->has('permissions'))
+        {
+            $role->givePermissionTo($request->get('permissions'));
+        }
+        return back()->withFlash('El role ha sido creado');
+    }
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            'display_name'=>'required'
+        ]);
+
+        $role=Role::find($request->get('role')); 
+        $role->display_name=$request->get('display_name');
+        $role->guard_name='web';
+        $role->save();
+
+        $role->permissions()->detach();
+        if($request->has('permissions'))
+        {
+            $role->givePermissionTo($request->get('permissions'));
+        }
+        return back()->withFlash('El rol ha sido actualizado');
+
+    }
+
+    public function deleteRole(Request $request)
+    {
+        $role=Role::find($request->get("role_id"));
+        $cUserRol=User::role($role->name)->count();
+        $respose;
+        if($role->id==1 || $role->id==2)
+        {
+            $respose=["msg_type"=>0,"msg"=>"Este rol no puede ser eliminado"];
+        }
+        else if($cUserRol>0)
+        {
+            $respose=["msg_type"=>0,"msg"=>"Este rol no puede ser eliminado porque esta ligado a ".$cUserRol." usuario(s)"];
+        }
+        else
+        {
+            $role_name=$role->name;
+            $role->delete();
+            $respose=["msg_type"=>1,"msg"=>"El rol ".$role_name." ha sido eliminado"];
+        }
+       
+        return response($respose,200);
+    }
     public function showUsers()
     {
         $users=User::all();
-        return view("admin.users.index", compact("users"));
+        $roles=Role::with('permissions')->get();
+        // $roles=Role::pluck('name','id');
+        $permissions=Permission::all();
+        return view("admin.users.index", compact("users","roles","permissions"));
     }
 
     public function printPdf(Request $request)
@@ -202,7 +283,84 @@ class AdminController extends Controller {
     }
     public function deleteUser(Request $request)
     {
+        $user=User::find($request->get("user_id"));
+        $user_name=$user->username;
+        $user->delete();
+        return response("El usuario ".$user_name." ha sido eliminado",200);
+    }
+
+    public function showUpdateUser(User $user)
+    {
+        $roles=Role::with('permissions')->get();
+        // $roles=Role::pluck('name','id');
+        $permissions=Permission::all();
+        return view("admin.users.edit", compact('user', 'roles','permissions'));
+    }
+
+    public function addUser(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|max:20|min:3|alpha_dash|unique:users',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6|max:16',
+            'roles'=>'required',
+        ],
+        [
+            'roles.required'=>'Debe de asignarle un rol a este usuario'
+        ]);
         
+        $newUser=new User;
+        $newUser->insert($request->get('username'), $request->get('email'), $request->get('password'));
+        $newUser->assignRole($request->get('roles'));
+        $newUser->givePermissionTo($request->get('permissions'));
+        return back()->withFlash('El usuario ha sido creado');
+        
+    }
+    public function updatePermission(Request $request)
+    {
+        $request->validate([
+            'display_name'=>'required'
+        ]);
+
+       $permission=Permission::find($request->get('permission')); 
+       $permission->display_name=$request->get('display_name');
+       $permission->save();
+
+        
+        return back()->withFlash('El permiso ha sido actualizado');
+
+    }
+
+    public function updateUser(Request $request)
+    {
+        $rules=[
+            'username'=>'required',
+            'email'=>['required', Rule::unique('users')->ignore($request->get('user'))]
+        ];
+        if($request->filled('password'))
+        {
+            $rules["password"]= ['confirmed'];
+        }
+        $request->validate($rules);
+        $user=User::find($request->get('user'));
+        $user->updateU($request->get('username'), $request->get('email'), $request->get('password'));
+        return back()->withFlash('El usuario ha sido actualizado');
+    }
+
+    public function updateRoleUser(Request $request, User $user)
+    {
+       $user->syncRoles($request->get("roles"));
+       return back()->withFlash('Los roles han sido actualizados');
+    }
+
+    public function updatePermissionUser(Request $request, User $user)
+    {
+        $user->permissions()->detach();
+        if($request->filled('permissions'))
+        {
+            $user->givePermissionTo($request->get('permissions'));
+        }
+        return back()->withFlash('Los permisos han sido actualizados');
     }
 
     public function orderDate(Request $request)

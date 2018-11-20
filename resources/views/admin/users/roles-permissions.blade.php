@@ -3,34 +3,43 @@
 @section("content")
 <section class="content-header">
         <h1>
-            Usuarios
+            Roles y permisos
         </h1> 
 </section><br>
 
 <div class="text-right">
-    <button class="btn btn-success"  data-toggle="modal" data-target="#add_user"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar usuario</button>
+    <button class="btn btn-success"  data-toggle="modal" data-target="#add_role"><i class="fa fa-plus-square" aria-hidden="true"></i> Crear role</button>
+    <a type="button" href="{{route('show-permissions')}}" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i> Ver y editar permisos</a type="button" href="{{route('show-permissions')}}">
 </div>
 <table class="table text-center">
     <thead>
             <tr>
+                <th>Identificador</th>
                 <th>Nombre</th>
-                <th>Correo</th>
-                <th>Rol</th>
+                <th>Permisos</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
-                <tr id="r-User{{$user->id}}">
-                    <td>{{$user->username}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->getRoleDisplayNames()}}</td>
-                    <td>
+            @foreach($roles as $role)
+                <tr id="r-role{{$role->id}}">
+                    <td class="col-md-3">{{ $role->name }}</td>
+                    <td class="col-md-3">{{$role->display_name}}</td>
+                    <td class="col-md-3">
+                        @if($loop->iteration==1)
+                        Todos
+                        @elseif($loop->iteration==2)
+                        No permitidos
+                        @else
+                        {{$role->permissions->pluck('display_name')->implode(', ')}}
+                        @endif
+                    </td>
+                    <td class="col-md-3">
                         <div class="form-inline">
                             @if($loop->iteration!=1)
-                            <button class="btn btn-danger btn-xs btn-delete-user" value="{{$user->id}}" data-toggle="tooltip" value="" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
-                            
-                            <form action="{{route('show-update', $user)}}" method="get" style="display:inline;">
+                            <button class="btn btn-danger btn-xs btn-delete-role" value="{{$role->id}}" data-toggle="tooltip" value="" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+                           
+                            <form action="{{ route('show-editRole', $role) }}" method="get" style="display:inline;">
                                 <button class="btn btn-info btn-xs" type="submit" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
                             </form>
                             @endif
@@ -48,7 +57,7 @@
 @if($errors->any())
     <script>
         $(function() {
-            $('#add_user').modal('show');
+            $('#add_role').modal('show');
         });
     </script>
 @endif
@@ -83,11 +92,11 @@
 
 
 @section('modal-add-category')
-<div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="add_role" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title text-center" id="exampleModalLongTitle">Agregar usuario</h1>
+        <h1 class="modal-title text-center" id="exampleModalLongTitle">Crear rol</h1>
       </div>
       <div class="modal-body row">
       @if ($errors->any())
@@ -101,49 +110,25 @@
             
         </div>
         @endif
-      <form action="{{ route('add-User') }}" method="post">
+      <form action="{{ route('add-role') }}" method="post">
                 {{csrf_field()}}
                 <div class="text-right" style="margin-right:45px;">
-                <button class="btn btn-success" type="submit">Agregar</button>
+                <button class="btn btn-success" type="submit">Crear rol</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
         <div class="col-md-6 form-group">
         
-            <h3>Datos personales</h3>
-                <label for="username">Nombre de usuario</label>
-                <input type="text" id="username" name="username" class="form-control" value="{{ old('username') }}">
-                <label for="email">Correo</label>
-                <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" class="form-control">
-                <label for="password_confirmed">Repite la Contraseña</label>
-                <input type="password" id="password_confirmed" name="password_confirmation" class="form-control">
+            <h3>Rol</h3>
+                <label for="name">Identificador</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}">
+                <label for="display_name">Nombre</label>
+                <input type="text" id="display_name" name="display_name" class="form-control" value="{{ old('display_name') }}">
           
         </div>
 
             <div class="col-md-6 form-group">
-                <h3>Roles y permisos</h3>
-                <div class="col-md-12">
-                <h4>Roles</h4>
-                @if($roles->count() != 0)
-
-                @foreach($roles as $role)
-                    @if($loop->iteration!=1)
-                        <div class="col-md-6">
-                        <input type="radio" name="roles[]" value="{{ $role->name }}">
-                            {{ $role->display_name }}
-                        <small class="text-muted">{{$role->permissions->pluck('display_name')->implode(', ')}}</small>
-                        </div>
-                    @endif
-                @endforeach
-                @else
-                <span class="help-block">No existen roles</span>
-                @endif
-                </div>
-
-                <br><hr>
-                <div class="col-md-12">
-               <h4>Permisos</h4>
+              <div class="text-left"><h3>Permisos</h3></div>  
+                
                 @if($permissions->count() != 0)
             
                 @foreach($permissions as $permission)
@@ -155,8 +140,7 @@
                 @else
                 <span class="help-block">No existen permisos</span>
                 @endif
-                </div>
-                
+            
             </div><!-- fin del col-md-6 -->
         </form>
       </div>

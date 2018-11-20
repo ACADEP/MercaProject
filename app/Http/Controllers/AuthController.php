@@ -61,7 +61,8 @@ class AuthController extends Controller
             'verified' => 0,
             'admin' => $request->input('account'),
         ]);
-
+        //Asignar el role de cliente
+        $user->assignRole("Client");
         //Agregar productos del cookie al carrito
         $items=json_decode($request->get('cookieProductos'));
         if($items!=null)

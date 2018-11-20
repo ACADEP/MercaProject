@@ -8,7 +8,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Mercadata | Administrador</title>
+  <title>Mercadata | {{Auth::user()->getRoleDisplayNames()}}</title>
+  <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
@@ -116,7 +117,7 @@ desired effect
                 <img src="/images/admin.png" style="margin-left:80px;" class="img-responsive" alt="User Image">
 
                 <p>
-                {{ Auth::user()->email }} - Administrador
+                {{ Auth::user()->email }} - {{Auth::user()->getRoleDisplayNames()}}
                   
                 </p>
               </li>
@@ -127,7 +128,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Salir</a>
+                  <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
                 </div>
               </li>
             </ul>
@@ -173,7 +174,8 @@ desired effect
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
-        <!-- Optionally, you can add icons to the links -->     
+        <!-- Optionally, you can add icons to the links -->
+        @can("view_products")     
         <li class="treeview {{ Request::segment(2) == 'products' ? 'active' : '' }}">
           <a href="#"><i class="fa fa-bars"></i> <span>Productos</span>
             <span class="pull-right-container">
@@ -181,22 +183,32 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu ">
+            @can("view_categories")
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
+            @endcan
           </ul>
         </li>
+        @endcan
+        @role("Admin")
         <li class="treeview {{ Request::segment(2) == 'users' ? 'active' : '' }}">
           <a href="#"><i class="fa fa-users"></i> <span>Usuarios</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
+         
           <ul class="treeview-menu ">
+            <li class="{{ Request::segment(3) == 'RolesPermissions' ? 'active' : '' }}"><a href="{{ url('admin/users/RolesPermissions') }}"><i class="fa fa-key" aria-hidden="true"></i><span>Roles y permisos</span></a></li>
             <li class="{{ Request::segment(3) == 'users' ? 'active' : '' }}"><a href="{{ url('admin/users/users') }}"><i class="fa fa-user" aria-hidden="true"></i><span>Usuarios</span></a></li>
           </ul>
+         
         </li>
+        @endrole
         @php $orders=Auth::user()->ordersOxxo()->count(); @endphp
-        <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
+        <!-- <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li> -->
+        @can("view_sales")
         <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
+        @endcan
       </ul>
       <!-- /.sidebar-menu -->
     </section>

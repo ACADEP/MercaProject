@@ -7,12 +7,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// use Laravel\Cashier\Billable;
+use Spatie\Permission\Traits\HasRoles;
+
 
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
     // use Billable;
     
     protected $table = 'users';
@@ -35,6 +37,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
     /**
      * Make a boot function to listen
      * to any model events that are fired below.
@@ -206,6 +212,32 @@ class User extends Authenticatable
         $cart->save();
 
         return $cart;
+    }
+
+    public function insert($username, $email, $pass)
+    {
+        $this->username=$username;
+        $this->email=$email;
+        $this->password= bcrypt($pass);
+        $this->verified=1;
+        $this->admin=0;
+        $this->save();
+    }
+
+    public function updateU($username, $email, $pass)
+    {
+        $this->username=$username;
+        $this->email=$email;
+        if($pass!=null)
+        {
+            $this->password= bcrypt($pass);
+        }
+        $this->save();
+    }
+
+    public function getRoleDisplayNames()
+    {
+        return $this->roles->pluck('display_name')->implode(', ');
     }
 
 }

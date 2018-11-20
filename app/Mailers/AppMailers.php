@@ -81,13 +81,13 @@ class AppMailers {
         $this->deliver();
     }
 
-    public function sendReceiptPayment(User $user, User $client, $sale) {
+    public function sendReceiptPayment(User $admin, User $client, $sale) {
         // Send this to the users email.
-        $this->to = $user->email;
+        $this->to = $admin->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email';
         // The data that is required
-        $this->data = compact('user');
+        $this->data = compact('admin');
         if($sale!=null)
         {
             $this->deliverPDF("administración", $client, $sale);
@@ -97,22 +97,22 @@ class AppMailers {
         }
     }
 
-    public function sendReceiptPaymentClient(User $user,$guia, $url, $img_carrie, $sale) {
+    public function sendReceiptPaymentClient(User $client,$guia, $url, $img_carrie, $sale) {
        
         // Send this to the users email.
-        $this->to = $user->email;
+        $this->to = $client->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
         // The data that is required
-        $this->data = compact('user','guia','url','img_carrie');
+        $this->data = compact('client','guia','url','img_carrie');
       
         if($sale!=null)
         {
-            $this->deliverPDF("cliente", $user, $sale);
+            $this->deliverPDF("cliente", $client, $sale);
         }
         else
         {
-            $this->deliverPDF2("cliente", $user);
+            $this->deliverPDF2("cliente", $client);
         }
         
     }

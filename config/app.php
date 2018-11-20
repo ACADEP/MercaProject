@@ -152,7 +152,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -164,7 +164,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
-        Aftab\Sepomex\SepomexServiceProvider::class
+        Aftab\Sepomex\SepomexServiceProvider::class,
+       
         // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 

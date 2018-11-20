@@ -56,15 +56,11 @@
                             <div id="form-sesion">
                                 @if(Auth::check())
                                     <div class="form-inline">
-                                        @if(Auth::user()->admin==2)
-                                            <a href="{{ url('/seller/admin') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        @role('Client')
+                                        <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
-                                        @if(Auth::user()->admin==1)
-                                            <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
-                                        @else
-                                            <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
-                                        @endif
-                                        @endif
+                                        <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        @endrole
                                         <a href="{{ url('/logout') }}">Salir</a>
                                     </div>
                                     
@@ -76,7 +72,13 @@
                                 
                             </div>
                         </li>
-                    @include('partials.shopping-cart-container')
+                    @if(Auth::check())
+                        @role('Client')
+                            @include('partials.shopping-cart-container')
+                        @endrole
+                    @else
+                        @include('partials.shopping-cart-container')
+                    @endif
                     <br><br>
                         <li class="nav-item">
                             <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a>

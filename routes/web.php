@@ -615,12 +615,41 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/products/editCategory","AdminController@editCategory")->name("edit-category");
     //Eliminar categoría
     Route::post("/admin/products/deleteCategory","AdminController@deleteCategory")->name("delete-category");
+
+    //CRUD productos
+    Route::get("/admin/products/showProducts", "ProductsController@showProducts");
     
-     //CRUD Usuarios
-     //Mostrar todas las categorias
+    //CRUD Usuarios
+    //Mostrar todas las categorias
     Route::get("/admin/users/users", "AdminController@showUsers")->name("show-users");
-     //Eliminar usuario
-     Route::post("/admin/users/deleteUser","AdminController@deleteUser")->name("delete-User");
+    //Eliminar usuario
+    Route::post("/admin/users/deleteUser","AdminController@deleteUser")->name("delete-User");
+    //Agregar usuario
+    Route::post("/admin/users/addUser","AdminController@addUser")->name("add-User");
+    //Mostar edicion
+    Route::get("/admin/users/updateUser/{user}","AdminController@showUpdateUser")->name("show-update");
+    //Editar usuario
+    Route::post("/admin/users/updateUser","AdminController@updateUser")->name("update-User");
+    //Mostrar todas los roles
+    Route::get("/admin/users/RolesPermissions", "AdminController@showRolesAPermissions")->name("show-rolespermissions");
+    //Mostrar todas los permisos
+    Route::get("/admin/users/RolesPermissions/showPermissions", "AdminController@showPermissions")->name("show-permissions");
+    //Editar permisos
+    Route::get("/admin/users/RolesPermissions/editPermission/{permission}", "AdminController@showEditPermissions")->name("show-editpermission");
+    Route::post("/admin/users/RolesPermissions/updatePermission", "AdminController@updatePermission")->name("update-permission");
+     //Editar roles
+     Route::get("/admin/users/RolesPermissions/editRole/{role}", "AdminController@showEditRoles")->name("show-editRole");
+     Route::post("/admin/users/RolesPermissions/update", "AdminController@updateRole")->name("update-role");
+     //Eliminar role
+     Route::post("/admin/users/RolesPermissions/delete", "AdminController@deleteRole")->name("delete-role");
+     //Agregar role
+     Route::post("/admin/users/RolesPermissions/addRole", "AdminController@addRole")->name("add-role");
+    //Editar roles a usuarios
+    Route::middleware('role:Admin')
+        ->post("/admin/users/updateUser/{user}/updateRole","AdminController@updateRoleUser")->name("update-RoleUser");
+    //Editar permisos a usuarios
+     Route::middleware('role:Admin')
+        ->post("/admin/users/updateUser/{user}/updatePermission","AdminController@updatePermissionUser")->name("update-Permission");
    
 
 });
