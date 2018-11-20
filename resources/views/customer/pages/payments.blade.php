@@ -17,7 +17,7 @@
 </section><br>
 @if ($usercustomer != null)
     <div class="text-center" style="margin-right: 14%; padding-bottom: 20px;">
-        <button class="btn btn-success"  data-toggle="modal" data-target="#add_card"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
+        {{-- <button class="btn btn-success"  data-toggle="modal" data-target="#add_card"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button> --}}
     </div>
 @else
     <div class="alert alert-danger fade in">
