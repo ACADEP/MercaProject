@@ -52,8 +52,10 @@ else
 
 function chargeShipments(cp_user)
 { 
+    
+   
     shipments=new Array();
-    var formData = {    api_key : 'c3704460afdf5f0a6e53b71c48a2f736',
+    var formData = {    api_key : '91fd302dde92bf5160e6b261b680b1c1',
                         origin_direction:{country_code:"MX" ,postal_code:"23000"},
                         destination_direction:{country_code:"MX" ,postal_code: cp_user},
                         shipment:{
@@ -73,6 +75,12 @@ function chargeShipments(cp_user)
         $.ajax({
             url: 'https://enviaya.com.mx/api/v1/rates',
             method: 'POST',
+            crossDomain: true,
+            dataType: 'json',
+            headers: {
+                'Accept': 'application/json'
+               
+                },
             data: formData,
             success: function(response){
 

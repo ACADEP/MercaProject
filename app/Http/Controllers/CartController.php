@@ -48,7 +48,8 @@ class CartController extends Controller {
     protected $mailer;
     public function showCart() {
     
-       
+        // $envia=new EnviaYa;
+        // dd($envia->getRates());
         return view('cart.cart'); 
             
     }

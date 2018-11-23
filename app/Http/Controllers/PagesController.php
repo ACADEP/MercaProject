@@ -34,6 +34,7 @@ class PagesController extends Controller {
      */
     public function index() {
        
+        
         $categories = Category::pluck('category')->take(5);
         
         // From Traits/BrandAll.php

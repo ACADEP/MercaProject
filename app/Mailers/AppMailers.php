@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\MarketRates;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -136,6 +137,20 @@ class AppMailers {
             ->attachData($pdf->output(), "Recibo-Oxxo.pdf");
         });
     }
+
+    public function sendMarketRateReceipt(MarketRates $items)
+    {
+        $pdf = PDF::loadView('admin.market_rates.pdf-print',compact('items'));
+        $this->to=$items->email;
+        //Enviar a cliente
+        $this->mailer->send("admin.market_rates.view-email", compact('client') , function($message) use($pdf, $items){
+            $message->from($this->from, 'Administrator')
+            ->subject("Cotización Mercadata")
+            ->to($this->to)            
+            ->attachData($pdf->output(), "Cotización-".$items->date.".pdf");
+        });
+    }
+
     public function sendReceiptClientAdmin(User $admin, User $client,$guia, $url, $img_carrie, $sale)
     {
         $Items=$sale;

@@ -713,8 +713,43 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/products/deleteCategory","AdminController@deleteCategory")->name("delete-category");
 
     //CRUD productos
-    Route::get("/admin/products/showProducts", "ProductsController@showProducts");
+    Route::get("/admin/products/products/showProducts", "ProductsController@showProducts");
     
+    //Cotizaciones
+    Route::get("/admin/market_rates", "MarketRatesController@market_rates")->name("show-marketRates");
+    //Buscar cotizaciones
+    Route::get("/admin/market_rates/searchMarketRates", "MarketRatesController@searchMarketRates")->name("searchMarketRates");
+    //Editar y crear Cotizaciones
+    Route::get("/admin/market_rates/create", "MarketRatesController@showCreate")->name("create-marketRates");
+
+    Route::get("/admin/market_rates/edit/{marketrate}", "MarketRatesController@showEdit")->name("edit-marketRates");
+
+    Route::post("/admin/market_rates/createMarketRate", "MarketRatesController@createMarket_rates")->name("create-marketRate");
+    //Actualizar cotizacion
+    Route::post("/admin/market_rates/updateMarketRate", "MarketRatesController@updateMarket_rates")->name("update-marketRate");
+   //Eliminar producto de cotizacion en editar
+   Route::post("/admin/market_rates/deleteProductEdit", "MarketRatesController@deleteProductMarket_ratesEdit")->name("delete-ProductMarketRatesEdit");
+   //Eliminar producto de cortizacion en crear
+   Route::post("/admin/market_rates/deleteMarket_rates", "MarketRatesController@deleteMarket_rates")->name("delete-MarketRates");
+    //Enviar cotizacion
+    Route::get("/admin/market_rates/send/{marketrate}", "MarketRatesController@sendMarketRate")->name("Send-MarketRate");
+    //Enviar cotizacion en crear
+    Route::post("/admin/market_rates/sendEmail", "MarketRatesController@sendEmailMarketRate")->name("sendEmail-MarketRate");
+
+    //Buscar productos en crear
+    Route::get("/admin/market_rates/search", "MarketRatesController@searchMarket_rates")->name("search-marketRates");
+     //Buscar productos en editar
+     Route::get("/admin/market_rates/searchEdit", "MarketRatesController@searchMarket_ratesedit")->name("searchedit-marketRates");
+    //Agregar productos 
+    Route::post("/admin/market_rates/addProduct", "MarketRatesController@addMarket_rates")->name("add-marketRates");
+    //Agregar productos en editar
+    Route::post("/admin/market_rates/addProductEdit", "MarketRatesController@addMarket_ratesEdit")->name("add-marketRatesEdit");
+    //Eliminar producto de cortizacion
+    Route::post("/admin/market_rates/deleteProduct", "MarketRatesController@deleteProductMarket_rates")->name("delete-ProductMarketRates");
+    //Imprimir PDF
+    Route::get('/print-market_rate/{marketrate}', 'MarketRatesController@PDF')->name('marketRatesPdf');
+
+
     //CRUD Usuarios
     //Mostrar todas las categorias
     Route::get("/admin/users/users", "AdminController@showUsers")->name("show-users");

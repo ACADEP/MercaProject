@@ -43,6 +43,7 @@ $(document).ready(function(){
     $('#tbody').on('click', '.click-delete', function(e){
         e.preventDefault();
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
+        console.log(this.id);
         productosJson.splice(this.id, 1);
         Cookies.set("productos",productosJson,1);
         mostrarElementos();
@@ -204,7 +205,7 @@ $(document).ready(function(){
 
     function mostrarElementos()
     {   refresh();
-      
+       
         if(Cookies.get("productos")!=null  )
         {
             var i=0;
@@ -256,7 +257,7 @@ $(document).ready(function(){
                     num = '$' + (pPriceTotal*qty).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $('#tbody').append("<td id='subtotal"+i+"'>"+num+"</td>");
                   
-                    $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete'  ><i class='fa fa-trash' aria-hidden='true'></i></button></td>");
+                    $('#tbody').append("<td><button type='button' class='btn btn-outline-danger btn-sm click-delete'  id='"+i+"'><i class='fa fa-trash' aria-hidden='true'></i></button></td>");
                     $('#tbody').append("</tr> <br>");
                     
                    

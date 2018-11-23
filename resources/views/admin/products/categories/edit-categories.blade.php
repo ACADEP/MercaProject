@@ -89,7 +89,7 @@
 
 @section("msg-success")
 @if(Session::has('success'))
-<script> 
+    <script> 
     $.notify({
         // options
         message: '<strong>{{ Session("success") }}</strong>' 
@@ -99,6 +99,7 @@
         delay:5000
     });
     </script>
+    
 @endif
 
 @stop

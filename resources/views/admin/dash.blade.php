@@ -183,6 +183,7 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu " style="background-color: #242424 !important;">
+          <li class="{{ Request::segment(3) == 'products' ? 'active' : '' }}"><a href="{{ url('admin/products/products/showProducts') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Productos</span></a></li>
             @can("view_categories")
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
             @endcan
@@ -209,6 +210,7 @@ desired effect
         @can("view_sales")
         <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
+        <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -328,6 +330,7 @@ desired effect
 <!-- AdminLTE App -->
 <script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
 
+<script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
 <script src="{{asset('/AdminLTE/dist/js/admin.js')}}"></script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
@@ -353,6 +356,7 @@ desired effect
 @yield('modal-add-category')
 @yield('msg-success')
 @yield('show-inputs')
+@yield('typehead-marketRates')
 
 
 
