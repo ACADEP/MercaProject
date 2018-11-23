@@ -30,17 +30,17 @@ class ProductsController extends Controller {
      */
     public function showProducts() {
 
-        // Get all latest products, and paginate them by 10 products per page
-        $product = Product::latest('created_at')->paginate(10);
+        // // Get all latest products, and paginate them by 10 products per page
+        // $product = Product::latest('created_at')->paginate(10);
 
-        // Count all Products in Products Table
-        $productCount = Product::all()->count();
+        // // Count all Products in Products Table
+        // $productCount = Product::all()->count();
 
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
+        // // From Traits/CartTrait.php
+        // // ( Count how many items in Cart for signed in user )
+        // $cart_count = $this->countProductsInCart();
 
-        return view('admin.product.show', compact('productCount', 'product', 'cart_count'));
+        return view('admin.products.products.index');
     }
 
 
@@ -327,6 +327,8 @@ class ProductsController extends Controller {
         ->setMargin(2)
         ->png();
     }
+
+    
 
 
 }
