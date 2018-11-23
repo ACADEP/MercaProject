@@ -32,7 +32,10 @@
             Direcciones 
         </h1> 
 </section><br>     
-<div class="text-center" style="margin-right: 14%; padding-bottom: 20px;">
+<div class="col-sm-3 text-left" style="padding-left: 35px; font-size: 18px;">
+    <a href="{{ url('/cart') }}" style="color: #000 !important;">Ver Carrito</a>
+</div>
+<div class="col-sm-3 text-center" style="margin-right: 14%; padding-bottom: 20px;">
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_address"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
 </div>
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -66,7 +69,7 @@
                                     </a>
                                 </h4>
                                 <div class="form-inline" style="margin-left: 88%;">
-                                    <button class="btn btn-danger btn-xs btn-delete" data-toggle="tooltip" value="{{ $address->id }}" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+                                    <button class="btn btn-danger btn-xs btn-delete-address" data-toggle="tooltip" value="{{ $address->id }}" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
                                     <a type="button" href="{{ route('customer.address.showUpdate', $address->id) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
                                 </div> 
                             </div>

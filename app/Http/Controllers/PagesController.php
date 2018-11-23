@@ -82,7 +82,14 @@ class PagesController extends Controller {
         return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories', 'selledProducts'));
     }
 
-   
+    public function about() {
+        return view('pages.about');
+    }
+
+    public function help() {
+        return view('pages.help');
+    }
+
     public function displayProducts(Category $category) {
         // dd($category);
         $productscat = $category->products();
@@ -287,7 +294,7 @@ class PagesController extends Controller {
             ->where("sales.created_at",">",$endDate)
             ->groupBy("products.id")->orderBy("ventas", "desc");
 
-        $selledProducts = Product::wherein('id', $query->get())->take(12)->get();
+        $selledProducts = Product::wherein('id', $query->get())->paginate(12);
 
         //previous URL for breadcrumbs
         $previousURL = url()->previous();

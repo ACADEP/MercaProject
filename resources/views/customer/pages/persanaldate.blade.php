@@ -11,25 +11,30 @@
 </nav>    
 
 <section class="content-header">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
         <h2>
             Datos Personales 
         </h2> 
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
         <h2>
             Dirección de Facturación 
         </h2> 
     </div>    
-</section><br>     
-<div class="text-center" style="margin-right: 90%; padding-bottom: 20px;">
-    @if ($userpersonal != null)
-        <a type="button" href="{{ route('customer.personal.showUpdate', $userpersonal->id) }}" class="btn btn-success add" ><i class="fa fa-plus-square" aria-hidden="true"></i> Actualizar</a>
-    @else
-        <button class="btn btn-success add"  data-toggle="modal" data-target="#add_personaldate"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
-    @endif
-</div>
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+</section><br> 
+<div class="row" style="padding-bottom: 15px;">
+    <div class="col-sm-2 text-left" style="padding-left: 30px; font-size: 18px;">
+        <a href="{{ url('/cart') }}" style="color: #000 !important;">Ver Carrito</a>
+    </div>                
+    <div class="col-sm-2 text-left" style="margin-left: 100px;">
+        @if ($userpersonal != null)
+            <a type="button" href="{{ route('customer.personal.showUpdate', $userpersonal->id) }}" class="btn btn-success add" ><i class="fa fa-plus-square" aria-hidden="true"></i> Actualizar</a>
+        @else
+            <button class="btn btn-success add"  data-toggle="modal" data-target="#add_personaldate"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
+        @endif
+    </div>        
+</div>    
+<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
     @if($userpersonal != null) 
         <label class="lead" for="">Nombre: {{ $userpersonal->nombre }}</label><br>
         <label class="lead" for="">Apellidos: {{ $userpersonal->apellidos }}</label><br>
@@ -40,7 +45,7 @@
         <label class="lead" for="">Telefono: </label><br>
     @endif
 </div>
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
     @if($userpersonal != null) 
         <label class="lead" for="">Nombre o razón social: {{ $userpersonal->razonSocial }}</label><br>
         <label class="lead" for="">Tipo de facturación: {{ $userpersonal->tipoFacturacion }}</label><br>

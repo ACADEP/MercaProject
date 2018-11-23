@@ -9,7 +9,7 @@ $(document).ready(function(){
         });
 
         var id=$(this).val();
-        var formData = { id  : id }
+        var formData = { id  : id };
 
         $.ajax({
             url: "/customer/payments/delete",

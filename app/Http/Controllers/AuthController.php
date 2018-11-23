@@ -157,12 +157,12 @@ class AuthController extends Controller
         if ($this->signIn($request)) {
             //flash()->success('Success', 'You have successfully signed in.');
             return redirect('/');
-        }
+        } 
 
         // Else, show error message, and redirect them back to login.php.
         // flash()->customErrorOverlay('Error', 'No se puede iniciar sesión con esas credenciales');
 
-        return redirect('login');
+        return redirect('login')->with('flash','No se puede iniciar sesión con esas credenciales.');
     }
 
 

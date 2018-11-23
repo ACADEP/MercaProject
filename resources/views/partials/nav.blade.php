@@ -57,11 +57,11 @@
                                 @if(Auth::check())
                                     <div class="form-inline">
                                         @role('Client')
-                                        <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        <a class="header-color" href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
-                                        <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        <a class="header-color" href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @endrole
-                                        <a href="{{ url('/logout') }}">Salir</a>
+                                        <a class="header-color" href="{{ url('/logout') }}">Salir</a>
                                     </div>
                                     
                                 @else  
@@ -86,11 +86,11 @@
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a class="header-color" href="#">Nosotros</a>
+                            <a class="header-color" href="{{ url('/about') }}">Nosotros</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a class="header-color" href="#">Ayuda</a>
+                            <a class="header-color" href="{{ url('/help') }}">Ayuda</a>
                         </li>
                     </div>
                     

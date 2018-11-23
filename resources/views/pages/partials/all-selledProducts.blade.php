@@ -6,11 +6,11 @@
 <nav aria-label="breadcrumb" class="pt-3">
     <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Productos mas Vendidos</li>
+        <li class="breadcrumb-item active" aria-current="page">Más Vendidos</li>
     </ol>
 </nav>    
 
-<h1 class="text-center">Productos mas Vendidos</h1>
+<h1 class="text-center">Más Vendidos</h1>
 
 <div class="pt-3 pb-3">
     @if ($labels == 1)          

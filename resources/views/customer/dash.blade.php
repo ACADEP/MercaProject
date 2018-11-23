@@ -22,7 +22,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.css')}}">
 
   <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
 
@@ -75,7 +75,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ url('/') }}" class="logo" style="background: #212121;">
+    <a href="{{ url('/') }}" class="logo" style="background-color: #000 !important;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
@@ -83,9 +83,9 @@ desired effect
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation" style="background: #424242;">
+    <nav class="navbar navbar-static-top" role="navigation" style="background-color: #FBFBFB !important;">
       <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="background-color: #FBFBFB !important;">
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
@@ -241,10 +241,10 @@ desired effect
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
+  <aside class="main-sidebar" style="background-color: #000 !important;">
 
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
+    <section class="sidebar" style="background-color: #000 !important;">
 
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
@@ -272,24 +272,24 @@ desired effect
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">Perfil</li>
+        <li class="header" style="background-color: #000 !important; color: #fff !important;"><strong>Perfil</strong></li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="treeview">
+        <li class="treeview {{ Request::segment(2) == 'personal' ? 'active' : '' }}">
           <a href="#"><i class="fa fa-user-circle"></i> <span>Mi Perfil</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
-          <ul class="treeview-menu">
-            <li class="{{ Request::path() == 'customer/personal' ? 'active' : '' }}"><a href="{{ route('customer.personal') }}"><i class="fa fa-address-card"></i>Datos Personales</a></li>
-            <li class="{{ Request::path() == 'customer/profiledates' ? 'active' : '' }}"><a href="{{ route('customer.profiledates') }}"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
-            <li class="{{ Request::path() == 'customer/address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
-            <li class="{{ Request::path() == 'customer/payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
+          <ul class="treeview-menu" style="background-color: #242424 !important;">
+            <li class="{{ Request::segment(3) == 'data' ? 'active' : '' }}"><a href="{{ route('customer.personal') }}"><i class="fa fa-address-card"></i>Datos Personales</a></li>
+            <li class="{{ Request::segment(3) == 'acount' ? 'active' : '' }}"><a href="{{ route('customer.acount') }}"><i class="fa fa-id-card"></i>Datos de Cuenta</a></li>
+            <li class="{{ Request::segment(3) == 'address' ? 'active' : '' }}"><a href="{{ route('customer.address') }}"><i class="fa fa-address-book"></i>Direcciones</a></li>
+            <li class="{{ Request::segment(3) == 'payments' ? 'active' : '' }}"><a href="{{ route('customer.payments') }}"><i class="fa fa-credit-card-alt"></i>Métodos de Pago</a></li>
           </ul>
         </li>
-        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
-        <li class="{{ Request::path() == 'customer/favorites' ? 'active' : '' }}"><a href="{{ route('my-favorites') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
-        <li class="{{ Request::path() == 'customer/profile/myshopping' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
+        <li class="{{ Request::segment(2) == 'products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-shopping-cart"></i> <span>Pedidos</span></a></li>
+        <li class="{{ Request::segment(2) == 'favorites' ? 'active' : '' }}"><a href="{{ route('my-favorites') }}"><i class="fa fa-heart"></i> <span>Favoritos</span></a></li>
+        <li class="{{ Request::segment(2) == 'profile' ? 'active' : '' }}"><a href="{{ route('my-shopping') }}"><i class="fa fa-list"></i> <span>Mis Compras</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->

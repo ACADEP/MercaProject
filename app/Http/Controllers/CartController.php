@@ -367,27 +367,38 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-        $sale= new Sale;
-        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
-        $cartItems=Auth::user()->carts();
-        foreach($cartItems->get() as $cartItem)
-        {
-            $customerHistory=new CustomerHistory;
-            $customerHistory->insert($cartItem,$sale);
-        }
-        Auth::user()->carts()->delete();
+        // $sale= new Sale;
+        // $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        // $cartItems=Auth::user()->carts();
+        // foreach($cartItems->get() as $cartItem)
+        // {
+        //     $customerHistory=new CustomerHistory;
+        //     $customerHistory->insert($cartItem,$sale);
+        // }
+        // Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'bank_account',
-            'amount' => $request->get("ship_rate_total"),
+            'amount' => Auth::user()->total + 200,  //$request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
-            'order_id' => $sale->id, //oid-00051 id del carrito
+            'order_id' => $random,  //$sale->id, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);
-       
+        // dd($charge);
+        
         if($charge){
-            
-            return redirect('/')->with("recibe", 'https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
+
+            $ship_rate = 200;
+            $date_ship = '12/12/18';
+            $cartItems=Auth::user()->cart->with("product")->get();
+            $ship_rate_total = $ship_rate + Auth::user()->total;
+            $Items = $cartItems;
+            // dd($charge->payment_method->agreement);
+            $subtotal = $charge->amount;
+    
+            $pdf = PDF::loadView('cart.Print-Bank',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+            return $pdf->stream('Recibo-Banco.pdf');  
+            // return redirect('/')->with("recibe", 'https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
         }
         
         } catch (OpenpayApiTransactionError $e) {
@@ -427,6 +438,7 @@ class CartController extends Controller {
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
         Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+        $random = rand(0, 99999);
 
         try {
        
@@ -445,28 +457,37 @@ class CartController extends Controller {
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
 
-        $sale= new Sale;
-        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
-        $cartItems=Auth::user()->carts();
-        foreach($cartItems->get() as $cartItem)
-        {
-            $customerHistory=new CustomerHistory;
-            $customerHistory->insert($cartItem,$sale);
-        }
+        // $sale= new Sale;
+        // $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        // $cartItems=Auth::user()->carts();
+        // foreach($cartItems->get() as $cartItem)
+        // {
+        //     $customerHistory=new CustomerHistory;
+        //     $customerHistory->insert($cartItem,$sale);
+        // }
         Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' =>  $request->get("ship_rate_total"),
+            'amount' =>  Auth::user()->total + 200,  //$request->get("ship_rate_total"),
             'description' => 'Cargo a tienda',
-            'order_id' =>$sale->id, 
+            'order_id' => $random,  //$sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
        
         if($charge){
-          
-            return redirect('/')->with("recibe",'https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
+            $ship_rate = 200;
+            $date_ship = '12/12/18';
+            $cartItems=Auth::user()->cart->with("product")->get();
+            $ship_rate_total = $ship_rate + Auth::user()->total;
+            $Items = $cartItems;
+            $subtotal = $charge->amount;
+    
+            $pdf = PDF::loadView('cart.Print-Store',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+            return $pdf->stream('Recibo-Tiendas.pdf');  
+            // return view('cart.Print-Store',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+            // return redirect('/')->with("recibe",'https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
         }
         
         } catch (OpenpayApiTransactionError $e) {
@@ -681,18 +702,27 @@ class CartController extends Controller {
         }        
     }
 
-    public function pruevasRecibos() {
+    public function pruevasRecibos($charge) {
         $ship_rate = 200;
         $ship_rate_total;
         $date_ship = '12/12/18';
         $cartItems=Auth::user()->cart->with("product")->get();
         $ship_rate_total = $ship_rate + Auth::user()->total;
         $Items = $cartItems;
-        $subtotal = 200;
+        // dd($charge->payment_method->agreement);
+        $subtotal = $charge->amount;
+
+        $pdf = PDF::loadView('cart.Print-Bank',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
+        return $pdf->stream('Recibo-Banco.pdf');
+
+        // $pdf = PDF::loadView('cart.Print-Store',compact());
+        // return $pdf->stream('Recibo-Tiendas.pdf');
+
+
         // $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
         // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
-        $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
-        return $pdf->stream('Recibo-Oxxo.pdf');
+        // $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
+        // return $pdf->stream('Recibo-Oxxo.pdf');
         // return view('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
     }
 

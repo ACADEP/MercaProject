@@ -33,6 +33,10 @@ Route::group(['middleware' => ['web']], function () {
     /** Get the Home Page **/
     Route::get('/', 'PagesController@index');
 
+    Route::get('/about', 'PagesController@about');
+
+    Route::get('/help', 'PagesController@help');
+
     /** Display Products by category Route **/
     Route::get('/Category/{category}','PagesController@displayProducts')->name('productsByCategory');
 
@@ -450,49 +454,49 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('/customer/deletefavorite','CustomerController@deleteFavorite')->name("delete-favorite");
 
     /*********************** CRUD Personal Dates Profile ***********************/
-    Route::get('/customer/personal', [
+    Route::get('/customer/personal/data', [
         'uses' => '\App\Http\Controllers\CustomerController@personal',
         'as'   => 'customer.personal',
     ]);
 
-    Route::post('/customer/personal/add', [
+    Route::post('/customer/personal/data/add', [
         'uses' => '\App\Http\Controllers\CustomerController@addpersonal',
         'as'   => 'customer.personal.add',
     ]);
 
-    Route::get('/customer/personal/update/{id}', [
+    Route::get('/customer/personal/data/update/{id}', [
         'uses' => '\App\Http\Controllers\CustomerController@showUpdate',
         'as'   => 'customer.personal.showUpdate',
     ]);
 
-    Route::post('/customer/personal/update', [
+    Route::post('/customer/personal/data/update', [
         'uses' => '\App\Http\Controllers\CustomerController@personalUpdate',
         'as'   => 'customer.personal.update',
     ]);
 
     /*********************** CRUD Dates Profile ***********************/
-    Route::get('/customer/profiledates', [
+    Route::get('/customer/personal/acount', [
         'uses' => '\App\Http\Controllers\CustomerController@profile',
-        'as'   => 'customer.profiledates',
+        'as'   => 'customer.acount',
     ]);
 
     /*********************** CRUD Address Profile ***********************/
-    Route::get('/customer/address', [
+    Route::get('/customer/personal/address/', [
         'uses' => '\App\Http\Controllers\AddressController@address',
         'as'   => 'customer.address',
     ]);
 
-    Route::post('/customer/address', [
+    Route::post('/customer/personal/address', [
         'uses' => '\App\Http\Controllers\AddressController@activeAddress',
         'as'   => 'customer.address.activo',
     ]);
 
-    Route::post('/customer/address/add', [
+    Route::post('/customer/personal/address/add', [
         'uses' => '\App\Http\Controllers\AddressController@addAddress',
         'as'   => 'customer.address.add',
     ]);
 
-    Route::get('/customer/address/update/{id}', [
+    Route::get('/customer/personal/address/update/{id}', [
         'uses' => '\App\Http\Controllers\AddressController@Update',
         'as'   => 'customer.address.showUpdate',
     ]);
@@ -504,31 +508,31 @@ Route::group(["middleware" => 'customer'], function(){
     //     'as'   => 'customer.address.showUpdate',
     // ]);
 
-    Route::post('/customer/address/update', [
+    Route::post('/customer/personal/address/update', [
         'uses' => '\App\Http\Controllers\AddressController@updateAddress',
         'as'   => 'customer.address.update',
     ]);
 
-    Route::post('/customer/address/delete', [
+    Route::post('/customer/personal/address/delete', [
         'uses' => '\App\Http\Controllers\AddressController@deleteAddress',
         'as'   => 'customer.address.delete',
     ]);
 
 
     /*********************** CRUD Payments Profile ***********************/
-    Route::get('/customer/payments', [
+    Route::get('/customer/personal/payments', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@payments',
         'as'   => 'customer.payments',
     ]);
 
     /** Payments add cards **/
-    Route::post('/customer/payments/add', [
+    Route::post('/customer/personal/payments/add', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@addCard',
         'as'   => 'customer.payments.add',
     ]);
 
     /** Payments deletecards **/
-    Route::post('/customer/payments/delete', [
+    Route::post('/customer/personal/payments/delete', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@deleteCard',
         'as'   => 'customer.payments.delete',
     ]);
