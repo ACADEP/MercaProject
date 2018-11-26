@@ -65,7 +65,7 @@ class AdminController extends Controller {
 
     public function showOrderOxxo()
     {
-        $orders=Auth::user()->ordersOxxo()->get();
+        $orders=OrderOxxo::all();
         return view("admin.orderoxxo.index", compact("orders"));
     }
     

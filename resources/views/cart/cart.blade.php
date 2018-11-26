@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="col-md-12" id="body-cart">
-
+<div id="loader-contener"></div>
 <div class="row col-md-12">
     @if(Auth::check()==false)
         <div class="alert alert-primary" role="alert">
@@ -25,7 +25,7 @@
             </button>
             @if(Auth::check())
                 @if(Auth::user()->carts()->count()>0)
-                    <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success text-center">Pagar</a></div>  
+                    <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success text-center " id="btn-pay-cart">Pagar</a></div>  
                 @endif
             @endif
         </div>
@@ -97,4 +97,22 @@
    
         
 </div>
+<style>
+ #loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
+</style>
+<script>
+$("#btn-pay-cart").click(function(){
+    $("#loader-contener").html("<div id='loader' class='text-center' style='font-size:40px; '><span style='padding-top:300px;'>Espere por favor <br>Cargando paqueterías</span> </div>");
+});
+
+</script>
 @stop
