@@ -600,6 +600,12 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/OrderOxxo/accreditedPay", "AdminController@accreditedPay")->name("accreditedPay");
     //Eliminar orden
     Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
+    //Buscar ordenes
+    Route::get("admin/OrderOxxo/search", "AdminController@searchOrderOxxo")->name("search-orderOxxo");
+   
+    //CRUD Marcas
+    //Mostrar disponibles
+    Route::get("admin/brands/index", "BrandsController@showBrands")->name("show-brands");
 
 
     //CRUD Categorias
@@ -621,6 +627,8 @@ Route::group(["middleware" => 'admin'], function(){
     
     //Cotizaciones
     Route::get("/admin/market_rates", "MarketRatesController@market_rates")->name("show-marketRates");
+    //Levantar un pedido por cotización
+    Route::post("/admin/market_rates/addOrder", "MarketRatesController@addOrder")->name("addOrder");
     //Buscar cotizaciones
     Route::get("/admin/market_rates/searchMarketRates", "MarketRatesController@searchMarketRates")->name("searchMarketRates");
     //Editar y crear Cotizaciones
@@ -685,6 +693,10 @@ Route::group(["middleware" => 'admin'], function(){
     //Editar permisos a usuarios
      Route::middleware('role:Admin')
         ->post("/admin/users/updateUser/{user}/updatePermission","AdminController@updatePermissionUser")->name("update-Permission");
+
+    //Configuraciones
+    //Mostrar panel
+    Route::get("/admin/config/index", "ConfigController@index")->name("show-config");
    
 
 });

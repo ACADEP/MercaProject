@@ -17,22 +17,10 @@ class BrandsController extends Controller {
     use BrandAllTrait, CartTrait;
 
 
-    /**
-     * Return the Show Brands Table.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index() {
-
-        // From Traits/BrandAll.php
-        // Get all the Brands
-        $brands = $this->brandsAll();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        return view('admin.brand.show', compact('brands', 'cart_count'));
+    public function showBrands() 
+    {
+        $brands = Brand::all();
+        return view('admin.brands.index', compact('brands'));
     }
 
 

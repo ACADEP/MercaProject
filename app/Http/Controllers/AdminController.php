@@ -172,24 +172,25 @@ class AdminController extends Controller {
     {
         $order=OrderOxxo::find($request->get("order"));
         $sale=$order->sale;
-        $enviaYa=new EnviaYa;
+        // $enviaYa=new EnviaYa;
         $client=$sale->client;
-        $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
-        $sale->updateStatusShip($envio->shipment_status);
-        $sale->updateTracking($envio->carrier_shipment_number);
+        // $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+        // $sale->updateStatusShip($envio->shipment_status);
+        // $sale->updateTracking($envio->carrier_shipment_number);
         $sale->updatePay();
 
         //Admin
-        $userAdmin=User::find(6);
+        $userAdmin=User::role('Admin')->first();
+        
         //Enviar correos
-        $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+        // $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
         foreach($sale->customerHistories()->get() as $item)
         {
-            $productseller=ProductSeller::find( $item->product_id);
+            $productseller=ProductSeller::find($item->product_id);
             if($productseller != null)
             {
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+                $saleHistory->insert_pCustomer($item,$productseller->id,$client->username);
             }
             else
             {
@@ -197,19 +198,20 @@ class AdminController extends Controller {
                 foreach($admins as $admin)
                 {   
                     $saleHistory=new SeleHistory;
-                    $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                    $saleHistory->insert_pCustomer($item,$admin->id,$client->username);
                 }
             }
         }
         $order->delete();
-        return back()->with("success", "Pago acreditado a ".$client->customer->nombre);
+        return back()->with("success", "Pago acreditado a ".$client->username);
     }
 
     public function deleteOrder(Request $request)
     {
+       
         $order=OrderOxxo::find($request->get("order_id"));
         $sale=$order->sale;
-        $name=$sale->client->customer->nombre;
+        $name=$sale->client->username;
         $sale->customerHistories()->delete();
         $sale->delete();
         $order->delete();
@@ -475,6 +477,23 @@ class AdminController extends Controller {
         }
        
         return view('admin.sales.index',compact('sales','histories'));
+    }
+    public function searchOrderOxxo(Request $request)
+    {
+        $search_find=$request->search;
+        $orders=null;
+        if($search_find!=null)
+        {
+            $query=OrderOxxo::select("*");                                  
+            $query = $query->orWhere("market_id", 'LIKE', "%$search_find%");
+            $orders = $query->get();
+        }
+        else
+        {
+            $orders=OrderOxxo::all();
+        }
+        
+        return view("admin.orderoxxo.index", compact("orders"));
     }
 
   

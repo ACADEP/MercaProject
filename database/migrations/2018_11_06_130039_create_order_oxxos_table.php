@@ -16,6 +16,7 @@ class CreateOrderOxxosTable extends Migration
         Schema::create('order_oxxos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('market_id');
             $table->integer('sale_id');
             $table->timestamps();
         });

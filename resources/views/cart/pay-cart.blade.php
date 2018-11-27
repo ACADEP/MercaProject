@@ -207,7 +207,7 @@
                
                 </a>
 
-                <a id="mpay-5" style="width: 24%;">
+                <!-- <a id="mpay-5" style="width: 24%;">
                     <div class="card border-primary mb-3 text-center col-md-2" id="card-pay5" style="max-width: 10rem; margin:10px; height:250px;">
                         <div class="card-header">Oxxo</div>
                         <div class="card-body text-primary">
@@ -221,7 +221,7 @@
                             </div>
                         </div>
                     </div>
-                    </a>
+                    </a> -->
                 </div>
                
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>

@@ -7,13 +7,21 @@
         </h1> 
 </section><br>
 <div id="body-orders-oxxo">
+<div class="col-md-6 form-inline">
+<form action="{{route('search-orderOxxo')}}" method="get">
+    <input type="seacrh" class="form-control" placeholder="Buscar por número de cotización" autocomplete="off" style="width:60%;" name="search" > 
+    <button type="sumbit" class="btn btn-primary">Buscar</button>
+</form>
+<br>
+</div>
 @if($orders->count()<=0)
- <div class="alert alert-info">No hay ordenes</div>
+ <div class="alert alert-info col-md-12">No hay ordenes</div>
 @else
+
 <table class="table text-center">
     <thead>
             <tr>
-                <th>#</th>
+                <th>Num. Cotización</th>
                 <th>Nombre del cliente</th>
                 <th>Email</th>
                 <th>Monto</th>
@@ -24,14 +32,14 @@
         <tbody>
             @foreach($orders as $order)
                 <tr id="order{{$order->id}}">
-                    <td>{{$order->id}}</td>
+                    <td>{{$order->market_id}}</td>
                     @if($order->sale->client->customer !=null)
                     <td>{{$order->sale->client->customer->nombre.' '.$order->sale->client->customer->apellidos }}</td>
                     @else
                     <td>{{$order->sale->client->username }}</td>
                     @endif
                     <td>{{$order->sale->client->email}}</td>
-                    <td>{{$order->sale->total}}</td>
+                    <td>${{number_format($order->sale->total, 2)}}</td>
                     <td>{{$order->created_at}}</td>
                     <td>
                         <form style="display:inline;" method="post" action="{{route('accreditedPay')}}">
