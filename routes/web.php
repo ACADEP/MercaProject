@@ -727,10 +727,10 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/market_rates/createMarketRate", "MarketRatesController@createMarket_rates")->name("create-marketRate");
     //Actualizar cotizacion
     Route::post("/admin/market_rates/updateMarketRate", "MarketRatesController@updateMarket_rates")->name("update-marketRate");
-   //Eliminar producto de cotizacion en editar
-   Route::post("/admin/market_rates/deleteProductEdit", "MarketRatesController@deleteProductMarket_ratesEdit")->name("delete-ProductMarketRatesEdit");
-   //Eliminar producto de cortizacion en crear
-   Route::post("/admin/market_rates/deleteMarket_rates", "MarketRatesController@deleteMarket_rates")->name("delete-MarketRates");
+    //Eliminar producto de cotizacion en editar
+    Route::post("/admin/market_rates/deleteProductEdit", "MarketRatesController@deleteProductMarket_ratesEdit")->name("delete-ProductMarketRatesEdit");
+    //Eliminar producto de cortizacion en crear
+    Route::post("/admin/market_rates/deleteMarket_rates", "MarketRatesController@deleteMarket_rates")->name("delete-MarketRates");
     //Enviar cotizacion
     Route::get("/admin/market_rates/send/{marketrate}", "MarketRatesController@sendMarketRate")->name("Send-MarketRate");
     //Enviar cotizacion en crear
@@ -749,6 +749,12 @@ Route::group(["middleware" => 'admin'], function(){
     //Imprimir PDF
     Route::get('/print-market_rate/{marketrate}', 'MarketRatesController@PDF')->name('marketRatesPdf');
 
+    //Facturas
+    Route::get("/admin/invoice", "AdminController@showInvoice")->name("show-invoice");
+    //Subir factura
+    Route::get("/admin/invoice/addInvoice", "AdminController@addInvoice")->name("add-invoice");
+    //Quitar factura
+    Route::get("/admin/invoice/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");
 
     //CRUD Usuarios
     //Mostrar todas las categorias

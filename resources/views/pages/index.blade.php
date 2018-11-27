@@ -14,7 +14,7 @@
     @include('pages.partials.featured')
 
     <!-- Selled Products section -->
-    {{-- @include('pages.partials.selled-products') --}}
+    @include('pages.partials.selled-products')
 
     <!-- Oficcials stores section -->
     @include('pages.partials.stores')

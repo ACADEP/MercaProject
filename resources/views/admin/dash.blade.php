@@ -208,8 +208,9 @@ desired effect
         @php $orders=Auth::user()->ordersOxxo()->count(); @endphp
         <!-- <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li> -->
         @can("view_sales")
-        <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
+          <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
+        <li class="{{Request::segment(2) == 'invoice' ? 'active' : ''}}"><a href="{{ route('show-invoice') }}"><i class="fa fa-file-archive-o" aria-hidden="true"></i> <span>Facturas</span></a></li>
         <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
@@ -357,6 +358,7 @@ desired effect
 @yield('msg-success')
 @yield('show-inputs')
 @yield('typehead-marketRates')
+@yield('js-dropzone')
 
 
 

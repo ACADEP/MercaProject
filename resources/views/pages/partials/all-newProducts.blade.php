@@ -116,7 +116,7 @@
                             <i class="fa fa-shopping-cart"></i>
                         </button>
                         @if(Auth::check())
-                            <button  class="btn btn-danger btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
+                            <button  class="btn btn-warning btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </button>
                         @endif

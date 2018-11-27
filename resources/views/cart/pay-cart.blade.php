@@ -63,7 +63,7 @@
                     @endforeach
                     
                 @else
-                    <a href="{{ url('/customer/address') }}" style="color: blue;">Agregar una dirección</a>
+                    <a href="{{ url('/customer/personal/address/') }}" style="color: blue;">Agregar una dirección</a>
                     <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
                     
                 @endif

@@ -51,8 +51,8 @@
 
     <div class="container">
         <div class="content">
-            <div class="title">Oops, that page could not be found</div>
-            <p><a class="title-sub" href="{{ URL ('/') }}">Go back to home page.</a></p>
+            <div class="title">Oops, esa página no se pudo encontrar.</div>
+            <p><a class="title-sub" href="{{ URL ('/') }}">Regresa a la página principal.</a></p>
         </div>
     </div>
 

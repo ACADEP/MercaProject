@@ -37,8 +37,8 @@ class AdminController extends Controller {
     }
 
     public function showSales() {
-        $sales=Auth::user()->selehistories()->paginate(10);
-        $histories=Auth::user()->selehistories()->get();
+        $sales= Auth::user()->selehistories()->paginate(10);
+        $histories= Auth::user()->selehistories()->get();
         return view("admin.sales.index", compact("sales", "histories"));       
     }
 
@@ -477,7 +477,18 @@ class AdminController extends Controller {
         return view('admin.sales.index',compact('sales','histories'));
     }
 
-  
+    
+    public function showInvoice() {
+        return view('admin.invoice.invoice');
+    }
+
+    public function addInvoice() {
+        return view('admin.invoice.invoice');
+    }
+
+    public function deleteInvoice() {
+        return view('admin.invoice.invoice');
+    }
 
     
 

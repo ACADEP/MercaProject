@@ -17,8 +17,8 @@ body {
   color: #000000;
   background: #FFFFFF; 
   font-family: Arial !important; 
-  font-size: 14px; 
-  font-family: Arial;
+  font-size: 14px !important; 
+  font-family: Arial !important;
 }
 
 header {
@@ -49,12 +49,21 @@ h1.tittle {
   /* border-top: 1px solid  #000;
   border-bottom: 1px solid  #000; */
   color: #000;
-  font-size: 2.4em;
+  font-size: 2.4em !important;
   line-height: 1.4em;
   font-weight: normal;
-  text-align: left;
+  /* text-align: left; */
   margin: 0 0 20px 0;
   background: url(dimension.png);
+  margin-top: 30px;
+}
+
+h2 {
+  font-size: 2em !important;
+}
+
+h4 {
+  font-size: 1.4em !important;
 }
 
 #project {
@@ -206,7 +215,6 @@ footer {
   /* float: left; */
   padding-left: 30px;
 }
-
 
 #codigo span {
   color: #000;

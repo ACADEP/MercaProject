@@ -81,7 +81,8 @@
         {{-- <div><strong>Forma de pago: </strong></div>
         <div><strong>Tiempo de Entrega: </strong></div>
         <div><strong>¡Gracias por hacer su compra!</strong></div> --}}
-        <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
+        <div class="notice">El precio final puede variar de acuerdo a la forma de pago. No incluye fletes.</div>
+        <div class="notice">A partir de 24 horas tiene 7 días para solicitar su factura al correo.</div>
         <div class="notice">En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.</div>
       </div>
     </main>
