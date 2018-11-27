@@ -48,7 +48,6 @@
                     <hr>
                     &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
                     <strong>CP:</strong>{{$address->cp}} <br>
-                     <input type="hidden" id="cp_user" value="{{ $cpUser }}">
                     <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
                     <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
                     <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
@@ -77,8 +76,59 @@
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
                 <div class="row" id="shipments">
                     <!-- Paqueterias disponibles -->
+                    @if($rates->count() > 0)
+                   @foreach($rates as $rate)
+                   @php $date = date_create($rate->estimated_delivery); @endphp
+                   <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
+                    <div class='card-body'>
+                        <p class='card-text' style='width:100%;' >
+                            <img src='{{$rate->carrier_logo_url}}' class='img-fluid'>
+                        </p>
+                        <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
+                        Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
+                        <div class='custom-control custom-radio'>
+                                <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
+                                <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
+                       </div>
+                    </div>
+                    </div></a>
+                    <script>
+                        $('#paq-{{$loop->iteration}}').click(function(){
+                            carrie_choosed=true;
+                            var total_amount=parseFloat("{{$rate->total_amount}}");
+                            var total=parseFloat($("#total-cart").val());
+                            reset_paq_css();
+                            $("#card-body{{$loop->iteration}}").css("border", "solid blue 5px");
+                            
+                            $('#paqueteria{{$loop->iteration}}').prop("checked",true);
+                            var num = '$' + (total_amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                            $(".ship-rate").html(num);
+                            $("#total-pursh").val(total_amount+total);
+                            $("#shipment").html("{{$rate->carrier}}");
+                            num = '$' + (total_amount+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                            $("#total").html(num);
+                            $('#carrie_id').val($('#paqueteria{{$loop->iteration}}').val());
+                            $("#date_aprox").html("{{date_format($date, 'd-m-Y')}}");
+                    });
+                    </script>
+                   @endforeach
+                   <script>
+                  
+                   function reset_paq_css()
+                    {
+                        for(var i=1;i<="{{$rates->count()}}";i++)
+                        {
+                            $("#card-body"+i).css("border", "solid white 1px");
+                        }
+                    }
+                    </script>
+                    @else
+                    
+                    <span class="badge badge-danger">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
+                    @endif
+                    <script> $('#loader').remove();</script>
                 </div>
-                
+               
 
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
                 <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
@@ -218,7 +268,11 @@
                         </p>
                         @if($addresses->count() > 0)
                         @if(Auth::user()->customer !=null)
-                            <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pago</button><br>
+                        @if($rates->count() > 0)
+                            <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pedido</button><br>
+                        @else
+                        <div class="alert alert-danger">No hay paqueterías disponibles</div>
+                        @endif
                         @else
                             <div class="alert alert-danger">Agregar sus datos personales para continuar su proceso de pago</div>
                         @endif
@@ -398,6 +452,7 @@ $(document).ready(function () {
 @section('show-modal')
 <script>
     $(function() {
+        
         function reset_pay_css()
         {
             for(var i=1;i<=5;i++)
@@ -446,6 +501,7 @@ $(document).ready(function () {
     
         // $("#btn-next-pay")
         $("#btn-conf").click(function(){
+            if(carrie_choosed){
             if($("#credit-debit-method-r").prop("checked"))
             {
               
@@ -491,6 +547,11 @@ $(document).ready(function () {
             else
             {
                 alert("Elegir un metodo de pago");
+            }
+            }
+            else
+            {
+                alert("Elegir un metodo de envío");
             }
         });
 

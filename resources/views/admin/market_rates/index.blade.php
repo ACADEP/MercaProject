@@ -53,6 +53,9 @@
                 <form style="display:inline;" action="{{route('Send-MarketRate',$marketrate)}}" method="get">
                     <button type="submit" data-placement="top" title="Enviar al correo" class="btn btn-primary btn-xs btn-send-email"><i class="fa fa-paper-plane-o"></i></button>
                 </form>
+                <form style="display:inline;" action="" method="get">
+                    <button type="submit" data-placement="top" title="Hacer el pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
+                </form>
             </td>
         </tr>
         @endforeach

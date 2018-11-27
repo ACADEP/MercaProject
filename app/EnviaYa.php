@@ -13,7 +13,7 @@ class EnviaYa extends Model
         $endpoint = "https://enviaya.com.mx/api/v1/shipments";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = 'c3704460afdf5f0a6e53b71c48a2f736';
+        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
         $origin=[   'company'=> "Acadep",
                     'country_code'=> "MX",
                     'postal_code'=> "23000",
@@ -81,12 +81,16 @@ class EnviaYa extends Model
         return $response;
     }
 
+    function cmp($a, $b)
+    {
+        return $a->total_amount-$b->total_amount;
+    }
     public function getRates()
     {
         $url = "https://enviaya.com.mx/api/v1/rates";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = 'c3704460afdf5f0a6e53b71c48a2f736';
+        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
         $origin=[   'country_code'=> "MX",
                     'postal_code'=> "23000" ];
         $destination=[  'country_code'=> "MX",
@@ -107,16 +111,38 @@ class EnviaYa extends Model
         ];
         $res=$client->request('POST', $url, $requestContent);
         
-        dd(json_decode($res->getBody()));
-        return $res->getStatusCode();
+        $resp=json_decode($res->getBody());
+        $collection = collect();
+        if(count($resp->dhl)>0)
+        {
+            usort($resp->dhl,array($this, "cmp"));
+            $collection->push($resp->dhl[0]);
+        }
+        if(count($resp->fedex)>0)
+        {
+            usort($resp->fedex,array($this, "cmp"));
+            $collection->push($resp->fedex[0]);
+        }
+        if(count($resp->ups)>0)
+        {
+            usort($resp->ups,array($this, "cmp"));
+            $collection->push($resp->ups[0]);
+        }
+        if(count($resp->redpack)>0)
+        {
+            usort($resp->redpack,array($this, "cmp"));
+            $collection->push($resp->redpack[0]);
+        }
+      
+        return $collection;
     }
-
+    
     public function getTracking($carrie_name, $shipment_num)
     {
         $endpoint = "https://enviaya.com.mx/api/v1/trackings";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = 'c3704460afdf5f0a6e53b71c48a2f736';
+        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
         $carrier=$carrie_name;
         $shipment_number=$shipment_num;
         $requestContent = [

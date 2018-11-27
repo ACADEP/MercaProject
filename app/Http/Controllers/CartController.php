@@ -48,28 +48,29 @@ class CartController extends Controller {
     protected $mailer;
     public function showCart() {
     
-        // $envia=new EnviaYa;
-        // dd($envia->getRates());
         return view('cart.cart'); 
             
     }
 
     public function payCart()
     {
+        $envia=new EnviaYa;
         $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
+        $rates=null;
         if(Auth::user()->addressActive() != null)
         {
             $cpUser=Auth::user()->addressActive()->cp;
+            $rates=$envia->getRates();
         }
         else
         {
             $cpUser="";
         }
-        
-        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer','cpUser'));
+       
+        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer','cpUser','rates'));
     }
 
    
