@@ -88,7 +88,7 @@
                 @foreach($products as $product)
                     <div class="col-md-12 wow slideInLeft" id="product-sub-container">
                         <div class="col-md-4 text-center hoverable">
-                            <a href="{{ route('show.product', $product->product_name) }}">
+                            <a class="link-products" href="{{ route('show.product', $product->product_name) }}">
                             @if ($product->photos->count() === 0)
                                     <img src="/store/src/public/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image">
                             @else
@@ -103,7 +103,7 @@
                             </a>
                         </div>
                         <div class="col-md-5">
-                            <a href="{{ route('show.product', $product->product_name) }}">
+                            <a class="link-products" href="{{ route('show.product', $product->product_name) }}">
                             <h5 class="center-on-small-only">{{ $product->product_name }}</h5>
                             <h6 class="center-on-small-only">Brand: {{ $product->brand->brand_name }}</h6>
                             <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>

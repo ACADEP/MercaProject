@@ -1,7 +1,7 @@
 
 <div class="col-12 col-sm-12 col-md-12 col-lg-12" id="product_featured">
-    <h4 class="text-left animated zoomIn" id="title-product">Productos destacados</h4>
-    <a href="{{ route('all.offers') }}">Ver todos</a>
+    <h4 class="text-left animated zoomIn" id="title-product">Productos en Oferta<a href="{{ route('all.offers') }}" class="ml-2" style="font-size: 15px;">Ver todos</a></h4>
+    
     <div class="text-center row mt-3">                     
     <div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
 @foreach($products as $product)
@@ -10,7 +10,7 @@
             <div class="row">
                 
                 <div class="col-md-12 text-center hoverable" style="width:100%;">
-                    <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                    <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                     @if ($product->photos->count() == 0)
                             <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag">
                     @else
@@ -30,7 +30,7 @@
                     $acorName = substr($product->product_name, 0, 25);
                     $acorDesc = substr($product->description, 0, 25);
                 @endphp
-                <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
                 </a>
@@ -54,7 +54,7 @@
                             <i class="fa fa-shopping-cart"></i>
                         </button>
                         @if(Auth::check())
-                            <button  class="btn btn-danger btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
+                            <button  class="btn btn-warning btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </button>
                         @endif

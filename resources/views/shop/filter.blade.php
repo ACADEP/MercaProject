@@ -1,68 +1,94 @@
 <style>
-#menu * { list-style:none; height: 100%;}
-#menu li{ line-height:180%;}
-#menu li a{color:#222; text-decoration:none;}
-#menu li a:before{ content:"\025b8"; color:#ddd; margin-right:1px;}
-#menu input[name="list"] {
-	position: absolute;
-	left: -1000em;
-	}
-#menu label:before{ /*content:"\025b8";*/ margin-right:1px;}
-/*#menu input:checked ~ label:before{ content:"\025be";}*/
-#menu .interior{display: none;}
-#menu input:checked ~ ul{display:block;}
-right {
+/* .listings {
+    width: 100%; */
 }
 </style>
-
-<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-        <ul id="menu" style="width: 280px;">
-            <li class="list-group-item"><input type="checkbox" name="list" id="nivel1-1"><label for="nivel1-1">Ordenar</label>
-                <ul class="interior">
-                    <li><a href="#r">Populares</a></li>
-                    <li><a href="">Menor Precio</a></li>
-                    <li><a href="">Mayor Precio</a></li>
-                </ul>
-            </li>
-            <li class="list-group-item"><input type="checkbox" name="list" id="nivel1-2" checked=""><label for="nivel1-2">Filtros</label>
-                <ul class="interior">
-                    <li><input type="checkbox" name="list" id="nivel2-6"><label for="nivel2-6">Marca</label>
-                        <ul class="interior">
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Microsoft</a></li>
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Apple</a></li>
-                            <li><input type="checkbox" aria-label="Checkbox for following text input"><a href="#r">Toshiba</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-4"><label for="nivel2-4">Precio</label>
-                        <ul class="interior">
-                            <li><a href="#r">Menor a $200</a></li>
-                            <li><a href="#r">Mayor a $200</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-5"><label for="nivel2-5">Calificación</label>
-                        <ul class="interior">
-                            <li><a href="#r">*</a></li>
-                            <li><a href="#r">**</a></li>
-                            <li><a href="#r">***</a></li>
-                            <li><a href="#r">****</a></li>
-                            <li><a href="#r">*****</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-6"><label for="nivel2-6">Populares</label>
-                        <ul class="interior">
-                            <li><a href="#r">#</a></li>
-                            <li><a href="#r">#</a></li>
-                            <li><a href="#r">#</a></li>
-                        </ul>
-                    </li>
-                    <li><input type="checkbox" name="list" id="nivel2-7"><label for="nivel2-7">Existencia</label>
-                        <ul class="interior">
-                            <li><a href="#r">10</a></li>
-                            <li><a href="#r">50</a></li>
-                            <li><a href="#r">100</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-</div>
+<section class="listings">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 mb-2">
+                                        <h3>Buscar</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="{{route('shop.filter', $banner->id)}}" method="GET">
+                                            <div class="form-group">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary btn-block btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{ $ordenamiento }}
+                                                    </button>        
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
+                                                        <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="dropdown" >
+                                                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        Marcas
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu1">
+                                                        @php
+                                                            $contador = count($marcas['brand_name']);
+                                                            $b = 'bra';
+                                                        @endphp
+                                                        @for ($i = 0; $i < $contador; $i++)
+                                                            <li><label for="{{$b.$i}}"><input class="" type="checkbox" name="brand[]" value="{{$marcas['id'][$i]}}, {{$marcas['brand_name'][$i]}}" id="{{$b.$i}}" /><strong class="ml-1">{{$marcas['brand_name'][$i]}}</strong></label></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="dropdown" >
+                                                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        Categorias  
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu2">
+                                                        @php
+                                                            $contador = count($categorias['category']);
+                                                            $c = 'cat';
+                                                        @endphp
+                                                        @for ($i = 0; $i < $contador; $i++)
+                                                            <li><label for="{{$c.$i}}"><input class="" type="checkbox" name="categories[]" value="{{$categorias['id'][$i]}}, {{$categorias['category'][$i]}}" id="{{$c.$i}}" /><strong class="ml-1">{{$categorias['category'][$i]}}</strong></label></li>
+                                                        @endfor
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Precio Mínimo</label>
+                                                <input type="text" name="desde" class="form-control" placeholder="00.00">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Precio Máximo</label>
+                                                <input type="text" name="hasta" class="form-control" placeholder="00.00">
+                                            </div>
+                                            <hr>
+                                            <input type="hidden" name="id" value="{{$banner->id}}">
+                                            <input type="hidden" name="fil" value="1">                     
+                                            <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+                                            <button type="btn" class="btn btn-primary btn-block" name="clear" value="clear">Limpiar filtros</button>
+                                            <div class="pb-3"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

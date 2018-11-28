@@ -3,7 +3,7 @@
 @section('content')
 
 <nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tiendas</li>
     </ol>
@@ -19,10 +19,10 @@
 
                     <div class="col-sm-6 col-md-3 animated zoomIn" >
                         <a href="{{ route('shop', $shop->id) }}" style="text-decoration:none;">
-                        <div class="card  mb-3" style="max-width: 18rem; height: 200px;">
+                        <div class="card  mb-3" style="max-width: 18rem; height: 290px;">
                             <div class="card-header header-color">{{ $shop->name }}</div>
                             <div class="card-body text-primary" id="shops-card">
-                                <img class="img-fluid" src="{{$shop->path}}" alt="First slide" width="100%" height="200">
+                                <img class="img-fluid " width="250px" height="250px" src="{{$shop->path}}" alt="First slide" style="vertical-align: bottom !important;">
                             </div>
                         </div>
                     </div>

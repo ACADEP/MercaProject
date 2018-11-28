@@ -5,15 +5,18 @@
 <div id="loader-contener"></div>
 <div class="row col-md-12">
     @if(Auth::check()==false)
-        <div class="alert alert-primary" role="alert">
+        <div class="alert alert-primary lert-dismissible fade show mt-3" role="alert">
             Inicie sesión o Regístrese para completar su compra.
+            <button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     @endif
-    <div class="text-center col-10 col-sm-10 col-md-10 pt-2">
-        <nav aria-label="breadcrumb" style="width: 20%;">
-            <ol class="breadcrumb">
+    <div class="text-center col-12 col-sm-12 col-md-12 pt-2">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-right-arrow">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="">Carrito</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Carrito</li>
             </ol>
         </nav>  
     </div>
@@ -29,7 +32,7 @@
                 @endif
             @endif
         </div>
-    </form>
+    </form>            
 </div>
         
 
@@ -52,6 +55,7 @@
                 @foreach(Auth::user()->cart->with("product")->get() as $cart)
                     
                     <tr id="item-cart{{ $cart->id }}">
+                       
                        <td style="width:100px;"><img style="width:100%;" src="{{ $cart->product->photos()->first()->path}}" alt=""></td>
                         <td> <a href="{{ route('show.product', $cart->product->product_name) }}">{{ $cart->product->product_name  }}</a></td>
                     

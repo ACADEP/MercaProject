@@ -76,8 +76,17 @@ class AppMailers {
         $this->view = 'auth.confirmpassword';
         // The data that is required. 
         $this->data = compact('user');
-        // Resetpassword
-        $subjectresetpassword = 1;
+        // Now deliver the email to the user.
+        $this->deliverPassword();
+    }
+
+    public function sendEmailChangePassword(User $user) {
+        // Send this to the users email.
+        $this->to = $user->email;
+        // Pass the view to this...
+        $this->view = 'auth.changepassword';
+        // The data that is required. 
+        $this->data = compact('user');
         // Now deliver the email to the user.
         $this->deliver();
     }
@@ -172,12 +181,17 @@ class AppMailers {
      * Delivery email to user.
      */
     public function deliver() {
-       
         $this->mailer->send($this->view, $this->data, function($message) {
                 $message->from($this->from, 'Administrator')
-                ->subject($this->subject)
-                ->to($this->to);
-               
+                ->subject($this->subject)->to($this->to);
+        });    
+
+    }
+
+    public function deliverPassword() {
+        $this->mailer->send($this->view, $this->data, function($message) {
+                $message->from($this->from, 'Administrator')
+                ->subject($this->subject)->to($this->to);
         });    
 
     }

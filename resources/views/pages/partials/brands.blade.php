@@ -1,49 +1,31 @@
-<!-- <div class="col-md-12 animated fadeInDown" id="brands">
-        <div id="brand-caption">
-            <div class="animated fadeInDown">
-                <h3>Comprar por marcas</h3>
-                @foreach($rand_brands as $rand)
-                    <h6 id="random_brands"><a href="{{ url('brand', $rand->id) }}">{{ $rand->brand_name }}</a></h6>
-                @endforeach
+
+
+<h3>Comprar por marcas<a href="{{ route('all.brands') }}" class="ml-2" style="font-size: 15px;">Ver todas</a></h3>
+
+<div class="container text-center my-3">
+    <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+        <div class="carousel-inner w-100" role="listbox">
+            <div class="carousel-item row no-gutters active">
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[0]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[0]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[1]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[1]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[2]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[2]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[3]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[3]->path}}"></a></div>
+            </div>    
+            <div class="carousel-item row no-gutters">
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[4]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[4]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[5]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[5]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[6]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[6]->path}}"></a></div>
+                <div class="col-3 float-left"><a href="{{ url('brand', $rand_brands[7]->id) }}"><img width="270px" height="270px" src="{{$rand_brands[7]->path}}"></a></div>
             </div>
         </div>
-</div> -->
-<h3>Comprar por marcas</h3>
-<a href="{{ route('all.brands') }}">Ver todas</a>
-<div id="carouselExampleControls2" class="carousel slide col-sm-12 col-md-12" data-ride="carousel" >
-    <div class="carousel-inner">
-      
-
-      <div class="carousel-item active animated fadeInLeft col-sm-12 col-md-12">
-          <img class="d-block w-100" src="/images/slider/brand-store.jpg" height="300px" alt="First slide">
-          <div class="carousel-caption hidden-xs">
-            <h1><strong>Comprar por marcas</strong></h1>
-            <p class="lead">Compra con las mejores marcas!!</p>
-          </div>
-      </div>
-    
-        @foreach($rand_brands as $rand)
-            <div class="carousel-item animated fadeInLeft col-sm-12 col-md-12">
-                <a href="{{ url('brand', $rand->id) }}">
-                    <div class="carousel-caption hidden-xs">
-                        <h1><strong><span class="color">{{ $rand->brand_name }}</span></strong></h1>
-                    </div>                
-                    {{-- <div> --}}
-                        <img class="rounded d-block" src="{{$rand->path}}" alt="Second slide" height="300px" >
-                    {{-- </div> --}}
-                </a>
-            </div>
-        @endforeach
-
-        {{-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
-        </a> --}}
-      
-    </div> 
+        </a>
+    </div>
 
 </div>

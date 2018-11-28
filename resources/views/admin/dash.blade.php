@@ -79,7 +79,7 @@ desired effect
   <!-- Main Header -->
   <header class="main-header">
 
-   <a href="{{ url('/') }}" class="logo">
+   <a href="{{ url('/') }}" class="logo" style="background-color: #000 !important;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
@@ -87,9 +87,9 @@ desired effect
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" role="navigation" style="background-color: #FBFBFB !important;">
       <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="background-color: #FBFBFB !important;">
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
@@ -142,10 +142,10 @@ desired effect
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
+  <aside class="main-sidebar" style="background-color: #000 !important;">
 
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
+    <section class="sidebar" style="background-color: #000 !important;">
 
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
@@ -161,10 +161,10 @@ desired effect
 
       <!-- search form (Optional) -->
       <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+        <div class="input-group" >
+          <input type="text" name="q" class="form-control" placeholder="Buscar..." style="background-color: #424242 !important;">
           <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat" style="background-color: #424242 !important;"><i class="fa fa-search"></i>
               </button>
             </span>
         </div>
@@ -173,7 +173,7 @@ desired effect
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
+        <li class="header" style="background-color: #000 !important; color: #fff !important;"><strong>Perfil</strong></li>
         <!-- Optionally, you can add icons to the links -->
         @can("view_products")     
         <li class="treeview {{ Request::segment(2) == 'products' ? 'active' : '' }}">
@@ -182,7 +182,7 @@ desired effect
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
-          <ul class="treeview-menu ">
+          <ul class="treeview-menu " style="background-color: #242424 !important;">
           <li class="{{ Request::segment(3) == 'products' ? 'active' : '' }}"><a href="{{ url('admin/products/products/showProducts') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Productos</span></a></li>
             @can("view_categories")
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
@@ -199,7 +199,7 @@ desired effect
               </span>
           </a>
          
-          <ul class="treeview-menu ">
+          <ul class="treeview-menu " style="background-color: #242424 !important;">
             <li class="{{ Request::segment(3) == 'RolesPermissions' ? 'active' : '' }}"><a href="{{ url('admin/users/RolesPermissions') }}"><i class="fa fa-key" aria-hidden="true"></i><span>Roles y permisos</span></a></li>
             <li class="{{ Request::segment(3) == 'users' ? 'active' : '' }}"><a href="{{ url('admin/users/users') }}"><i class="fa fa-user" aria-hidden="true"></i><span>Usuarios</span></a></li>
           </ul>
@@ -210,8 +210,9 @@ desired effect
         @php $orders=App\OrderOxxo::all()->count(); @endphp
         <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
         @can("view_sales")
-        <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
+          <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
+        <li class="{{Request::segment(2) == 'invoice' ? 'active' : ''}}"><a href="{{ route('show-invoice') }}"><i class="fa fa-file-archive-o" aria-hidden="true"></i> <span>Facturas</span></a></li>
         <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
         <li class="{{Request::segment(2) == 'config' ? 'active' : ''}}"><a href="{{route('show-config')}}"><i class="fa fa-wrench"></i> <span>Configuración</span></a></li>
       </ul>
@@ -360,6 +361,7 @@ desired effect
 @yield('msg-success')
 @yield('show-inputs')
 @yield('typehead-marketRates')
+@yield('js-dropzone')
 
 
 

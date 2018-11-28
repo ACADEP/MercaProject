@@ -51,7 +51,7 @@
                
                     <tr>
                         <td ><img class="img-responsive" src="{{$favorite->product->photos()->first()->path}}" style="height:75px;"></td>
-                        <td> <br>  <a href="{{ route('show.product', $favorite->product->product_name) }}" > {{$favorite->product->product_name}}</a></td>
+                        <td> <br>  <a class="link-products" href="{{ route('show.product', $favorite->product->product_name) }}" > {{$favorite->product->product_name}}</a></td>
                         <td> <br> {{$favorite->product->description}}</td>
                     </tr>
                 

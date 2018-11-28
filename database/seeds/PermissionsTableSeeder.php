@@ -92,5 +92,26 @@ class PermissionsTableSeeder extends Seeder
             'display_name' => 'Ver Ventas',
             'guard_name'=>'web'
         ]);
+
+        //Permisos para facturas
+        DB::table('permissions')->insert([
+            'name'    => 'view_invoice',
+            'display_name' => 'Ver facturas',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'add_invoice',
+            'display_name' => 'Subir facturas',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'delete_invoice',
+            'display_name' => 'Quitar facturas',
+            'guard_name'=>'web'
+        ]);
+
+
     }
 }

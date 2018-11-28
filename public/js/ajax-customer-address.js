@@ -1,7 +1,7 @@
 $(document).ready(function(){
     
 
-    $(".btn-delete").click(function(){
+    $(".btn-delete-address").click(function(){
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -9,10 +9,11 @@ $(document).ready(function(){
         });
 
         var id=$(this).val();
-        var formData = { id  : id }
+        var formData = { id  : id };
+        // console.log($(this).val());
 
         $.ajax({
-            url: "/customer/address/delete",
+            url: "/customer/personal/address/delete",
             method: 'post',
             data: formData,
             success: function(response){
@@ -40,7 +41,7 @@ $(document).ready(function(){
             var formData = { radioactivo  : radioactivo};
            
             $.ajax({
-                url: '/customer/address',
+                url: '/customer/personal/address',
                 method: 'POST',
                 data: formData,
                 success: function(response){

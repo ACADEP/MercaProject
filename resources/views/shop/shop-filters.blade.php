@@ -13,9 +13,8 @@
     <form action="/pricelow" method="post">
         {{csrf_field()}}
         <div class="dropdown">
-            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-info btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ $ordenamiento }}
-                <!--Ordenar por -->
             </button>        
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
@@ -35,7 +34,7 @@
                     Marcas
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check text-left" aria-labelledby="dropdownMenu1" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color text-left" aria-labelledby="dropdownMenu1">
                     @php
                         $contador = count($marcas['brand_name']);
                         $b = 'bra';
@@ -48,10 +47,10 @@
 
             <div class="dropdown ajuste alineado" >
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Por Categoria   
+                    Categorias  
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check" aria-labelledby="dropdownMenu2" style="background-color: #616161;">
+                <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2">
                     @php
                         $contador = count($categorias['category']);
                         $c = 'cat';
@@ -72,6 +71,7 @@
 
             <div class="ajuste alineado">
                 <input type="hidden" name="id" value="{{$banner->id}}">
+                <input type="hidden" name="fil" value="1">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search fa-lg" style="width: 20px;" aria-hidden="true"></i></button>
             </div> 
         </div>

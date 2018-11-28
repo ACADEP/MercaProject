@@ -33,6 +33,10 @@ Route::group(['middleware' => ['web']], function () {
     /** Get the Home Page **/
     Route::get('/', 'PagesController@index');
 
+    Route::get('/about', 'PagesController@about');
+
+    Route::get('/help', 'PagesController@help');
+
     /** Display Products by category Route **/
     Route::get('/Category/{category}','PagesController@displayProducts')->name('productsByCategory');
 
@@ -78,6 +82,12 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => '\App\Http\Controllers\PagesController@displayAllOffersProducts',
         'as'   => 'all.offers',
     ]);
+
+    /** Display all Selled Products Route **/
+    Route::get('/selled', [
+        'uses' => '\App\Http\Controllers\PagesController@displayAllSelledProducts',
+        'as'   => 'all.selled',
+    ]);    
 
     /** Route to post search results **/
     Route::get('/queries', [
@@ -140,33 +150,44 @@ Route::group(['middleware' => ['web']], function () {
     /************************************** Order By Routes for Products By Brand, Category and Range Price *****************************/
     
     /** Route to filter products for categories */
-    Route::post('category/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/category/{id}/filter', [
+        'uses' => '\App\Http\Controllers\CategoriesController@filtros',
+        'as'   => 'category.filter',
+    ]);
+
+    Route::get('/queries/filter', [
+        'uses' => '\App\Http\Controllers\QueryController@filtros',
+        'as'   => 'queries.filter',
     ]);
 
     /** Route to filter products for destacados */
-    Route::post('offers/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/offers/filter', [
+        'uses' => '\App\Http\Controllers\PagesController@filtrosOffer',
+        'as'   => 'offer.filter',
     ]);
 
     /** Route to filter products for news */
-    Route::post('new-products/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
-        'as'   => 'filter',
+    Route::get('/new-products/filter', [
+        'uses' => '\App\Http\Controllers\PagesController@filtrosNuevos',
+        'as'   => 'new.filter',
     ]);
 
     /** Route to filter products for brans */
-    Route::get('bran/{id}/filter', [
-        'uses' => '\App\Http\Controllers\QueryController@filter',
+    Route::get('/bran/{id}/filter', [
+        'uses' => '\App\Http\Controllers\BrandsController@filtros',
         'as'   => 'bran.filter',
     ]);
 
-        /** Route to filter products for shops */
+    /** Route to filter products for shops */
     Route::get('/shop/{id}/filter', [
         'uses' => '\App\Http\Controllers\ShopController@filtros',
         'as'   => 'shop.filter',
+    ]);
+
+    /** Route to filter products for Special Search */
+    Route::get('/special/filter', [
+        'uses' => '\App\Http\Controllers\SpecialSearchController@specialFilters',
+        'as'   => 'special.filter',
     ]);
 
 
@@ -239,6 +260,75 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => '\App\Http\Controllers\OrderByController@productsNewestBrand',
         'as'   => 'brand.newest',
     ]);
+
+
+    /************************************** Order By Routes for Products By Offer Products ***********************************/
+
+    /** Route to sort products by price lowest */
+    Route::get('/offers/price/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceLowestOffers',
+        'as'   => 'offers.lowest',
+    ]);
+
+    /**Route to sort products by price highest */
+    Route::get('/offers/price/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceHighestOffers',
+        'as'   => 'offers.highest',
+    ]);
+
+
+    /** Route to sort products by alphabetical A-Z */
+    Route::get('/offers/alpha/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaHighestOffers',
+        'as'   => 'offers.alpha.highest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/offers/alpha/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaLowestOffers',
+        'as'   => 'offers.alpha.lowest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/offers/newest', [
+        'uses' => '\App\Http\Controllers\OrderByController@NewestOffers',
+        'as'   => 'offers.newest',
+    ]);
+
+    
+    /************************************** Order By Routes for Products By New Products ***********************************/
+
+    /** Route to sort products by price lowest */
+    Route::get('/new-products/price/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceLowestNew',
+        'as'   => 'new.lowest',
+    ]);
+
+    /**Route to sort products by price highest */
+    Route::get('/new-products/price/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@PriceHighestNew',
+        'as'   => 'new.highest',
+    ]);
+
+
+    /** Route to sort products by alphabetical A-Z */
+    Route::get('/new-products/alpha/highest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaHighestNew',
+        'as'   => 'new.alpha.highest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/new-products/alpha/lowest', [
+        'uses' => '\App\Http\Controllers\OrderByController@AlphaLowestNew',
+        'as'   => 'new.alpha.lowest',
+    ]);
+
+    /**Route to sort products by alphabetical  Z-A */
+    Route::get('/new-products/newest', [
+        'uses' => '\App\Http\Controllers\OrderByController@NewestNew',
+        'as'   => 'new.newest',
+    ]);
+    
 
 
     /**************************************** Login & Registration Routes *********************************************/
@@ -364,49 +454,49 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('/customer/deletefavorite','CustomerController@deleteFavorite')->name("delete-favorite");
 
     /*********************** CRUD Personal Dates Profile ***********************/
-    Route::get('/customer/personal', [
+    Route::get('/customer/personal/data', [
         'uses' => '\App\Http\Controllers\CustomerController@personal',
         'as'   => 'customer.personal',
     ]);
 
-    Route::post('/customer/personal/add', [
+    Route::post('/customer/personal/data/add', [
         'uses' => '\App\Http\Controllers\CustomerController@addpersonal',
         'as'   => 'customer.personal.add',
     ]);
 
-    Route::get('/customer/personal/update/{id}', [
+    Route::get('/customer/personal/data/update/{id}', [
         'uses' => '\App\Http\Controllers\CustomerController@showUpdate',
         'as'   => 'customer.personal.showUpdate',
     ]);
 
-    Route::post('/customer/personal/update', [
+    Route::post('/customer/personal/data/update', [
         'uses' => '\App\Http\Controllers\CustomerController@personalUpdate',
         'as'   => 'customer.personal.update',
     ]);
 
     /*********************** CRUD Dates Profile ***********************/
-    Route::get('/customer/profiledates', [
+    Route::get('/customer/personal/acount', [
         'uses' => '\App\Http\Controllers\CustomerController@profile',
-        'as'   => 'customer.profiledates',
+        'as'   => 'customer.acount',
     ]);
 
     /*********************** CRUD Address Profile ***********************/
-    Route::get('/customer/address', [
+    Route::get('/customer/personal/address/', [
         'uses' => '\App\Http\Controllers\AddressController@address',
         'as'   => 'customer.address',
     ]);
 
-    Route::post('/customer/address', [
+    Route::post('/customer/personal/address', [
         'uses' => '\App\Http\Controllers\AddressController@activeAddress',
         'as'   => 'customer.address.activo',
     ]);
 
-    Route::post('/customer/address/add', [
+    Route::post('/customer/personal/address/add', [
         'uses' => '\App\Http\Controllers\AddressController@addAddress',
         'as'   => 'customer.address.add',
     ]);
 
-    Route::get('/customer/address/update/{id}', [
+    Route::get('/customer/personal/address/update/{id}', [
         'uses' => '\App\Http\Controllers\AddressController@Update',
         'as'   => 'customer.address.showUpdate',
     ]);
@@ -418,31 +508,31 @@ Route::group(["middleware" => 'customer'], function(){
     //     'as'   => 'customer.address.showUpdate',
     // ]);
 
-    Route::post('/customer/address/update', [
+    Route::post('/customer/personal/address/update', [
         'uses' => '\App\Http\Controllers\AddressController@updateAddress',
         'as'   => 'customer.address.update',
     ]);
 
-    Route::post('/customer/address/delete', [
+    Route::post('/customer/personal/address/delete', [
         'uses' => '\App\Http\Controllers\AddressController@deleteAddress',
         'as'   => 'customer.address.delete',
     ]);
 
 
     /*********************** CRUD Payments Profile ***********************/
-    Route::get('/customer/payments', [
+    Route::get('/customer/personal/payments', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@payments',
         'as'   => 'customer.payments',
     ]);
 
     /** Payments add cards **/
-    Route::post('/customer/payments/add', [
+    Route::post('/customer/personal/payments/add', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@addCard',
         'as'   => 'customer.payments.add',
     ]);
 
     /** Payments deletecards **/
-    Route::post('/customer/payments/delete', [
+    Route::post('/customer/personal/payments/delete', [
         'uses' => '\App\Http\Controllers\PaymentInformationController@deleteCard',
         'as'   => 'customer.payments.delete',
     ]);
@@ -470,6 +560,12 @@ Route::group(["middleware" => 'customer'], function(){
         'uses' => '\App\Http\Controllers\CartController@showPaymentCardCredit',
         'as'   => 'cart.payment',
     ]);
+
+    Route::get('/cart/payment/pruevaOxxo', [
+        'uses' => '\App\Http\Controllers\CartController@pruevasRecibos',
+        'as'   => 'cart.payment',
+    ]);
+
 
     /** payment items confirmation in the cart with Stripe **/
     Route::post('/cart/confirmation', [
@@ -639,10 +735,10 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/market_rates/createMarketRate", "MarketRatesController@createMarket_rates")->name("create-marketRate");
     //Actualizar cotizacion
     Route::post("/admin/market_rates/updateMarketRate", "MarketRatesController@updateMarket_rates")->name("update-marketRate");
-   //Eliminar producto de cotizacion en editar
-   Route::post("/admin/market_rates/deleteProductEdit", "MarketRatesController@deleteProductMarket_ratesEdit")->name("delete-ProductMarketRatesEdit");
-   //Eliminar producto de cortizacion en crear
-   Route::post("/admin/market_rates/deleteMarket_rates", "MarketRatesController@deleteMarket_rates")->name("delete-MarketRates");
+    //Eliminar producto de cotizacion en editar
+    Route::post("/admin/market_rates/deleteProductEdit", "MarketRatesController@deleteProductMarket_ratesEdit")->name("delete-ProductMarketRatesEdit");
+    //Eliminar producto de cortizacion en crear
+    Route::post("/admin/market_rates/deleteMarket_rates", "MarketRatesController@deleteMarket_rates")->name("delete-MarketRates");
     //Enviar cotizacion
     Route::get("/admin/market_rates/send/{marketrate}", "MarketRatesController@sendMarketRate")->name("Send-MarketRate");
     //Enviar cotizacion en crear
@@ -661,6 +757,12 @@ Route::group(["middleware" => 'admin'], function(){
     //Imprimir PDF
     Route::get('/print-market_rate/{marketrate}', 'MarketRatesController@PDF')->name('marketRatesPdf');
 
+    //Facturas
+    Route::get("/admin/invoice", "AdminController@showInvoice")->name("show-invoice");
+    //Subir factura
+    Route::get("/admin/invoice/addInvoice", "AdminController@addInvoice")->name("add-invoice");
+    //Quitar factura
+    Route::get("/admin/invoice/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");
 
     //CRUD Usuarios
     //Mostrar todas las categorias

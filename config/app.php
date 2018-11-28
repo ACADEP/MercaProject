@@ -165,7 +165,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
         Aftab\Sepomex\SepomexServiceProvider::class,
-       
+        Dirape\Token\TokenServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 
@@ -222,6 +223,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,  
         'QRCode' => LaravelQRCode\Facades\QRCode::class,  
         'Sepomex' => Aftab\Sepomex\Facades\Sepomex::class, 
+        'Token'=>\Dirape\Token\Facades\Facade::class,
 
     ],
 

@@ -57,16 +57,16 @@
                                 @if(Auth::check())
                                     <div class="form-inline">
                                         @role('Client')
-                                        <a href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        <a class="header-color" href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
-                                        <a href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
+                                        <a class="header-color" href="{{ url('/admin/index') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @endrole
-                                        <a href="{{ url('/logout') }}">Salir</a>
+                                        <a class="header-color" href="{{ url('/logout') }}">Salir</a>
                                     </div>
                                     
                                 @else  
-                                    <a href="{{ url('/login') }}">Inicio de sesión </a>&nbsp &nbsp
-                                    <a href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
+                                    <a class="header-color" href="{{ url('/login') }}">Inicio de sesión </a>&nbsp &nbsp
+                                    <a class="header-color" href="{{ url('/register') }}">Registrarse</a>&nbsp&nbsp
                                 @endif
                                 <!-- <a href="#" id="cart"><i class="material-icons"> shopping_cart</i><span class="badge">3</span></a> -->
                                 
@@ -81,15 +81,16 @@
                     @endif
                     <br><br>
                         <li class="nav-item">
-                            <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a>
+                            {{-- <a data-toggle="modal"  data-target="#exampleModalCenter">Búsqueda especial</a> --}}
+                            <a data-toggle="modal"  data-target=".bd-example-modal-lg">Búsqueda avanzada</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a href="#">Nosotros</a>
+                            <a class="header-color" href="{{ url('/about') }}">Nosotros</a>
                         </li>
                         &nbsp&nbsp
                         <li class="nav-item">
-                            <a href="#">Ayuda</a>
+                            <a class="header-color" href="{{ url('/help') }}">Ayuda</a>
                         </li>
                     </div>
                     

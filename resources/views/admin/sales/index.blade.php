@@ -17,6 +17,7 @@
                 <th>Fecha de la venta</th>
                 <th>Cantidad</th>
                 <th>Total</th>
+                <th>Factura</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,12 @@
                     <td>{{$history->date}}</td>
                     <td>{{ $history->amount }}</td>
                     <td>${{number_format($history->total, 2)  }}</td>
+                    <td>
+                        <form style="display:inline;" action="" method="post">
+                            <button type="submit" data-placement="top" title="Subir Factura" class="btn btn-primary btn-xs"><i class="fa fa-file-pdf-o"></i></button>
+                        </form>
+                        <button class="btn btn-danger btn-xs btn-row-market" data-placement="top" title="Quitar Factura" value=""><i class="fa fa-minus-square"></i></button>
+                    </td>
                 </tr>
             @endforeach
         @else

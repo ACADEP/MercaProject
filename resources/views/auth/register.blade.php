@@ -8,7 +8,7 @@
                 <div class="card" id="Login-Register-Panel">
                     <div class="card-body">
                     @if(session('flash'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-primary">
                             {{session('flash')}}
                         </div>
                     @endif
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
+                            {{-- <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-md-offset-1">
                                     <select class="form-control" id="SelectAccount" name="account" value="{{ old('account') }}">
                                         <option value="0" selected>Cliente</option>
@@ -39,7 +39,7 @@
                                     </span>
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-md-offset-1">
@@ -78,13 +78,13 @@
                                 <div class="col-md-12 col-md-offset-3 text-center">
                                 <input type="hidden" id="registerCookie" name="cookieProductos">
                                 <script>document.getElementById("registerCookie").value=Cookies.get("productos");</script>
-                                    <br><button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Registrarse</button>
+                                    <br><button type="submit" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Registrarse</button>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-12 col-md-offset-3 text-center">
-                                    <a href="{{ url('/login') }}" id="Sign-up" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Inicia Sesión</a>
+                                    <a href="{{ url('/login') }}" id="Sign-up" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Inicia Sesión</a>
                                 </div>
                             </div>
 

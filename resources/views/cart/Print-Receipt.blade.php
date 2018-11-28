@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Recibo de Pago</title>
-    <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
   </head>
   <body>
     @php  $now = new \DateTime(); @endphp
@@ -13,25 +13,31 @@
           <div class="mercaLogo">
             <img src="{{asset('/images/mercadata-footer.png')}}">
           </div>
-            <div class="slogan">
+            <div class="slogan font">
                 <strong><h3>MercaData</h3></strong>
                 Tu tienda de tecnologia en línea 
             </div>
       </div>
-      <h1>Recibo de Pago</h1>
-      <div id="company" class="clearfix">
-        <div><strong>Mercadata</strong></div>
-        <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
-        <div>Tel: 612 122 5174</div>
-        <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
+      <h1 class="tittle font">Recibo de Pago</h1>
+
+      <div class="row mb-3" id="dates">
+        <div class="col-sm-6 col-md-6" id="project">
+          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
+          <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
+          <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
+          <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
+          <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
+        </div>
+    
+        <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
+          <div><strong>Mercadata</strong></div>
+          <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
+          <div>Tel: 612 122 5174</div>
+          <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
+        </div>  
       </div>
-      <div id="project">
-        <div><span><strong>Cliente</strong></span> {{$client->customer->nombre}}</div>
-        <div><span><strong>Dirección</strong></span> {{$address->calle}}, {{$address->ciudad}} {{$address->cp}}, {{$address->estado}}</div>
-        <div><span><strong>Correo</strong></span> <a href="mailto:{{$client->email}}">{{$client->email}}</a></div>
-        <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
-        <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
-      </div>
+
+      <div class="row mt-5"></div>
     </header>
     <main>
       <table>
@@ -56,7 +62,7 @@
             </tr>
           @endforeach
         @else
-          @foreach($Items->customerHistories()->get() as $item)
+          {{-- @foreach($Items->customerHistories()->get() as $item)
             <tr>
                 <td class="service">{{$item->amount}}</td>
                 <td class="desc">{{$item->product->product_sku}}</td>
@@ -64,7 +70,7 @@
                 <td class="qty">${{number_format($item->product_price, 2)}}</td>
                 <td class="total">${{number_format(($item->product_price*$item->amount), 2)}}</td>
             </tr>
-          @endforeach
+          @endforeach --}}
         @endif
           <tr>
             <td colspan="4">Subtotal</td>
@@ -90,6 +96,7 @@
         <div><strong>¡Gracias por hacer su compra!</strong></div>
         <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
         <div class="notice">En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.</div>
+        <div class="notice">A partir de 24 horas tiene 7 días para solicitar su factura al correo de Mercadata.</div>
       </div>
     </main>
     <footer>

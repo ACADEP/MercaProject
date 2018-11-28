@@ -4,7 +4,9 @@
            
 <div class="col-md-12 row">
 
-    @include('partials.breadcrum')
+    <div class="col-sm-12 col-md-12 pt-3" >    
+        @include('partials.breadcrum')
+    </div>
             
     <div class="row">               
             <div class="col-md-8 gallery zoom-container">
@@ -54,10 +56,10 @@
                         <input type="hidden" id="url" value="/cart/add">
                         <span class="d-inline-block" tabindex="0" >
                             <button class="btn btn-primary btn-addcart" data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
-                                    <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
+                                    <i class="fa fa-shopping-cart" style="line-height: 2"></i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
                             </button>
                             @if(Auth::check())
-                            <button class="btn btn-danger waves-effect waves-light btn-favorite" data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
+                            <button class="btn btn-warning waves-effect waves-light btn-favorite" data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
                                     <i class="fa fa-heart" aria-hidden="true"></i>
                             </button>
                             @endif
@@ -94,7 +96,7 @@
 
             @foreach($similar_product->slice(0, 4) as $similar)
                 <div class="col-xs-6 col-md-2" id="Similar-Product-Sub-Container" >
-                    <a href="{{ route('show.product', $similar->product_name) }}">
+                    <a class="link-products" href="{{ route('show.product', $similar->product_name) }}">
                         @if ($similar->photos->count() === 0)
                             <p id="Similar-Title">{{ str_limit($similar->product_name, $limit = 28, $end = '...') }}</p>
                             <img src="/images/no-image-found.jpg" alt="Imagen no encontrada" id="Product-similar-Image">

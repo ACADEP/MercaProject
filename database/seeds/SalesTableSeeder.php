@@ -26,7 +26,7 @@ class SalesTableSeeder extends Seeder
             'user_id'       => 9,
             'date'          => Carbon::now(),
             'url_fact'      => '#',
-            'status_pago'   => 'Pagado',
+            'status_pago'   => 'Acreditado',
             'status_envio'  => 'Entregado',
             'status_reclamo'=> 'Abrir un reclamo',
             'total'         => 100
@@ -36,7 +36,7 @@ class SalesTableSeeder extends Seeder
             'user_id'       => 9,
             'date'          => Carbon::now(),
             'url_fact'      => '#',
-            'status_pago'   => 'Pagado',
+            'status_pago'   => 'Acreditado',
             'status_envio'  => 'Entregado',
             'status_reclamo'=> 'Abrir un reclamo',
             'total'         => 1500
