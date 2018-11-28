@@ -7,6 +7,7 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Category;
+use App\Sale;
 use App\ProductSeller;
 use App\SeleHistory;
 use App\OrderOxxo;
@@ -482,12 +483,42 @@ class AdminController extends Controller {
         return view('admin.invoice.invoice');
     }
 
-    public function addInvoice() {
-        return view('admin.invoice.invoice');
+    public function storeInvoice(Request $request) {
+        $sale = Sale::where('id',$request->get("factura"))->get();
+        $seleHistory = SeleHistory::where('sale_id', $request->get("factura"))->get();
+        $this->validate(request(),[
+            'saleInvoice' => ' application|max:5120'
+        ]);
+
+        // $fact = $seleHistory->client.'-'.$seleHistory->id;
+        $path = '/facturas/';
+        if(!empty($_FILES)) {
+            $file=request()->file('saleInvoice');
+            $file = 
+
+            $temp_file = $_FILES['file']['tmp_name'];
+            $location = $path.$_FILES['file']['name'];
+            move_uploaded_file($temp_file, $location);
+            
+            // $sale->url_fact = $location;
+            // return response(['invoiceUrl'=>$imageProduct->path,"url"=>$url],200);
+        } else {
+            return response(['invoiceUrl'=>null,"url"=>null],200);
+        }
+
+           
     }
 
-    public function deleteInvoice() {
-        return view('admin.invoice.invoice');
+    public function deleteInvoice($sale_id) {
+        // Find the photo and delete it.
+        $productPhoto=ProductPhoto::find($sale_id);
+        if(File::delete(public_path($productPhoto->path)))
+        {
+            $productPhoto->delete();
+        }
+        
+        // Then return back;
+        return back();        
     }
 
     

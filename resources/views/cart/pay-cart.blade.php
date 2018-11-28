@@ -76,6 +76,8 @@
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
                 <div class="row" id="shipments">
                     <!-- Paqueterias disponibles -->
+                    @if ($rates != null)
+                        
                     @if($rates->count() > 0)
                    @foreach($rates as $rate)
                    @php $date = date_create($rate->estimated_delivery); @endphp
@@ -124,6 +126,9 @@
                     </script>
                     @else
                     
+                    <span class="badge badge-danger">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
+                    @endif
+                    @else 
                     <span class="badge badge-danger">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
                     @endif
                     <script> $('#loader').remove();</script>
@@ -524,6 +529,8 @@ $(document).ready(function () {
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
                 $("#bank_carrie_id").val($('#carrie_id').val());
+                $("#ship_rate_bank").val($('#ship_rate_choosed').html());
+                $("#date_ship_bank").val($('#date_aprox').html());
                 $('#transfer').modal('show');
             }
             else if($("#store-method-r").prop("checked"))
@@ -532,6 +539,8 @@ $(document).ready(function () {
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
                 $("#store_carrie_id").val($('#carrie_id').val());
+                $("#ship_rate_store").val($('#ship_rate_choosed').html());
+                $("#date_ship_store").val($('#date_aprox').html());
                 $('#store').modal('show');
             }
             else if($("#oxxo-method-r").prop("checked"))
@@ -685,6 +694,8 @@ $(document).ready(function () {
       <form action="/cart/confirmation-banco" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="ship_rate" id="ship_rate_bank">
+            <input type="hidden" name="date_ship" id="date_ship_bank">
             <input type="hidden" name="carrie" id="bank_carrie">
             <input type="hidden" name="carrie_id" id="bank_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
@@ -710,6 +721,8 @@ $(document).ready(function () {
       <form action="/cart/confirmation-store" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="ship_rate" id="ship_rate_store">
+            <input type="hidden" name="date_ship" id="date_ship_store">
             <input type="hidden" name="carrie" id="store_carrie">
             <input type="hidden" name="carrie_id" id="store_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>

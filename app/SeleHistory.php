@@ -19,9 +19,10 @@ class SeleHistory extends Model
         return $this->hasMany(Sales::class);
     }
 
-    public function insert(Cart $cart, $id_prov, $client)
+    public function insert(Cart $cart, $id_prov, $client, $sale_id)
     {
         $this->user_id=$id_prov;
+        $this->sale_id=$sale_id;
         $this->product_id=$cart->product->id;
         $this->client=$client;
         $this->date=Carbon::now();
@@ -40,4 +41,5 @@ class SeleHistory extends Model
         $this->total=$item->amount*$item->product_price;
         $this->save();
     }
+
 }

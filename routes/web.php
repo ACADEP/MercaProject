@@ -697,6 +697,12 @@ Route::group(["middleware" => 'admin'], function(){
     //Eliminar orden
     Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
 
+    //Facturas
+    Route::get("/admin/invoice", "AdminController@showInvoice")->name("show-invoice");
+    //Subir factura
+    Route::post("/admin/sales/addInvoice", "AdminController@storeInvoice")->name("add-invoice");
+    //Quitar factura
+    Route::get("/admin/sales/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");    
 
     //CRUD Categorias
     //Mostrar todas las categorias
@@ -748,13 +754,6 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/market_rates/deleteProduct", "MarketRatesController@deleteProductMarket_rates")->name("delete-ProductMarketRates");
     //Imprimir PDF
     Route::get('/print-market_rate/{marketrate}', 'MarketRatesController@PDF')->name('marketRatesPdf');
-
-    //Facturas
-    Route::get("/admin/invoice", "AdminController@showInvoice")->name("show-invoice");
-    //Subir factura
-    Route::get("/admin/invoice/addInvoice", "AdminController@addInvoice")->name("add-invoice");
-    //Quitar factura
-    Route::get("/admin/invoice/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");
 
     //CRUD Usuarios
     //Mostrar todas las categorias

@@ -359,6 +359,7 @@ desired effect
 @yield('show-inputs')
 @yield('typehead-marketRates')
 @yield('js-dropzone')
+@yield('upload-invoice')
 
 
 
