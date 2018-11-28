@@ -31,9 +31,10 @@ class SeleHistory extends Model
         $this->save();
     }
 
-    public function insert_pCustomer(CustomerHistory $item, $id_prov, $client)
+    public function insert_pCustomer(CustomerHistory $item, $id_prov, $client, $sale_id)
     {
         $this->user_id=$id_prov;
+        $this->sale_id=$sale_id;
         $this->product_id=$item->product_id;
         $this->client=$client;
         $this->date=Carbon::now();

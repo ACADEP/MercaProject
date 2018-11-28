@@ -372,6 +372,7 @@ class CartController extends Controller {
         $sale= new Sale;
         $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
         $cartItems=Auth::user()->carts();
+        $itemsCart = Auth::user()->cart->with("product")->get();
         foreach($cartItems->get() as $cartItem)
         {
             $customerHistory=new CustomerHistory;
@@ -393,7 +394,7 @@ class CartController extends Controller {
         $charge = $openpay->charges->create($chargeData);
         
         if($charge){    
-            $pdf = PDF::loadView('cart.Print-Bank',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+            $pdf = PDF::loadView('cart.Print-Bank',compact('itemsCart','ship_rate','ship_rate_total','date_ship', 'charge'));
             Session::put('pay-bank',  $pdf->stream('Recibo-Banco.pdf'));
             Session::save(); 
             return redirect("/");
@@ -440,7 +441,6 @@ class CartController extends Controller {
         $random = rand(0, 99999);
 
         try {
-       
 
         $customerData = array(
             'name' => $usercustomer->nombre,
@@ -459,6 +459,8 @@ class CartController extends Controller {
         $sale= new Sale;
         $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
         $cartItems=Auth::user()->carts();
+        $itemsCart = Auth::user()->cart->with("product")->get();
+
         foreach($cartItems->get() as $cartItem)
         {
             $customerHistory=new CustomerHistory;
@@ -480,7 +482,7 @@ class CartController extends Controller {
         $charge = $openpay->charges->create($chargeData);
        
         if($charge){    
-            $pdf = PDF::loadView('cart.Print-Store',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+            $pdf = PDF::loadView('cart.Print-Store',compact('itemsCart','ship_rate','ship_rate_total','date_ship', 'charge'));
             Session::put('pay-store',  $pdf->stream('Recibo-Tiendas.pdf'));
             Session::save(); 
             return redirect("/");
@@ -549,7 +551,7 @@ class CartController extends Controller {
                        if($productseller != null)
                        {
                            $saleHistory=new SeleHistory;
-                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
                        }
                        else
                        {
@@ -557,7 +559,7 @@ class CartController extends Controller {
                            foreach($admins as $admin)
                            {   
                                $saleHistory=new SeleHistory;
-                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
                            }
                        }
                    }

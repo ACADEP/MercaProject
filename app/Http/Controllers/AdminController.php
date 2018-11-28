@@ -486,27 +486,13 @@ class AdminController extends Controller {
     public function storeInvoice(Request $request) {
         $sale = Sale::where('id',$request->get("factura"))->get();
         $seleHistory = SeleHistory::where('sale_id', $request->get("factura"))->get();
-        $this->validate(request(),[
-            'saleInvoice' => ' application|max:5120'
-        ]);
+        // $this->validate(request(),[
+        //     'invoiceSale' => ' application|max:5120'
+        // ]);
 
-        // $fact = $seleHistory->client.'-'.$seleHistory->id;
-        $path = '/facturas/';
-        if(!empty($_FILES)) {
-            $file=request()->file('saleInvoice');
-            $file = 
+        $file = $request->file()
 
-            $temp_file = $_FILES['file']['tmp_name'];
-            $location = $path.$_FILES['file']['name'];
-            move_uploaded_file($temp_file, $location);
-            
-            // $sale->url_fact = $location;
-            // return response(['invoiceUrl'=>$imageProduct->path,"url"=>$url],200);
-        } else {
-            return response(['invoiceUrl'=>null,"url"=>null],200);
-        }
-
-           
+        return back();
     }
 
     public function deleteInvoice($sale_id) {
