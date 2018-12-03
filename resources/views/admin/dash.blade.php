@@ -81,9 +81,9 @@ desired effect
 
    <a href="{{ url('/') }}" class="logo" style="background-color: #000 !important;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
+      <span class="logo-mini"><img src="{{config('configurations.general.mini_logo')}}" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><img class="img-responsive" src="/images/logo-home.png" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
+      <span class="logo-lg"><img class="img-responsive" src="{{config('configurations.general.main_logo')}}" style="float: left; width: 80%; height: 10%; margin-left: 10%"></span>
     </a>
 
     <!-- Header Navbar -->

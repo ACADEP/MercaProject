@@ -241,6 +241,7 @@ class CartController extends Controller {
         Session::save();
 
         $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado");
+        
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
@@ -253,12 +254,10 @@ class CartController extends Controller {
             }
             else
             {
-                $admins=User::where("admin",1)->get();
-                foreach($admins as $admin)
-                {   
-                    $saleHistory=new SeleHistory;
-                    $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre);
-                }
+                $admin = User::role('Admin')->first();
+                $saleHistory=new SeleHistory;
+                $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre);
+            
             }
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);

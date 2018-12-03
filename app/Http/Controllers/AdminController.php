@@ -37,8 +37,8 @@ class AdminController extends Controller {
     }
 
     public function showSales() {
-        $sales= Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $histories= Auth::user()->selehistories()->get();
+        $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
+        $histories=Auth::user()->selehistories()->get();
         return view("admin.sales.index", compact("sales", "histories"));       
     }
 

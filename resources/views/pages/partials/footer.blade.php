@@ -5,7 +5,7 @@
         <div style="color:white">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="/images/mercadata-footer.png" width="150px">
+                    <img src="{{config('configurations.general.main_logo')}}" width="150px">
                     <p class="white-text text-center"><a href="{{ url('/') }}">Mercadata</a></p>
                 </div>
                 

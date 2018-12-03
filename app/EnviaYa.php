@@ -13,7 +13,7 @@ class EnviaYa extends Model
         $endpoint = "https://enviaya.com.mx/api/v1/shipments";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
+        $api_key = config("configurations.api.api_key_enviaya");
         $origin=[   'company'=> "Acadep",
                     'country_code'=> "MX",
                     'postal_code'=> "23000",
@@ -90,7 +90,7 @@ class EnviaYa extends Model
         $url = "https://enviaya.com.mx/api/v1/rates";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
+        $api_key = config('configurations.api.api_key_enviaya');
         $origin=[   'country_code'=> "MX",
                     'postal_code'=> "23000" ];
         $destination=[  'country_code'=> "MX",
@@ -142,7 +142,7 @@ class EnviaYa extends Model
         $endpoint = "https://enviaya.com.mx/api/v1/trackings";
         $client = new \GuzzleHttp\Client();
 
-        $api_key = '91fd302dde92bf5160e6b261b680b1c1';
+        $api_key = config("configurations.api.api_key_enviaya");
         $carrier=$carrie_name;
         $shipment_number=$shipment_num;
         $requestContent = [
