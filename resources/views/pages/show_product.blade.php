@@ -9,20 +9,28 @@
     </div>
             
     <div class="row">               
-            <div class="col-md-8 gallery zoom-container">
+            <div class="col-md-8 gallery row">
                 @if ($product->photos->count() == 0)
                     <p>No hay imagenes de este producto.</p><br>
                     <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image">
                 @else
-                    @foreach ($product->photos->slice(0, 8) as $photo)
-                        <div class="col-xs-6 col-sm-4 col-md-4 gallery_image text-center" style="float:left;" >
-                            <a href="{{$photo->path }}" data-lity>
-                                <img src="{{$photo->thumbnail_path}}"  alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail">
-                            </a>
+                        <div class="col-md-4">
+                        @foreach ($product->photos->slice(0, 8) as $photo)
+                            
+                            <div class="col-xs-6 col-sm-4 col-md-6 gallery_image text-center"  >
+                                <a >
+                                    <img src="{{$photo->thumbnail_path}}" id="" alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail img-product">
+                                </a>
+                            </div>
+                        @endforeach
                         </div>
-                    @endforeach
+                        <div class="col-md-6" >
+                        <div id="img-container" class="xzoom-container" >
+                            <img class="xzoom" id="main-img" style="width:100%;" src="{{ $product->photos()->first()->path}}" xoriginal="{{ $product->photos()->first()->path}}" />
+                        </div>
+                    </div>
                 @endif
-                
+               
             </div>
             
             <div class="col-md-4">
@@ -36,15 +44,7 @@
                     <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s style="color: red;">$ {{number_format($product->price, 2)  }}<i class="fa fa-tag ml-1" aria-hidden="true"></i></s></div>
                     <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
                 @endif
-                <hr>
                
-                @if($product->shipments()->count()>0)
-                    <h5>Metodos de envio por:</h5>
-                    @foreach($product->shipments()->get() as $shipment)
-                        <p id="Product_Brand">{{$shipment->ship->name}} - ${{number_format($shipment->price, 2)}}</p>
-                    @endforeach
-                @endif
-                <hr>
                 @if ($product->product_qty == 0)
                     <h5 class="text-center red-text">Agotado</h5>
                     <p class="text-center"><b>Disponible: {{ $product->product_qty }}</b></p>
@@ -119,7 +119,29 @@
     </div> 
 </div>  <!-- close col-md-12 -->
 
+<script>
+$(".xzoom").xzoom({
+    position: 'right',
+    Xoffset: 15
+});
+
+$(".img-product").click(function()
+{
+    
+$("#main-img").attr("src", $(this).attr("src"));
+$("#main-img").attr("xoriginal", $(this).attr("src"));
+
+});
+
+ 
+
+
+</script>
 
       
 
+@stop
+
+@section('zoom-images')
+<script type="text/javascript" src="https://unpkg.com/xzoom/dist/xzoom.min.js"></script>
 @stop

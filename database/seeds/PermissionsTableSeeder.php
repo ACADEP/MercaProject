@@ -11,6 +11,10 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        //Compañia mercadata
+        DB::table('companies')->insert([
+            'name'    => 'Mercadata',
+        ]);
         //Permisos para productos
         DB::table('permissions')->insert([
             'name'    => 'view_products',

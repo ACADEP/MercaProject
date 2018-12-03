@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ValidateProducts extends FormRequest
 {
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +25,7 @@ class ValidateProducts extends FormRequest
     public function rules()
     {
         return [
-            'product_name'=>'required|max:75|min:3|regex:/^[\pL\s\-]+$/u',
+            'product_name'=>'required|max:75|min:3',
             'product_qty'=>'required|integer|max:999|min:1',
             'product_sku'=>'required|min:1|max:10',
             'product_price'=>'required|numeric|between:0,9999999999999.99',
@@ -33,9 +34,12 @@ class ValidateProducts extends FormRequest
             'marca'=>'required|not_in:-1',
             'product_des'=>'required|max:250|min:10',
             'product_spec'=>'required|max:250|min:10',
-            'paq' =>'required',
             'code_mode'=>'max:10',
             'guaranty'=>'max:10',
+            'weight'=>'required',
+            'length'=>'required',
+            'height'=>'required',
+            'width'=>'required'
 
 
         ];
@@ -60,7 +64,6 @@ class ValidateProducts extends FormRequest
             'marca.not_in'=>'Ingresar la marca del producto',
             'product_des.required'=>'Ingresar la descripción del producto',
             'product_spec.required'=>'Ingresar las especificacones del producto',
-            'paq.required'=>'Elegir una paqueteria',
 
             //Maximos y minimos
             'product_name.max'=>'El nombre de producto debe tener un maximo de 75 caracteres',
@@ -82,7 +85,7 @@ class ValidateProducts extends FormRequest
 
 
             //letras y numeros
-            'product_name.regex'=> 'El nombre del producto solo permite letras y numeros',
+          
             
         ];
     }

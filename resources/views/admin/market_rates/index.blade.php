@@ -24,6 +24,7 @@
 <table class="text-center table">
     <thead>
             <tr>
+                <th>Num. Cotización</th>
                 <th>Fecha</th>
                 <th>Correo</th>
                 <th>Empresa</th>
@@ -35,6 +36,7 @@
         <tbody>
         @foreach($market_rates as $marketrate)
         <tr id="rowMarket{{$marketrate->id}}">
+            <td>{{ $marketrate->id}}</td>
             <td>{{ $marketrate->date }}</td>
             <td>{{ $marketrate->email }}</td>
             <td>{{ $marketrate->company }}</td>
@@ -53,8 +55,10 @@
                 <form style="display:inline;" action="{{route('Send-MarketRate',$marketrate)}}" method="get">
                     <button type="submit" data-placement="top" title="Enviar al correo" class="btn btn-primary btn-xs btn-send-email"><i class="fa fa-paper-plane-o"></i></button>
                 </form>
-                <form style="display:inline;" action="" method="get">
-                    <button type="submit" data-placement="top" title="Hacer el pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
+                <form style="display:inline;" action="{{route('addOrder')}}" method="post">
+                    {{csrf_field()}}
+                    <input type="hidden" name="marketrate" value="{{$marketrate->id}}">
+                    <button type="submit"  data-placement="top" title="Covertir a pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
                 </form>
             </td>
         </tr>
@@ -126,4 +130,19 @@
     });
     
     </script>
+@stop
+
+@section('modal-add')
+<div class="modal fade" id="choose_carrie" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title text-center" id="exampleModalLongTitle">Elegir metodo de envío</h1>
+      </div>
+      <div class="modal-body row">
+    
+      </div>
+    </div>
+  </div>
+</div>
 @stop

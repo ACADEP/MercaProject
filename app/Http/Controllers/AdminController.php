@@ -31,7 +31,7 @@ class AdminController extends Controller {
 
     
     public function index() {
-        $sales=Auth::user()->selehistories()->paginate(10);
+        $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
         $histories=Auth::user()->selehistories()->get();
         $ventas = Auth::user()->sale()->paginate(10);
         return view("admin.sales.index", compact("sales", "histories", "ventas"));
@@ -39,8 +39,8 @@ class AdminController extends Controller {
     }
 
     public function showSales() {
-        $sales = Auth::user()->selehistories()->paginate(10);
-        $ventas = Auth::user()->sale()->paginate(10);
+        $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
+        $ventas = Auth::user()->sale()->paginate(config('configurations.paginate_general'));
         $histories = Auth::user()->selehistories()->get();
         // dd($ventas);
         foreach ($ventas as $sale) {
@@ -179,24 +179,25 @@ class AdminController extends Controller {
     {
         $order=OrderOxxo::find($request->get("order"));
         $sale=$order->sale;
-        $enviaYa=new EnviaYa;
+        // $enviaYa=new EnviaYa;
         $client=$sale->client;
-        $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
-        $sale->updateStatusShip($envio->shipment_status);
-        $sale->updateTracking($envio->carrier_shipment_number);
+        // $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+        // $sale->updateStatusShip($envio->shipment_status);
+        // $sale->updateTracking($envio->carrier_shipment_number);
         $sale->updatePay();
 
         //Admin
-        $userAdmin=User::find(6);
+        $userAdmin=User::role('Admin')->first();
+        
         //Enviar correos
-        $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+        // $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
         foreach($sale->customerHistories()->get() as $item)
         {
-            $productseller=ProductSeller::find( $item->product_id);
+            $productseller=ProductSeller::find($item->product_id);
             if($productseller != null)
             {
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
+                $saleHistory->insert_pCustomer($item,$productseller->id,$client->username,$sale->id);
             }
             else
             {
@@ -204,19 +205,20 @@ class AdminController extends Controller {
                 foreach($admins as $admin)
                 {   
                     $saleHistory=new SeleHistory;
-                    $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
+                    $saleHistory->insert_pCustomer($item,$admin->id,$client->username,$sale->id);
                 }
             }
         }
         $order->delete();
-        return back()->with("success", "Pago acreditado a ".$client->customer->nombre);
+        return back()->with("success", "Pago acreditado a ".$client->username);
     }
 
     public function deleteOrder(Request $request)
     {
+       
         $order=OrderOxxo::find($request->get("order_id"));
         $sale=$order->sale;
-        $name=$sale->client->customer->nombre;
+        $name=$sale->client->username;
         $sale->customerHistories()->delete();
         $sale->delete();
         $order->delete();
@@ -250,7 +252,7 @@ class AdminController extends Controller {
             ]);
         $category=Category::find($request->get("category"));
         $category->updateCategory($request->get("category_name"), $request->get("sub_name"));
-        return redirect()->route('show-edit',[$category])->with("success",'La categoría ha sido actualizada');
+        return redirect()->route('show-edit-category',[$category])->with("success",'La categoría ha sido actualizada');
     }
     public function addSubcategories(Request $request)
     {
@@ -317,7 +319,7 @@ class AdminController extends Controller {
         ]);
         
         $newUser=new User;
-        $newUser->insert($request->get('username'), $request->get('email'), $request->get('password'));
+        $newUser->insert($request->get('username'), $request->get('email'), $request->get('password'), Auth::user()->company_id);
         $newUser->assignRole($request->get('roles'));
         $newUser->givePermissionTo($request->get('permissions'));
         return back()->withFlash('El usuario ha sido creado');
@@ -378,20 +380,20 @@ class AdminController extends Controller {
         if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
         {
             $años=$request->get("año");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->get();
             
         }
         else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")==null)
         {
             $meses=$request->get("mes");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(10); 
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(config('configurations.paginate_general')); 
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->get();   
         }
         else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")==null)
         {
             $dias=$request->get("dia");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('DAY(date)'), $dias)->get();
            
         }
@@ -399,7 +401,7 @@ class AdminController extends Controller {
         {
             $meses=$request->get("mes");
             $años=$request->get("año");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
             
         }
@@ -407,7 +409,7 @@ class AdminController extends Controller {
         {
             $años=$request->get("año");
             $dias=$request->get("dia");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
             
         }
@@ -415,7 +417,7 @@ class AdminController extends Controller {
         {
             $meses=$request->get("mes");
             $dias=$request->get("dia");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
             
         }
@@ -424,13 +426,13 @@ class AdminController extends Controller {
             $meses=$request->get("mes");
             $dias=$request->get("dia");
             $años=$request->get("año");
-            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(10);
+            $sales=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
             
         }
         else
         {
-            $sales=Auth::user()->selehistories()->paginate(10);
+            $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->get();
         }
         return view('admin.sales.index',compact('sales','histories','ventas'));
@@ -443,47 +445,64 @@ class AdminController extends Controller {
         $ventas = null;
         if($order==1)
         {
-            $sales=Auth::user()->selehistories()->orderBy('amount',"desc")->paginate(10);
+            $sales=Auth::user()->selehistories()->orderBy('amount',"desc")->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->orderBy('amount',"desc")->get();
         }
         else if($order==2)
         {
-            $sales=Auth::user()->selehistories()->orderBy('date',"desc")->paginate(10);
+            $sales=Auth::user()->selehistories()->orderBy('date',"desc")->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->orderBy('date',"desc")->get();
         }
         else if($order==3)
         {
-            $sales=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->paginate(10);
+            $sales=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->get();
             
         }
         else if($order==4)
         {
-            $sales=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(10);
+            $sales=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->get();
         }
-        else if($order==10)
+        else if($order=5)
         {
-            $sales=Auth::user()->selehistories()->orderBy('client')->paginate(10);
+            $sales=Auth::user()->selehistories()->orderBy('client')->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->orderBy('client')->get();
         }
         else if($order==6)
         {
-            $sales=Auth::user()->selehistories()->orderBy('total','desc')->paginate(10);
+            $sales=Auth::user()->selehistories()->orderBy('total','desc')->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->orderBy('total','desc')->get();
         }
         else if($order==7)
         {
-            $sales=Auth::user()->selehistories()->paginate(10);
+            $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->get();
         }
         else
         {
-            $sales=Auth::user()->selehistories()->paginate(10);
+            $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->get();
         }
        
         return view('admin.sales.index',compact('sales','histories','ventas'));
+    }
+    public function searchOrderOxxo(Request $request)
+    {
+        $search_find=$request->search;
+        $orders=null;
+        if($search_find!=null)
+        {
+            $query=OrderOxxo::select("*");                                  
+            $query = $query->orWhere("market_id", 'LIKE', "%$search_find%");
+            $orders = $query->get();
+        }
+        else
+        {
+            $orders=OrderOxxo::all();
+        }
+        
+        return view("admin.orderoxxo.index", compact("orders"));
     }
 
     

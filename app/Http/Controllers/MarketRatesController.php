@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\MarketRates;
 use App\MarketRatesDetail;
+use App\Sale;
+use App\CustomerHistory;
+use App\OrderOxxo;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Mailers\AppMailers;
+use Illuminate\Support\Facades\Auth;
 
 class MarketRatesController extends Controller
 {
@@ -324,5 +328,31 @@ class MarketRatesController extends Controller
         {
             return back()->with("fail","Correo no enviado favor de verificar el correo o intentar de nuevo");
         }
+    }
+
+    public function addOrder(Request $request)
+    {
+       
+        $market_rate=MarketRates::find($request->marketrate);
+        $sale= new Sale;
+        $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar");
+
+        foreach($market_rate->MarketRatesDetails()->get() as $detail)
+        {
+            $history= new CustomerHistory;
+            $history->sale_id=$sale->id;
+            $history->product_id=$detail->product_id;
+            $history->product_name=$detail->product->product_name;
+            $history->product_price=$detail->price;
+            $history->amount=$detail->qty;
+            $history->save();
+        }
+        $orOxxo=new OrderOxxo;
+        $orOxxo->insert(Auth::user()->id,$sale->id, $market_rate->id);
+
+        $market_rate->MarketRatesDetails()->delete();
+        $market_rate->delete();
+
+        return back()->with("success","La cotización paso a pedido realizar el pago en el proximo día");
     }
 }

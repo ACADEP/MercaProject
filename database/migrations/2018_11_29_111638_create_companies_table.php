@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderOxxosTable extends Migration
+class CreateCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateOrderOxxosTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_oxxos', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('market_id');
-            $table->integer('sale_id');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateOrderOxxosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_oxxos');
+        Schema::dropIfExists('companies');
     }
 }

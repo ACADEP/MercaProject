@@ -108,6 +108,13 @@ class UsersTableSeeder extends Seeder
     $user->save();
 
     $user->assignRole("Client");
+
+    $users=User::all();
+    foreach($users as $user)
+    {
+        $user->company_id=1;
+        $user->save();
+    }
     
     
 

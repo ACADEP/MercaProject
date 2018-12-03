@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Product;
 use Illuminate\Database\Seeder;
 
 class ProductsTableSeeder extends Seeder
@@ -714,6 +715,13 @@ class ProductsTableSeeder extends Seeder
             'featured'=>1,
             'description'=>'Camara de buena calidad'
         ]);
+
+        $products=Product::all();
+        foreach($products as $product)
+        {
+            $product->company_id=1;
+            $product->save();
+        }
 
 
     }

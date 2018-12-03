@@ -484,6 +484,79 @@ $("#btn-send-market").click(function(){
        
     });
 
+    $(".btn-row-brand").click(function(){
+        if (confirm('Seguro que quiere eliminar esta marca')) {
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var brand_id=$(this).val();
+        var formData = { brand_id:brand_id};
+        $.ajax({
+            url: "/admin/brands/delete-brand",
+            method: 'POST',
+            data: formData,
+            success: function(response){
+                $("#rowBrand" + brand_id).remove();
+                $.notify({
+                    // options
+                    message: '<strong>'+response+'</strong>' 
+                },{
+                    // settings
+                    type: 'success',
+                    delay:3000
+                });
+              
+                
+               
+            },
+    
+            error: function(response){
+                console.log(response);
+                alert("Intente de nuevo");
+            }
+    
+        });
+        }else{}
+    });
+
+    $(".btn-delete-product").click(function(){
+        if (confirm('Seguro que quiere eliminar este producto')) {
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var product_id=$(this).val();
+        var formData = { product_id:product_id};
+        $.ajax({
+            url: "/admin/products/products/delete",
+            method: 'POST',
+            data: formData,
+            success: function(response){
+                $("#rowProduct" + product_id).remove();
+                $.notify({
+                    // options
+                    message: '<strong>'+response+'</strong>' 
+                },{
+                    // settings
+                    type: 'success',
+                    delay:3000
+                });
+              
+                
+               
+            },
+    
+            error: function(response){
+                console.log(response);
+                alert("Intente de nuevo");
+            }
+    
+        });
+        }else{}
+    });
     function mostrarElementos()
     {
         // Cookies.remove("products");

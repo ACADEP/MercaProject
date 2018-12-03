@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Mercadata | {{Auth::user()->getRoleDisplayNames()}}</title>
+  <title>{{config('configurations.general.company_name')}} | {{Auth::user()->getRoleDisplayNames()}}</title>
   <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -190,6 +190,7 @@ desired effect
           </ul>
         </li>
         @endcan
+        
         @role("Admin")
         <li class="treeview {{ Request::segment(2) == 'users' ? 'active' : '' }}">
           <a href="#"><i class="fa fa-users"></i> <span>Usuarios</span>
@@ -205,13 +206,15 @@ desired effect
          
         </li>
         @endrole
-        @php $orders=Auth::user()->ordersOxxo()->count(); @endphp
+        <li class="{{Request::segment(2) == 'brands' ? 'active' : ''}}"><a href="{{route('show-brands')}}"><i class="fa fa-copyright"></i> <span>Marcas</span></a></li>
+        @php $orders=App\OrderOxxo::all()->count(); @endphp
         <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
         @can("view_sales")
           <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
         <li class="{{Request::segment(2) == 'invoice' ? 'active' : ''}}"><a href="{{ route('show-invoice') }}"><i class="fa fa-file-archive-o" aria-hidden="true"></i> <span>Facturas</span></a></li>
         <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
+        <li class="{{Request::segment(2) == 'config' ? 'active' : ''}}"><a href="{{route('show-config')}}"><i class="fa fa-wrench"></i> <span>Configuración</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -354,10 +357,11 @@ desired effect
   </script>
 
 @yield('show-modal')
-@yield('modal-add-category')
+@yield('modal-add')
 @yield('msg-success')
 @yield('show-inputs')
 @yield('typehead-marketRates')
+@yield('add-images')
 @yield('js-dropzone')
 @yield('upload-invoice')
 

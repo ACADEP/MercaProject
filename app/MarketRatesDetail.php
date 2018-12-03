@@ -11,5 +11,10 @@ class MarketRatesDetail extends Model
         return $this->hasOne(MarketRates::class, 'market_rates_id');
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
     
 }

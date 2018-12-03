@@ -655,16 +655,12 @@ Route::group(["middleware" => 'customer'], function(){
 
 
 
-    //CRUD PRODUCTOS
-    Route::post('seller/products/add','SellerController@addProduct')->name('add-Product');
+    
+    
 
-    Route::post('seller/products/update','SellerController@updateProduct')->name('update-Product');
+    
 
-    Route::delete('/delete','SellerController@deleteProduct')->name('delete-Product');
-
-    Route::post('/addphoto','ProductPhotosController@store')->name('add-Photo');
-
-    Route::delete('/deletephoto/{id}','ProductPhotosController@delete')->name('delete-Photo');
+    
 
    
  });
@@ -677,7 +673,7 @@ Route::group(["middleware" => 'admin'], function(){
     //Dashboard del administrador
     Route::get("admin/index", "AdminController@index");
     //Edicion de categorías
-    Route::get("admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit");
+    Route::get("admin/products/categories/edit/{category}", "AdminController@showEdit")->name("show-edit-category");
     //Regalias
     Route::get("admin/sales", "AdminController@showSales")->name("show-sales");
     //Descargar PDF
@@ -703,6 +699,20 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/sales/addInvoice", "AdminController@storeInvoice")->name("add-invoice");
     //Quitar factura
     Route::get("/admin/sales/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");    
+    //Buscar ordenes
+    Route::get("admin/OrderOxxo/search", "AdminController@searchOrderOxxo")->name("search-orderOxxo");
+   
+    //CRUD Marcas
+    //Mostrar disponibles
+    Route::get("admin/brands/index", "BrandsController@showBrands")->name("show-brands");
+    //Agregar marca
+    Route::post("admin/brands/add-brand", "BrandsController@addBrand")->name("add-brands");
+    //Eliminar marca
+    Route::post("admin/brands/delete-brand", "BrandsController@deleteBrand")->name("delete-brands");
+     //Mostrar la edicion de marca
+     Route::get("admin/brands/showEdit/{brand}", "BrandsController@showEdit")->name("showEdit-brands");
+     //Editar una marca
+     Route::post("admin/brands/edit", "BrandsController@edit")->name("edit-brands");
 
     //CRUD Categorias
     //Mostrar todas las categorias
@@ -719,10 +729,23 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/products/deleteCategory","AdminController@deleteCategory")->name("delete-category");
 
     //CRUD productos
-    Route::get("/admin/products/products/showProducts", "ProductsController@showProducts");
+    Route::get("/admin/products/products/showProducts", "ProductsController@showProducts")->name("show-products");
+    //Agregar productos
+    Route::post('/admin/products/products/add','ProductsController@addProduct')->name('add-Product');
+    //Mostrar edición
+    Route::get('/admin/products/products/edit/{product}','ProductsController@showEdit')->name('show-edit');
+    Route::post('/admin/products/products/addphoto','ProductPhotosController@store')->name('add-Photo');
+    //eliminar foto
+    Route::delete('/deletephoto/{id}','ProductPhotosController@delete')->name('delete-Photo');
+    //Eliminar producto
+    Route::post('/admin/products/products/delete','ProductsController@deleteProduct')->name('delete-Product');
+    //Actualizar producto
+    Route::post('/admin/products/products/update','ProductsController@updateProduct')->name('update-Product');
     
     //Cotizaciones
     Route::get("/admin/market_rates", "MarketRatesController@market_rates")->name("show-marketRates");
+    //Levantar un pedido por cotización
+    Route::post("/admin/market_rates/addOrder", "MarketRatesController@addOrder")->name("addOrder");
     //Buscar cotizaciones
     Route::get("/admin/market_rates/searchMarketRates", "MarketRatesController@searchMarketRates")->name("searchMarketRates");
     //Editar y crear Cotizaciones
@@ -786,6 +809,12 @@ Route::group(["middleware" => 'admin'], function(){
     //Editar permisos a usuarios
      Route::middleware('role:Admin')
         ->post("/admin/users/updateUser/{user}/updatePermission","AdminController@updatePermissionUser")->name("update-Permission");
-   
+
+    //Configuraciones
+    //Mostrar panel
+    Route::get("/admin/config/index", "ConfigController@index")->name("show-config");
+    //Guradas cambios
+    Route::post("/admin/config/update", "ConfigController@update")->name("update-config");
+
 
 });

@@ -50,6 +50,7 @@ class ProductPhotosController extends Controller {
     public function delete($id) {
         // Find the photo and delete it.
         $productPhoto=ProductPhoto::find($id);
+  
         if(File::delete(public_path($productPhoto->path)))
         {
             $productPhoto->delete();
