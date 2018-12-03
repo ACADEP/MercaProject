@@ -50,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($cartItems as $item)
+          @foreach($itemsCart as $item)
             <tr>
                 <td class="service">{{$item->qty}}</td>
                 <td class="desc">{{$item->product->product_sku}}</td>

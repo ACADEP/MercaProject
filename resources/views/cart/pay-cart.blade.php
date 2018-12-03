@@ -77,58 +77,57 @@
                 <div class="row" id="shipments">
                     <!-- Paqueterias disponibles -->
                     @if($rates!=null)
-                    @if($rates->count() > 0)
-                   @foreach($rates as $rate)
-                   @php $date = date_create($rate->estimated_delivery); @endphp
-                   <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
-                    <div class='card-body'>
-                        <p class='card-text' style='width:100%;' >
-                            <img src='{{$rate->carrier_logo_url}}' class='img-fluid'>
-                        </p>
-                        <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
-                        Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
-                        <div class='custom-control custom-radio'>
-                                <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
-                                <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
-                       </div>
-                    </div>
-                    </div></a>
-                    <script>
-                        $('#paq-{{$loop->iteration}}').click(function(){
-                            carrie_choosed=true;
-                            var total_amount=parseFloat("{{$rate->total_amount}}");
-                            var total=parseFloat($("#total-cart").val());
-                            reset_paq_css();
-                            $("#card-body{{$loop->iteration}}").css("border", "solid blue 5px");
-                            
-                            $('#paqueteria{{$loop->iteration}}').prop("checked",true);
-                            var num = '$' + (total_amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                            $(".ship-rate").html(num);
-                            $("#total-pursh").val(total_amount+total);
-                            $("#shipment").html("{{$rate->carrier}}");
-                            num = '$' + (total_amount+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                            $("#total").html(num);
-                            $('#carrie_id').val($('#paqueteria{{$loop->iteration}}').val());
-                            $("#date_aprox").html("{{date_format($date, 'd-m-Y')}}");
-                    });
-                    </script>
-                   @endforeach
-                   <script>
-                  
-                   function reset_paq_css()
-                    {
-                        for(var i=1;i<="{{$rates->count()}}";i++)
-                        {
-                            $("#card-body"+i).css("border", "solid white 1px");
-                        }
-                    }
-                    </script>
-                    @else
-                    <span class="alert alert-danger col-md-12">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
-                    @endif
-                    @else
-                    <span class="alert alert-danger col-md-12">Primero agregue una dirección para cargar paqueterías</span>
-                    @endif
+                        @if($rates->count() > 0)
+                            @foreach($rates as $rate)
+                                @php $date = date_create($rate->estimated_delivery); @endphp
+                                <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
+                                <div class='card-body'>
+                                    <p class='card-text' style='width:100%;' >
+                                        <img src='{{$rate->carrier_logo_url}}' class='img-fluid'>
+                                    </p>
+                                    <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
+                                    Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
+                                    <div class='custom-control custom-radio'>
+                                            <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
+                                            <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
+                                </div>
+                                </div>
+                                </div></a>
+                                <script>
+                                    $('#paq-{{$loop->iteration}}').click(function(){
+                                        carrie_choosed=true;
+                                        var total_amount=parseFloat("{{$rate->total_amount}}");
+                                        var total=parseFloat($("#total-cart").val());
+                                        reset_paq_css();
+                                        $("#card-body{{$loop->iteration}}").css("border", "solid blue 5px");
+                                        
+                                        $('#paqueteria{{$loop->iteration}}').prop("checked",true);
+                                        var num = '$' + (total_amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                        $(".ship-rate").html(num);
+                                        $("#total-pursh").val(total_amount+total);
+                                        $("#shipment").html("{{$rate->carrier}}");
+                                        num = '$' + (total_amount+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                        $("#total").html(num);
+                                        $('#carrie_id').val($('#paqueteria{{$loop->iteration}}').val());
+                                        $("#date_aprox").html("{{date_format($date, 'd-m-Y')}}");
+                                    });
+                                </script>
+                            @endforeach
+                            <script>
+                                function reset_paq_css()
+                                {
+                                    for(var i=1;i<="{{$rates->count()}}";i++)
+                                    {
+                                        $("#card-body"+i).css("border", "solid white 1px");
+                                    }
+                                }
+                            </script>
+                        @else
+                            <span class="alert alert-danger col-md-12">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
+                        @endif
+                        @else
+                        <span class="alert alert-danger col-md-12">Primero agregue una dirección para cargar paqueterías</span>
+                        @endif
                     <script> $('#loader').remove();</script>
                 </div>
                
@@ -527,6 +526,8 @@ $(document).ready(function () {
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
                 $("#bank_carrie_id").val($('#carrie_id').val());
+                $("#ship_rate_bank").val($('#ship_rate_choosed').html());
+                $("#date_ship_bank").val($('#date_aprox').html());
                 $('#transfer').modal('show');
             }
             else if($("#store-method-r").prop("checked"))
@@ -535,6 +536,8 @@ $(document).ready(function () {
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
                 $("#store_carrie_id").val($('#carrie_id').val());
+                $("#ship_rate_store").val($('#ship_rate_choosed').html());
+                $("#date_ship_store").val($('#date_aprox').html());
                 $('#store').modal('show');
             }
             else if($("#oxxo-method-r").prop("checked"))
@@ -688,6 +691,8 @@ $(document).ready(function () {
       <form action="/cart/confirmation-banco" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="ship_rate" id="ship_rate_bank">
+            <input type="hidden" name="date_ship" id="date_ship_bank">
             <input type="hidden" name="carrie" id="bank_carrie">
             <input type="hidden" name="carrie_id" id="bank_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
@@ -713,6 +718,8 @@ $(document).ready(function () {
       <form action="/cart/confirmation-store" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="ship_rate" id="ship_rate_store">
+            <input type="hidden" name="date_ship" id="date_ship_store">
             <input type="hidden" name="carrie" id="store_carrie">
             <input type="hidden" name="carrie_id" id="store_carrie_id">
             <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>

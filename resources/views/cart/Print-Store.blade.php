@@ -63,7 +63,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($cartItems as $item)
+          @foreach($itemsCart as $item)
             <tr>
                 <td class="service">{{$item->qty}}</td>
                 <td class="desc">{{$item->product->product_sku}}</td>
@@ -99,7 +99,7 @@
       </div>
 
       <br>
-      <h2 class="tittle font">Pasos para realizar el pago</h2>
+      <h3 class="tittle font">Pasos para realizar el pago</h3>
       <div class="row" id="pago">
         <div class="col-sm-6 col-md-6" id="bancomer">
           <div><h4>Como realizar el pago</h4></div>

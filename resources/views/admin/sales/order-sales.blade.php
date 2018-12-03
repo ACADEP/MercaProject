@@ -105,7 +105,7 @@
         
     </div>
     @if($histories->count()>0)
-    <div class="col-md-2 text-left">
+    <div class="col-md-4 text-left">
         @php 
             $idHistories=array();
             $total=0;
@@ -115,6 +115,8 @@
                 $total+=$history->total;
             }
         @endphp
+                <a href="{{url('admin/sales') }}" class="btn btn-primary">Quitar filtros</a>
+
         <form action="{{ url('/print_pdf_seller') }}" method="get" style="display:inline;">
             <input type="hidden" name="histories" value="{{implode( ", ", $idHistories)}}">
             <button class="btn btn-danger" data-toggle="tooltip" title="Descargar PDF" formtarget="_blank" type="submit">
@@ -128,6 +130,7 @@
                 <i class="fa fa-table fa-lg" aria-hidden="true"></i>
             </button>
         </form>
+
     </div>
    
     <div class="text-right" style="margin-right:10px;">

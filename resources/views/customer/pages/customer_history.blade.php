@@ -17,79 +17,77 @@
     </section><br>
    
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-@php $i=1;@endphp
-<div class="panel panel-default">
-@foreach($sales as $sale)
-   
-    <div class="panel-heading" role="tab" id="heading{{$i}}">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}">
-           
-           <div class="text-left">Fecha:<span class="label label-default">{{$sale->date}}</span></div> <div class="text-right">Pago: <span class="label label-default">{{$sale->status_pago}}</span></div>
-        </a>
-      </h4>
-    </div>
-    <div id="collapse{{$i}}" class="{{ $i==1 ? 'panel-collapse collapse in' : 'panel-collapse collapse' }}" role="tabpanel" aria-labelledby="heading{{$i}}">
-      <div class="panel-body">
-        <div class="text-left" >
-            Envío: <span class="label label-primary" id="status_ship">{{$sale->status_envio}}</span>&nbsp <button class="btn btn-primary btn-xs btn-refresh "  data-toggle="tooltip"  data-placement="top" title="Actualizar estado" value="{{ $sale->id }}"><i class="fa fa-refresh" id="refreshing" aria-hidden="true"></i></button> &nbsp
-            <form action="/customer/tracking" method="post" style="display: inline;">
-                <input type="hidden" name="sale" id="sale" value="{{ $sale->id }}">
-                {{ csrf_field()}}
-                <button type="submit"class="btn btn-info btn-xs">Ver detalles</button>
-            </form> 
-        </div>
-        <div class="text-right">
-            <button class="btn btn-warning btn-sm btn-reclame" data-toggle="modal" value="{{$sale->id}}" data-target="#reclame">Iniciar reclamo</button>
-            <form action="/customer/pdf" method="post" style="display: inline;">
-                {{ csrf_field()}}
-                <input type="hidden"  name="sale" value="{{$sale->id}}">
-                <button class="btn btn-danger btn-sm btn-dpdf" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar recibo"><i class="fa fa-file-pdf-o" aria-hidden="true" ></i></button>
-            </form>
-            <button class="btn btn-danger btn-sm" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
-        </div>
-            
-            <table class="table text-center">
-            <thead>
-                    <tr>
-                        <th></th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio untitario</th>
-                        
-                    </tr>
-            </thead>
-            <tbody>
-                @foreach($sale->customerHistories()->get() as $history)
-                    <tr>
-                        <td><img src="{{$history->product->photos()->first()->path}}" style="height:30px"></td>
-                        <td>{{$history->product_name}}</td>
-                        <td>{{$history->amount}}</td>
-                        <td>${{number_format($history->product_price, 2)}}</td>
-                    </tr>
-                @endforeach
-                
-            </tbody>
-            
-            </table>
-           <div class="text-right"><h4><strong>Total: <span class="label label-success">${{number_format($sale->total, 2)}}</span></strong></h4></div>
-           <div class="text-left col-md-12 form-inline">
-            @if($sale->status_reclamo=="Aceptado" || $sale->status_reclamo=="Rechazado")
-              <h3>Su reclamo fue: <strong>{{$sale->status_reclamo}}</h3></strong>  Respuesta: {!! $sale->respond_reclame !!} 
-            @endif
-           
-           </div>
-<!-- Fin panel body--></div> 
- <!--Fin collapse-->   </div>
- 
-    @php $i++;@endphp
+    @php $i=1;@endphp
+    <div class="panel panel-default">
+        @foreach($sales as $sale)
     
-@endforeach
+            <div class="panel-heading" role="tab" id="heading{{$i}}">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}">
+                
+                <div class="text-left">Fecha:<span class="label label-default">{{$sale->date}}</span></div> <div class="text-right">Pago: <span class="label label-default">{{$sale->status_pago}}</span></div>
+                </a>
+            </h4>
+            </div>
+            <div id="collapse{{$i}}" class="{{ $i==1 ? 'panel-collapse collapse in' : 'panel-collapse collapse' }}" role="tabpanel" aria-labelledby="heading{{$i}}">
+                <div class="panel-body">
+                    <div class="text-left" >
+                        Envío: <span class="label label-primary" id="status_ship">{{$sale->status_envio}}</span>&nbsp <button class="btn btn-primary btn-xs btn-refresh "  data-toggle="tooltip"  data-placement="top" title="Actualizar estado" value="{{ $sale->id }}"><i class="fa fa-refresh" id="refreshing" aria-hidden="true"></i></button> &nbsp
+                        <form action="/customer/tracking" method="post" style="display: inline;">
+                            <input type="hidden" name="sale" id="sale" value="{{ $sale->id }}">
+                            {{ csrf_field()}}
+                            <button type="submit"class="btn btn-info btn-xs">Ver detalles</button>
+                        </form> 
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-warning btn-sm btn-reclame" data-toggle="modal" value="{{$sale->id}}" data-target="#reclame">Iniciar reclamo</button>
+                        <form action="/customer/pdf" method="post" style="display: inline;">
+                            {{ csrf_field()}}
+                            <input type="hidden"  name="sale" value="{{$sale->id}}">
+                            <button class="btn btn-danger btn-sm btn-dpdf" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar recibo"><i class="fa fa-file-pdf-o" aria-hidden="true" ></i></button>
+                        </form>
+                        <button class="btn btn-danger btn-sm" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
+                    </div>
+                        
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio untitario</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($sale->customerHistories()->get() as $history)
+                                <tr>
+                                    <td><img src="{{$history->product->photos()->first()->path}}" style="height:30px"></td>
+                                    <td>{{$history->product_name}}</td>
+                                    <td>{{$history->amount}}</td>
+                                    <td>${{number_format($history->product_price, 2)}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="text-right"><h4><strong>Total: <span class="label label-success">${{number_format($sale->total, 2)}}</span></strong></h4></div>
+                    <div class="text-left col-md-12 form-inline">
+                        @if($sale->status_reclamo=="Aceptado" || $sale->status_reclamo=="Rechazado")
+                            <h3>Su reclamo fue: <strong>{{$sale->status_reclamo}}</h3></strong>  Respuesta: {!! $sale->respond_reclame !!} 
+                        @endif
+                    </div>
+                </div> <!-- Fin panel body-->
+            </div> <!--Fin collapse-->   
+        
+            @php $i++;@endphp
+        
+        @endforeach
   
- <!--fin group--> </div>
-            <div class="text-center" style="position: absolute; bottom: 10px;">
-                {{ $sales->links() }}
-            </div> 
+    </div> <!--fin group--> 
+</div>
+<div class="text-center" style="position: absolute; bottom: 10px;">
+    {{ $sales->links() }}
+</div> 
         
 @stop
 

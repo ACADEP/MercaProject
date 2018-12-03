@@ -12,6 +12,7 @@ class SeleHistoriesTableSeeder extends Seeder
     {
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
+            'sale_id'       => 1,
             'product_id'    => 1,
             'client'        => 'Jonatan',
             'date'          => Carbon::now()->subDay(2),
@@ -20,6 +21,7 @@ class SeleHistoriesTableSeeder extends Seeder
         ]);
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
+            'sale_id'       => 1,
             'product_id'    => 2,
             'client'        => 'Manuel',
             'date'          => Carbon::now()->subDay(5),
@@ -28,6 +30,7 @@ class SeleHistoriesTableSeeder extends Seeder
         ]);
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
+            'sale_id'       => 2,
             'product_id'    => 3,
             'client'        => 'Jose Luis',
             'date'          => Carbon::now()->subDay(7),
@@ -36,6 +39,7 @@ class SeleHistoriesTableSeeder extends Seeder
         ]);
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
+            'sale_id'       => 2,
             'product_id'    => 4,
             'client'        => 'Sebastian',
             'date'          => Carbon::now()->subDay(6),
@@ -44,6 +48,7 @@ class SeleHistoriesTableSeeder extends Seeder
         ]);
         DB::table('sele_histories')->insert([
             'user_id'       => 7,
+            'sale_id'       => 2,
             'product_id'    => 5,
             'client'        => 'Alejandra',
             'date'          => Carbon::now()->subDay(3),
@@ -51,7 +56,8 @@ class SeleHistoriesTableSeeder extends Seeder
             'total'         => 10000
         ]);
         DB::table('sele_histories')->insert([
-            'user_id'       => 7,
+            'user_id'       => 5,
+            'sale_id'       => 3,
             'product_id'    => 4,
             'client'        => 'Roberto',
             'date'          => Carbon::now()->subDay(9),
@@ -59,7 +65,8 @@ class SeleHistoriesTableSeeder extends Seeder
             'total'         => 100
         ]);
         DB::table('sele_histories')->insert([
-            'user_id'       => 7,
+            'user_id'       => 5,
+            'sale_id'       => 3,
             'product_id'    => 5,
             'client'        => 'Hector',
             'date'          => Carbon::now()->subDay(13),
@@ -67,7 +74,8 @@ class SeleHistoriesTableSeeder extends Seeder
             'total'         => 10000
         ]);
         DB::table('sele_histories')->insert([
-            'user_id'       => 7,
+            'user_id'       => 5,
+            'sale_id'       => 4,
             'product_id'    => 6,
             'client'        => 'Yoselin',
             'date'          => Carbon::now()->subDay(15),
@@ -75,7 +83,8 @@ class SeleHistoriesTableSeeder extends Seeder
             'total'         => 10000
         ]);
         DB::table('sele_histories')->insert([
-            'user_id'       => 7,
+            'user_id'       => 5,
+            'sale_id'       => 4,
             'product_id'    => 7,
             'client'        => 'Gonzalo',
             'date'          => Carbon::now(),
@@ -83,7 +92,8 @@ class SeleHistoriesTableSeeder extends Seeder
             'total'         => 10000
         ]);
         DB::table('sele_histories')->insert([
-            'user_id'       => 7,
+            'user_id'       => 5,
+            'sale_id'       => 4,
             'product_id'    => 8,
             'client'        => 'Karla',
             'date'          => Carbon::now()->subDay(23),

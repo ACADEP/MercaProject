@@ -13,7 +13,7 @@ class SalesTableSeeder extends Seeder
     public function run()
     {
         DB::table('sales')->insert([
-            'user_id'       => 9,
+            'user_id'       => 6,
             'date'          => Carbon::now(),
             'url_fact'      => '#',
             'status_pago'   => 'En espera de acreditación',
@@ -23,7 +23,17 @@ class SalesTableSeeder extends Seeder
         ]);
 
         DB::table('sales')->insert([
-            'user_id'       => 9,
+            'user_id'       => 6,
+            'date'          => Carbon::now(),
+            'url_fact'      => '#',
+            'status_pago'   => 'Acreditado',
+            'status_envio'  => 'Entregado',
+            'status_reclamo'=> 'Abrir un reclamo',
+            'total'         => 300
+        ]);
+
+        DB::table('sales')->insert([
+            'user_id'       => 5,
             'date'          => Carbon::now(),
             'url_fact'      => '#',
             'status_pago'   => 'Acreditado',
@@ -33,7 +43,7 @@ class SalesTableSeeder extends Seeder
         ]);
 
         DB::table('sales')->insert([
-            'user_id'       => 9,
+            'user_id'       => 5,
             'date'          => Carbon::now(),
             'url_fact'      => '#',
             'status_pago'   => 'Acreditado',

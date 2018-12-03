@@ -250,13 +250,13 @@ class CartController extends Controller {
             if($productseller != null)
             {
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert($cartItem,$productseller->id,Auth::user()->customer->nombre);
+                $saleHistory->insert($cartItem,$productseller->id,Auth::user()->customer->nombre, $sale->id);
             }
             else
             {
                 $admin = User::role('Admin')->first();
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre);
+                $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre, $sale->id);
             
             }
             $customerHistory=new CustomerHistory;
@@ -368,37 +368,35 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-        // $sale= new Sale;
-        // $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
-        // $cartItems=Auth::user()->carts();
-        // foreach($cartItems->get() as $cartItem)
-        // {
-        //     $customerHistory=new CustomerHistory;
-        //     $customerHistory->insert($cartItem,$sale);
-        // }
-        // Auth::user()->carts()->delete();
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        $itemsCart = Auth::user()->cart->with("product")->get();
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        Auth::user()->carts()->delete();
+
+        $ship_rate = $request->get("ship_rate");
+        $ship_rate_total = $request->get("ship_rate_total");
+        $date_ship = $request->get("date_ship");
+
         $chargeData = array(
             'method' => 'bank_account',
-            'amount' => Auth::user()->total + 200,  //$request->get("ship_rate_total"),
+            'amount' => $request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
-            'order_id' => $random,  //$sale->id, //oid-00051 id del carrito
+            'order_id' => $sale->id, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
             'customer' => $customerData );
         $charge = $openpay->charges->create($chargeData);
-        // dd($charge);
         
-        if($charge){
-
-            $ship_rate = 200;
-            $date_ship = '12/12/18';
-            $cartItems=Auth::user()->cart->with("product")->get();
-            $ship_rate_total = $ship_rate + Auth::user()->total;
-            $Items = $cartItems;
-            // dd($charge->payment_method->agreement);
-            $subtotal = $charge->amount;
-    
-            $pdf = PDF::loadView('cart.Print-Bank',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
-            return $pdf->stream('Recibo-Banco.pdf');  
+        if($charge){    
+            $pdf = PDF::loadView('cart.Print-Bank',compact('itemsCart','ship_rate','ship_rate_total','date_ship', 'charge'));
+            Session::put('pay-bank',  $pdf->stream('Recibo-Banco.pdf'));
+            Session::save(); 
+            return redirect("/");
             // return redirect('/')->with("recibe", 'https://sandbox-dashboard.openpay.mx/spei-pdf/mk5lculzgzebbpxpam6x/'.$charge->id);
         }
         
@@ -442,7 +440,6 @@ class CartController extends Controller {
         $random = rand(0, 99999);
 
         try {
-       
 
         $customerData = array(
             'name' => $usercustomer->nombre,
@@ -458,36 +455,36 @@ class CartController extends Controller {
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
 
-        // $sale= new Sale;
-        // $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
-        // $cartItems=Auth::user()->carts();
-        // foreach($cartItems->get() as $cartItem)
-        // {
-        //     $customerHistory=new CustomerHistory;
-        //     $customerHistory->insert($cartItem,$sale);
-        // }
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $cartItems=Auth::user()->carts();
+        $itemsCart = Auth::user()->cart->with("product")->get();
+
+        foreach($cartItems->get() as $cartItem)
+        {
+            $customerHistory=new CustomerHistory;
+            $customerHistory->insert($cartItem,$sale);
+        }
+        $ship_rate = $request->get("ship_rate");
+        $ship_rate_total = $request->get("ship_rate_total");
+        $date_ship = $request->get("date_ship");
+
         Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' =>  Auth::user()->total + 200,  //$request->get("ship_rate_total"),
+            'amount' =>  $request->get("ship_rate_total"),
             'description' => 'Cargo a tienda',
-            'order_id' => $random,  //$sale->id, 
+            'order_id' => $sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
             'customer' => $customerData );
         
         $charge = $openpay->charges->create($chargeData);
        
-        if($charge){
-            $ship_rate = 200;
-            $date_ship = '12/12/18';
-            $cartItems=Auth::user()->cart->with("product")->get();
-            $ship_rate_total = $ship_rate + Auth::user()->total;
-            $Items = $cartItems;
-            $subtotal = $charge->amount;
-    
-            $pdf = PDF::loadView('cart.Print-Store',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
-            return $pdf->stream('Recibo-Tiendas.pdf');  
-            // return view('cart.Print-Store',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'charge'));
+        if($charge){    
+            $pdf = PDF::loadView('cart.Print-Store',compact('itemsCart','ship_rate','ship_rate_total','date_ship', 'charge'));
+            Session::put('pay-store',  $pdf->stream('Recibo-Tiendas.pdf'));
+            Session::save(); 
+            return redirect("/");
             // return redirect('/')->with("recibe",'https://sandbox-dashboard.openpay.mx/paynet-pdf/mk5lculzgzebbpxpam6x/'.$charge->payment_method->reference);
         }
         
@@ -553,7 +550,7 @@ class CartController extends Controller {
                        if($productseller != null)
                        {
                            $saleHistory=new SeleHistory;
-                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
                        }
                        else
                        {
@@ -561,7 +558,7 @@ class CartController extends Controller {
                            foreach($admins as $admin)
                            {   
                                $saleHistory=new SeleHistory;
-                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
                            }
                        }
                    }
@@ -765,6 +762,18 @@ class CartController extends Controller {
         {
             $pdf=session("pay-oxxo");
             Session::forget('pay-oxxo');
+            return $pdf;
+        }
+        if(Session::has('pay-bank'))
+        {
+            $pdf=session("pay-bank");
+            Session::forget('pay-bank');
+            return $pdf;
+        }
+        if(Session::has('pay-store'))
+        {
+            $pdf=session("pay-store");
+            Session::forget('pay-store');
             return $pdf;
         }
         else

@@ -7,10 +7,12 @@ use App\User;
 use App\Order;
 use App\Product;
 use App\Category;
+use App\Sale;
 use App\ProductSeller;
 use App\SeleHistory;
 use App\OrderOxxo;
 use App\EnviaYa;
+use File;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Http\Traits\CartTrait;
@@ -32,7 +34,8 @@ class AdminController extends Controller {
     public function index() {
         $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
         $histories=Auth::user()->selehistories()->get();
-        return view("admin.sales.index", compact("sales", "histories"));
+        $ventas = Auth::user()->sale()->paginate(10);
+        return view("admin.sales.index", compact("sales", "histories", "ventas"));
         // return view("admin.dash");       
     }
 
@@ -190,7 +193,7 @@ class AdminController extends Controller {
             if($productseller != null)
             {
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert_pCustomer($item,$productseller->id,$client->username);
+                $saleHistory->insert_pCustomer($item,$productseller->id,$client->username,$sale->id);
             }
             else
             {
@@ -198,7 +201,7 @@ class AdminController extends Controller {
                 foreach($admins as $admin)
                 {   
                     $saleHistory=new SeleHistory;
-                    $saleHistory->insert_pCustomer($item,$admin->id,$client->username);
+                    $saleHistory->insert_pCustomer($item,$admin->id,$client->username,$sale->id);
                 }
             }
         }
@@ -369,6 +372,7 @@ class AdminController extends Controller {
     { 
         $sales;
         $histories;
+        $ventas = null;
         if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
         {
             $años=$request->get("año");
@@ -427,13 +431,14 @@ class AdminController extends Controller {
             $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
             $histories=Auth::user()->selehistories()->get();
         }
-        return view('admin.sales.index',compact('sales','histories'));
+        return view('admin.sales.index',compact('sales','histories','ventas'));
     }
     public function orderSales($order)
     {   
        
         $sales="";
         $histories="";
+        $ventas = null;
         if($order==1)
         {
             $sales=Auth::user()->selehistories()->orderBy('amount',"desc")->paginate(config('configurations.paginate_general'));
@@ -476,7 +481,7 @@ class AdminController extends Controller {
             $histories=Auth::user()->selehistories()->get();
         }
        
-        return view('admin.sales.index',compact('sales','histories'));
+        return view('admin.sales.index',compact('sales','histories','ventas'));
     }
     public function searchOrderOxxo(Request $request)
     {
@@ -501,12 +506,43 @@ class AdminController extends Controller {
         return view('admin.invoice.invoice');
     }
 
-    public function addInvoice() {
-        return view('admin.invoice.invoice');
+    public function storeInvoice(Request $request) {
+        $file = request()->file('file');
+        $urlFac = $file->store('facturas');       
+        $url = "/images/".$urlFac;
+        $sale = Sale::find($request->get("factura"));
+        // dd($sale->url_fact);
+        if ($url != $sale->url_fact) {
+            if ($sale->url_fact == '#') {
+                $sale->url_fact = $url;
+                $sale->update();
+                return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);    
+            } else {
+                if(File::delete(public_path($sale->url_fact)))
+                {
+                    $sale->url_fact = $url;
+                    $sale->update();
+                    return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);        
+                }        
+            }
+        } else {
+            $sale->url_fact = $url;
+            $sale->update();
+            return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);
+        }
     }
 
-    public function deleteInvoice() {
-        return view('admin.invoice.invoice');
+    public function deleteInvoice(Request $request) {
+        // Find the invoice and delete it.
+        $sale = Sale::find($request->sale_id);
+        if(File::delete(public_path($sale->url_fact)))
+        {
+            $sale->url_fact = '#';
+            $sale->update();
+        } else {
+
+        }
+        return back();        
     }
 
     

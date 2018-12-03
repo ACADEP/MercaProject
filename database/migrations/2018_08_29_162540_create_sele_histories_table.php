@@ -14,6 +14,7 @@ class CreateSeleHistoriesTable extends Migration
         Schema::create('sele_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer("sale_id");
             $table->integer('product_id');
             $table->string('client');
             $table->date('date');
