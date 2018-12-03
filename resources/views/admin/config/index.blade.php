@@ -51,13 +51,10 @@
                                     <img class="img-responsive" style="height:100px;" src="{{config('configurations.general.mini_logo')}}">
                                     <input type="file" name="mini_logo" class="form-control">
                                 </div>
-
-                                <div class="col-md-12">
-                                <label for="company_name">Nombre de la tienda:</label>
-                                <input type="text" id="company_name" style="width:49%;" name="company_name" autocomplete="off" class="form-control"  value="{{config('configurations.general.company_name')}}">
-                                </div>
                                
                                 <div class="col-md-6">
+                                    <label for="company_name">Nombre de la tienda:</label>
+                                    <input type="text" id="company_name" name="company_name" autocomplete="off" class="form-control"  value="{{config('configurations.general.company_name')}}">
                                     <label for="company">Nombre de la empresa:</label>
                                     <input type="text" id="company" name="company" autocomplete="off" class="form-control"  value="{{config('configurations.company.name')}}">
                                     <label for="country">Codigo de pais:</label>
