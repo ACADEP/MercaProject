@@ -694,11 +694,11 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
 
     //Facturas
-    Route::get("/admin/invoice", "AdminController@showInvoice")->name("show-invoice");
     //Subir factura
     Route::post("/admin/sales/addInvoice", "AdminController@storeInvoice")->name("add-invoice");
     //Quitar factura
-    Route::get("/admin/sales/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");    
+    Route::post("/admin/sales/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");  
+
     //Buscar ordenes
     Route::get("admin/OrderOxxo/search", "AdminController@searchOrderOxxo")->name("search-orderOxxo");
    

@@ -12,6 +12,7 @@ use App\ProductSeller;
 use App\SeleHistory;
 use App\OrderOxxo;
 use App\EnviaYa;
+use File;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Http\Traits\CartTrait;
@@ -42,10 +43,15 @@ class AdminController extends Controller {
         $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
         $ventas = Auth::user()->sale()->paginate(config('configurations.paginate_general'));
         $histories = Auth::user()->selehistories()->get();
-        // dd($ventas);
-        foreach ($ventas as $sale) {
-            // dd($sale->sellerHistories()->get());
-        }
+        // dd($sales);
+        // $i = 0;
+        // $sa = array();
+        // foreach ($sales as $sale) {
+        //     // dd($sale->sales()->get());
+        //     $sa[$i] = $sale->sales()->get();
+        //     $i++;
+        // }
+        // dd($sa);
         return view("admin.sales.index", compact("sales", "ventas", "histories"));       
     }
 
@@ -518,10 +524,17 @@ class AdminController extends Controller {
         // dd($sale->url_fact);
         if ($url != $sale->url_fact) {
             if ($sale->url_fact == '#') {
+                $sale->url_fact = $url;
+                $sale->update();
+                return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);    
+            } else {
+                if(File::delete(public_path($sale->url_fact)))
+                {
+                    $sale->url_fact = $url;
+                    $sale->update();
+                    return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);        
+                }        
             }
-            $sale->url_fact = $url;
-            $sale->update();
-            return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);
         } else {
             $sale->url_fact = $url;
             $sale->update();
@@ -529,15 +542,16 @@ class AdminController extends Controller {
         }
     }
 
-    public function deleteInvoice($sale_id) {
-        // Find the photo and delete it.
-        $productPhoto=ProductPhoto::find($sale_id);
-        if(File::delete(public_path($productPhoto->path)))
+    public function deleteInvoice(Request $request) {
+        // Find the invoice and delete it.
+        $sale = Sale::find($request->sale_id);
+        if(File::delete(public_path($sale->url_fact)))
         {
-            $productPhoto->delete();
+            $sale->url_fact = '#';
+            $sale->update();
+        } else {
+
         }
-        
-        // Then return back;
         return back();        
     }
 

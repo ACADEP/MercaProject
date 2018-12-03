@@ -78,7 +78,7 @@ div.panel-heading {
                             </div>
                             <div class="col-sm-2 col-md-2 text-right">
                                     <button type="button" class="btn btn-primary btn-xs btn-invoice" value="{{$sale->id}}" data-toggle="modal" data-target="#myModal"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Subir Factura"></i></button>
-                                    <button class="btn btn-danger btn-xs btn-row-market" data-placement="top" title="Quitar Factura" value="{{$sale->id}}"><i class="fa fa-minus-square"></i></button>        
+                                    <button class="btn btn-danger btn-xs btn-delete-invoice" data-placement="top" title="Quitar Factura" value="{{$sale->id}}"><i class="fa fa-minus-square"></i></button>        
                             </div>
                         </h4>
                     </div>    

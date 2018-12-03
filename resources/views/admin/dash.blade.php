@@ -212,7 +212,6 @@ desired effect
         @can("view_sales")
           <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
-        <li class="{{Request::segment(2) == 'invoice' ? 'active' : ''}}"><a href="{{ route('show-invoice') }}"><i class="fa fa-file-archive-o" aria-hidden="true"></i> <span>Facturas</span></a></li>
         <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
         <li class="{{Request::segment(2) == 'config' ? 'active' : ''}}"><a href="{{route('show-config')}}"><i class="fa fa-wrench"></i> <span>Configuración</span></a></li>
       </ul>
@@ -340,6 +339,7 @@ desired effect
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
+<script src="{{ asset('/js/ajax-seller.js')}}"></script>
 
 
 <script src="{{asset('/AdminLTE/dist/js/checkbox.js')}}"></script>

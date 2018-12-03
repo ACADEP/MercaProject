@@ -16,7 +16,7 @@ class SeleHistory extends Model
     }
     public function sales()
     {
-        return $this->hasMany(Sales::class,"sale_id");
+        return $this->belongsTo(Sale::class,"sale_id");
     }
 
     public function insert(Cart $cart, $id_prov, $client, $sale_id)
