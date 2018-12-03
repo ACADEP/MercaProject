@@ -66,6 +66,7 @@
         <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax-products.js') }}"></script>
         @yield("ajax-shipment")
+        @yield('zoom-images')
         <script>
             function borrarCache()
             {
@@ -271,6 +272,7 @@
     @include('partials.special_search')
     @include('customer.partials.add-address')
     @yield('modal-paypal')
+
 
 </body>
 </html>

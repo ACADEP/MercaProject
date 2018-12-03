@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Mercadata | {{Auth::user()->getRoleDisplayNames()}}</title>
+  <title>{{config('configurations.general.company_name')}} | {{Auth::user()->getRoleDisplayNames()}}</title>
   <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -357,10 +357,11 @@ desired effect
   </script>
 
 @yield('show-modal')
-@yield('modal-add-category')
+@yield('modal-add')
 @yield('msg-success')
 @yield('show-inputs')
 @yield('typehead-marketRates')
+@yield('add-images')
 @yield('js-dropzone')
 
 

@@ -76,6 +76,7 @@
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
                 <div class="row" id="shipments">
                     <!-- Paqueterias disponibles -->
+                    @if($rates!=null)
                     @if($rates->count() > 0)
                    @foreach($rates as $rate)
                    @php $date = date_create($rate->estimated_delivery); @endphp
@@ -123,8 +124,10 @@
                     }
                     </script>
                     @else
-                    
-                    <span class="badge badge-danger">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
+                    <span class="alert alert-danger col-md-12">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
+                    @endif
+                    @else
+                    <span class="alert alert-danger col-md-12">Primero agregue una dirección para cargar paqueterías</span>
                     @endif
                     <script> $('#loader').remove();</script>
                 </div>

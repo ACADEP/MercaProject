@@ -214,9 +214,10 @@ class User extends Authenticatable
         return $cart;
     }
 
-    public function insert($username, $email, $pass)
+    public function insert($username, $email, $pass, $company_id)
     {
         $this->username=$username;
+        $this->company_id=$company_id;
         $this->email=$email;
         $this->password= bcrypt($pass);
         $this->verified=1;

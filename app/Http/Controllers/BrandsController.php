@@ -7,7 +7,11 @@ use App\Category;
 use App\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandsRequest;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Http\Request;
+
+use File;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Traits\CartTrait;
 use App\Http\Traits\BrandAllTrait;
@@ -21,8 +25,14 @@ class BrandsController extends Controller {
 
     public function showBrands() 
     {
-        $brands = Brand::all();
+        $brands = Brand::select("*")->paginate(config('configurations.paginate_general'));
         return view('admin.brands.index', compact('brands'));
+    }
+
+    public function showEdit($brand)
+    {
+        $brand=Brand::find($brand);
+        return view('admin.brands.edit', compact('brand'));
     }
 
 
@@ -50,19 +60,22 @@ class BrandsController extends Controller {
         return view('admin.brand.show_products', compact('brands', 'products', 'count', 'cart_count'));
     }
 
+    public function addBrand(Request $request)
+    {
+        $request->validate([
+            'brand_name'=>'required',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        $file=$request->file('logo')->store('/Brands');
 
-    /**
-     * Show the create Brand view
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function create() {
+        $brand=new Brand;
+        $brand->brand_name=$request->brand_name;
+        $brand->banner="img-".$request->brand_name;
+        $brand->path="/images/".$file;
+        $brand->thumbnail_path="/images/".$file;
+        $brand->save();
 
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        return view('admin.brand.create', compact('cart_count'));
+        return back()->with("success", "Marca creada");
     }
 
 
@@ -93,29 +106,35 @@ class BrandsController extends Controller {
     }
 
 
-    /**
-     * Return edit blade with Brand
-     *
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
-    public function edit($id) {
-
-        // Get a brand with an ID that is the same as in URL
-        $brands = Brand::where('id', '=', $id)->find($id);
-
-        // If no brand exists with some particular Id, then redirect back to Show Brands Page.
-        if (!$brands) {
-            return redirect('admin/brands');
+   
+    public function edit(Request $request) 
+    {
+        
+        $request->validate([
+            'brand_name'=>'required',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if($request->file('logo')!=null)
+        {
+            $request->validate([
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+            $file=$request->file('logo')->store('/Brands');
         }
+        
 
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
+        $brand=Brand::find($request->brand);
+        $brand->brand_name=$request->brand_name;
+        $brand->banner="img-".$request->brand_name;
+        if($request->file('logo')!=null)
+        {
+            File::delete(public_path($brand->path));
+            $brand->path="/images/".$file;
+            $brand->thumbnail_path="/images/".$file;
+        }
+        $brand->save();
 
-
-        // Return view with brands
-        return view('admin.brand.edit', compact('brands', 'cart_count'));
+        return back()->withFlash("Marca actualizada");
     }
 
 
@@ -147,34 +166,13 @@ class BrandsController extends Controller {
     }
 
 
-    /**
-     * Delete a Brand from DB
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function delete($id) {
-
-        // Find the Brand ID in the URl route
-        $delete = Brand::findOrFail($id);
-
-        // Get all products under this sub-category
-        $products = Product::where('brand_id', '=', $id)->count();
-
-        // If there are any products under a brand, then throw
-        // a error overlay message, saying to delete all products under the
-        // brand, else delete the brand
-        if ($products > 0) {
-            // Flash a error overlay message
-            flash()->customErrorOverlay('Error', 'There are products under this brand. Cannot delete this brand until all products under this brand are deleted');
-        } elseif (Auth::user()->id == 2) {
-            // If user is a test user (id = 2),display message saying you cant delete if your a test user
-            flash()->error('Error', 'Cannot delete Brand because you are signed in as a test user.');
-        } else {
-            $delete->delete();
-        }
-
-        return redirect()->back();
+    public function deleteBrand(Request $request) 
+    {
+        $brand=Brand::find($request->brand_id);
+        $brand_name=$brand->brand_name;
+        File::delete(public_path($brand->path));
+        $brand->delete();
+        return response("La marca ".$brand_name." ha sido eliminada");
     }
 
 
