@@ -16,6 +16,12 @@ class Sale extends Model
     {
         return $this->hasMany(seleHistory::class);
     }
+
+    public function seleHistories()
+    {
+        return $this->belongsTo(seleHistory::class);
+    }
+
     
     public function client()
     {

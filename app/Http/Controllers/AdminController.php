@@ -33,14 +33,20 @@ class AdminController extends Controller {
     public function index() {
         $sales=Auth::user()->selehistories()->paginate(10);
         $histories=Auth::user()->selehistories()->get();
-        return view("admin.sales.index", compact("sales", "histories"));
+        $ventas = Auth::user()->sale()->paginate(10);
+        return view("admin.sales.index", compact("sales", "histories", "ventas"));
         // return view("admin.dash");       
     }
 
     public function showSales() {
-        $sales= Auth::user()->selehistories()->paginate(10);
-        $histories= Auth::user()->selehistories()->get();
-        return view("admin.sales.index", compact("sales", "histories"));       
+        $sales = Auth::user()->selehistories()->paginate(10);
+        $ventas = Auth::user()->sale()->paginate(10);
+        $histories = Auth::user()->selehistories()->get();
+        // dd($ventas);
+        foreach ($ventas as $sale) {
+            // dd($sale->sellerHistories()->get());
+        }
+        return view("admin.sales.index", compact("sales", "ventas", "histories"));       
     }
 
     public function showPermissions()
@@ -190,7 +196,7 @@ class AdminController extends Controller {
             if($productseller != null)
             {
                 $saleHistory=new SeleHistory;
-                $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre);
+                $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
             }
             else
             {
@@ -198,7 +204,7 @@ class AdminController extends Controller {
                 foreach($admins as $admin)
                 {   
                     $saleHistory=new SeleHistory;
-                    $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre);
+                    $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
                 }
             }
         }
@@ -368,6 +374,7 @@ class AdminController extends Controller {
     { 
         $sales;
         $histories;
+        $ventas = null;
         if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
         {
             $años=$request->get("año");
@@ -426,13 +433,14 @@ class AdminController extends Controller {
             $sales=Auth::user()->selehistories()->paginate(10);
             $histories=Auth::user()->selehistories()->get();
         }
-        return view('admin.sales.index',compact('sales','histories'));
+        return view('admin.sales.index',compact('sales','histories','ventas'));
     }
     public function orderSales($order)
     {   
        
         $sales="";
         $histories="";
+        $ventas = null;
         if($order==1)
         {
             $sales=Auth::user()->selehistories()->orderBy('amount',"desc")->paginate(10);
@@ -475,7 +483,7 @@ class AdminController extends Controller {
             $histories=Auth::user()->selehistories()->get();
         }
        
-        return view('admin.sales.index',compact('sales','histories'));
+        return view('admin.sales.index',compact('sales','histories','ventas'));
     }
 
     
@@ -484,15 +492,22 @@ class AdminController extends Controller {
     }
 
     public function storeInvoice(Request $request) {
-        $sale = Sale::where('id',$request->get("factura"))->get();
-        $seleHistory = SeleHistory::where('sale_id', $request->get("factura"))->get();
-        // $this->validate(request(),[
-        //     'invoiceSale' => ' application|max:5120'
-        // ]);
-
-        $file = $request->file()
-
-        return back();
+        $file = request()->file('file');
+        $urlFac = $file->store('facturas');       
+        $url = "/images/".$urlFac;
+        $sale = Sale::find($request->get("factura"));
+        // dd($sale->url_fact);
+        if ($url != $sale->url_fact) {
+            if ($sale->url_fact == '#') {
+            }
+            $sale->url_fact = $url;
+            $sale->update();
+            return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);
+        } else {
+            $sale->url_fact = $url;
+            $sale->update();
+            return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);
+        }
     }
 
     public function deleteInvoice($sale_id) {
