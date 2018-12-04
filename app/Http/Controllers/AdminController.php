@@ -32,17 +32,20 @@ class AdminController extends Controller {
 
     
     public function index() {
-        $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $histories=Auth::user()->selehistories()->get();
-        $ventas = Auth::user()->sale()->paginate(10);
+        $seller = Auth::user()->selehistories();
+        $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
+        $histories = Auth::user()->selehistories()->get();
+        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
         return view("admin.sales.index", compact("sales", "histories", "ventas"));
         // return view("admin.dash");       
     }
 
     public function showSales() {
-        $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $histories=Auth::user()->selehistories()->get();
-        return view("admin.sales.index", compact("sales", "histories"));       
+        $seller = Auth::user()->selehistories();
+        $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
+        $histories = Auth::user()->selehistories()->get();
+        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
+        return view("admin.sales.index", compact("sales", "ventas", "histories"));       
     }
 
     public function showPermissions()

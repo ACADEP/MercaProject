@@ -1021,6 +1021,239 @@ class ProductImageTableSeeder extends Seeder
             'featured'=>1
         ]);
 
+        /* *************************************************************************************************************** */
+        /* *************************************************************************************************************** */
+        /* *************************************************************************************************************** */
+        /* *************************************************************************************************************** */
+        /* *************************************************************************************************************** */
+
+        DB::table('product_images')->insert([
+            'product_id' => 55,
+            'name'       =>  'imagen127',
+            'path'=>'/images/Audio/IPod_Classic_01.png',
+            'thumbnail_path'=>'/images/Audio/IPod_Classic_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 55,
+            'name'       =>  'imagen128',
+            'path'=>'/images/Audio/IPod_Classic_02.png',
+            'thumbnail_path'=>'/images/Audio/IPod_Classic_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 56,
+            'name'       =>  'imagen129',
+            'path'=>'/images/Celulares/huawei-p20-pro_01.jpg',
+            'thumbnail_path'=>'/images/Celulares/huawei-p20-pro_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 56,
+            'name'       =>  'imagen130',
+            'path'=>'/images/Celulares/huawei_p20_pro_03.png',
+            'thumbnail_path'=>'/images/Celulares/huawei_p20_pro_03.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 57,
+            'name'       =>  'imagen131',
+            'path'=>'/images/Celulares/Samsung_Galaxy_Note_9_01.png',
+            'thumbnail_path'=>'/images/Celulares/Samsung_Galaxy_Note_9_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 57,
+            'name'       =>  'imagen132',
+            'path'=>'/images/Celulares/Samsung_Galaxy_Note_9_02.png',
+            'thumbnail_path'=>'/images/Celulares/Samsung_Galaxy_Note_9_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 58,
+            'name'       =>  'imagen133',
+            'path'=>'/images/Celulares/sony-xperia-xz2_01.png',
+            'thumbnail_path'=>'/images/Celulares/sony-xperia-xz2_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 58,
+            'name'       =>  'imagen134',
+            'path'=>'/images/Celulares/sony-xperia-xz2_02.png',
+            'thumbnail_path'=>'/images/Celulares/sony-xperia-xz2_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 59,
+            'name'       =>  'imagen135',
+            'path'=>'/images/Celulares/huawei-mate-20-pro_01.png',
+            'thumbnail_path'=>'/images/Celulares/huawei-mate-20-pro_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 59,
+            'name'       =>  'imagen136',
+            'path'=>'/images/Celulares/huawei-mate-20-pro_02.png',
+            'thumbnail_path'=>'/images/Celulares/huawei-mate-20-pro_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 60,
+            'name'       =>  'imagen137',
+            'path'=>'/images/Celulares/iphone_x_02.jpg',
+            'thumbnail_path'=>'/images/Celulares/iphone_x_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 60,
+            'name'       =>  'imagen138',
+            'path'=>'/images/Celulares/iphone_x_01.jpg',
+            'thumbnail_path'=>'/images/Celulares/iphone_x_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 61,
+            'name'       =>  'imagen139',
+            'path'=>'/images/Computer/Alienware_m15_01.jpg',
+            'thumbnail_path'=>'/images/Computer/Alienware_m15_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 61,
+            'name'       =>  'imagen140',
+            'path'=>'/images/Computer/Alienware_m15_02.png',
+            'thumbnail_path'=>'/images/Computer/Alienware_m15_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 62,
+            'name'       =>  'imagen141',
+            'path'=>'/images/Computer/macbook-air-13_02.jpg',
+            'thumbnail_path'=>'/images/Computer/macbook-air-13_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 62,
+            'name'       =>  'imagen142',
+            'path'=>'/images/Computer/macbook-air-13_01.png',
+            'thumbnail_path'=>'/images/Computer/macbook-air-13_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 63,
+            'name'       =>  'imagen143',
+            'path'=>'/images/Computer/Samsung_Galaxy_Tab_10.1_01.png',
+            'thumbnail_path'=>'/images/Computer/Samsung_Galaxy_Tab_10.1_01.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 63,
+            'name'       =>  'imagen144',
+            'path'=>'/images/Computer/Samsung_Galaxy_Tab_10.1_02.png',
+            'thumbnail_path'=>'/images/Computer/Samsung_Galaxy_Tab_10.1_02.png',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 64,
+            'name'       =>  'imagen145',
+            'path'=>'/images/Computer/Apple_iPad_Pro_Tablet_01.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple_iPad_Pro_Tablet_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 64,
+            'name'       =>  'imagen146',
+            'path'=>'/images/Computer/Apple_iPad_Pro_Tablet_02.jpg',
+            'thumbnail_path'=>'/images/Computer/Apple_iPad_Pro_Tablet_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 65,
+            'name'       =>  'imagen147',
+            'path'=>'/images/Computer/Acer_Nitro_15.6_01.jpg',
+            'thumbnail_path'=>'/images/Computer/Acer_Nitro_15.6_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 65,
+            'name'       =>  'imagen148',
+            'path'=>'/images/Computer/Acer_Nitro_15.6_02.jpg',
+            'thumbnail_path'=>'/images/Computer/Acer_Nitro_15.6_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 66,
+            'name'       =>  'imagen149',
+            'path'=>'/images/Computer/Asus_ROG_Zephyrus_S_Ultra_01.jpg',
+            'thumbnail_path'=>'/images/Computer/Asus_ROG_Zephyrus_S_Ultra_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 66,
+            'name'       =>  'imagen150',
+            'path'=>'/images/Computer/Asus_ROG_Zephyrus_S_Ultra_02.jpg',
+            'thumbnail_path'=>'/images/Computer/Asus_ROG_Zephyrus_S_Ultra_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 67,
+            'name'       =>  'imagen151',
+            'path'=>'/images/VideoGames/Nintendo_2DS_01.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Nintendo_2DS_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 67,
+            'name'       =>  'imagen152',
+            'path'=>'/images/VideoGames/Nintendo_2DS_02.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Nintendo_2DS_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 68,
+            'name'       =>  'imagen153',
+            'path'=>'/images/VideoGames/Super_Smash_Bros_01.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Super_Smash_Bros_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 68,
+            'name'       =>  'imagen154',
+            'path'=>'/images/VideoGames/Super_Smash_Bros_02.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Super_Smash_Bros_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 69,
+            'name'       =>  'imagen155',
+            'path'=>'/images/VideoGames/Pokémon_Ultra_Moon_01.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Pokémon_Ultra_Moon_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 69,
+            'name'       =>  'imagen156',
+            'path'=>'/images/VideoGames/Pokémon_Ultra_Moon_02.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Pokémon_Ultra_Moon_02.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 70,
+            'name'       =>  'imagen157',
+            'path'=>'/images/VideoGames/Mario_Kart_7_01.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Mario_Kart_7_01.jpg',
+            'featured'=>1
+        ]);
+        DB::table('product_images')->insert([
+            'product_id' => 70,
+            'name'       =>  'imagen158',
+            'path'=>'/images/VideoGames/Mario_Kart_7_02.jpg',
+            'thumbnail_path'=>'/images/VideoGames/Mario_Kart_7_02.jpg',
+            'featured'=>1
+        ]);
+
+
+
 
     }
 }

@@ -46,7 +46,11 @@
                             <input type="hidden"  name="sale" value="{{$sale->id}}">
                             <button class="btn btn-danger btn-sm btn-dpdf" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar recibo"><i class="fa fa-file-pdf-o" aria-hidden="true" ></i></button>
                         </form>
-                        <button class="btn btn-danger btn-sm" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
+                        <form action="/customer/invoice" method="POST" style="display: inline;">
+                            {{ csrf_field()}}
+                            <input type="hidden"  name="sale_id" value="{{$sale->id}}">
+                            <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
+                        </form>
                     </div>
                         
                     <table class="table text-center">
