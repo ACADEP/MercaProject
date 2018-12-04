@@ -446,6 +446,8 @@ Route::group(["middleware" => 'customer'], function(){
     Route::post('/customer/status','CustomerController@getStatus');
     /* Recibo pdf */
     Route::post('/customer/pdf', 'CustomerController@PDF');
+    // Desargar rar o zip de la factura
+    Route::post('/customer/invoice', 'CustomerController@Invoice');
     /* Mostrar progreso */
     Route::get('/progressConfirmation','CartController@progressConfirmation');
     /************************CRUD productos favoritos****************************/

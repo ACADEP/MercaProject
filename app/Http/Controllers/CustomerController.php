@@ -190,4 +190,9 @@ class CustomerController extends Controller
         return back()->with('success','El producto con nombre '.$product_name.' ha sido borrado de favoritos');
     }
 
+    public function Invoice(Request $request) {
+        $sale = Auth::user()->sale()->find($request->get('sale_id'));
+        return response()->download(public_path($sale->url_fact));
+    }
+
 }

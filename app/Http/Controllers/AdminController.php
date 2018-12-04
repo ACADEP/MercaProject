@@ -32,26 +32,19 @@ class AdminController extends Controller {
 
     
     public function index() {
-        $sales=Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $histories=Auth::user()->selehistories()->get();
-        $ventas = Auth::user()->sale()->paginate(10);
+        $seller = Auth::user()->selehistories();
+        $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
+        $histories = Auth::user()->selehistories()->get();
+        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
         return view("admin.sales.index", compact("sales", "histories", "ventas"));
         // return view("admin.dash");       
     }
 
     public function showSales() {
+        $seller = Auth::user()->selehistories();
         $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $ventas = Auth::user()->sale()->paginate(config('configurations.paginate_general'));
         $histories = Auth::user()->selehistories()->get();
-        // dd($sales);
-        // $i = 0;
-        // $sa = array();
-        // foreach ($sales as $sale) {
-        //     // dd($sale->sales()->get());
-        //     $sa[$i] = $sale->sales()->get();
-        //     $i++;
-        // }
-        // dd($sa);
+        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
         return view("admin.sales.index", compact("sales", "ventas", "histories"));       
     }
 

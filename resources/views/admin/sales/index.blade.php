@@ -77,8 +77,8 @@ div.panel-heading {
                                 </a>            
                             </div>
                             <div class="col-sm-2 col-md-2 text-right">
-                                    <button type="button" class="btn btn-primary btn-xs btn-invoice" value="{{$sale->id}}" data-toggle="modal" data-target="#myModal"><i class="fa fa-file-pdf-o" aria-hidden="true" title="Subir Factura"></i></button>
-                                    <button class="btn btn-danger btn-xs btn-delete-invoice" data-placement="top" title="Quitar Factura" value="{{$sale->id}}"><i class="fa fa-minus-square"></i></button>        
+                                    <button type="button" class="btn btn-primary btn-xs btn-invoice" value="{{$sale->sale_id}}" data-toggle="modal" data-target="#myModal"><i class="fa fa-file-archive-o" aria-hsale_idden="true" title="Subir Factura"></i></button>
+                                    <button class="btn btn-danger btn-xs btn-delete-invoice" data-placement="top" title="Quitar Factura" value="{{$sale->sale_id}}"><i class="fa fa-minus-square"></i></button>        
                             </div>
                         </h4>
                     </div>    
@@ -97,7 +97,7 @@ div.panel-heading {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($sale->sellerHistories as $history)
+                                    @foreach($sale->where('sale_id',$sale->sale_id)->get(); as $history)
                                         <tr>
                                             <td ><img src="{{ $history->product->photos->first()->path }}" height="30px"></td>
                                             <td>{{ $history->product->product_name }}</td>
