@@ -764,6 +764,8 @@ Route::group(["middleware" => 'admin'], function(){
     Route::get("/admin/market_rates/send/{marketrate}", "MarketRatesController@sendMarketRate")->name("Send-MarketRate");
     //Enviar cotizacion en crear
     Route::post("/admin/market_rates/sendEmail", "MarketRatesController@sendEmailMarketRate")->name("sendEmail-MarketRate");
+     //Enviar cotizacion
+     Route::get("/admin/market_rates/showPDF", "MarketRatesController@showPDFPay")->name("pdf-pay");
 
     //Buscar productos en crear
     Route::get("/admin/market_rates/search", "MarketRatesController@searchMarket_rates")->name("search-marketRates");

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Mailers\AppMailers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class MarketRatesController extends Controller
 {
@@ -336,7 +337,10 @@ class MarketRatesController extends Controller
         $market_rate=MarketRates::find($request->marketrate);
         $sale= new Sale;
         $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar");
-
+        $items=$market_rate;
+        $pdf = PDF::loadView('admin.market_rates.pdf-pay',compact('items'));
+        Session::put('pay-marketrate',  $pdf->stream('Recibo-pago.pdf'));
+        Session::save(); 
         foreach($market_rate->MarketRatesDetails()->get() as $detail)
         {
             $history= new CustomerHistory;
@@ -353,6 +357,19 @@ class MarketRatesController extends Controller
         $market_rate->MarketRatesDetails()->delete();
         $market_rate->delete();
 
-        return back()->with("success","La cotización paso a pedido realizar el pago en el proximo día");
+        return back();
+    }
+    public function showPDFPay()
+    {
+        if(Session::has('pay-marketrate'))
+        {
+            $pdf=session("pay-marketrate");
+            Session::forget('pay-marketrate');
+            return $pdf;
+        }
+        else
+        {
+            return back();
+        }
     }
 }

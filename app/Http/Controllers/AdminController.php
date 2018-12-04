@@ -161,7 +161,7 @@ class AdminController extends Controller {
         $items=explode( ", ", $request->get("histories") );
         $itemsOrden=$request->get('histories');
         $seleHistories=SeleHistory::whereIn('id',$items)->orderByRaw(\DB::raw("FIELD(id,$itemsOrden)"))->get();
-        $pdf = PDF::loadView('seller.partials.print-pdf',compact('seleHistories'));
+        $pdf = PDF::loadView('admin.sales.print-pdf',compact('seleHistories'));
         return $pdf->stream('Ventas.pdf');
     }
 
@@ -206,7 +206,7 @@ class AdminController extends Controller {
             }
         }
         $order->delete();
-        return back()->with("success", "Pago acreditado a ".$client->username);
+        return back()->with("success", "Pago acreditado a ".$client->username." la orden se paso a ventas");
     }
 
     public function deleteOrder(Request $request)

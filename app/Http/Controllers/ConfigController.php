@@ -30,7 +30,7 @@ class ConfigController extends Controller
 
         //Configuración general
         $array['paginate_general']=$request->paginate;
-        $array['general']['company_name']=$request->company_name;
+        $array['general']['store_name']=$request->store_name;
         if($request->file('main_logo')!=null)
         {
             $file=$request->file('main_logo')->store('/');

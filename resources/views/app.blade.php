@@ -113,6 +113,7 @@
     @endif
     @if(Session::has('pay-oxxo'))
     <script>
+
         var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
         window.open('/show-pdf-oxxo', '_blank');
     </script>

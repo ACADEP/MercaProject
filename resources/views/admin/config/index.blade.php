@@ -20,7 +20,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab1primary" data-toggle="tab">API</a></li>
                             <li><a href="#tab2primary" data-toggle="tab">General</a></li>
-                            <li><a href="#tab3primary" data-toggle="tab">PDF Cotizaciones</a></li>
+                            <li><a href="#tab3primary" data-toggle="tab">PDF</a></li>
                           
                         </ul>
                 </div>
@@ -54,7 +54,7 @@
                                
                                 <div class="col-md-6">
                                     <label for="company_name">Nombre de la tienda:</label>
-                                    <input type="text" id="company_name" name="company_name" autocomplete="off" class="form-control"  value="{{config('configurations.general.company_name')}}">
+                                    <input type="text" id="store_name" name="company_name" autocomplete="off" class="form-control"  value="{{config('configurations.general.store_name')}}">
                                     <label for="company">Nombre de la empresa:</label>
                                     <input type="text" id="company" name="company" autocomplete="off" class="form-control"  value="{{config('configurations.company.name')}}">
                                     <label for="country">Codigo de pais:</label>
@@ -77,7 +77,10 @@
                             </div><!-- Fin tab 2-->
 
                             <div class="tab-pane fade" id="tab3primary">
-                            
+                                    <label for="slogan">Slogan:</label>
+                                    <input type="text" id="slogan" name="slogan" autocomplete="off" class="form-control"  value="{{config('configurations.mk.slogan')}}">
+                                    <label for="information_final">Información final:</label>
+                                    <input type="text" id="information_final" name="information_final" autocomplete="off" class="form-control"  value="{{config('configurations.mk.information_final')}}">
                             </div><!-- Fin tab 3-->
                     </div>
 

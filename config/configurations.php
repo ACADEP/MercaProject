@@ -20,6 +20,11 @@
   array (
     'main_logo' => '/images/2LCgOXDQ8ORQVRwC806T9RxEAiTnyxVxEtqmjA8f.png',
     'mini_logo' => '/images/Md.png',
-    'company_name' => 'Mercadata',
+    'store_name' => 'Mercadata',
+  ),
+  'mk' => 
+  array (
+    'slogan' => 'Tu tienda de tecnologia en línea',
+    'information_final'=>'En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.'
   ),
 ) ;

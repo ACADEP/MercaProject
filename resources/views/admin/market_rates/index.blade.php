@@ -68,7 +68,7 @@
     </table>
    
    @if($market_rates->count()<=0)
-    <div class="col-md-12 badge badge-primary">No hay resultados</div>
+    <div class="col-md-12 badge badge-primary">No hay cotizaciones</div>
    @endif
     
 
@@ -105,31 +105,44 @@
 @endif
 @if(Session::has('fail'))
     <script> 
-        $.notify({
-            // options
-            message: '<strong>{{ Session("fail") }}</strong>' 
-        },{
-            // settings
-            type: 'danger',
-            delay:5000
-        });
-        Cookies.remove("products");
-        Cookies.remove("market_id");
+            $.notify({
+                // options
+                message: '<strong>{{ Session("fail") }}</strong>' 
+            },{
+                // settings
+                type: 'danger',
+                delay:5000
+            });
+            Cookies.remove("products");
+            Cookies.remove("market_id");
+    </script>
+@endif
+@if(Session::has('pay-marketrate'))
+    <script>
+       $.notify({
+                // options
+                message: '<strong>La cotización paso a ordenes realizar el pago en el proximo día</strong>' 
+            },{
+                // settings
+                type: 'success',
+                delay:7000
+            });
+        window.open('/admin/market_rates/showPDF', '_blank');
     </script>
 @endif
     <script>
-    $(".btn-send-email").click(function(){
-        $.notify({
-            // options
-            message: '<strong>Enviando correo espere por favor</strong>' 
-        },{
-            // settings
-            type: 'warning',
-            delay:4000
+        $(".btn-send-email").click(function(){
+            $.notify({
+                // options
+                message: '<strong>Enviando correo espere por favor</strong>' 
+            },{
+                // settings
+                type: 'warning',
+                delay:4000
+            });
         });
-    });
-    
     </script>
+
 @stop
 
 @section('modal-add')

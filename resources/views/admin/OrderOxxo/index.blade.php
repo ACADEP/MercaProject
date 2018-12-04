@@ -69,7 +69,7 @@
 },{
     // settings
     type: 'success',
-    delay:5000
+    delay:7000
 });
 </script>
 @endif

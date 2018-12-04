@@ -703,7 +703,9 @@ $(document).ready(function () {
     </div>
   </div>
 </div>
-
+<script>$("#btn-bank-method").click(function(){
+     $("#loader").html("Generando el recibo espere por favor");
+});</script>
 @stop
 
 @section('modal-store')
@@ -722,7 +724,7 @@ $(document).ready(function () {
             <input type="hidden" name="date_ship" id="date_ship_store">
             <input type="hidden" name="carrie" id="store_carrie">
             <input type="hidden" name="carrie_id" id="store_carrie_id">
-            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
+            <button type="submit" class="btn btn-primary" id="btn-store-method">Generar recibo</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </form>
        
@@ -730,7 +732,9 @@ $(document).ready(function () {
     </div>
   </div>
 </div>
-
+<script>$("#btn-store-method").click(function(){
+     $("#loader").html("Generando el recibo espere por favor");
+});</script>
 @stop
 
 @section('modal-oxxo')
