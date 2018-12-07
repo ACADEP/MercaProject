@@ -33,6 +33,7 @@
                 <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
                 <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
+                <p>SKU: {{$product->product_sku}}</p>
                 </a>
             </div>
             <div class="text-center">
@@ -49,6 +50,7 @@
                     
             </div>
             <div class="col-md-12 text-center" style="width:100%;">
+                    
                     <div class="text-center">
                         <button class="btn btn-primary btn-sm btn-addcart"  data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
                             <i class="fa fa-shopping-cart"></i>

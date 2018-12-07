@@ -45,6 +45,7 @@ $(document).ready(function(){
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
         console.log(this.id);
         productosJson.splice(this.id, 1);
+        
         Cookies.set("productos",productosJson,1);
         mostrarElementos();
         if($("#body-cart").height()<=160)
@@ -85,6 +86,10 @@ $(document).ready(function(){
                        
                         if(response.user==1)
                         {
+                            if(response.itemcount==1)
+                            {
+                                $('#client-container').empty();
+                            }
                             
                             if(response.itemcount<=5 && response.itemcount>0)
                             {
@@ -158,6 +163,10 @@ $(document).ready(function(){
                                 }
                                 productosCart.push(response.item);
                                 Cookies.set("productos",productosCart,1);
+                                if(productosCart.length<=1)
+                                {
+                                    $('#product_container').empty();
+                                }
                                 if(productosCart.length<=5)
                                 {
                                     var num = '$' +(response.item.price-response.item.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
@@ -205,8 +214,10 @@ $(document).ready(function(){
 
     function mostrarElementos()
     {   refresh();
-       
-        if(Cookies.get("productos")!=null  )
+     
+      
+      
+        if(Cookies.get("productos")!=null )
         {
             var i=0;
             var nBadge=0;
@@ -217,6 +228,7 @@ $(document).ready(function(){
             if(maxElements<=0)
             {
                 $("#alert-cartP").html("No hay productos en el carrito");
+                $('#product_container').html("<div class='col-md-12 text-center'>No hay productos en el carrito</div>");
                 $("#alert-cartP").css("height","230px");
             }
             for(i;i<maxElements;i++)
@@ -241,7 +253,9 @@ $(document).ready(function(){
                     //Mostrar los productos en la vista detalles de carrito
                     var pPriceTotal=(producto.price-producto.reduced_price);
                     var num = '$' + pPriceTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                  
                     $('#tbody').append("<tr>");
+                    $('#tbody').append(" <td style='width:100px;'><img style='width:100%;' src="+producto.img+" ></td>");
                     $('#tbody').append("<td><a class='show-product' id='"+producto.product_name+"' style='text-decoration:none;'>"+producto.product_name+"</a></td>");
                     $('#tbody').append("<td>"+num+"</td>");
                     var k=0;
@@ -273,6 +287,7 @@ $(document).ready(function(){
         else
         {
             $("#alert-cartP").html("No hay productos en el carrito");
+            $('#product_container').html("<div class='col-md-12 text-center'>No hay productos en el carrito</div>");
             $("#alert-cartP").css("height","230px");
         }
         

@@ -15,7 +15,7 @@
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     </head>
 <body>
-<div class="col-md-6"><img src="{{asset('/images/logo-home.png')}}" style="width:100%; height:150px;"></div>
+<div class="col-md-6"><img src="{{asset(config('configurations.general.main_logo')}}" style="width:100%; height:150px;"></div>
 
 <h3>Se le ajunta la cotización</h3>
 

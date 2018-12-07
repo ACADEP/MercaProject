@@ -22,7 +22,7 @@
       
       <div class="row" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
-          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
+          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->nombre}}</div>
           <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
           <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
           <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
@@ -93,7 +93,7 @@
         </tbody>
       </table>
       <div id="notices">
-        <div><strong>Forma de pago: </strong>Oxxo</div>
+        <div><strong>Forma de pago: </strong>Tiendas<div>
         <div><strong>Tiempo de Entrega: </strong>{{$date_ship}}</div>
         <div><strong>¡Gracias por hacer su compra!</strong></div>
         <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>

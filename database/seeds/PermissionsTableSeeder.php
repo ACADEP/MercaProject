@@ -97,22 +97,87 @@ class PermissionsTableSeeder extends Seeder
             'guard_name'=>'web'
         ]);
 
-        //Permisos para facturas
+
+        //Permisos ordenes
         DB::table('permissions')->insert([
-            'name'    => 'view_invoice',
-            'display_name' => 'Ver facturas',
+            'name'    => 'view_orders',
+            'display_name' => 'Ver ordenes',
             'guard_name'=>'web'
         ]);
 
         DB::table('permissions')->insert([
-            'name'    => 'add_invoice',
-            'display_name' => 'Subir facturas',
+            'name'    => 'acredit_pay',
+            'display_name' => 'Acreditar pagos de ordenes',
             'guard_name'=>'web'
         ]);
 
         DB::table('permissions')->insert([
-            'name'    => 'delete_invoice',
-            'display_name' => 'Quitar facturas',
+            'name'    => 'delete_order',
+            'display_name' => 'Eliminar orden',
+            'guard_name'=>'web'
+        ]);
+
+        //Permisos reclamos de ventas
+        DB::table('permissions')->insert([
+            'name'    => 'view_reclames',
+            'display_name' => 'Ver reclamos',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'respond_reclames',
+            'display_name' => 'Responder reclamos',
+            'guard_name'=>'web'
+        ]);
+
+        //Permisos para Marcas
+        DB::table('permissions')->insert([
+            'name'    => 'view_brands',
+            'display_name' => 'Ver marcas',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'add_brands',
+            'display_name' => 'Agregar marcas',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'update_brands',
+            'display_name' => 'Actualizar marcas',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'delete_brands',
+            'display_name' => 'Eliminar marcas',
+            'guard_name'=>'web'
+        ]);
+
+         //Permisos para hacer configuraciones
+         DB::table('permissions')->insert([
+            'name'    => 'configurations',
+            'display_name' => 'Hacer configuraciones',
+            'guard_name'=>'web'
+        ]);
+
+        //Permisos cotizaciones
+        DB::table('permissions')->insert([
+            'name'    => 'make_marketRate',
+            'display_name' => 'Hacer cotizaciones',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'delete_markerRate',
+            'display_name' => 'Eliminar cotizaciones',
+            'guard_name'=>'web'
+        ]);
+
+        DB::table('permissions')->insert([
+            'name'    => 'pay_markerRate',
+            'display_name' => 'Convertir cotizaciones a pedidos',
             'guard_name'=>'web'
         ]);
 

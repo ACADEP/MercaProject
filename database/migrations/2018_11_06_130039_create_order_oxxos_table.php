@@ -18,6 +18,7 @@ class CreateOrderOxxosTable extends Migration
             $table->integer('user_id');
             $table->integer('market_id');
             $table->integer('sale_id');
+            $table->string('receipt_url')->nullable();
             $table->timestamps();
         });
     }

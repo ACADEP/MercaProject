@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>{{config('configurations.general.store_name')}} | {{Auth::user()->getRoleDisplayNames()}}</title>
-  <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
+  <link rel="shortcut icon" href="{{config('configurations.general.mini_logo')}}" />
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
@@ -175,7 +175,7 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header" style="background-color: #000 !important; color: #fff !important;"><strong>Perfil</strong></li>
         <!-- Optionally, you can add icons to the links -->
-        @can("view_products")     
+            
         <li class="treeview {{ Request::segment(2) == 'products' ? 'active' : '' }}">
           <a href="#"><i class="fa fa-bars"></i> <span>Productos</span>
             <span class="pull-right-container">
@@ -183,13 +183,15 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu " style="background-color: #242424 !important;">
+          @can("view_products")
           <li class="{{ Request::segment(3) == 'products' ? 'active' : '' }}"><a href="{{ url('admin/products/products/showProducts') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Productos</span></a></li>
+          @endcan
             @can("view_categories")
             <li class="{{ Request::segment(3) == 'categories' ? 'active' : '' }}"><a href="{{ url('admin/products/categories') }}"><i class="fa fa-barcode" aria-hidden="true"></i><span>Categorías</span></a></li>
             @endcan
           </ul>
         </li>
-        @endcan
+       
         
         @role("Admin")
         <li class="treeview {{ Request::segment(2) == 'users' ? 'active' : '' }}">
@@ -206,14 +208,25 @@ desired effect
          
         </li>
         @endrole
+        @can("view_brands")
         <li class="{{Request::segment(2) == 'brands' ? 'active' : ''}}"><a href="{{route('show-brands')}}"><i class="fa fa-copyright"></i> <span>Marcas</span></a></li>
+        @endcan
         @php $orders=App\OrderOxxo::all()->count(); @endphp
+        @can("view_orders")
         <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
+        @endcan
+         @can("view_reclames")
+        <li class="{{Request::segment(2) == 'reclames' ? 'active' : ''}}"><a href="{{ route('my-reclames') }}"><i class="fa fa-commenting" aria-hidden="true"></i><span>Reclamos de ventas</span></a></li>
+        @endcan
         @can("view_sales")
           <li class="{{Request::segment(2) == 'sales' ? 'active' : ''}}"><a href="{{ route('show-sales') }}"><i class="fa fa-line-chart"></i> <span>Ventas</span></a></li>
         @endcan
+        @can("make_marketRate")
         <li class="{{Request::segment(2) == 'market_rates' ? 'active' : ''}}"><a href="{{ route('show-marketRates') }}"><i class="fa fa-hand-paper-o"></i> <span>Cotizaciones</span></a></li>
+        @endcan
+        @can("configurations")
         <li class="{{Request::segment(2) == 'config' ? 'active' : ''}}"><a href="{{route('show-config')}}"><i class="fa fa-wrench"></i> <span>Configuración</span></a></li>
+        @endcan
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -364,6 +377,9 @@ desired effect
 @yield('add-images')
 @yield('js-dropzone')
 @yield('upload-invoice')
+@yield('select-sale')
+@yield('modal-respond-reclame')
+@yield('modal-add-receipt')
 
 
 

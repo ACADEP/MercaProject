@@ -336,7 +336,7 @@ class MarketRatesController extends Controller
        
         $market_rate=MarketRates::find($request->marketrate);
         $sale= new Sale;
-        $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar");
+        $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar","Cotización");
         $items=$market_rate;
         $pdf = PDF::loadView('admin.market_rates.pdf-pay',compact('items'));
         Session::put('pay-marketrate',  $pdf->stream('Recibo-pago.pdf'));
@@ -353,9 +353,6 @@ class MarketRatesController extends Controller
         }
         $orOxxo=new OrderOxxo;
         $orOxxo->insert(Auth::user()->id,$sale->id, $market_rate->id);
-
-        $market_rate->MarketRatesDetails()->delete();
-        $market_rate->delete();
 
         return back();
     }

@@ -6,9 +6,11 @@
             Marcas
         </h1> 
 </section><br>
+@can("add_brands")
 <div class="text-right">
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_brand"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar marca</button>
 </div>
+@endcan
 
 <table class="text-center table">
         <thead>
@@ -25,11 +27,15 @@
             <td>{{ $brand->brand_name}}</td>
             <td>
                 <div class="form-inline">
+                @can("delete_brands")
                     <button class="btn btn-danger btn-xs btn-row-brand" value="{{$brand->id}}" data-toggle="tooltip" value="" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+                @endcan
+                @can("update_brands")
                     <form action="{{route('showEdit-brands', $brand->id)}}" method="get" style="display:inline;">
 
                         <button class="btn btn-info btn-xs" type="submit" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
                     </form>
+                @endcan
                     
                 </div>   
             </td>

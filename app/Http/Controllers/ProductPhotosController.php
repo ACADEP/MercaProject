@@ -24,12 +24,12 @@ class ProductPhotosController extends Controller {
         if($product->photos()->count()<5)
         {
             $file=request()->file('photoProducto');
-            $photourl=$file->store($product->category->category);       
+            $photourl=$file->store('/images/'.$product->category->category);       
             $imageProduct=ProductPhoto::create([
                 'product_id'=>$product->id,
                 'name'=>$file,
-                'path'=>"/images/".(string)$photourl,
-                'thumbnail_path'=>"/images/".(string)$photourl,
+                'path'=>'/'.(string)$photourl,
+                'thumbnail_path'=>'/'.(string)$photourl,
                 'featured'=>0
             ]);
             $url=route('delete-Photo',$imageProduct->id);

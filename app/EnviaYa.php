@@ -14,12 +14,12 @@ class EnviaYa extends Model
         $client = new \GuzzleHttp\Client();
 
         $api_key = config("configurations.api.api_key_enviaya");
-        $origin=[   'company'=> "Acadep",
-                    'country_code'=> "MX",
-                    'postal_code'=> "23000",
-                    'direction_1'=> "Allende",
-                    'city'=> "La Paz",
-                    'phone'=> "6121225174"];
+        $origin=[   'company'=> config('configurations.company.name'),
+                    'country_code'=> config('configurations.company.country_code'),
+                    'postal_code'=> config('configurations.company.postal_code'),
+                    'direction_1'=> config('configurations.company.direction_1'),
+                    'city'=> config('configurations.company.city'),
+                    'phone'=>config('configurations.company.phone')];
         $destination=[  'full_name'=> $user->customer->nombre." ".$user->customer->apellidos,
                         'country_code'=> "MX",
                         'postal_code'=> $user->addressActive()->cp,
@@ -91,8 +91,8 @@ class EnviaYa extends Model
         $client = new \GuzzleHttp\Client();
 
         $api_key = config('configurations.api.api_key_enviaya');
-        $origin=[   'country_code'=> "MX",
-                    'postal_code'=> "23000" ];
+        $origin=[   'country_code'=> config('configurations.company.country_code'),
+                    'postal_code'=> config('configurations.company.postal_code') ];
         $destination=[  'country_code'=> "MX",
                         'postal_code'=> Auth::user()->addressActive()->cp];
         $shipment='{ "shipment_type":"Package","parcels":[{"quantity":"1","weight":"1","weight_unit":"kg","length":"5","height":"10","width":"15","dimension_unit":"cm"}]}';

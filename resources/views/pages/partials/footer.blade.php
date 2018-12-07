@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-md-4 text-center">
                     <img src="{{config('configurations.general.main_logo')}}" width="150px">
-                    <p class="white-text text-center"><a href="{{ url('/') }}">Mercadata</a></p>
+                    <p class="white-text text-center"><a href="{{ url('/') }}">{{config('configurations.general.store_name')}}</a></p>
                 </div>
                 
                 <div class="col-md-4 text-center">

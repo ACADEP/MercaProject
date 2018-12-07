@@ -5,7 +5,7 @@
 <nav aria-label="breadcrumb" style="padding-top: 5px;">
     <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('/seller/admin') }}">Perfil</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/admin/index') }}">Perfil</a></li>
         <li class="breadcrumb-item active" aria-current="page">Historial de Reclamos</li>
     </ol>
 </nav>          
@@ -64,9 +64,11 @@
                 </div> 
                 <h4><strong>Descripción:</strong></h4>
                 {!! $sale->reclame_text !!}
+                @can("respond_reclames")
                 <div class="form-inline col-md-12 text-center">
                     <button class="btn btn-primary btn-sm btn-response" value="{{$sale->id}}" data-toggle="modal" data-target="#respond-reclame">Responder</button>
                 </div> 
+                @endcan
             
             </div>
             <div class="col-md-4 well well-lg">
