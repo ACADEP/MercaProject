@@ -47,7 +47,9 @@ class CustomerController extends Controller
         // Select all from "Orders" where the user_id = the ID og the signed in user to get all their Orders
         $orders = Order::where('user_id', '=', $user_id)->get();
 
-        return view('customer.dash', compact('search', 'cart_count', 'username', 'orders'));
+        $sales=Auth::user()->sale()->orderBy("date","desc")->paginate(5);
+
+        return view('customer.pages.customer_history', compact('search', 'cart_count', 'username', 'orders', 'sales'));
     }
 
     public function personal() {
@@ -116,8 +118,43 @@ class CustomerController extends Controller
     }
 
     public function profile() {
-        return view('customer.pages.profile');
+        $user = Auth::user();
+        return view('customer.pages.profile', compact('user'));
     }
+
+    public function profileUpdate(Request $request) {
+        // dd($request);
+        $user = Auth::user();
+        $this->validate($request, [
+            'username'    => 'required',
+            'email' => 'required|email|unique:users'
+        ]);
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->update();
+        return redirect()->back()->with("msg","Datos de Cuenta Cambiados");
+    }
+
+    public function profileUpdatePassword(Request $request) {
+        $user = Auth::user();
+        $this->validate($request, [
+            'password_actual' => 'required',
+            'password' => 'required',
+            'password_confirmed' => 'required'
+        ]);
+        if (\Hash::check($request->password_actual, $user->password)) {
+            if ($request->password == $request->password_confirmed) {
+                $user->password = bcrypt($request->input('password'));
+                $user->update();    
+                return redirect()->back()->with("msg","Datos de Cuenta Cambiados");
+            } else {
+                return redirect()->back()->with("msg1","La nueva contraseña no coincide con repetir contraseña");
+            }
+        } else {
+            return redirect()->back()->with("msg1","La contraseña actual no coincide");
+        }
+    }
+
     public function tracking(Request $request)
     {   
         if($request->method()=="GET")
@@ -194,5 +231,6 @@ class CustomerController extends Controller
         $sale = Auth::user()->sale()->find($request->get('sale_id'));
         return response()->download(public_path($sale->url_fact));
     }
+
 
 }

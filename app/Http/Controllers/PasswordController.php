@@ -83,10 +83,14 @@ class PasswordController extends Controller
     public function postReset(Request $request, AppMailers $mailer) {
         $this->validate($request, ['email'    => 'required|email']);
         $user = User::where('email', $request->input('email'))->first();
-        $user->password = bcrypt($request->input('password'));
-        $user->update();
-        $mailer->sendEmailChangePassword($user);
-        return redirect('/login');
+        // if ($request->password == $request->password_confirmation) {
+            $user->password = bcrypt($request->input('password'));
+            $user->update();
+            $mailer->sendEmailChangePassword($user);
+            return redirect('/login');    
+        // }else {
+        //     return back()->with('flash','La contraseña no coincide con confirmar contraseña');
+        // }
     }
 
 }

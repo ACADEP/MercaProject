@@ -63,7 +63,7 @@
 </div>
 
 <div class="row">
-    <div class="row col-sm-3 col-md-3">
+    <div class="row col-sm-3 col-md-3 mb-4">
         @include('pages.partials.filter-new')
     </div>
 

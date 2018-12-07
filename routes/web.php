@@ -166,6 +166,18 @@ Route::group(['middleware' => ['web']], function () {
         'as'   => 'offer.filter',
     ]);
 
+    /** Route to filter products for selled */
+    Route::get('/selled/filter', [
+        'uses' => '\App\Http\Controllers\PagesController@filtrosSelled',
+        'as'   => 'selled.filter',
+    ]);
+
+    /** Route to order products for selled */
+    Route::get('/selled/order', [
+        'uses' => '\App\Http\Controllers\OrderByController@OrderSelledproducts',
+        'as'   => 'selled.order',
+    ]);    
+        
     /** Route to filter products for news */
     Route::get('/new-products/filter', [
         'uses' => '\App\Http\Controllers\PagesController@filtrosNuevos',
@@ -480,6 +492,16 @@ Route::group(["middleware" => 'customer'], function(){
     Route::get('/customer/personal/acount', [
         'uses' => '\App\Http\Controllers\CustomerController@profile',
         'as'   => 'customer.acount',
+    ]);
+
+    Route::post('/customer/personal/acount/update', [
+        'uses' => '\App\Http\Controllers\CustomerController@profileUpdate',
+        'as'   => 'customer.acount.update',
+    ]);
+
+    Route::post('/customer/personal/acount/', [
+        'uses' => '\App\Http\Controllers\CustomerController@profileUpdatePassword',
+        'as'   => 'customer.acount.update.password',
     ]);
 
     /*********************** CRUD Address Profile ***********************/

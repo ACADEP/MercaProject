@@ -125,7 +125,7 @@
                             <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                             <input type="hidden" id="qty" value="1"/>
                             <input type="hidden" id="url" value="/cart/add">  
-                            <input class="CatId" type="hidden" name="CatId" value="{{$product->cat_id}}">
+                            <input class="CatId" id="CatId" type="hidden" name="CatId" value="{{$product->cat_id}}">
                     </div>
                     <div class="text-center" style="width:100%;">
                         <div class="text-center">
@@ -153,14 +153,12 @@
         $('.activo').on('click', function(e) {
             $(e.target).closest('span').remove();
             var marca =  document.getElementsByClassName("brand");
-            // var categoria =  document.getElementsByClassName("cat");
             var priceAll =  document.getElementsByClassName("priceAll");
             var priceMax =  document.getElementsByClassName("priceMax");
             var priceMin =  document.getElementsByClassName("priceMin");
-            var catid = {{$products->first()->category->id}};
-            var catname = {{$products->first()->category->category}};
+            var catid = document.getElementById("CatId").defaultValue;
+            console.log(catid);
             var brand = new Array();
-            var categories = new Array();
             var price;
             var desde = null;
             var hasta = null;
@@ -170,9 +168,6 @@
             for(i = 0; i < marca.length; i++) {
                 brand[i] = marca[i].innerText;
             }
-            // for(i = 0; i < categoria.length; i++) {
-            //     categories[i] = categoria[i].innerText;
-            // }
             if (priceAll.length > 0) {
                 for(i = 0; i < priceAll.length; i++) {
                     price = priceAll[i].innerText;
@@ -198,12 +193,7 @@
                     desde = price.substring(7);
                 }
             }
-            // console.log(id);
-            // console.log(brand);
-            // console.log(categories);
-            // console.log(hasta);
-            // console.log(desde);
-            get('/category/{category}/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil,  id:catid});
+            get('/category/{category}/filter', {brand:brand, categories:null, hasta:hasta, desde:desde, fil:fil,  catid:catid});
         });
     });
     

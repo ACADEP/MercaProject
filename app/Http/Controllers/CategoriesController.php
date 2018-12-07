@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Category;
+use App\Brand;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
@@ -325,7 +326,8 @@ class CategoriesController extends Controller {
     /* ******************************** filtros de las categorias ******************************** */
     public function filtros(Category $category, Request $request) {
         // dd($request);
-        $categoryFil = Category::find($request->id);
+        $categoryFil = Category::find($request->catid);
+        // dd($categoryFil);
         $brandFilter = $request->brand;
         $catFilter = $request->categories;
         $minFilter = $request->desde;
@@ -343,11 +345,10 @@ class CategoriesController extends Controller {
 
         $hasta = $request->hasta;
         $desde = $request->desde;
-        $brand = $request->brand;
         $d = $request->desde;
         $h = $request->hasta;
-        $b = $request->brand;
 
+        $brand = $request->brand;
 
         $marc = array();
         $marca =  array();
@@ -355,11 +356,10 @@ class CategoriesController extends Controller {
         $categoria = array();
 
         if($request->fil == 0) {
-            $categoryFil = Category::find($request->id);
+            $categoryFil = Category::find($request->catid);
             $desde = json_decode($d);
             $hasta = json_decode($h);
-            $brand = json_decode($b);
-
+            // dd($request->brand);
             if($request->brand) {
                 $cb = $request->brand;
                 $m = null;
@@ -376,10 +376,13 @@ class CategoriesController extends Controller {
                         $c++;
                     }
                 }
-                $marca = Brand::wherein('brand_name', $marc)->get();    
+                // dd($marc);
+                $marca = Brand::wherein('brand_name', $marc)->get();   
+                // dd($marca); 
             } else {
                 $marca = null;
             }
+            // dd($marca);
 
             if($request->categories) {
                 $cc = $request->categories;
@@ -410,181 +413,90 @@ class CategoriesController extends Controller {
             $maxfilter = $hasta;
             $labels = 0;
         }
+        // dd($marca);
 
         // Filtro por Precio Maximo
-        if($brand==null && $request->get("categories")==null && $desde==null && $hasta!=null)
+        if($brand==null && $desde==null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->OrderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)->where('price', '<=', $request->hasta)->paginate(12);
+                $products = $categoryFil->products()->OrderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->catid)->where('price', '<=', $request->hasta)->paginate(12);
             } else {
-                $products = $categoryFil->products()->OrderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)->where('price', '<=', $hasta)->paginate(12);
+                $products = $categoryFil->products()->OrderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->catid)->where('price', '<=', $hasta)->paginate(12);
             }        
 
         } // Filtro por Precio Minimo
-        else if($brand==null && $request->get("categories")==null && $desde!=null && $hasta==null)
+        else if($brand==null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)->where('price', '>=', $request->desde)->paginate(12);
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)->where('price', '>=', $request->desde)->paginate(12);
             } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)->where('price', '>=', $desde)->paginate(12);
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)->where('price', '>=', $desde)->paginate(12);
             }       
 
         } // Filtro por Precio Minimo y Precio Maximo
-        else if($brand==null && $request->get("categories")==null && $desde!=null && $hasta!=null)
+        else if($brand==null && $desde!=null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->paginate(12);
             } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)
                 ->where('price', '>=', $desde)->where('price', '<=', $hasta)->paginate(12);
             }            
 
         } // Filtro por Marca
-        else if($brand!=null && $request->get("categories")==null && $desde==null && $hasta==null)
+        else if($brand!=null && $desde==null && $hasta==null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('brand_id', $request->brand)->paginate(12);
+                // dd($request->brand);
+                $products = $categoryFil->products()->where('cat_id', $request->catid)->whereIn('brand_id', $request->brand)->paginate(12);
             } else {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('brand_id', $marca)->paginate(12);
+                $products = $categoryFil->products()->where('cat_id', $request->catid)->whereIn('brand_id', $marca)->paginate(12);
             }       
-
-        } // Filtro por Categoria
-        else if($brand==null && $request->get("categories")!=null && $desde==null && $hasta==null)
+            // dd($products);
+        } 
+        // Filtro por Marca y Precio Minimo
+        else if($brand!=null && $desde!=null && $hasta==null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('cat_id', $request->categories)->paginate(12);
-                dd($products);
-            } else {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('cat_id', $categoria)->paginate(12);
-            }
-
-        } // Filtro por Marca y Categoria
-        else if($brand!=null && $request->get("categories")!=null && $desde==null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->where('cat_id', $request->id)->whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-
-        } // Filtro por Marca y Precio Minimo
-        else if($brand!=null && $request->get("categories")==null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)
                 ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->paginate(12);
             } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)
                 ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->paginate(12);
             }  
 
         } // Filtro por Marca y Precio Maximo
-        else if($brand!=null && $request->get("categories")==null && $desde==null && $hasta!=null)
+        else if($brand!=null && $desde==null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->catid)
                 ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->paginate(12);
             } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->catid)
                 ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->paginate(12);
             }
             
-        } // Filtro por Categoria y Precio Minimo
-        else if($brand==null && $request->get("categories")!=null && $desde!=null && $hasta==null)
+        }
+        // Filtro por Marca, Precio Minimo y Precio Maximo
+        else if($brand!=null && $desde!=null && $hasta!=null)
         {
             if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
-                ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
-                ->where('price', '>=', $desde)->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Categoria y Precio Maximo
-        else if($brand==null && $request->get("categories")!=null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
-                ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
-                ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Marca, Categoria y Precio Minimo
-        else if($brand!=null && $request->get("categories")!=null && $desde!=null && $hasta==null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
-                ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
-                ->where('price', '>=', $desde)->whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Marca, Categoria y Precio Maximo
-        else if($brand!=null && $request->get("categories")!=null && $desde==null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
-                ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) DESC')->where('cat_id', $request->id)
-                ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)
-                ->whereIn('cat_id', $categoria)->paginate(12);
-            }
-            
-        } // Filtro por Marca, Precio Minimo y Precio Maximo
-        else if($brand!=null && $request->get("categories")==null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
+                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)
                 ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
                 ->whereIn('brand_id', $request->brand)->paginate(12);
             } else {
                 $products = $querybadge->where('price', '>=', $desde)->where('price', '<=', $hasta)
-                ->WhereIn('brand_name', $marca)->where('cat_id', $request->id)
+                ->WhereIn('brand_name', $marca)->where('cat_id', $request->catid)
                 ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
             }
         }
-        // Filtro por Categoria, Precio Minimo y Precio Maximo
-        else if($brand==null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)
-                ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)
-                ->whereIn('cat_id', $request->categories)->paginate(12);
-            } else {
-                $products = $querybadge->where('price', '>=', $desde)->where('price', '<=', $hasta)
-                ->WhereIn('cat_id', $categoria)->where('cat_id', $request->id)
-                ->orderByRaw('(price - reduced_price) ASC')->paginate(12);
-            }
-        } // Filtro por Marca, Categoria, Precio Minimo y Precio Maximo
-        else if($brand!=null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
-        {
-            if ($request->fil == 1) {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)
-                ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)
-                ->whereIn('cat_id', $request->categories)->where('cat_id', $request->id)->paginate(12);
-            } else {
-                $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
-                ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)
-                ->where('cat_id', $request->id)->paginate(12);
-            }
-            
-        } 
-        else if($brand==null && $request->get("categories")==null && $desde==null && $hasta==null) {
-            $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)->paginate(12);
+        else if($brand==null && $desde==null && $hasta==null) {
+            $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)->paginate(12);
         } else if ($request->clear == 'clear') {
-            $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->id)->paginate(12);
+            $products = $categoryFil->products()->orderByRaw('(price - reduced_price) ASC')->where('cat_id', $request->catid)->paginate(12);
         }
-        // dd($products);
+        // dd($request);
 
         return view("pages.products-category", compact('products', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels', 'marcas'));
     }

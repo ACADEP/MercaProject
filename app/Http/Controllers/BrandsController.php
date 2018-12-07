@@ -322,7 +322,6 @@ class BrandsController extends Controller {
         {
             if ($request->fil == 1) {
                 $products = Product::where('brand_id', $request->id)->whereIn('cat_id', $request->categories)->paginate(12);
-                dd($products);
             } else {
                 $products = Product::where('brand_id', $request->id)->whereIn('cat_id', $categoria)->paginate(12);
             }

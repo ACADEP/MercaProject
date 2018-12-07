@@ -118,6 +118,10 @@ class SeleHistoriesTableSeeder extends Seeder
             'amount'        =>1,
             'total'         => 1000
         ]);
+
+
+
+        /* ***********************************************/
         DB::table('sele_histories')->insert([
             'user_id'       => 1,
             'sale_id'       => 5,

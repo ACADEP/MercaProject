@@ -6,6 +6,7 @@ use App\Brand;
 use App\Product;
 use App\Shop;
 use App\Category;
+use Carbon\Carbon;
 // use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -694,6 +695,52 @@ class OrderByController extends ProductsController {
 
         return view('pages.search', compact('search', 'search_find', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));
     }
+
+    public function OrderSelledproducts(Request $request) {
+        $date = Carbon::now();
+        $endDate = $date->subMonth(3);
+        
+        $query=Product::select("products.*")->join('customer_histories', 'products.id', '=', 'customer_histories.product_id')
+        ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
+        ->join('brands', 'products.brand_id', '=', 'brands.id');
+
+        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, SUM(customer_histories.amount) as ventas"))
+            // ->where('sales.status_pago', 'Pago por acreditar')
+            ->where('sales.status_pago', 'Acreditado')
+            ->where("sales.date",">",$endDate)
+            ->groupBy("products.id");
+        // $selledProducts = $query->OrderBy('company_id','ASC')->paginate(12);
+
+        if ($request->Menor == 1) {
+            $selledProducts = $query->OrderByRaw('(price - reduced_price) ASC')->paginate(12);
+            $ordenamiento = "Precio Menor";
+        } elseif ($request->Mayor) {
+            $selledProducts = $query->OrderByRaw('(price - reduced_price) DESC')->paginate(12);
+            $ordenamiento = "Precio Mayor";
+        } elseif ($request->AZ) {
+            $selledProducts = $query->OrderBy('product_name', 'ASC')->paginate(12);
+            $ordenamiento = "Productos A-Z";
+        } elseif ($request->ZA) {
+            $selledProducts = $query->OrderBy('product_name', 'DESC')->paginate(12);
+            $ordenamiento = "Productos Z-A";    
+        }
+
+        //previous URL for breadcrumbs
+        $previousURL = url()->previous();
+
+        $categorias = Category::all();
+        $marcas = Brand::all();
+
+        $brandFilter = null;
+        $catFilter = null;
+        $minFilter = null;
+        $maxfilter = null;
+        $labels = 1;
+
+        return view('pages.partials.all-selledProducts',compact('selledProducts', 'previousURL', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));
+    }
+
+    
 
 
 }

@@ -65,14 +65,14 @@
 <br>
 
 <div class="row">
-    <div class="row col-sm-3 col-md-3">
-        @include('pages.partials.filter-offer')
+    <div class="row col-sm-3 col-md-3 mb-4">
+        @include('pages.partials.filter-seller')
     </div>
 
     <div class="row col-sm-9 col-md-9 text-center ml-4">
         @foreach($selledProducts as $product)
             <div class="wow animated zoomIn m-2" id="product-sub-container" style="width: 235px !important;">
-                <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand->brand_name}}</span></div>
+                <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand_name}}</span></div>
                 <div class="row">
                     <div class="text-center hoverable" style="width:100%;">
                         <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
@@ -185,7 +185,7 @@
             // console.log(categories);
             // console.log(hasta);
             // console.log(desde);
-            get('/offers/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil});
+            get('/selled/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil});
         })
     });
     
