@@ -16,6 +16,7 @@ class CustomerHistoryController extends Controller
     }
     public function reclame(Request $request)
     {
+     
         $sale=Auth::user()->sale()->where("id",$request->sale)->first();
         if($sale!=null)
         {
@@ -41,10 +42,10 @@ class CustomerHistoryController extends Controller
         if($sale->photosReclame()->count()<5)
         {
             $file=request()->file('photoProducto');
-            $photourl=$file->store("reclames");       
+            $photourl=$file->store("/images/reclames");       
             $imageSales=PhotosReclame::create([
                 'sale_id'=>$request->sale_id,
-                'path'=>"/images/".(string)$photourl,
+                'path'=>'/'.(string)$photourl,
             ]);
             // $url=route('delete-Photo',$imageProduct->id);
             return response(['imageUrl'=>$imageSales->path],200);

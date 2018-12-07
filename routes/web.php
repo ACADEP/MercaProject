@@ -625,7 +625,7 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'openpay.oxxo',
     ]); 
 
-    Route::get('/show-pdf-oxxo','CartController@showPDFOxxo');  
+    Route::get('/show-pdf-pay','CartController@showPDFOxxo');  
 
     Route::post('/notificacions/paypal', [
         'uses' => '\App\Http\Controllers\CartController@PaypalWebhook',
@@ -664,7 +664,7 @@ Route::group(["middleware" => 'customer'], function(){
 
     Route::get('seller/sales','SellerController@showSales')->name('my-sales');
 
-    Route::get('seller/reclames','SellerController@showReclames')->name('my-reclames');
+    
 
     //Order by histories
     Route::get('seller/sales/{order}','SellerController@orderSales')->name('order');
@@ -675,7 +675,7 @@ Route::group(["middleware" => 'customer'], function(){
 
     Route::get('print_excel_seller','SellerController@printExcel');
 
-    Route::post('seller/respond-reclame','SellerController@respondReclame')->name('respond-reclame');
+   
 
 
 
@@ -708,14 +708,24 @@ Route::group(["middleware" => 'admin'], function(){
     Route::get('admin/sales/{order}','AdminController@orderSales')->name('order-admin');
     //Ordenar por fecha
     Route::post('admin/sales/orderDate','AdminController@orderDate')->name('orderDate-admin');
-    
+    //Recibo de pago
+   //Imprimir PDF
+   Route::get('/print-pay-pdf/{id}', 'AdminController@salesPayPDF')->name('salesPdf');
+
+    //reclamos
+    Route::get('/admin/reclames','AdminController@showReclames')->name('my-reclames');
+    //responder
+    Route::post('/admin/respond-reclame','AdminController@respondReclame')->name('respond-reclame');
+
     //Ordenes por Oxxo
     //Mostrar disponibles
-    Route::get("admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
+    Route::get("/admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
     //Acreditar pago
     Route::post("/admin/OrderOxxo/accreditedPay", "AdminController@accreditedPay")->name("accreditedPay");
     //Eliminar orden
     Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
+     //Eliminar orden
+     Route::post("/admin/OrderOxxo/storeReceipt", "AdminController@storeReceipt")->name("storeReceipt");
 
     //Facturas
     //Subir factura
@@ -758,6 +768,7 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post('/admin/products/products/add','ProductsController@addProduct')->name('add-Product');
     //Mostrar edición
     Route::get('/admin/products/products/edit/{product}','ProductsController@showEdit')->name('show-edit');
+    //Agregar fotos
     Route::post('/admin/products/products/addphoto','ProductPhotosController@store')->name('add-Photo');
     //eliminar foto
     Route::delete('/deletephoto/{id}','ProductPhotosController@delete')->name('delete-Photo');
@@ -788,6 +799,8 @@ Route::group(["middleware" => 'admin'], function(){
     Route::get("/admin/market_rates/send/{marketrate}", "MarketRatesController@sendMarketRate")->name("Send-MarketRate");
     //Enviar cotizacion en crear
     Route::post("/admin/market_rates/sendEmail", "MarketRatesController@sendEmailMarketRate")->name("sendEmail-MarketRate");
+     //Enviar cotizacion
+     Route::get("/admin/market_rates/showPDF", "MarketRatesController@showPDFPay")->name("pdf-pay");
 
     //Buscar productos en crear
     Route::get("/admin/market_rates/search", "MarketRatesController@searchMarket_rates")->name("search-marketRates");

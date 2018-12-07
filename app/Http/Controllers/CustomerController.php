@@ -205,9 +205,7 @@ class CustomerController extends Controller
     public function PDF(Request $request)
     {
         $sale = Auth::user()->sale()->find($request->get('sale'));
-        $Items=$sale->customerHistories()->with("product")->get();
-        $subtotal=$sale->total;
-        $pdf = PDF::loadView('customer.partials.recibe-download',compact('Items','subtotal','address'));
+        $pdf = PDF::loadView('customer.partials.recibe-download',compact('sale'));
         return $pdf->download('Recibo de pago.pdf');
     }
     
@@ -232,8 +230,18 @@ class CustomerController extends Controller
     }
 
     public function Invoice(Request $request) {
+        
         $sale = Auth::user()->sale()->find($request->get('sale_id'));
-        return response()->download(public_path($sale->url_fact));
+       
+        if($sale->url_fact==null || $sale->url_fact=="#")
+        {
+            return back()->with('fail', "No existe factura contacte a administración");
+        }
+        else
+        {
+            return response()->download(public_path($sale->url_fact));
+        }
+       
     }
 
 

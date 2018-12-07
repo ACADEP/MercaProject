@@ -8,10 +8,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Mercadata | Cliente</title>
+  <title>{{config('configurations.general.store_name')}} | Cliente</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
+  <link rel="shortcut icon" href="{{config('configurations.general.mini_logo')}}" />
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -77,9 +77,9 @@ desired effect
     <!-- Logo -->
     <a href="{{ url('/') }}" class="logo" style="background-color: #000 !important;">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="/images/Md.png" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
+      <span class="logo-mini"><img src="{{config('configurations.general.mini_logo')}}" style="float: left; width: 80%; height: 50%; margin-left: 10%; margin-top: 10%;"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><img class="img-responsive" src="/images/logo-home.png" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
+      <span class="logo-lg"><img class="img-responsive" src="{{config('configurations.general.main_logo')}}" style="float: left; width: 80%; height: 50%; margin-left: 10%"></span>
     </a>
 
     <!-- Header Navbar -->
