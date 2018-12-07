@@ -22,11 +22,9 @@
 
       <div class="row mb-3" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
-          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->nombre}}</div>
-          <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
-          <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
-          <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
-          <div><span><strong>Expiración</strong></span> {{Carbon\Carbon::now()->addDay(1)}}</div>
+          <div><span><strong>Cliente</strong></span> {{$sale->client->username}}</div>
+          <div><span><strong>Correo</strong></span> <a href="mailto:{{$sale->client->email}}">{{$sale->client->email}}</a></div>
+          <div><span><strong>Fecha</strong></span> {{ $sale->date }}</div>
         </div>
     
         <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
@@ -53,49 +51,34 @@
           </tr>
         </thead>
         <tbody>
-        @if(isset($ItemsCarts))
-          @foreach($ItemsCarts as $item)
+       
+          @foreach($items as $item)
             <tr>
-                <td class="service">{{$item->qty}}</td>
+                <td class="service">{{$item->amount}}</td>
                 <td class="desc">{{$item->product->product_sku}}</td>
                 <td class="unit">{{$item->product->description}}</td>
                 <td class="qty">${{number_format($item->product_price, 2)}}</td>
                 <td class="total">${{number_format(($item->total), 2)}}</td>
             </tr>
           @endforeach
-        @else
-          {{-- @foreach($Items->customerHistories()->get() as $item)
-            <tr>
-                <td class="service">{{$item->amount}}</td>
-                <td class="desc">{{$item->product->product_sku}}</td>
-                <td class="unit">{{$item->product->description}}</td>
-                <td class="qty">${{number_format($item->product_price, 2)}}</td>
-                <td class="total">${{number_format(($item->product_price*$item->amount), 2)}}</td>
-            </tr>
-          @endforeach --}}
-        @endif
+       
           <tr>
             <td colspan="4">Subtotal</td>
-            <td class="total">${{number_format($subtotal, 2) }}</td>
+            <td class="total">${{number_format($sale->total, 2) }}</td>
           </tr>
           <tr>
             <td colspan="4">IVA</td>
             <td class="total">Incluido</td>
-          </tr>
-          <tr>
-            <td colspan="4">Costo de envío</td>
-            <td class="total">{{$shiprate}}</td>
-          </tr>    
+          </tr>  
           <tr>
             <td colspan="4" class="grand total">Total</td>
-            @php $ship_rate= substr($shiprate, 1);@endphp
-            <td class="grand total">${{number_format($subtotal+floatval($ship_rate), 2) }}</td>
+           
+            <td class="grand total">${{number_format($sale->total, 2) }}</td>
           </tr>
         </tbody>
       </table>
       <div id="notices">
-        <div><strong>Forma de pago: {{$method_pay}}</strong></div>
-        <div><strong>Tiempo de Entrega: {{$dateship}} </strong></div>
+        <div><strong>Forma de pago: {{$sale->pay_method==null ? 'No especificado' : $sale->pay_method }}</strong></div>
         <div><strong>¡Gracias por hacer su compra!</strong></div>
         <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
         <div class="notice">{{config('configurations.mk.information_final')}}</div>

@@ -311,6 +311,7 @@
     <div class="h5">
         Total de productos: ${{ number_format($subtotal, 2) }} <br>
         Envío + impuestos: <div id="ship_rate_choosed" class="ship-rate">$0,00</div> <br>
+      
     </div>
     
     <hr>
@@ -508,9 +509,13 @@ $(document).ready(function () {
             {
               
                     $('#debit-card').modal('show');
+                    
                     $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
                     $("#openpay_carrie_id").val($('#carrie_id').val());
                     $("#total-credit").val($("#total-pursh").val());
+                    $("#ship_rate_target").val($('#ship_rate_choosed').html());
+                    $("#date_ship_target").val($('#date_aprox').html());
+                    $('#method_pay_target').val("Targeta de débito o crédito");
                 
                
             }
@@ -525,6 +530,7 @@ $(document).ready(function () {
                
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
+               $("#method_pay_bank").val("Transferencia bancaria");
                 $("#bank_carrie_id").val($('#carrie_id').val());
                 $("#ship_rate_bank").val($('#ship_rate_choosed').html());
                 $("#date_ship_bank").val($('#date_aprox').html());
@@ -535,6 +541,7 @@ $(document).ready(function () {
                
                 $(".rate_delivered").val($("#total-pursh").val());
                 $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                $("#method_pay_store").val("Tiendas de convenencia");
                 $("#store_carrie_id").val($('#carrie_id').val());
                 $("#ship_rate_store").val($('#ship_rate_choosed').html());
                 $("#date_ship_store").val($('#date_aprox').html());
@@ -632,6 +639,9 @@ $(document).ready(function () {
                                 <form action="/cart/payment/openpay" method="POST" id="payment-form">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="token_id" id="token_id">
+                                    <input type="hidden" name="method_pay" id="method_pay_target">
+                                    <input type="hidden" name="ship_rate" id="ship_rate_target">
+                                    <input type="hidden" name="date_ship" id="date_ship_target">
                                     <input type="hidden" name="ship_rate_total" id="total-credit">
                                     <input type="hidden" name="carrie" id="openpay_carrie">
                                     <input type="hidden" name="carrie_id" id="openpay_carrie_id">
@@ -691,6 +701,7 @@ $(document).ready(function () {
       <form action="/cart/confirmation-banco" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="method_pay" id="method_pay_bank">
             <input type="hidden" name="ship_rate" id="ship_rate_bank">
             <input type="hidden" name="date_ship" id="date_ship_bank">
             <input type="hidden" name="carrie" id="bank_carrie">
@@ -703,7 +714,10 @@ $(document).ready(function () {
     </div>
   </div>
 </div>
-
+<script>$("#btn-bank-method").click(function(){
+ $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Generando el recibo espere por favor</div>");
+    
+});</script>
 @stop
 
 @section('modal-store')
@@ -718,11 +732,12 @@ $(document).ready(function () {
       <form action="/cart/confirmation-store" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="ship_rate_total" class="rate_delivered">
+            <input type="hidden" name="method_pay" id="method_pay_store">
             <input type="hidden" name="ship_rate" id="ship_rate_store">
             <input type="hidden" name="date_ship" id="date_ship_store">
             <input type="hidden" name="carrie" id="store_carrie">
             <input type="hidden" name="carrie_id" id="store_carrie_id">
-            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
+            <button type="submit" class="btn btn-primary" id="btn-store-method">Generar recibo</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </form>
        
@@ -731,6 +746,11 @@ $(document).ready(function () {
   </div>
 </div>
 
+<script>
+        $("#btn-store-method").click(function(){
+            $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Generando el recibo espere por favor</div>");
+        });
+</script>
 @stop
 
 @section('modal-oxxo')
@@ -777,7 +797,7 @@ $(document).ready(function () {
                         // Render the PayPal button
                         paypal.Button.render({
                         // Set your environment
-                        env: 'sandbox', // sandbox | production
+                        env: '{{config("configurations.api.paypal-type")}}', // sandbox | production
 
                         // Specify the style of the button
                         style: {
@@ -804,8 +824,8 @@ $(document).ready(function () {
                         // PayPal Client IDs - replace with your own
                         // Create a PayPal app: https://developer.paypal.com/developer/applications/create
                         client: {
-                        sandbox: 'AcbJmhLyQjcEbqe44-pfFrSk3UrV03SwoFSgFgwwoFfiCl8Qjda6ePlsHIyb0nCjzhOQDkUgsya5EHXn',
-                        production: '<insert production client id>'
+                        sandbox: '{{config("configurations.api.paypal-type")=="sandbox" ? config("configurations.api.pay-pal-key") : "" }}',
+                        production: '{{config("configurations.api.paypal-type")=="production" ? config("configurations.api.pay-pal-key") : "" }}'
                         },
 
                         payment: function (data, actions) {
@@ -829,8 +849,11 @@ $(document).ready(function () {
                             .then(function () {
                                 var ship=$("#shipment").html();
                                 var carrie_id=$('#carrie_id').val();
+                                var ship_rate=$('#ship_rate_choosed').html();
+                                var date_ship=$('#date_aprox').html();
+                                var method_pay="PayPal";
                                 $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                post("/cart/confirmation",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id  } );
+                                post("/cart/confirmation",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id , ship_rate: ship_rate,date_ship:date_ship,method_pay:method_pay } );
                                 setInterval(function(){
                                     $.getJSON('/progressConfirmation', function(data) {
                                         $("#loader").html(data["progress"]);

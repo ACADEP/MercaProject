@@ -129,6 +129,7 @@ $(document).ready(function(){
                     {
                         $("#btn-pay-div").html("");
                         $("#alert-cartP-A").html("No hay productos en el carrito");
+                        $('#client-container').html(" <div class='col-md-12 text-center'>No hay productos en el carrito</div>");
                         $("#alert-cartP-A").css("height","230px");
                     }
                     if($("#body-cart").height()<=160)

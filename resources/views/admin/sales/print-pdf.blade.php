@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>Recibo de pago</title>
+    <title>Historial de ventas</title>
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
   </head>
@@ -18,12 +18,12 @@
                 {{config('configurations.mk.slogan')}}
             </div>
       </div>
-      <h1 class="tittle font">Recibo de pago</h1>
+      <h1 class="tittle font">Historial de ventas</h1>
 
       <div class="row mb-3" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
-          <div><span><strong>Cliente</strong></span> {{ Auth::user()->username }}</div>
-          <div><span><strong>Correo</strong></span>{{ Auth::user()->email }}</div>
+          <div><span><strong>Usuario</strong></span> {{ Auth::check() ? Auth::user()->username : 'visitante' }}</div>
+          <div><span><strong>Correo</strong></span>{{ Auth::check() ? Auth::user()->email : 'visitante' }}</div>
           <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
         </div>
     
@@ -40,44 +40,43 @@
       <div class="row mt-5"></div>
     </header>
     <main>
-    <table>
-        <thead>
-                <tr>
-                    <th>Cantidad</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>SubTotal</th>
-                </tr>
+    @php $totalSale=0;@endphp
+    <table class="table text-center">
+    <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre del producto</th>
+                <th>Precio unt</th>
+                <th>Cliente</th>
+                <th>Fecha de la venta</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+            </tr>
         </thead>
         <tbody>
-                @foreach($sale->customerHistories()->with("product")->get() as $item)
-                    <tr class="text-center">
-                        <td>{{$item->amount}}</td>
-                        <td>{{$item->product->product_sku}}</td>
-                        <td>{{$item->product->product_name}}</td>
-                        <td>{{$item->product->description}}</td>
-                        <td>${{number_format($item->product_price, 2)}}</td>
-                        <td>${{number_format(($item->amount*$item->product_price), 2)}}</td>
-                    </tr>
-                @endforeach
-                <tr class="text-right">
-                    <td colspan="5">IVA</td>
-                    <td class="total">Incluido</td>
+      
+            @foreach($seleHistories as $history)
+                <tr>
+                    <td ><img  src="{{url( $history->product->photos->first()->path)}}"  height="30px"></td>
+                    <td>{{ $history->product->product_name }}</td>
+                    <td>${{number_format($history->product->price, 2)}}</td>
+                    <td>{{ $history->client }}</td>
+                   
+                    <td>{{ $history->date}}</td>
+                    <td>{{ $history->amount }}</td>
+                    <td>${{number_format($history->total, 2)  }}</td>
+                    @php $totalSale+=$history->total; @endphp
                 </tr>
-                <tr class="text-right">
-                    <td colspan="5" class="grand total">Total</td>
-                    <td class="grand total">${{number_format($sale->total, 2) }}</td>
-                </tr>
+            @endforeach
+       
         </tbody>
+    
     </table>
-      <div id="notices">
-      <!-- <div><strong>Forma de pago: Transferencia</strong></div> -->
-    <div><strong>¡Gracias por hacer su compra!</strong></div>
+    <div class="text-right">
+           <strong>Total:</strong>  ${{number_format($totalSale, 2) }}
+    </div>
     <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
     <div class="notice">{{config('configurations.mk.information_final')}}</div>
-    <div class="notice">A partir de 24 horas tiene 7 días para solicitar su factura al correo de Mercadata.</div>
       </div>
     </main>
     <footer>

@@ -42,24 +42,30 @@
             <td>{{ $marketrate->company }}</td>
             <td>${{number_format( $marketrate->total, 2) }}</td>
             <td>
+               
                 <form action="{{route('marketRatesPdf',$marketrate)}}" method="get">
                     <button type="submit" formtarget="_blank" data-placement="top" title="Generar PDF" class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o"></i></button>
                 </form>
+               
             </td>
             <td >
+               
                 <form style="display:inline;" action="{{route('edit-marketRates',$marketrate)}}" method="get">
                     <button type="submit" data-placement="top" title="Editar" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
                 </form>
+                @can("delete_markerRate")
                 <button class="btn btn-danger btn-xs btn-row-market" data-placement="top" title="Eliminar" value="{{$marketrate->id}}"><i class="fa fa-minus-square"></i></button>
-                
+                @endcan
                 <form style="display:inline;" action="{{route('Send-MarketRate',$marketrate)}}" method="get">
                     <button type="submit" data-placement="top" title="Enviar al correo" class="btn btn-primary btn-xs btn-send-email"><i class="fa fa-paper-plane-o"></i></button>
                 </form>
+                @can("pay_markerRate")
                 <form style="display:inline;" action="{{route('addOrder')}}" method="post">
                     {{csrf_field()}}
                     <input type="hidden" name="marketrate" value="{{$marketrate->id}}">
                     <button type="submit"  data-placement="top" title="Covertir a pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
                 </form>
+                @endcan
             </td>
         </tr>
         @endforeach
@@ -68,7 +74,7 @@
     </table>
    
    @if($market_rates->count()<=0)
-    <div class="col-md-12 badge badge-primary">No hay resultados</div>
+    <div class="col-md-12 badge badge-primary">No hay cotizaciones</div>
    @endif
     
 
@@ -105,31 +111,44 @@
 @endif
 @if(Session::has('fail'))
     <script> 
-        $.notify({
-            // options
-            message: '<strong>{{ Session("fail") }}</strong>' 
-        },{
-            // settings
-            type: 'danger',
-            delay:5000
-        });
-        Cookies.remove("products");
-        Cookies.remove("market_id");
+            $.notify({
+                // options
+                message: '<strong>{{ Session("fail") }}</strong>' 
+            },{
+                // settings
+                type: 'danger',
+                delay:5000
+            });
+            Cookies.remove("products");
+            Cookies.remove("market_id");
+    </script>
+@endif
+@if(Session::has('pay-marketrate'))
+    <script>
+       $.notify({
+                // options
+                message: '<strong>La cotización paso a ordenes realizar el pago en el proximo día</strong>' 
+            },{
+                // settings
+                type: 'success',
+                delay:7000
+            });
+        window.open('/admin/market_rates/showPDF', '_blank');
     </script>
 @endif
     <script>
-    $(".btn-send-email").click(function(){
-        $.notify({
-            // options
-            message: '<strong>Enviando correo espere por favor</strong>' 
-        },{
-            // settings
-            type: 'warning',
-            delay:4000
+        $(".btn-send-email").click(function(){
+            $.notify({
+                // options
+                message: '<strong>Enviando correo espere por favor</strong>' 
+            },{
+                // settings
+                type: 'warning',
+                delay:4000
+            });
         });
-    });
-    
     </script>
+
 @stop
 
 @section('modal-add')

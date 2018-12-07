@@ -69,16 +69,26 @@ div.panel-heading {
         <div class="panel panel-default">
             @if($ventas->count()>0)
                 @foreach ($ventas as $sale)
+                    @php $sold= App\Sale::find($sale->sale_id);@endphp
+                    
                     <div class="panel-heading" role="tab" id="heading{{$i}}">
                         <h4 class="panel-title">
                             <div class="col-sm-10 col-md-10">
-                                <a class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}"> 
-                                    <div class="text-left">Fecha:<span class="label label-default">{{$sale->date}}</span></div>        
-                                </a>            
+                                <a  class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}"> 
+                                    <div class="text-left" style="float:left;">Fecha:<span class="label label-default">{{$sold->date}}</span></div>
+                                    
+                                   
+                                    <div style="float:left; margin-left:5px;" class="form-inline"><span class="label label-primary"> Tipo de pago: {{$sold->pay_method == null ? 'No especificado' :$sold->pay_method}}</span></div>     
+                                </a>
+                                
                             </div>
+                           
                             <div class="col-sm-2 col-md-2 text-right">
-                                    <button type="button" class="btn btn-primary btn-xs btn-invoice" value="{{$sale->sale_id}}" data-toggle="modal" data-target="#myModal"><i class="fa fa-file-archive-o" aria-hsale_idden="true" title="Subir Factura"></i></button>
-                                    <button class="btn btn-danger btn-xs btn-delete-invoice" data-placement="top" title="Quitar Factura" value="{{$sale->sale_id}}"><i class="fa fa-minus-square"></i></button>        
+                            <form action="{{route('salesPdf',$sold->id)}}" style="display:inline;" method="get">
+                                <button type="submit" formtarget="_blank" data-placement="top" title="Recibo de pago" class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o"></i></button>
+                            </form>
+                                    <button type="button" class="btn btn-primary btn-xs btn-invoice" value="{{$sold->id}}" data-toggle="modal" data-target="#myModal"><i class="fa fa-file-archive-o" aria-hsale_idden="true" title="Subir Factura"></i></button>
+                                    <button class="btn btn-danger btn-xs btn-delete-invoice" data-placement="top" title="Quitar Factura" value="{{$sold->id}}"><i class="fa fa-minus-square"></i></button>        
                             </div>
                         </h4>
                     </div>    

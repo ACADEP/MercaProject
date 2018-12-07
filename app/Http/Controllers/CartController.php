@@ -240,7 +240,8 @@ class CartController extends Controller {
         Session::put('progress', $envio->status_message);
         Session::save();
 
-        $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado");
+        $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado", $request->method_pay);
+        
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
@@ -253,26 +254,29 @@ class CartController extends Controller {
             }
             else
             {
-                $admins=User::where("admin",1)->get();
-                foreach($admins as $admin)
-                {   
-                    $saleHistory=new SeleHistory;
-                    $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre, $sale->id);
-                }
+                $admin = User::role('Admin')->first();
+                $saleHistory=new SeleHistory;
+                $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre, $sale->id);
+            
             }
+            //Quitar cantidad
+            $product=Product::find($cartItem->product_id);
+            $product->product_qty=$product->product_qty-$cartItem->qty;
+            $product->save();
+
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
 
         
         //Administrador
-        $user=User::find(6);
+        $admin = User::role('Admin')->first();
         
-        $mailer->sendReceiptPayment($user,Auth::user(), null);
+        $mailer->sendReceiptPayment($admin,Auth::user(), null, $request->ship_rate, $request->date_ship, $request->method_pay);
         if($mailer)
         {
             
-            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url,null);
+            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url,null,$request->ship_rate, $request->date_ship, $request->method_pay);
             if($mailer)
             {
                 //borrar productos del carrito
@@ -347,8 +351,8 @@ class CartController extends Controller {
     //Pagos en banco
     public function PagosBanco(Request $request) {
 
-      
-        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+        dd($request);
+        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
      
@@ -370,7 +374,7 @@ class CartController extends Controller {
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
         $sale= new Sale;
-        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
         $cartItems=Auth::user()->carts();
         $itemsCart = Auth::user()->cart->with("product")->get();
         foreach($cartItems->get() as $cartItem)
@@ -434,7 +438,7 @@ class CartController extends Controller {
 
     //Pagos en tienda
     public function PagosStore(Request $request) {
-        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
         Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
@@ -457,7 +461,7 @@ class CartController extends Controller {
                     'country_code' => 'MX'));
 
         $sale= new Sale;
-        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar");
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
         $cartItems=Auth::user()->carts();
         $itemsCart = Auth::user()->cart->with("product")->get();
 
@@ -545,8 +549,8 @@ class CartController extends Controller {
                     $userAdmin=User::find(6);
                     //Enviar correos
                     $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
-                   foreach($sale->customerHistories()->get() as $item)
-                   {
+                    foreach($sale->customerHistories()->get() as $item)
+                    {
                        $productseller=ProductSeller::find( $item->product_id);
                        if($productseller != null)
                        {
@@ -555,13 +559,15 @@ class CartController extends Controller {
                        }
                        else
                        {
-                           $admins=User::where("admin",1)->get();
-                           foreach($admins as $admin)
-                           {   
-                               $saleHistory=new SeleHistory;
-                               $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
-                           }
+                            $admin = User::role('Admin')->first();
+                            $saleHistory=new SeleHistory;
+                            $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
                        }
+
+                       //Quitar cantidad al producto
+                        $product=Product::find($item->product_id);
+                        $product->product_qty=$product->product_qty-$item->amount;
+                        $product->save();
                    }
                 }
                  
@@ -583,10 +589,11 @@ class CartController extends Controller {
 
     //pago con targeta de crédito o débito
     public function CardOpenpay(Request $request) {
+        
         Session::put('progress', "Generando el cargo");
         Session::save(); 
         try {
-            $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
+            $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
             $useraddresses = Address::where("usuario",Auth::user()->id)->first();
             $random = rand(0, 99999);
@@ -612,9 +619,12 @@ class CartController extends Controller {
 
             $charge = $openpay->charges->create($chargeData);
            if($charge->status=='completed')
-           {
+           {$val=$request->ship_rate;
+            
                 return redirect()->action(
-                    'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id')]
+                    'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id'),
+                                                    'ship_rate'=>$request->get('ship_rate'), 'date_ship'=>$request->get('date_ship'),
+                                                    'method_pay'=>$request->get('method_pay') ]
                 );
            }
         } catch (OpenpayApiTransactionError $e) {

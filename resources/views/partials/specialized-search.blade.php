@@ -93,6 +93,7 @@
                     <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                         <h5 class="center-on-small-only">{{ $acorName }}</h5>
                         <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
+                        <p>SKU: {{$product->product_sku}}</p>
                     </a>
                 </div>
                 <div class="text-center">

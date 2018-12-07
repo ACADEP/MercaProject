@@ -13,7 +13,7 @@
             
                 <script>borrarCache();</script>
                 @php $tItems=0 @endphp
-                   
+                @if(Auth::user()->cart->count()>0)
                 @foreach(Auth::user()->cart->with('product')->get() as $cartItem)
                     
                     @if($tItems<=4)
@@ -25,7 +25,9 @@
                     @endif
                     @php $tItems++ @endphp
                 @endforeach
-           
+                @else
+                <div class='col-md-12 text-center'>No hay productos en el carrito</div>
+                @endif
             @endif
             </div>
             

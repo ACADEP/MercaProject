@@ -11,18 +11,18 @@
     <header class="clearfix">
       <div id="logo">
           <div class="mercaLogo">
-            <img src="{{asset('/images/mercadata-footer.png')}}">
+            <img src="{{asset(config('configurations.general.main_logo'))}}">
           </div>
             <div class="slogan font">
-                <strong><h3 class="font">MercaData</h3></strong>
-                Tu tienda de tecnologia en línea 
+                <strong><h3 class="font">{{config('configurations.general.store_name')}}</h3></strong>
+                {{config('configurations.mk.slogan')}} 
             </div>
       </div>
       <h1 class="tittle font">Recibo de Pago</h1>
       
       <div class="row" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
-          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->telefono}}</div>
+          <div><span><strong>Cliente</strong></span> {{Auth::User()->customer->nombre}}</div>
           <div><span><strong>Dirección</strong></span> {{ Auth::user()->addressActive()->calle}}, {{ Auth::user()->addressActive()->ciudad}} {{ Auth::user()->addressActive()->cp}}, {{ Auth::user()->addressActive()->estado}}</div>
           <div><span><strong>Correo</strong></span> <a href="mailto:{{Auth::User()->email}}">{{Auth::User()->email}}</a></div>
           <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
@@ -30,9 +30,11 @@
         </div>
     
         <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
-          <div><strong>Mercadata</strong></div>
-          <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
-          <div>Tel: 612 122 5174</div>
+        <div><strong>{{config('configurations.general.store_name')}}</strong></div>
+          <div>{{config('configurations.company.direction_1')}},<br /> 
+                {{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
+                {{config('configurations.company.country_code')}}</div>
+          <div>Tel:  {{config('configurations.company.phone')}}</div>
           <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
         </div>  
       </div>
@@ -91,7 +93,7 @@
         </tbody>
       </table>
       <div id="notices">
-        <div><strong>Forma de pago: </strong>Oxxo</div>
+        <div><strong>Forma de pago: </strong>Tiendas<div>
         <div><strong>Tiempo de Entrega: </strong>{{$date_ship}}</div>
         <div><strong>¡Gracias por hacer su compra!</strong></div>
         <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
@@ -130,11 +132,12 @@
         <div class="row data">
             <div class="address">
                 <span>Dirección: </span>
-                <strong>La Paz, BCS México</strong>
+                <strong>{{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
+                {{config('configurations.company.country_code')}}</strong>
             </div>
             <div class="phone">
                 <span>Teléfono: </span>
-                <strong>612 1225174</strong>
+                <strong> {{config('configurations.company.phone')}}</strong>
             </div>
         </div>
     </footer>

@@ -35,7 +35,7 @@ class AdminController extends Controller {
         $seller = Auth::user()->selehistories();
         $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
         $histories = Auth::user()->selehistories()->get();
-        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
+        $ventas = $seller->select('sale_id', "created_at")->distinct()->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'));
         return view("admin.sales.index", compact("sales", "histories", "ventas"));
         // return view("admin.dash");       
     }
@@ -44,7 +44,8 @@ class AdminController extends Controller {
         $seller = Auth::user()->selehistories();
         $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
         $histories = Auth::user()->selehistories()->get();
-        $ventas = $seller->select('sale_id','date', 'client')->distinct()->paginate(config('configurations.paginate_general'));
+        $ventas = $seller->select('sale_id', "created_at")->distinct()->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'));
+        
         return view("admin.sales.index", compact("sales", "ventas", "histories"));       
     }
 
@@ -164,7 +165,7 @@ class AdminController extends Controller {
         $items=explode( ", ", $request->get("histories") );
         $itemsOrden=$request->get('histories');
         $seleHistories=SeleHistory::whereIn('id',$items)->orderByRaw(\DB::raw("FIELD(id,$itemsOrden)"))->get();
-        $pdf = PDF::loadView('seller.partials.print-pdf',compact('seleHistories'));
+        $pdf = PDF::loadView('admin.sales.print-pdf',compact('seleHistories'));
         return $pdf->stream('Ventas.pdf');
     }
 
@@ -177,39 +178,43 @@ class AdminController extends Controller {
     public function accreditedPay(Request $request, AppMailers $mailer)
     {
         $order=OrderOxxo::find($request->get("order"));
-        $sale=$order->sale;
-        // $enviaYa=new EnviaYa;
-        $client=$sale->client;
-        // $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
-        // $sale->updateStatusShip($envio->shipment_status);
-        // $sale->updateTracking($envio->carrier_shipment_number);
-        $sale->updatePay();
+        if($order->recipt_url !=null){
+            $sale=$order->sale;
+            // $enviaYa=new EnviaYa;
+            $client=$sale->client;
+            // $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+            // $sale->updateStatusShip($envio->shipment_status);
+            // $sale->updateTracking($envio->carrier_shipment_number);
+            $sale->updatePay();
 
-        //Admin
-        $userAdmin=User::role('Admin')->first();
-        
-        //Enviar correos
-        // $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
-        foreach($sale->customerHistories()->get() as $item)
-        {
-            $productseller=ProductSeller::find($item->product_id);
-            if($productseller != null)
+            //Admin
+            $userAdmin=User::role('Admin')->first();
+            
+            //Enviar correos
+            // $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+            foreach($sale->customerHistories()->get() as $item)
             {
-                $saleHistory=new SeleHistory;
-                $saleHistory->insert_pCustomer($item,$productseller->id,$client->username,$sale->id);
-            }
-            else
-            {
-                $admins=User::where("admin",1)->get();
-                foreach($admins as $admin)
-                {   
+                $productseller=ProductSeller::find($item->product_id);
+                if($productseller != null)
+                {
+                    $saleHistory=new SeleHistory;
+                    $saleHistory->insert_pCustomer($item,$productseller->id,$client->username,$sale->id);
+                }
+                else
+                {
+                    $admin = User::role('Admin')->first();
                     $saleHistory=new SeleHistory;
                     $saleHistory->insert_pCustomer($item,$admin->id,$client->username,$sale->id);
+                    
                 }
             }
+            $order->delete();
+            return back()->with("success", "Pago acreditado a ".$client->username." la orden se paso a ventas");
         }
-        $order->delete();
-        return back()->with("success", "Pago acreditado a ".$client->username);
+        else
+        {
+            return back()->with("fail", "Debe ingresar el comprobante correspondiente para esta orden");
+        }
     }
 
     public function deleteOrder(Request $request)
@@ -511,27 +516,26 @@ class AdminController extends Controller {
 
     public function storeInvoice(Request $request) {
         $file = request()->file('file');
-        $urlFac = $file->store('facturas');       
-        $url = "/images/".$urlFac;
+        $urlFac = $file->store('Facturas');       
         $sale = Sale::find($request->get("factura"));
         // dd($sale->url_fact);
-        if ($url != $sale->url_fact) {
+        if (public_path($urlFac) != $sale->url_fact) {
             if ($sale->url_fact == '#') {
-                $sale->url_fact = $url;
+                $sale->url_fact =$urlFac;
                 $sale->update();
-                return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);    
+                return response(200);    
             } else {
                 if(File::delete(public_path($sale->url_fact)))
                 {
-                    $sale->url_fact = $url;
+                    $sale->url_fact =$urlFac;
                     $sale->update();
-                    return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);        
+                    return response(200);        
                 }        
             }
         } else {
-            $sale->url_fact = $url;
+            $sale->url_fact = $urlFac;
             $sale->update();
-            return response(['FacUrl'=>$sale->url_fact,"url"=>$url],200);
+            return response(200);
         }
     }
 
@@ -547,6 +551,55 @@ class AdminController extends Controller {
         }
         return back();        
     }
+
+    public function salesPayPDF($id)
+    {
+        
+       $sale=Sale::find($id);
+       $items=SeleHistory::where('sale_id',$sale->id)->get();
+        $pdf = PDF::loadView('admin.sales.print-pdf-sale',compact('items','sale'));
+        return $pdf->stream('Recibo de pago'.$sale->date.'.pdf');
+    }
+
+    public function showReclames()
+    {
+        $sales=Sale::where('status_reclamo','En espera')->with("client")->get();
+        return view('admin.reclames.index', compact("sales"));
+    }
+
+    public function respondReclame(Request $request)
+    {
+        $sale=Sale::where("id",$request->sale)->first();
+        if($sale!=null)
+        {
+            $sale->respond_reclame=$request->reclame_text;
+            $sale->status_reclamo=$request->reclame_state;
+            $sale->update();
+            
+        }
+        return back();
+    }
+
+    public function storeReceipt(Request $request)
+     {
+        $file = $request->file('file');
+        $urlRec = $file->store('Comprobantes');    
+        $order = OrderOxxo::find($request->get("receipt"));
+        if ($order->receipt_url == null) 
+        {
+            $order->receipt_url = $urlRec;
+            $order->update();
+            return response('El comprobante fue subido con exito',200);    
+        } 
+        else 
+        {
+            File::delete(public_path($order->receipt_url));
+            $order->receipt_url = $urlRec;
+            $order->update();
+            return response('El comprobante fue remplazado con exito',200);            
+        }
+    }
+
 
     
 

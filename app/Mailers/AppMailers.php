@@ -5,6 +5,7 @@ namespace App\Mailers;
 use App\User;
 use App\Sale;
 use Carbon\Carbon;
+use App\EnviaYa;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -91,7 +92,7 @@ class AppMailers {
         $this->deliver();
     }
 
-    public function sendReceiptPayment(User $admin, User $client, $sale) {
+    public function sendReceiptPayment(User $admin, User $client, $sale, $shiprate, $dateShip, $method_pay) {
         // Send this to the users email.
         $this->to = $admin->email;
         // Pass the view to this...
@@ -103,11 +104,11 @@ class AppMailers {
             $this->deliverPDF("administración", $client, $sale);
         }else
         {
-            $this->deliverPDF2("administración", $client);
+            $this->deliverPDF2("administración", $client, $shiprate, $dateShip, $method_pay);
         }
     }
 
-    public function sendReceiptPaymentClient(User $client,$guia, $url, $img_carrie, $sale) {
+    public function sendReceiptPaymentClient(User $client,$guia, $url, $img_carrie, $sale, $shiprate, $dateShip, $method_pay) {
        
         // Send this to the users email.
         $this->to = $client->email;
@@ -122,7 +123,7 @@ class AppMailers {
         }
         else
         {
-            $this->deliverPDF2("cliente", $client);
+            $this->deliverPDF2("cliente", $client, $shiprate, $dateShip, $method_pay);
         }
         
     }
@@ -214,7 +215,7 @@ class AppMailers {
 
     }
 
-    public function deliverPDF2($user, User $client) {
+    public function deliverPDF2($user, User $client, $shiprate, $dateship, $method_pay) {
         Session::put('progress', "Generando recibo para ".$user);
         Session::save();
 
@@ -222,7 +223,7 @@ class AppMailers {
         $subtotal=$client->total;
         $address=$client->address()->where("Activo",1)->first(); 
         $expiry = Carbon::now()->addDay(1); 
-        $pdf = PDF::loadView('cart.Print-Receipt',compact('ItemsCarts','subtotal','address','client','expiry'));
+        $pdf = PDF::loadView('cart.Print-Receipt',compact('ItemsCarts','subtotal','address','client','expiry', 'shiprate', 'dateship','method_pay'));
 
         Session::put('progress', "Enviando correo a ".$user);
         Session::save();

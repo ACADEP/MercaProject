@@ -32,11 +32,12 @@ class Sale extends Model
         return $this->hasMany(PhotosReclame::class);
     }
 
-    public function Insert($total, $shipment_method, $shipment_carrie_id,$shipment_status, $shipment_number, $status_pay)
+    public function Insert($total, $shipment_method, $shipment_carrie_id,$shipment_status, $shipment_number, $status_pay, $pay_method)
     {
         $this->user_id=Auth::user()->id;
         $this->date=Carbon::now();
         $this->url_fact="#";
+        $this->pay_method=$pay_method;
         $this->shipment_method=$shipment_method;
         $this->shipment_rate_id=$shipment_carrie_id;
         $this->shipment_tracking=$shipment_number;

@@ -16,9 +16,11 @@
         </h1>
         
 </section><br>
+@can("add_products")
 <div class="text-right">
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_product"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar producto</button>
 </div>
+@endcan
 <table class="text-center table col-md-12" style="width:100%;">
     <thead>
             <tr>
@@ -47,9 +49,13 @@
             <td>{{ $product->brand->brand_name }}</td>
             <td>
                 <div class="form-inline">
+                @can("delete_products")
                     <button class="btn btn-danger btn-xs btn-delete-product" data-toggle="tooltip" value="{{$product->id}}" data-placement="top" title="Eliminar"><i class="fa fa-minus-square" aria-hidden="true"></i></button>
+                @endcan
+                @can("update_products")
                     <a type="button" href="{{route('show-edit', $product)}}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fa fa-pencil-square" aria-hidden="true"></i></a>
                     <button class="btn btn-default btn-xs btn-image" value="{{$product->id}}" data-toggle="modal" data-target="#add_images" data-placement="top" title="Subir imagenes"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+                @endcan
                 </div>    
             </td>
         </tr>

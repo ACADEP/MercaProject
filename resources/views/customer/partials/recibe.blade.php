@@ -18,10 +18,10 @@
 <div class="container">
 @php  $now = new \DateTime(); @endphp
 <div class="row text-center">
-        <div class="col-md-6 text-left"><img src="{{asset('/images/mercadata-footer.png')}}" width="250px"></div>
+        <div class="col-md-6 text-left"><img src="{{asset(config('configurations.general.main_logo'))}}" width="250px"></div>
         <div class="col-md-6 text-right">
-            <strong><h3>MercaData</h3></strong>
-            Tu tienda de tecnologia en línea <hr><br>
+            <strong><h3>{{config('configurations.general.store_name')}}</h3></strong>
+            {{config('configurations.mk.slogan')}} <hr><br>
             <h4><strong>La Paz, BCS. </strong></h4>
             <h4><strong>{{ $now->format('d-m-Y') }}</strong></h4>
         </div>

@@ -34,7 +34,7 @@
                     <div class="text-left" >
                         Envío: <span class="label label-primary" id="status_ship">{{$sale->status_envio}}</span>&nbsp <button class="btn btn-primary btn-xs btn-refresh "  data-toggle="tooltip"  data-placement="top" title="Actualizar estado" value="{{ $sale->id }}"><i class="fa fa-refresh" id="refreshing" aria-hidden="true"></i></button> &nbsp
                         <form action="/customer/tracking" method="post" style="display: inline;">
-                            <input type="hidden" name="sale" id="sale" value="{{ $sale->id }}">
+                            <input type="hidden" name="sale" value="{{ $sale->id }}">
                             {{ csrf_field()}}
                             <button type="submit"class="btn btn-info btn-xs">Ver detalles</button>
                         </form> 
@@ -49,7 +49,7 @@
                         <form action="/customer/invoice" method="POST" style="display: inline;">
                             {{ csrf_field()}}
                             <input type="hidden"  name="sale_id" value="{{$sale->id}}">
-                            <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
+                            <button class="btn btn-danger btn-sm btn-invoice" type="submit" data-toggle="tooltip"  data-placement="top" title="Descargar factura"><i class="fa fa-download" aria-hidden="true" ></i></button>
                         </form>
                     </div>
                         
@@ -109,11 +109,38 @@
         </script>
 
 @endif
+@if(Session::has('fail'))
+        <script> 
+        $.notify({
+            // options
+            message: '<strong>{{ Session("fail") }}</strong>' 
+        },{
+            // settings
+            type: 'danger',
+            delay:3000
+        });
+        </script>
+
+@endif
 <script>
     $(".btn-dpdf").click(function(){
     var notify=$.notify({
             // options
             message: '<strong>Preparando PDF</strong> por favor esperar...',
+            showProgressbar: true
+        },{
+            // settings
+            
+            type: 'warning',
+            delay:3000
+        });
+       
+    });
+
+     $(".btn-invoice").click(function(){
+    var notify=$.notify({
+            // options
+            message: '<strong>Buscando factura</strong> por favor esperar...',
             showProgressbar: true
         },{
             // settings
