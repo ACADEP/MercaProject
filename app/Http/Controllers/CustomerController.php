@@ -150,6 +150,9 @@ class CustomerController extends Controller
             } else {
                 return redirect()->back()->with("msg1","La nueva contraseña no coincide con repetir contraseña");
                 //$hola = 'jonatan cesela arnquezs';
+                                //$asdasddddd = 'jonatan cesela arnquezs';
+                //$asdasd = 'jonatan cesela arnquezs';
+
             }
         } else {
             return redirect()->back()->with("msg1","La contraseña actual no coincide");
