@@ -73,6 +73,8 @@ class PagesController extends Controller {
         //previous URL for breadcrumbs
         $previousURL = url()->previous();
 
+        //asdasdlakdjsalkdjs Jonasd
+
         // Select all products with the newest one first, and where featured = 0,
         // order by random rows, and only take 8 rows from table so we can display them on the New Product section in the homepage.
         $new = Product::where('featured', '=', 0)->OrderBy('company_id','ASC')->take(12)->get();
