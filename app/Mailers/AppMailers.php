@@ -152,20 +152,21 @@ class AppMailers {
         });
     }
 
-    public function sendReceiptClientAdmin(User $admin, User $client,$guia, $url, $img_carrie, $sale)
+    public function sendReceiptClientAdmin(User $admin, User $client,$guia, $url, $img_carrie, $sale,$ship_rate, $ship_date)
     {
         $Items=$sale;
         $subtotal=$sale->total;
         $address=$client->address()->where("Activo",1)->first();
         $expiry = Carbon::now()->addDay(1); 
-        $pdf = PDF::loadView('cart.Print-Receipt',compact('Items','subtotal','address','client','expiry'));
+        $pdf = PDF::loadView('cart.Print-Receipt-webhook',compact('Items','subtotal','address','client','expiry','ship_rate', 'ship_date'));
+       
         $this->to=$admin->email;
         //Enviar a administracion
         $this->mailer->send("customer.partials.view-email", compact('admin') , function($message) use($pdf){
             $message->from($this->from, 'Administrator')
             ->subject("Recibo de pago para envio")
             ->to($this->to)            
-            ->attachData($pdf->output(), "recibo de pago.pdf");
+            ->attachData($pdf->output(), "Recibo-de-pago.pdf");
         });
 
         $this->to=$client->email;
@@ -174,8 +175,10 @@ class AppMailers {
             $message->from($this->from, 'Administrator')
             ->subject("Recibo de compra")
             ->to($this->to)            
-            ->attachData($pdf->output(), "Recibo de compra.pdf");
-        });   
+            ->attachData($pdf->output(), "Recibo-de-compra.pdf");
+        });
+        
+       
     }
 
     /**

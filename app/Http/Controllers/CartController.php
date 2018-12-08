@@ -351,7 +351,7 @@ class CartController extends Controller {
     //Pagos en banco
     public function PagosBanco(Request $request) {
 
-        dd($request);
+      
         $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
@@ -548,7 +548,7 @@ class CartController extends Controller {
                     //Admin
                     $userAdmin=User::find(6);
                     //Enviar correos
-                    $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale);
+                  
                     foreach($sale->customerHistories()->get() as $item)
                     {
                        $productseller=ProductSeller::find( $item->product_id);
@@ -569,6 +569,7 @@ class CartController extends Controller {
                         $product->product_qty=$product->product_qty-$item->amount;
                         $product->save();
                    }
+                   $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale,$envio->rate->total_amount,$envio->rate->estimated_delivery);
                 }
                  
             }
