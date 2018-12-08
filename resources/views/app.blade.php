@@ -133,7 +133,7 @@
     @if(Session::has('recibe'))
     <script> 
             var notify = $.notify('<div>Recibo para pagar generado favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
-            window.open('{{session("recibe")}}', '_blank')
+            window.open('/show-pdf-pay', '_blank');
         </script>
     @endif
     @if(Session::has('pay-success'))
