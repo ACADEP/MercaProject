@@ -127,6 +127,12 @@
                                     <input type="text" id="slogan" name="slogan" autocomplete="off" class="form-control"  value="{{config('configurations.mk.slogan')}}">
                                     <label for="information_final">Información final:</label>
                                     <input type="text" id="information_final" name="information_final" autocomplete="off" class="form-control"  value="{{config('configurations.mk.information_final')}}">
+                                    <label for="information_final_2">Información final precios:</label>
+                                    <input type="text" id="information_final_2" name="information_final_2" autocomplete="off" class="form-control"  value="{{config('configurations.mk.information_final_2')}}">
+                                    <label for="information_final_3">Información final facturas:</label>
+                                    <input type="text" id="information_final_3" name="information_final_3" autocomplete="off" class="form-control"  value="{{config('configurations.mk.information_final_3')}}">
+                                    <label for="greetings">Agradecimientos:</label>
+                                    <input type="text" id="greetings" name="greetings" autocomplete="off" class="form-control"  value="{{config('configurations.mk.greetings')}}">
                             </div><!-- Fin tab 3-->
                     </div>
 

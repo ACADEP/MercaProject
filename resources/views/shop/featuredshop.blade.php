@@ -93,7 +93,7 @@
                         </div>
                         <div class="text-center">
                             @if($product->reduced_price == 0)
-                                <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{  $product->price }}
+                                <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->price, 2) }}
                                 <br>
                             @else
                                 <div class="text-danger list-price"><s style="color: red">$ {{ number_format($product->price, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>

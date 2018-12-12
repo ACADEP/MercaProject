@@ -54,7 +54,7 @@
                     @endcan
                     @can("acredit_pay")
                         <button class="btn btn-danger btn-xs btn-receipt" value="{{$order->id}}" data-toggle="modal" data-target="#add-receipt" data-toggle="tooltip" data-placement="top" title="Subir comprobante"><i class="fa fa-upload" aria-hidden="true"></i></button>
-                    @endecan
+                    @endcan
                     </td>
                 </tr>
             @endforeach

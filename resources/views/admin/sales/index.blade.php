@@ -58,7 +58,7 @@ div.panel-heading {
     
     </table>
     <div class="text-center">
-        {{ $sales->links() }}
+        {{ $sales->appends(Request::input())->links() }}
     </div>
 @else    
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -76,11 +76,22 @@ div.panel-heading {
                             <div class="col-sm-10 col-md-10">
                                 <a  class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="true" aria-controls="collapse{{$i}}"> 
                                     <div class="text-left" style="float:left;">Fecha:<span class="label label-default">{{$sold->date}}</span></div>
-                                    
-                                   
                                     <div style="float:left; margin-left:5px;" class="form-inline"><span class="label label-primary"> Tipo de pago: {{$sold->pay_method == null ? 'No especificado' :$sold->pay_method}}</span></div>     
                                 </a>
-                                
+                                @if(isset($orderAll))
+                                    @if($orderAll==2)
+                                    @php 
+                                        $seller_id=App\UserSeller::select('seller_id')->where('client_id', $sold->user_id)->first();
+                                        $seller_name=null;
+                                        if($seller_id!=null)
+                                        {
+                                            $seller_name=App\User::select('username')->where('id', $seller_id->seller_id)->first();
+                                        }
+
+                                    @endphp 
+                                    <div style="float:left; margin-left:5px;" class="form-inline"><span class="label label-default"> Vendedor: {{$seller_name == null ? 'No especificado' :$seller_name->username}}</span></div>        
+                                    @endif
+                                @endif
                             </div>
                            
                             <div class="col-sm-2 col-md-2 text-right">
@@ -138,7 +149,8 @@ div.panel-heading {
     </div>
 
     <div class="text-center">
-        {{ $ventas->links() }}
+     
+        {{ $ventas->appends(Request::input())->links() }}
     </div>
 @endif
 

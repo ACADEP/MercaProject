@@ -95,9 +95,9 @@
       <div id="notices">
         <div><strong>Forma de pago: </strong>Tiendas<div>
         <div><strong>Tiempo de Entrega: </strong>{{$date_ship}}</div>
-        <div><strong>¡Gracias por hacer su compra!</strong></div>
-        <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
-        <div class="notice">En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.</div>
+        <div><strong>{{config('configurations.mk.greetings')}}</strong></div>
+        <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
+        <div class="notice">{{config('configurations.mk.information_final')}}</div>
       </div>
 
       <br>

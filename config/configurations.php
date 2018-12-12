@@ -32,5 +32,8 @@
   array (
     'slogan' => 'Tu tienda de tecnologia en línea',
     'information_final' => 'En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.',
+    'information_final_2' => '* Precios sujetos a cambio sin previo aviso.',
+    'information_final_3' => 'A partir de 24 horas tiene 7 días para solicitar su factura al correo de Mercadata.',
+    'greetings' => '¡Gracias por hacer su compra!',
   ),
 ) ;
