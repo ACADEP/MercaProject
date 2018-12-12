@@ -15,7 +15,7 @@
 <br>
 </div>
 @if($orders->count()<=0)
- <div class="alert alert-info col-md-12">No hay ordenes</div>
+ <div class="alert alert-info col-md-12">No hay órdenes</div>
 @else
 
 <table class="table text-center">

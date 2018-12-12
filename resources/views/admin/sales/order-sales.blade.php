@@ -4,7 +4,7 @@
         Ordenar
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color: black;">
+    <ul class="dropdown-menu filter-color order-sale" aria-labelledby="dropdownMenu1">
         <li><a href="{{url('admin/sales/7') }}">Todos</a></li>
         <li role="separator" class="divider"></li>
         <li><a href="{{url('admin/sales/1') }}">Mas vendido</a></li>
@@ -26,7 +26,7 @@
                     Año
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check" aria-labelledby="dropdownMenu2" style="background-color: black;">
+                <ul class="dropdown-menu check filter-color ajusteAdvace" aria-labelledby="dropdownMenu2">
                     <li><label for="one"><input type="checkbox" name="año[]" value="2018" id="one" />2018</label></li>
                     <li><label for="two"><input type="checkbox" name="año[]" value="2017" id="two" />2017</label></li>
                     <li><label for="tree"><input type="checkbox" name="año[]" value="2016" id="tree" />2016</label></li>
@@ -40,7 +40,7 @@
                     Mes
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check scrollable-menu" aria-labelledby="dropdownMenu3" style="background-color: black;">
+                <ul class="dropdown-menu check scrollable-menu filter-color ajusteAdvace" aria-labelledby="dropdownMenu3">
                     <li><label for="one"><input type="checkbox" name="mes[]" value="1" id="one" />Enero</label></li>
                     <li><label for="two"><input type="checkbox" name="mes[]" value="2"  id="two" />Febrero</label></li>
                     <li><label for="tree"><input type="checkbox" name="mes[]" value="3"  id="tree" />Marzo</label></li>
@@ -63,7 +63,7 @@
                     dia
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check scrollable-menu"  role="menu" aria-labelledby="dropdownMenu4" style="background-color: black; height: auto; max-height: 150px; overflow-x: hidden;">
+                <ul class="dropdown-menu check scrollable-menu filter-color ajusteAdvace"  role="menu" aria-labelledby="dropdownMenu4" style="background-color: black; height: auto; max-height: 150px; overflow-x: hidden;">
                     <li><label for="one"><input type="checkbox" name="dia[]" value="1" id="one" />1</label></li>
                     <li><label for="two"><input type="checkbox" name="dia[]" value="2" id="two" />2</label></li>
                     <li><label for="tree"><input type="checkbox" name="dia[]" value="3" id="tree" />3</label></li>

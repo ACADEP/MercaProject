@@ -16,7 +16,7 @@
                     <!--Ordenar por -->
                 </button>        
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a href="{{ route('brand.newest', $orden->id) }}">Mas nuevos</a></li>
+                    {{-- <li><a href="{{ route('brand.newest', $orden->id) }}">Mas nuevos</a></li> --}}
                     <li><a href="{{ route('brand.lowest', $orden->id) }}">Precio mas bajo</a></li>
                     <li><a href="{{ route('brand.highest', $orden->id) }}">Precio mas alto</a></li>
                     <li><a href="{{ route('brand.alpha.lowest', $orden->id) }}">Productos A-Z</a></li>

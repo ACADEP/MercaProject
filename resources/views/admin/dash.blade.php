@@ -32,6 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
 
+  <link rel="stylesheet" href="{{asset('/css/filters.css')}}">
+
   <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/summernote.css')}}"> -->
   <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 

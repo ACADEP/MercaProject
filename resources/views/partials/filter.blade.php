@@ -21,7 +21,7 @@
                                                         {{ $ordenamiento }}
                                                     </button>        
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <button class="dropdown-item" type="submit" value="1" name="Popularidad">Popularidad</button>
+                                                        {{-- <button class="dropdown-item" type="submit" value="1" name="Popularidad">Popularidad</button> --}}
                                                         <button class="dropdown-item" type="submit" value="2" name="Menor">Menor Precio</button>
                                                         <button class="dropdown-item" type="submit" value="3" name="Mayor">Mayor Precio</button>
                                                         <button class="dropdown-item" type="submit" value="4" name="AZ">Productos A-Z</button>

@@ -1,8 +1,5 @@
-.ajuste {
-}
-.alineado {
-}
-.ordenado {
+.ajusteAdvace {
+    padding-left: 10px !important;
 }
 .filters {
     padding-left: 3px;
@@ -29,10 +26,17 @@ span.badge-filter {
     border-radius: 0 0.25rem 0.25rem 0;
 }
 ul.filter-color {
-    background: #fff;
+    background: #fff !important;
     border: 1px solid #bdbdbd;
 }
 
+ul.order-sale li a {
+    color:rgb(0, 0, 0) !important;     
+}
+
+ul.order-sale li.divider {
+    background-color: rgba(169, 169, 169);
+}
 
 /* ******************* Breadcrumb ******************* */
 .breadcrumb-right-arrow .breadcrumb-item+.breadcrumb-item::before {

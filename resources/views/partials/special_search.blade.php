@@ -26,30 +26,30 @@
       </div>
       <div class="modal-body">
           <div class="filters col-sm-12 col-md-12 col-lg-12">
-              <form class="form-inline" action="{{route('special.filter')}}" method="GET">
+              <form class="" action="{{route('special.filter')}}" method="GET">
                   @php
                       $categorias=App\Category::all();
                       $marcas=App\Brand::all();
                   @endphp
                   <div class="form-row align-items-center">
-                      <div class="dropdown ajuste alineado">
+                      <div class="dropdown alineado">
                           <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                               Marcas
                               <span class="caret"></span>
                           </button>
-                          <ul class="dropdown-menu check filter-color text-left" aria-labelledby="dropdownMenu1">
+                          <ul class="dropdown-menu check filter-color text-left ajusteAdvace" aria-labelledby="dropdownMenu1">
                               @foreach ($marcas as $marca)
                                   <li><label for="{{'bra'.$marca->id}}"><input class="text-left" type="checkbox" name="brand[]" value="{{$marca->id}}, {{$marca->brand_name}}" id="{{'bra'.$marca->id}}" /><strong class="ml-1">{{$marca->brand_name}}</strong></label></li>
                               @endforeach
                           </ul>
                       </div>
           
-                      <div class="dropdown ajuste alineado">
+                      <div class="dropdown alineado">
                           <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                               Categorias   
                               <span class="caret"></span>
                           </button>
-                          <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2">
+                          <ul class="dropdown-menu check filter-color ajusteAdvace" aria-labelledby="dropdownMenu2">
                               @foreach ($categorias as $categoria)
                                   <li><label for="{{'cat'.$categoria->id}}"><input class="text-left" type="checkbox" name="categories[]" value="{{$categoria->id}}, {{$categoria->category}}" id="{{'cat'.$categoria->id}}" /><strong class="ml-1">{{$categoria->category}}</strong></label></li>
                               @endforeach

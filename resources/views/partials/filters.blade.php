@@ -17,14 +17,14 @@
                 </button>        
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @if ($shopRoute == 1)
-                        <a class="dropdown-item" href="{{ route('shop.newest', $orden->id) }}">Popularidad</a>
+                        {{-- <a class="dropdown-item" href="{{ route('shop.newest', $orden->id) }}">Popularidad</a> --}}
                         <a class="dropdown-item" href="{{ route('shop.lowest', $orden->id) }}">Menor Precio</a>
                         <a class="dropdown-item" href="{{ route('shop.highest', $orden->id) }}">Mayor Precio</a>
                         <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $orden->id) }}">Productos A-Z</a>
                         <a class="dropdown-item" href="{{ route('shop.alpha.highest', $orden->id) }}">Productos Z-A</a>
                     @endif
                     @if ($brandRoute == 1)
-                        <li><a href="{{ route('brand.newest', $orden->id) }}">Mas nuevos</a></li>
+                        {{-- <li><a href="{{ route('brand.newest', $orden->id) }}">Mas nuevos</a></li> --}}
                         <li><a href="{{ route('brand.lowest', $orden->id) }}">Precio mas bajo</a></li>
                         <li><a href="{{ route('brand.highest', $orden->id) }}">Precio mas alto</a></li>
                         <li><a href="{{ route('brand.alpha.lowest', $orden->id) }}">Productos A-Z</a></li>

@@ -25,7 +25,7 @@
                                                         {{ $ordenamiento }}
                                                     </button>        
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="{{ route('brand.newest', $brands->id) }}">Popularidad</a>
+                                                        {{-- <a class="dropdown-item" href="{{ route('brand.newest', $brands->id) }}">Popularidad</a> --}}
                                                         <a class="dropdown-item" href="{{ route('brand.lowest', $brands->id) }}">Menor Precio</a>
                                                         <a class="dropdown-item" href="{{ route('brand.highest', $brands->id) }}">Mayor Precio</a>
                                                         <a class="dropdown-item" href="{{ route('brand.alpha.lowest', $brands->id) }}">Productos A-Z</a>

@@ -195,73 +195,135 @@ class QueryController extends Controller {
             $labels = 0;
         }
 
+//         $query=Product::select(\DB::raw('products.*, (price - reduced_price) as oferta'))->join('brands', 'brand_id', '=', 'brands.id')
+//         ->join('categories', 'cat_id', '=', 'categories.id'); 
         $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
-        ->join('categories', 'cat_id', '=', 'categories.id');  
+        ->join('categories', 'cat_id', '=', 'categories.id'); 
 
-        $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-        $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-        $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-        $query = $query->orWhere("description", 'LIKE', "%$search_find%");
 
-        if ($request->Popularidad == 1) {
-            $resultados = count($query->get());
-            $search = $query->OrderBy('created_at', 'desc')->paginate(12);
-            $ordenamiento = "Popularidad";
-            
-        } elseif ($request->Menor == 2) {
-            $resultados = count($query->get());
-            $search = $query->OrderByRaw('(price - reduced_price) ASC')->paginate(12);
-            $ordenamiento = "Precio Menor";
+        if($request->Menor || $request->Mayor || $request->AZ || $request->ZA){
+            $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
+            $query = $query->orWhere("category", 'LIKE', "%$search_find%");
+            $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
+            $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+                
+            if ($request->Menor == 2) {        
+                $search = $query->OrderByRaw('(price - reduced_price) ASC')->paginate(12);
+                $resultados = count($search);
+                $ordenamiento = "Precio Menor";
 
-        } elseif ($request->Mayor == 3) {
-            $resultados = count($query->get());
-            $search = $query->OrderByRaw('(price - reduced_price) DESC')->paginate(12);
-            $ordenamiento = "Precio Mayor";
+            } elseif ($request->Mayor == 3) {
+                $search = $query->OrderByRaw('(price - reduced_price) DESC')->paginate(12);
+                $resultados = count($search);
+                $ordenamiento = "Precio Mayor";
 
-        } elseif ($request->AZ == 4) {
-            $resultados = count($query->get());
-            $search = $query->OrderBy('product_name', 'asc')->paginate(12);
-            $ordenamiento = "Productos A-Z";
+            } elseif ($request->AZ == 4) {
+                $search = $query->OrderBy('product_name', 'asc')->paginate(12);
+                $resultados = count($search);
+                $ordenamiento = "Productos A-Z";
 
-        } elseif ($request->ZA == 5) {
-            $resultados = count($query->get());
-            $search = $query->OrderBy('product_name', 'desc')->paginate(12);
-            $ordenamiento = "Productos Z-A";    
-        } else {
+            } elseif ($request->ZA == 5) {
+                $search = $query->OrderBy('product_name', 'desc')->paginate(12);
+                $resultados = count($search);
+                $ordenamiento = "Productos Z-A";    
+            } 
+
+        }else {
 
             // Filtro por Precio Maximo
             if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta!=null)
             {
-                if ($request->fil == 1) {            
-                    $resultados = count($query->get());
-                    $search = $query->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $request->hasta)->paginate(12);
+                if ($request->fil == 1) {     
+                    // dd($query->get());
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='.$request->hasta);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='. $request->hasta);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='. $request->hasta);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='. $request->hasta);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->OrderByRaw('(price - reduced_price) DESC')->where('price', '<=', $hasta)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) asc')->whereRaw('(products.price - products.reduced_price) <='.$hasta);   
+
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }        
 
             } // Filtro por Precio Minimo
             else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->OrderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->OrderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->OrderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }       
 
             } // Filtro por Precio Minimo y Precio Maximo
             else if($request->get("brand")==null && $request->get("categories")==null && $desde!=null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $desde)->where('price', '<=', $hasta)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")
+                    ->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }            
 
             } // Filtro por Marca
@@ -269,167 +331,352 @@ class QueryController extends Controller {
             {
                 // dd($request);
                 if ($request->fil == 1) {
-                    // dd($request->brand);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand);
+
                     $brand2 = array();
                     for ($i=0; $i < count($request->brand); $i++) { 
                         $brand2[$i] = $request->brand;
                     }
-                    dd($brand2);
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('brand_id', $request->brand)->paginate(12);
-                    // dd($search);
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('brand_id', $marca)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }       
 
             } // Filtro por Categoria
             else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
 
             } // Filtro por Marca y Categoria
             else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('brand_id', $request->brand)
-                    ->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $request->brand)
+                    ->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->whereIn('brand_id', $marca)
-                    ->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereIn('brand_id', $marca)
+                    ->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
 
             } // Filtro por Marca y Precio Minimo
             else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }  
 
             } // Filtro por Marca y Precio Maximo
             else if($request->get("brand")!=null && $request->get("categories")==null && $desde==null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } // Filtro por Categoria y Precio Minimo
             else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $desde)->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } // Filtro por Categoria y Precio Maximo
             else if($request->get("brand")==null && $request->get("categories")!=null && $desde==null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $hasta)->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } // Filtro por Marca, Categoria y Precio Minimo
             else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta==null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } // Filtro por Marca, Categoria y Precio Maximo
             else if($request->get("brand")!=null && $request->get("categories")!=null && $desde==null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) DESC')
-                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) DESC')
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } // Filtro por Marca, Precio Minimo y Precio Maximo
             else if($request->get("brand")!=null && $request->get("categories")==null && $desde!=null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search =  $query->where('price', '>=', $desde)->where('price', '<=', $hasta)
-                    ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC')->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereRaw('(products.price - products.reduced_price) <='.$hasta)
+                    ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereRaw('(products.price - products.reduced_price) <='.$hasta)
+                    ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereRaw('(products.price - products.reduced_price) <='.$hasta)
+                    ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)->whereRaw('(products.price - products.reduced_price) <='.$hasta)
+                    ->WhereIn('brand_id', $marca)->orderByRaw('(price - reduced_price) ASC');
+            
+                    $search =  $query->paginate(12);
+                    $resultados = count($search);
                 }
             }
             // Filtro por Categoria, Precio Minimo y Precio Maximo
             else if($request->get("brand")==null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')
-                    ->where('price', '>=', $request->desde)->where('price', '<=', $request->hasta)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')
+                    ->whereRaw('(products.price - products.reduced_price) >='.$request->desde)->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search =  $query->where('price', '>=', $desde)->where('price', '<=', $hasta)
-                    ->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC')->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->WhereIn('cat_id', $categoria)->orderByRaw('(price - reduced_price) ASC');
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
             } // Filtro por Marca, Categoria, Precio Minimo y Precio Maximo
             else if($request->get("brand")!=null && $request->get("categories")!=null && $desde!=null && $hasta!=null)
             {
                 if ($request->fil == 1) {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $request->desde)
-                    ->where('price', '<=', $request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$request->desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$request->hasta)->whereIn('brand_id', $request->brand)->whereIn('cat_id', $request->categories);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 } else {
-                    $resultados = count($query->get());
-                    $search = $query->orderByRaw('(price - reduced_price) ASC')->where('price', '>=', $desde)
-                    ->where('price', '<=', $hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria)->paginate(12);
+                    $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("category", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("product_name", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+                    $query = $query->orWhere("description", 'LIKE', "%$search_find%")->orderByRaw('(price - reduced_price) ASC')->whereRaw('(products.price - products.reduced_price) >='.$desde)
+                    ->whereRaw('(products.price - products.reduced_price) <='.$hasta)->whereIn('brand_id', $marca)->whereIn('cat_id', $categoria);
+            
+                    $search = $query->paginate(12);
+                    $resultados = count($search);
                 }
                 
             } 
             else if($request->get("brand")==null && $request->get("categories")==null && $desde==null && $hasta==null) {
-                $resultados = count($query->get());
+                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("category", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("description", 'LIKE', "%$search_find%");        
                 $search = $query->paginate(12);
+                $resultados = count($search);
             } else if ($request->clear == 'clear') {
-                $resultados = count($query->get());
+                $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("category", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
+                $query = $query->orWhere("description", 'LIKE', "%$search_find%");        
                 $search = $query->paginate(12);
+                $resultados = count($search);
             }
             
         }
