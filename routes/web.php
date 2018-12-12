@@ -706,8 +706,12 @@ Route::group(["middleware" => 'admin'], function(){
     Route::get('print_excel_seller','AdminController@printExcel');
     //Ordenar por
     Route::get('admin/sales/{order}','AdminController@orderSales')->name('order-admin');
+    //Ordenar por todos
+    Route::get('admin/allSales/{order}','AdminController@orderAllSales')->name('order-all-admin');
+     //Mostar ventas Propias/Todas
+     Route::get('admin/showsales','AdminController@showSalesAll')->name('show-sales-all');
     //Ordenar por fecha
-    Route::post('admin/sales/orderDate','AdminController@orderDate')->name('orderDate-admin');
+    Route::get('/admin/orderDate','AdminController@orderDate')->name('orderDate-admin');
     //Recibo de pago
    //Imprimir PDF
    Route::get('/print-pay-pdf/{id}', 'AdminController@salesPayPDF')->name('salesPdf');

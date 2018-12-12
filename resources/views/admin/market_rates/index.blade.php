@@ -63,7 +63,7 @@
                 <form style="display:inline;" action="{{route('addOrder')}}" method="post">
                     {{csrf_field()}}
                     <input type="hidden" name="marketrate" value="{{$marketrate->id}}">
-                    <button type="submit"  data-placement="top" title="Covertir a pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
+                    <button type="submit"  data-placement="top" title="Convertir a pedido" class="btn btn-primary btn-xs"><i class="fa fa-cart-arrow-down"></i></button>
                 </form>
                 @endcan
             </td>

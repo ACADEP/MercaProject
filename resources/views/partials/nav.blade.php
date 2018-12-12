@@ -20,7 +20,7 @@
                        
                     </li>
                 @php $categories=App\Category::where('parent_id',0)->take(7)->get(); @endphp
-                <div id="search_down">
+                <div class="nav-menu form-inline" style="width:100%;" id="search_down" >
                     <li class="nav-item dropdown" >
                             
                             <a class="nav-link dropdown-toggle hidden-md-down" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,10 +43,20 @@
                                         @endif
                                     @endforeach
                                    
-                                    <li><a class="dropdown-item" style="color:blue;" href="{{ route('categories.all') }}">Ver mas categorias</a></li>
+                                    <li><a class="dropdown-item" style="color:blue;" href="{{ route('categories.all') }}"><strong style="font-color:black; font-size:16px;">Ver más categorías</strong></a></li>
                                 </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('all.offers') }}"  role="button">Ofertas</a>
+                        </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('all.selled') }}"  role="button">Más vendidos</a>
+                        </li>
+                      
                     </div>
+                  
                         
                 </div>
                 &nbsp&nbsp&nbsp

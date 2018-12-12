@@ -75,8 +75,8 @@
     <div class="text-right">
            <strong>Total:</strong>  ${{number_format($totalSale, 2) }}
     </div>
-    <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
-    <div class="notice">{{config('configurations.mk.information_final')}}</div>
+        <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
+        <div class="notice">{{config('configurations.mk.information_final')}}</div>
       </div>
     </main>
     <footer>

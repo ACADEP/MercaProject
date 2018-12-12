@@ -80,6 +80,10 @@ class ConfigController extends Controller
         //Configuración pdf
         $array['mk']['slogan']=$request->slogan;
         $array['mk']['information_final']=$request->information_final;
+        $array['mk']['information_final_2']=$request->information_final_2;
+        $array['mk']['information_final_3']=$request->information_final_3;
+        $array['mk']['greetings']=$request->greetings;
+        
 
         $data = var_export($array, 1);
         if(File::put(base_path().'\config\configurations.php', "<?php\n return $data ;")) 

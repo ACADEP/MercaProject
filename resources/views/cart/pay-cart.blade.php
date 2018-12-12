@@ -83,7 +83,7 @@
                                 <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
                                 <div class='card-body'>
                                     <p class='card-text' style='width:100%;' >
-                                        <img src='{{$rate->carrier_logo_url}}' class='img-fluid'>
+                                        <img src='{{$rate->carrier_logo_url}}' style="height:40px;" class='img-fluid'>
                                     </p>
                                     <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
                                     Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
@@ -515,7 +515,7 @@ $(document).ready(function () {
                     $("#total-credit").val($("#total-pursh").val());
                     $("#ship_rate_target").val($('#ship_rate_choosed').html());
                     $("#date_ship_target").val($('#date_aprox').html());
-                    $('#method_pay_target').val("Targeta de débito o crédito");
+                    $('#method_pay_target').val("Tarjeta de débito o crédito");
                 
                
             }

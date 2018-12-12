@@ -81,9 +81,9 @@
       </table>
       <div id="notices">
       <div><strong>Forma de pago: Transferencia</strong></div>
-    <div><strong>¡Gracias por hacer su compra!</strong></div>
-    <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
-    <div class="notice">{{config('configurations.mk.information_final')}}</div>
+      <div><strong>{{config('configurations.mk.greetings')}}</strong></div>
+        <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
+        <div class="notice">{{config('configurations.mk.information_final')}}</div>
     <div class="notice">A partir de 24 horas tiene 7 días para solicitar su factura al correo de Mercadata.</div>
       </div>
     </main>

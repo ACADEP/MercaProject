@@ -14,8 +14,8 @@
             <img src="{{asset('/images/mercadata-footer.png')}}">
           </div>
             <div class="slogan font">
-                <strong><h3 class="font">MercaData</h3></strong>
-                Tu tienda de tecnologia en línea 
+            <strong><h3>{{config('configurations.general.store_name')}}</h3></strong>
+                {{config('configurations.mk.slogan')}} 
             </div>
       </div>
       <h1 class="tittle font">Recibo de Pago</h1>
@@ -30,9 +30,11 @@
         </div>
     
         <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
-          <div><strong>Mercadata</strong></div>
-          <div>Ignacio Allende,<br /> La Paz 23000, MX</div>
-          <div>Tel: 612 122 5174</div>
+        <div><strong>{{config('configurations.general.store_name')}}</strong></div>
+          <div>{{config('configurations.company.direction_1')}},<br /> 
+                {{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
+                {{config('configurations.company.country_code')}}</div>
+          <div>Tel:  {{config('configurations.company.phone')}}</div>
           <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
         </div>  
       </div>
@@ -43,7 +45,7 @@
         <div><h3>Depósito a través de OXXO a cuenta BBVA Bancomer</h3></div>
         <div><span><strong>Propietario de la cuenta: </strong>Leonardo Lage Suarez</span></div>
         <div><span><strong>Cuenta: </strong>0136602037</span></div>
-        <div><span><strong>Clave: </strong>012040001366020373</span></div>
+        <div><span><strong>Clabe: </strong>012040001366020373</span></div>
         <div><span><strong>Teléfono: </strong>612 122 5174</span></div>
         <div><span><strong>Correo: </strong><a href="mailto:administracion@acadep.com">administracion@acadep.com</a></span></div>
         <div><span><strong>Fecha límite de pago: </strong>{{Carbon\Carbon::now()->addDay(1)}}</span></div>
@@ -93,20 +95,21 @@
       <div id="notices">
         <div><strong>Forma de pago: </strong>Tranferencia</div>
         <div><strong>Tiempo de Entrega: </strong>3 a 5 dias habiles</div>
-        <div><strong>¡Gracias por hacer su compra!</strong></div>
-        <div class="notice">* Precios sujetos a cambio sin precio aviso.</div>
-        <div class="notice">En espera de vernos favorecidos con su pedido, nos ponemos a sus ordenes para cualquier aclaración.</div>
+        <div><strong>{{config('configurations.mk.greetings')}}</strong></div>
+        <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
+        <div class="notice">{{config('configurations.mk.information_final')}}</div>
       </div>
     </main>
     <footer>
         <div class="row data">
             <div class="address">
                 <span>Dirección: </span>
-                <strong>La Paz, BCS México</strong>
+                <strong>{{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
+                {{config('configurations.company.country_code')}}</strong>
             </div>
             <div class="phone">
                 <span>Teléfono: </span>
-                <strong>612 1225174</strong>
+                <strong> {{config('configurations.company.phone')}}</strong>
             </div>
         </div>
     </footer>
