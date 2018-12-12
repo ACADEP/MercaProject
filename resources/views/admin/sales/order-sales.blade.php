@@ -138,8 +138,12 @@
     </div>
     
     <div class="col-md-4 text-left">
-       
-                <a href="{{url('admin/sales') }}" class="btn btn-primary">Quitar filtros</a>
+        @can("view_all_sales")
+        <!-- No filtros -->
+        @else
+        <a href="{{url('admin/sales') }}" class="btn btn-primary">Quitar filtros</a>
+        @endcan
+                
          @if($histories->count()>0)
          @php 
             $idHistories=array();
@@ -164,6 +168,7 @@
             </button>
         </form>
         @endif
+        @can("view_all_sales")
         <form action="{{route('show-sales-all')}}" method="get" style="display:inline;" >
            
             <select onchange="this.form.submit()" id="s-show-sales" class="form-control btn btn-info" name="s-show-sales" style="width:43%;">
@@ -171,6 +176,7 @@
             <option value="2">Todas las ventas</option>
             </select>
         </form>
+        @endcan
         @if(isset($orderAll))
             <script>document.getElementById('s-show-sales').value="{{ $orderAll }}"</script>
         @endif

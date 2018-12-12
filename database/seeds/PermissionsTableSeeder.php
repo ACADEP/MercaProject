@@ -97,6 +97,12 @@ class PermissionsTableSeeder extends Seeder
             'guard_name'=>'web'
         ]);
 
+        DB::table('permissions')->insert([
+            'name'    => 'view_all_sales',
+            'display_name' => 'Ver todas las Ventas',
+            'guard_name'=>'web'
+        ]);
+
 
         //Permisos ordenes
         DB::table('permissions')->insert([

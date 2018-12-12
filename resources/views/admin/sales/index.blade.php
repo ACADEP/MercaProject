@@ -156,6 +156,21 @@ div.panel-heading {
 
 @stop
 
+@section("msg-success")
+@if(Session::has('no-permission'))
+<script> 
+    $.notify({
+        // options
+        message: '<strong>{{ Session("no-permission") }}</strong>' 
+    },{
+        // settings
+        type: 'danger',
+        delay:5000
+    });
+    </script>
+@endif
+
+@stop
 
 @section('upload-invoice')   
     <!-- Modal -->

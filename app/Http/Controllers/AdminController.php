@@ -64,10 +64,17 @@ class AdminController extends Controller {
         }
         else if($request->get('s-show-sales')==2)
         {
-            $sales = SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
-            $histories = SeleHistory::select('*')->get();
-            $ventas = SeleHistory::select('sale_id', "created_at")->distinct('sale_id')->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'), ['sale_id']);
-            return view("admin.sales.index", compact("sales", "ventas", "histories", 'orderAll'));       
+            if(Auth::user()->can('view_all_sales'))
+            {
+                $sales = SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
+                $histories = SeleHistory::select('*')->get();
+                $ventas = SeleHistory::select('sale_id', "created_at")->distinct('sale_id')->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'), ['sale_id']);
+                return view("admin.sales.index", compact("sales", "ventas", "histories", 'orderAll'));
+            }
+            else
+            {
+                return back()->with('no-permission','No tienes permiso para esta acción');
+            }       
         }
       
     }
@@ -469,122 +476,134 @@ class AdminController extends Controller {
         }
         else if($request->typeSales==2)
         {
-           
-            if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
+            if(Auth::user()->can('view_all_sales'))
             {
-                $años=$request->get("año");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->get();
+                if($request->get("dia")==null && $request->get("mes")==null && $request->get("año")!=null)
+                {
+                    $años=$request->get("año");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->get();
+                    
+                }
+                else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")==null)
+                {
+                    $meses=$request->get("mes");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(config('configurations.paginate_general')); 
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->get();   
+                }
+                else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")==null)
+                {
+                    $dias=$request->get("dia");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('DAY(date)'), $dias)->get();
+                
+                }
+                else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")!=null)
+                {
+                    $meses=$request->get("mes");
+                    $años=$request->get("año");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
+                    
+                }
+                else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")!=null)
+                {
+                    $años=$request->get("año");
+                    $dias=$request->get("dia");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
+                    
+                }
+                else if($request->get("dia")!=null && $request->get("mes")!=null && $request->get("año")==null)
+                {
+                    $meses=$request->get("mes");
+                    $dias=$request->get("dia");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
+                    
+                }
+                else if($request->get("dia")!=null && $request->get("mes")!=null && $request->get("año")!=null)
+                {
+                    $meses=$request->get("mes");
+                    $dias=$request->get("dia");
+                    $años=$request->get("año");
+                    $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
+                    
+                }
+                else
+                {
+                    $sales=SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
+                    $histories=SeleHistory::select('*')->get();
+                }
+                $orderAll=$request->typeSales;
+                return view('admin.sales.index',compact('sales','histories','ventas', 'orderAll'));
+            }
+            else
+            {
+                return back()->with('no-permission','No tienes permiso para esta acción');
+            } 
+        }
+    }
+    public function orderAllSales($order)
+    {
+       
+        if(Auth::user()->can('view_all_sales'))
+        {
+            $sales="";
+            $histories="";
+            $ventas = null;
+            $orderAll=2;
+            if($order==1)
+            {
+                $sales=SeleHistory::select('*')->orderBy('amount',"desc")->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->orderBy('amount',"desc")->get();
+            }
+            else if($order==2)
+            {
+                $sales=SeleHistory::select('*')->orderBy('date',"desc")->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->orderBy('date',"desc")->get();
+            }
+            else if($order==3)
+            {
+                $sales=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->get();
                 
             }
-            else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")==null)
+            else if($order==4)
             {
-                $meses=$request->get("mes");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->paginate(config('configurations.paginate_general')); 
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->get();   
+                $sales=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->get();
             }
-            else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")==null)
+            else if($order==5)
             {
-                $dias=$request->get("dia");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('DAY(date)'), $dias)->get();
+                $sales=SeleHistory::select('*')->orderBy('client')->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->orderBy('client')->get();
+            }
+            else if($order==6)
+            {
+                $sales=SeleHistory::select('*')->orderByDesc('total')->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->orderBy('total','desc')->get();
             
             }
-            else if($request->get("dia")==null && $request->get("mes")!=null && $request->get("año")!=null)
+            else if($order==7)
             {
-                $meses=$request->get("mes");
-                $años=$request->get("año");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
-                
-            }
-            else if($request->get("dia")!=null && $request->get("mes")==null && $request->get("año")!=null)
-            {
-                $años=$request->get("año");
-                $dias=$request->get("dia");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('YEAR(date)'), $años)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
-                
-            }
-            else if($request->get("dia")!=null && $request->get("mes")!=null && $request->get("año")==null)
-            {
-                $meses=$request->get("mes");
-                $dias=$request->get("dia");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->get();
-                
-            }
-            else if($request->get("dia")!=null && $request->get("mes")!=null && $request->get("año")!=null)
-            {
-                $meses=$request->get("mes");
-                $dias=$request->get("dia");
-                $años=$request->get("año");
-                $sales=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->paginate(config('configurations.paginate_general'));
-                $histories=SeleHistory::select('*')->whereIn(\DB::raw('MONTH(date)'), $meses)->whereIn(\DB::raw('DAY(date)'), $dias)->whereIn(\DB::raw('YEAR(date)'), $años)->get();
-                
+                $sales=SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
+                $histories=SeleHistory::select('*')->get();
+            
             }
             else
             {
                 $sales=SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
                 $histories=SeleHistory::select('*')->get();
             }
-            $orderAll=$request->typeSales;
-            return view('admin.sales.index',compact('sales','histories','ventas', 'orderAll')); 
-        }
-    }
-    public function orderAllSales($order)
-    {
-       
-        
-        $sales="";
-        $histories="";
-        $ventas = null;
-        $orderAll=2;
-        if($order==1)
-        {
-            $sales=SeleHistory::select('*')->orderBy('amount',"desc")->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->orderBy('amount',"desc")->get();
-        }
-        else if($order==2)
-        {
-            $sales=SeleHistory::select('*')->orderBy('date',"desc")->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->orderBy('date',"desc")->get();
-        }
-        else if($order==3)
-        {
-            $sales=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.price', 'desc')->get();
             
-        }
-        else if($order==4)
-        {
-            $sales=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->select('sele_histories.*')->join('products', 'sele_histories.product_id', '=', 'products.id')->orderBy('products.product_name', 'asc')->get();
-        }
-        else if($order==5)
-        {
-            $sales=SeleHistory::select('*')->orderBy('client')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->orderBy('client')->get();
-        }
-        else if($order==6)
-        {
-            $sales=SeleHistory::select('*')->orderByDesc('total')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->orderBy('total','desc')->get();
-           
-        }
-        else if($order==7)
-        {
-            $sales=SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->get();
-           
+            return view('admin.sales.index',compact('sales','histories','ventas','orderAll'));
         }
         else
         {
-            $sales=SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
-            $histories=SeleHistory::select('*')->get();
+            return back()->with('no-permission','No tienes permiso para esta acción');
         }
-        
-        return view('admin.sales.index',compact('sales','histories','ventas','orderAll'));
     }
     public function orderSales($order)
     {   
