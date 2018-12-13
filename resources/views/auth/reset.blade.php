@@ -4,10 +4,15 @@
 
     <div class="container-fluid" id="Login-Register-Container">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
                 <div class="card" id="Login-Register-Panel">
                     <div class="card-body">
-                        <h4 class="text-center" id="log-in">Reset Password</h4>
+                            @if(session('flash'))
+                            <div class="alert alert-primary">
+                                {{session('flash')}}
+                            </div>
+                        @endif
+                        <h4 class="text-center" id="log-in">Recuperar Contraseña</h4>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
 
                             <input type="hidden" name="token" value="{{ $token }}">
@@ -16,8 +21,8 @@
                             <input type="hidden" name="token" value="{{ $token }}">
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <input type="email" class="form-control" name="email" value="{{ $email or old('email') }}" placeholder="email address">
+                                <div class="col-md-12 col-md-offset-1">
+                                    <input type="email" class="form-control" name="email" value="{{ $email or old('email') }}" placeholder="Correo">
                                     @if ($errors->has('email'))
                                         <span class="form-text">
                                             <strong>{{ $errors->first('email') }}</strong>
@@ -27,8 +32,8 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <input type="password" class="form-control" name="password" placeholder="password">
+                                <div class="col-md-12 col-md-offset-1">
+                                    <input type="password" class="form-control" name="password" placeholder="Contraseña">
                                     @if ($errors->has('password'))
                                         <span class="form-text">
                                             <strong>{{ $errors->first('password') }}</strong>
@@ -38,8 +43,8 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="password confirm">
+                                <div class="col-md-12 col-md-offset-1">
+                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirmar Contraseña">
                                     @if ($errors->has('password_confirmation'))
                                         <span class="form-text">
                                             <strong>{{ $errors->first('password_confirmation') }}</strong>
@@ -49,8 +54,8 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-8 col-md-offset-2 text-center">
-                                    <button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Reset Password</button>
+                                <div class="col-md-12 col-md-offset-3 text-center">
+                                    <button type="submit" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Recuperar Contraseña</button>
                                 </div>
                             </div>
 

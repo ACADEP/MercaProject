@@ -52,7 +52,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRegister(RegistrationRequest $request, AppMailers $mailer) {
-      
+        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
         // Create the user in the DB.
         $user = User::create([
             'email' => $request->input('email'),
@@ -61,6 +61,8 @@ class AuthController extends Controller
             'verified' => 0,
             'admin' => $request->input('account'),
         ]);
+        //Asignar el role de cliente
+        $user->assignRole("Client");
         //Agregar productos del cookie al carrito
         $items=json_decode($request->get('cookieProductos'));
         if($items!=null)
@@ -155,12 +157,12 @@ class AuthController extends Controller
         if ($this->signIn($request)) {
             //flash()->success('Success', 'You have successfully signed in.');
             return redirect('/');
-        }
+        } 
 
         // Else, show error message, and redirect them back to login.php.
         // flash()->customErrorOverlay('Error', 'No se puede iniciar sesión con esas credenciales');
 
-        return redirect('login');
+        return redirect('login')->with('flash','No se puede iniciar sesión con esas credenciales.');
     }
 
 

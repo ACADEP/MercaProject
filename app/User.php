@@ -2,14 +2,21 @@
 
 namespace App;
 
+use App\Customer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
+
+
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
+    // use Billable;
+    
     protected $table = 'users';
 
     /**
@@ -30,6 +37,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
     /**
      * Make a boot function to listen
      * to any model events that are fired below.
@@ -43,6 +54,7 @@ class User extends Authenticatable
         static::creating(function($user) {
             $user->token = str_random(30);
         });
+       
     }
 
 
@@ -63,11 +75,103 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class);
         
     }
+
+    public function productseller()
+    {
+        return $this->hasMany(ProductSeller::class);
+    }
+
+    public function selehistories()
+    {
+        return $this->hasMany(SeleHistory::class);
+    }
+    public function sale()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+    public function customer()
+    {
+        return $this->hasOne(Customer::class,"usuario");
+    }
+    public function ordersOxxo()
+    {
+        return $this->hasMany(OrderOxxo::class);
+    }
     
+    public function payments()
+    {
+        return $this->hasMany(PaymentInformation::class,'usuario');
+    }
+
     public function product($id)
     {   
         $product=Product::find($id);
         return $product;
+    }
+
+    public function address()
+    {
+        return $this->hasMany(Address::class, 'usuario');
+    }
+
+    public function addressActive()
+    {
+        $addresses=$this->address()->get();
+        $address_active="";
+        foreach($addresses as $address)
+        {
+            if($address->activo==1)
+            {
+                $address_active=$address;
+            }
+        }
+        return $address_active;
+    }
+
+    public function updateAddressActive($id)
+    {
+        $addresses=$this->address()->get();
+        foreach($addresses as $address)
+        {
+            $address->activo=0;
+            $address->update();
+        }
+        $addressActive=$this->address()->where("id",$id)->first();
+        if($addressActive!=null)
+        {
+            $addressActive->activo=1;
+            $addressActive->update();
+        }
+        
+
+        return $addressActive;
+    }
+    public function valFavorite($product_id)
+    {
+        $band=true;
+        $favorites=$this->favorites()->get();
+        foreach($favorites as $favorite)
+        {
+            if($favorite->product->id == $product_id)
+            {
+                $band=false;
+            }
+        }
+        return $band;
+    }
+    public function paymentscard()
+    {
+        return $this->hasMany(PaymentInformation::class, 'usuario');
+    }
+    
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class,'id_seller');
     }
 
     public function getTotalAttribute()
@@ -108,6 +212,33 @@ class User extends Authenticatable
         $cart->save();
 
         return $cart;
+    }
+
+    public function insert($username, $email, $pass, $company_id)
+    {
+        $this->username=$username;
+        $this->company_id=$company_id;
+        $this->email=$email;
+        $this->password= bcrypt($pass);
+        $this->verified=1;
+        $this->admin=0;
+        $this->save();
+    }
+
+    public function updateU($username, $email, $pass)
+    {
+        $this->username=$username;
+        $this->email=$email;
+        if($pass!=null)
+        {
+            $this->password= bcrypt($pass);
+        }
+        $this->save();
+    }
+
+    public function getRoleDisplayNames()
+    {
+        return $this->roles->pluck('display_name')->implode(', ');
     }
 
 }

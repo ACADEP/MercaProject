@@ -7,6 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Mercadata | Vendedor</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -20,9 +21,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-blue.min.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/skins/skin-red.css')}}">
+
+
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/checkbox.css')}}">
+
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/tabs.css')}}">
+  <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/bootstrap-datetimepicker.min.css')}}">
 
   <link rel="stylesheet" href="{{asset('/css/dropzone.css')}}">
+
+  <!-- <link rel="stylesheet" href="{{asset('AdminLTE/dist/css/summernote.css')}}"> -->
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+
+  <!-- Compiled and minified CSS -->
+  
+
+<!-- Compiled and minified JavaScript -->
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -56,7 +72,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -95,7 +111,7 @@ desired effect
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="/AdminLTE/dist/img/perfil.jpg" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -180,18 +196,18 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="/AdminLTE/dist/img/perfil.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">{{ Auth::user()->username }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="/AdminLTE/dist/img/perfil.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                {{ Auth::user()->email }} - Vendedor
+                  
                 </p>
               </li>
               <!-- Menu Body -->
@@ -237,10 +253,10 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="/AdminLTE/dist/img/perfil.jpg" class="img-circle" style="height:40px;" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>{{ Auth::user()->username }}</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -262,8 +278,13 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-list"></i> <span>Mis productos</span></a></li>
-        <li class="{{ Request::path() == 'seller/sales' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-usd"></i> <span>Historial de ventas</span></a></li>
+        <li class="{{ Request::path() == 'seller/products' ? 'active' : '' }}"><a href="{{ route('my-products') }}"><i class="fa fa-tags"></i> <span>Mis productos</span></a></li>
+        @php  $routeName =  \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->getName() @endphp
+        <li class="{{ Request::path() == 'seller/sales' || Request::path() == 'seller/sales/orderDate' || $routeName == 'order' ? 'active' : '' }}"><a href="{{ route('my-sales') }}"><i class="fa fa-list" aria-hidden="true"></i><span>Historial de ventas</span></a></li>
+        <li class="{{ $routeName == 'my-reclames' ? 'active' : ''  }}"><a href="{{ route('my-reclames') }}"><i class="fa fa-commenting" aria-hidden="true"></i><span>Reclamos de ventas</span></a></li>
+        
+         
+         
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -392,13 +413,35 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('/AdminLTE/dist/js/adminLTE.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/adminlte.min.js')}}"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
 <script src="{{asset('/js/dropzone.js')}}"></script>
 
-@include('seller.partials.add-product')
+<script src="{{asset('/js/ajax-seller.js')}}"></script>
+
+<script src="{{asset('/AdminLTE/dist/js/checkbox.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/moment-with-locales.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+
+
+ <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    
+                });
+            });
+  </script>
+
+@yield('modal-respond-reclame')
+@yield('modal-add-products')
 @include('seller.partials.add-images')
 @yield('js-dropzone')
+@yield('mostrar-modal')
+@yield('select-sale')
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

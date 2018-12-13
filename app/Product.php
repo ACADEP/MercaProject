@@ -29,11 +29,12 @@ class Product extends Model {
 
     //protected $gaurded = ['id'];
 
-
+    
     
     public function category() {
         return $this->belongsTo(Category::class,'cat_id');
     }
+
 
     public function cart(){
         return $this->belongsTo(Cart::class);
@@ -47,6 +48,10 @@ class Product extends Model {
         return $this->hasMany(ShopSold::class);
     }
 
+    public function shipments(){
+        return $this->hasMany(ShipmentProduct::class,'id_product');
+    }
+
 
     // do same thing above for category() if you want to show what category a certain product is under in products page.
 
@@ -56,7 +61,7 @@ class Product extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function brand() {
-        return $this->belongsTo('App\Brand');
+        return $this->belongsTo('App\Brand',"brand_id");
     }
 
 

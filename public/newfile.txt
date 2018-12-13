@@ -1,0 +1,1 @@
+{"type":"verification","event_date":"2018-12-07T23:09:15-06:00","verification_code":"UGD4jcRK","id":"wpwwsgmyt9ca1agmplo0"}

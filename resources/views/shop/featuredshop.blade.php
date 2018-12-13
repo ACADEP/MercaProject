@@ -1,98 +1,206 @@
 
-<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
-    <!--<form method="post" action="/priceLow">
-    {{csrf_field()}}
-    <input type="hidden" name="low" value="1">
-    <input type="hidden" name="id" value="{{$banner->id}}">
+<div class="row col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="product_featured">
+   
+    {{-- <div class="row col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+        @include('shop.shop-filters')
+    </div> --}}
 
-    <button class="btn btn-default pull-left">Menor</button>
-    </form>
-    <form method="post" action="/priceLow">
-    {{csrf_field()}}
-    <input type="hidden" name="high" value="1">
-    <input type="hidden" name="id" value="{{$banner->id}}">
+    <div class="row col-12 pt-3 pb-2">
+        @if ($labels == 1)          
+            @if ($brandFilter)
+                @foreach ($brandFilter as $brand)
+                    <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times activo"></i></span>  
+                @endforeach
+            @endif
+            @if ($catFilter)
+                @foreach ($catFilter as $cat)
+                    <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
+                @endforeach
+            @endif
+            @if ($maxfilter && $minFilter)
+                <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+            @else
+                @if ($maxfilter)
+                    <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                @else
+                    @if ($minFilter)
+                        <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                    @endif
+                @endif
+            @endif
+        @else
+            @if ($labels == 0)
+                @if ($brandFilter)
+                    @foreach ($brandFilter as $brand)
+                        <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{$brand->brand_name}}<i class="fa fa-times activo"></i></span>  
+                    @endforeach
+                @endif
+                @if ($catFilter)
+                    @foreach ($catFilter as $cat)
+                        <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
+                    @endforeach
+                @endif
+                @if ($maxfilter && $minFilter)
+                    <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
+                @else
+                    @if ($maxfilter)
+                        <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
+                    @else
+                        @if ($minFilter)
+                            <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
+                        @endif
+                    @endif
+                @endif
+            @endif
+        @endif    
+    </div>
 
-    <button class="btn btn-primary pull-left">Mayor</button>
-    </form>-->
-    <form action="/pricelow" method="post">
-        {{csrf_field()}}
-        <div class="dropdown">
-            <button class="btn btn-default btn-rounded waves-effect waves-light dropdown-toggle" id="order" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ $orden }}
-                <!--Ordenar por-->
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ route('shop.newest', $banner->id) }}">Popularidad</a>
-                <a class="dropdown-item" href="{{ route('shop.lowest', $banner->id) }}">Menor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.highest', $banner->id) }}">Mayor Precio</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.lowest', $banner->id) }}">Productos A-Z</a>
-                <a class="dropdown-item" href="{{ route('shop.alpha.highest', $banner->id) }}">Productos Z-A</a>
-            </div>
+    <div class="row">
+        <div class="row col-sm-3 col-md-3">
+            @include('shop.filter')
         </div>
-    </form>
-
-    <h4 class="text-center animated zoomIn" id="title-product">Productos #</h4>
-    <div class="text-center row d-flex flex-row-reverse">  
-        @if($relacion)  
-            @include('shop.featuredsold')
-        @else                 
-            @foreach($products as $product)
-                <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 animated zoomIn grow card border-primary mb-2 ml-3 pt-3 pb-2">
-                    <div id="product-container">
-                        <a href="{{ route('show.product', $product->product_name) }}" style="text-decoration:none;">
-                            <div class="row">
-                                <div class="col-9 col-sm-9 col-md-9 col-lg-9 feactured-imagen" style="float: left;">
+    
+        <div class="row col-sm-9 col-md-9 text-center ml-4">
+                @foreach($products as $product)
+                    <div class="wow animated zoomIn m-2" id="product-sub-container" style="width: 235px !important;">
+                        <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand->brand_name}}</span></div>
+                        <div class="row">
+                            <div class="text-center hoverable" style="width:100%;">
+                                <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
                                     @if ($product->photos->count() == 0)
-                                        <img src="/images/no-image-found.jpg" alt="No Image Found Tag" id="Product-similar-Image" width="90%" height="90%">
+                                            <img src="/images/no-image-found.jpg" class="img-fluid" alt="No Image Found Tag" width="90%">
                                     @else
                                         @if ($product->featuredPhoto)
-                                            <img  src="{{$product->featuredPhoto->thumbnail_path}}" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="90%" height="90%"/><br>
-                                            <br><span class=" text-center label label-red" style="margin-left: 4em; color: red">- ${{$product->reduced_price}} <i class="fa fa-tag" style="color: black" aria-hidden="true"></i></span> 
-                                            
+                                            <img src="{{$product->photos()->first()->path}}" class="img-fluid" alt="Photo ID: {{ $product->featuredPhoto->id }}" width="90%"/>
                                         @elseif(!$product->featuredPhoto)
-                                            <img  src="{{$product->photos->first()->thumbnail_path}}" alt="Photo" width="90%" height="90%"/>
+                                            <img src="{{$product->photos()->first()->path}}" class="img-fluid" alt="Photo" width="90%"/>
                                         @else
                                             N/A
                                         @endif
                                     @endif
-                                </div>
-                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 pl-1" style="float: left;">
-                                    <button class="btn btn-default btn-rounded waves-effect waves-light btn-addcart" value="{{$product->id}}">
-                                        <i class="material-icons" style="line-height: 2">add_shopping_cart</i><!--<i class="fa fa-plus" aria-hidden="true"></i>Agregar al carrito-->
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            @php
+                                $acorName = substr($product->product_name, 0, 25);
+                                $acorDesc = substr($product->description, 0, 25);
+                            @endphp
+                            <a class="link-products" href="{{ route('show.product', $product->product_name) }}" style="text-decoration: none;">
+                                <h5 class="center-on-small-only">{{ $acorName }}</h5>
+                                <p style="font-size: .9em;">{!! nl2br(str_limit($product->description, $limit = 200, $end = '...')) !!}</p>
+                            </a>
+                        </div>
+                        <div class="text-center">
+                            @if($product->reduced_price == 0)
+                                <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->price, 2) }}
+                                <br>
+                            @else
+                                <div class="text-danger list-price"><s style="color: red">$ {{ number_format($product->price, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>
+                                <div class="blue-text light-300 medium-500" id="Product_Reduced-Price">$ {{ number_format(($product->price-$product->reduced_price), 2) }}</div>
+                            @endif
+                                <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
+                                <input type="hidden" id="qty" value="1"/>
+                                <input type="hidden" id="url" value="/cart/add">  
+                        </div>
+                        <div class="text-center" style="width:100%;">
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-sm btn-addcart"  data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                                @if(Auth::check())
+                                    <button  class="btn btn-warning btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
                                     </button>
-                                </div>
+                                @endif
                             </div>
-                            <div id="featured-product-name-container prod-featured" style="margin-top: 3em;">
-                                @php
-                                    $acorName = substr($product->product_name, 0, 25);
-                                @endphp
-                                <h6 class="center-on-small-only" id="featured-product-name"><br>{{ $acorName }}</h6>
-                            </div>
-                            <div>
-                                <h6 class="center-on-small-only" id="featured-product-name">Código: {{ $product->product_sku }}</h6>
-                            </div>
-                            <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{  $product->price }}</div>
-                        </a>
+                        </div>
                     </div>
-                    <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
-                    <input type="hidden" id="qty" value="1"/>
-                    <input type="hidden" id="url" value="{{ route('addCart') }}">
-                </div>
-            @endforeach
-        @endif
+                @endforeach
+        </div>
     </div>
-    <div class="row justify-content-center mt-3 pl-5">
-        {{ $products->links() }}
-    </div>
+    <div class="row justify-content-center" style="width: 100%;">
+        {{ $products->appends(Request::input())->links() }}
+    </div>            
 </div>
 
 <script>
     $(function () {
-        /*$(".dropdown-menu a").click(function () {
-            var text_selected = $(this).text();
-            $("#order").text(text_selected);
-        });
-        $(".order").text($orden);*/
+        $('.activo').on('click', function(e) {
+            $(e.target).closest('span').remove();
+            var marca =  document.getElementsByClassName("brand");
+            var categoria =  document.getElementsByClassName("cat");
+            var priceAll =  document.getElementsByClassName("priceAll");
+            var priceMax =  document.getElementsByClassName("priceMax");
+            var priceMin =  document.getElementsByClassName("priceMin");
+            var brand = new Array();
+            var categories = new Array();
+            var price;
+            var desde = null;
+            var hasta = null;
+            var fil = 0;
+
+            for(i = 0; i < marca.length; i++) {
+                brand[i] = marca[i].innerText;
+            }
+            for(i = 0; i < categoria.length; i++) {
+                categories[i] = categoria[i].innerText;
+            }
+            if (priceAll.length > 0) {
+                for(i = 0; i < priceAll.length; i++) {
+                    price = priceAll[i].innerText;
+                }
+                for(i = 0; i < price.length; i++) {
+                    if (price[i+1] == 'a') {
+                        desde = price.substring(1, i);
+                        if (price[i+3] == '$') {
+                            hasta = price.substring(i+4);
+                        }
+                    }
+                }
+            } 
+            if (priceMax) {
+                for(i = 0; i < priceMax.length; i++) {
+                    price = priceMax[i].innerText;
+                    hasta = price.substring(7);
+                }
+            } 
+            if (priceMin) {
+                for(i = 0; i < priceMin.length; i++) {
+                    price = priceMin[i].innerText;
+                    desde = price.substring(7);
+                }
+            }
+            // console.log(brand);
+            // console.log(categories);
+            // console.log(hasta);
+            // console.log(desde);
+            get('/shop/{{$banner->id}}/filter', {brand:brand, categories:categories, hasta:hasta, desde:desde, fil:fil, id:{{$banner->id}}});
+        })
     });
+    
+    function get(path, params, method) {
+        method = method || "get"; // Set method to post by default if not specified.
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 

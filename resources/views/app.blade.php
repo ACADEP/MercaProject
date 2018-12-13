@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+       
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="A medium sized e-commerce shopping cart made by David Trushkov. Made using Laravel 5.2" />
         <meta name="keywords" content="shopping, ecommerce, store, electronics, electronics store, david, david trushkov, github, laravel, laravel 5, laravel 5.2" />
@@ -14,7 +14,7 @@
 
         <title>{{ config('app.name') }}</title>
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
         <!-- Bootstrap core CSS -->
         <!-- <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"> -->
         <!-- Material Design Bootstrap -->
@@ -25,46 +25,71 @@
 
         <!-- <link rel="stylesheet" href="{{ asset('/css/mdb.css') }}"> -->
 
+        <!-- Payments css -->
+        <link rel="stylesheet" href="{{ asset('/css/payments.css') }}">
        
         <!-- Include sweet alert file -->
         <!-- <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}"> -->
         <!-- Include typeahead file -->
         <!-- <link rel="stylesheet" href="{{ asset('/css/typeahead.css') }}"> -->
         <!-- Include lity ligh-tbox file -->
-        <link rel="stylesheet" href="{{ asset('/css/lity.css') }}">
-        
+        <!-- <link rel="stylesheet" href="{{ asset('/css/lity.css') }}"> -->
+      
+       @yield('css-openpay')
+
         <!-- Added the main.css file that combines app.scss and app.css togather -->
         
+
+
+
+
         <!-- Scripts -->
         <script src="{{ asset('/js/app.js') }}" ></script>
         
         <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
+        <link href="{{ asset('/css/filters.css') }}" rel="stylesheet">
+
+        <link rel="stylesheet" type="text/css" href="/css/payments.css" data-rel-css="" />
+        
+        <script src="{{ asset('/js/bootstrap-notify.min.js')}}"></script>
         <!-- <link rel="stylesheet" href="{{ asset('/less/app.less') }}">
 
         <link rel="stylesheet" href="{{ asset('/sass/app.scss') }}"> -->
         
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/pay.css') }}" >
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax-client.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/ajax-products.js') }}"></script>
+        @yield("ajax-shipment")
+        @yield('zoom-images')
         <script>
             function borrarCache()
             {
                 Cookies.remove("productos");
             }
-        </script>
-       
-        
-       
-        
+        </script>   
+
+        <!-- Openpay -->
+        <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+        <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                   OpenPay.setId('mk5lculzgzebbpxpam6x');
+                   OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+                   OpenPay.setSandboxMode(true);
+           });
+       </script>
+
         <!-- Material Design Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <!-- Font Awesome -->
-        <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" > -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
      
         <script>
             // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -77,13 +102,46 @@
 
     </head>
 <body>
-    
             
     @include('partials.nav')
             
    
     <div class="container">
+    
+    @if(Session::has('progress'))
+    @php Session::forget('progress'); @endphp
+    @endif
+    @if(Session::has('pay-oxxo'))
+    <script>
+
+        var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+        window.open('/show-pdf-pay', '_blank');
+    </script>
+    @endif
+    @if(Session::has('pay-bank'))
+        <script>
+            var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+            window.open('/show-pdf-pay', '_blank');
+        </script>    
+    @endif
+    @if(Session::has('pay-store'))
+        <script>
+            var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+            window.open('/show-pdf-pay', '_blank');
+        </script>       
+    @endif
+    @if(Session::has('recibe'))
+    <script> 
+            var notify = $.notify('<div>Recibo para pagar generado favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+            window.open('/show-pdf-pay', '_blank');
+        </script>
+    @endif
+    @if(Session::has('pay-success'))
        
+        <script> 
+            var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
+        </script>
+    @endif
         @yield('content')
           
     </div>
@@ -91,16 +149,15 @@
             
      @include('pages.partials.footer')
 
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
+    
     <!-- Include sweet-alert.js file -->
     <!-- <script type="text/javascript" src="{{ asset('/js/libs/sweetalert.js') }}"></script> -->
     <!-- Include typeahead.js file -->
     <!-- <script type="application/javascript" src="{{ asset('/js/libs/typeahead.js') }}"></script> -->
     <!-- Include lity light-box js file -->
     <!-- <script type="application/javascript" src="{{ asset('/js/libs/lity.js') }}"></script> -->
-    <!-- Stripe.js file -->
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+ 
     
    
    
@@ -176,11 +233,6 @@
     transition: 1s ease;
 }
 
-#form-add-cart{
-
-
-  
-}
 
         
 </style>
@@ -190,13 +242,20 @@
            
    
             $(function () {
-            // 
+            
             var datos = new Bloodhound({
+                
               datumTokenizer: Bloodhound.tokenizers.whitespace,
               queryTokenizer: Bloodhound.tokenizers.whitespace,
-              prefetch: '{{ url("/data") }}'
-            });            
-
+            
+             prefetch: {
+                url: '/getData',
+                ttl:0,
+                cache: false,
+            }
+             
+            }); 
+            
             // inicializar typeahead sobre nuestro input de búsqueda
             $('#search').typeahead({
                 hint: true,
@@ -206,19 +265,27 @@
                 name: 'datos',
                 source: datos
             });
-
-             
+            
         });
     </script>
    
-    <script>
-        new WOW().init();
-        
-    </script>
+    @yield('modal-debit')
+   
+   
     @yield('styles')
     @yield('js')
+    @yield('css-pay')
+    @yield('js-pay')
+    @yield('show-modal')
+    @yield('modal-transfer')
+    @yield('modal-store')
+    @yield('modal-oxxo')
+    @yield('scripts-progress')
     @include('partials.flash')
     @include('partials.special_search')
+    @include('customer.partials.add-address')
+    @yield('modal-paypal')
+
 
 </body>
 </html>

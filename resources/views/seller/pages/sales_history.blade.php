@@ -1,41 +1,56 @@
 @extends('seller.dash')
 
 @section('content')
+
+<nav aria-label="breadcrumb" style="padding-top: 5px;">
+    <ol class="breadcrumb breadcrumb-right-arrow">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('/seller/admin') }}">Perfil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Historial de Ventas</li>
+    </ol>
+</nav>          
+
 <section class="content-header">
         <h1>
-            Mi historial de ventas<br>
-            <small>Lista ventas</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-            <li class="active">Here</li>
-        </ol>
-    </section><br>
+            Mi historial de ventas
+        </h1>   
+</section><br>
+
+ @include('seller.partials.order-histories')
+    
     <table class="text-center table">
     <thead>
             <tr>
-                <th>Producto</th>
+                <th>Imagen</th>
                 <th>Nombre del producto</th>
                 <th>Precio unt</th>
                 <th>Cliente</th>
                 <th>Fecha de la venta</th>
                 <th>Cantidad</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>#</td>
-                <td>dsd</td>
-                <td>$6</td>
-                <td>yO</td>
-                <td>12/12/12</td>
-                <td>1</td>
-                
-            
-            </tr>
+        @if($seleHistories->count()>0)
+            @foreach($seleHistories as $history)
+                <tr>
+                    <td ><img  src="{{ $history->product->photos->first()->path }}"  height="30px"></td>
+                    <td>{{ $history->product->product_name }}</td>
+                    <td>${{number_format($history->product->price, 2)}}</td>
+                    <td>{{ $history->client }}</td>
+                    <td>{{$history->date}}</td>
+                    <td>{{ $history->amount }}</td>
+                    <td>${{number_format($history->total, 2)  }}</td>
+                </tr>
+            @endforeach
+        @else
         
+        @endif
         </tbody>
     
     </table>
+    <div class="text-center">
+        {{ $seleHistories->links() }}
+    </div>
     
 @stop

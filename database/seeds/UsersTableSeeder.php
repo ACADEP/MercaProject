@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UsersTableSeeder extends Seeder
 {
@@ -11,60 +14,109 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('users')->insert([
-          'username'    => 'hydrogen11',
-          'email'       => 'david4good@hotmail.com',
-          'password'    => Hash::make('12345678'),
-          'verified'    => 1,
-          'admin'       => 1,
-      ]);
+    
+     
+      $user=new User;
+      $user->username="Admin";
+      $user->email="admin@hotmail.com";
+      $user->password=Hash::make('123123');
+      $user->verified=1;
+      $user->admin=1;
+      $user->save();
 
-      DB::table('users')->insert([
-          'username'    => 'test',
-          'email'       => 'test@hotmail.com',
-          'password'    => Hash::make('test'),
-          'verified'    => 1,
-          'admin'       => 1,
-      ]);
+      //Asignar todos los permisos al administrador
+      $role=Role::find(1);
+      $permissions=Permission::pluck('name');
+      $role->givePermissionTo($permissions);
+      $user->assignRole("Admin");
 
-      DB::table('users')->insert([
-          'username'    => 'John',
-          'email'       => 'john@hotmail.com',
-          'password'    => Hash::make('d1erere66'),
-          'verified'    => 1,
-          'admin'       => 0,
-      ]);
 
-      DB::table('users')->insert([
-          'username'    => 'samula4544',
-          'email'       => 'sam@hotmail.com',
-          'password'    => Hash::make('d16331ere3'),
-          'verified'    => 1,
-          'admin'       => 0,
-      ]);
+      $user=new User;
+      $user->username="John";
+      $user->email="john@hotmail.com";
+      $user->password=Hash::make('d1erere66');
+      $user->verified=1;
+      $user->admin=0;
+      $user->save();
 
-      DB::table('users')->insert([
-          'username'    => 'jonces',
-          'email'       => 'jonces94@outlook.com',
-          'password'    => Hash::make('jonatan9402'),
-          'verified'    => 1,
-          'admin'       => 0,
-      ]);
+      $user->assignRole("Client");
 
-      DB::table('users')->insert([
-          'username'    => 'Jonatan',
-          'email'       => 'jonces94@hotmail.com',
-          'password'    => Hash::make('jonatan9402'),
-          'verified'    => 1,
-          'admin'       => 1,
-      ]);
+      
+      $user=new User;
+      $user->username="samula4544";
+      $user->email="sam@hotmail.com";
+      $user->password=Hash::make('d16331ere3');
+      $user->verified=1;
+      $user->admin=0;
+      $user->save();
 
-      DB::table('users')->insert([
-        'username'    => 'Bernardo',
-        'email'       => 'luis_ber_27@hotmail.com',
-        'password'    => Hash::make('123123'),
-        'verified'    => 1,
-        'admin'       => 2,
-    ]);
+      $user->assignRole("Client");
+
+     
+      $user=new User;
+      $user->username="jonces";
+      $user->email="jonces94@outlook.com";
+      $user->password=Hash::make('jonatan9402');
+      $user->verified=1;
+      $user->admin=0;
+      $user->save();
+
+      $user->assignRole("Client");
+      
+
+    
+      $user=new User;
+      $user->username="Jonatan";
+      $user->email="jonces94@hotmail.com";
+      $user->password=Hash::make('jonatan9402');
+      $user->verified=1;
+      $user->admin=1;
+      $user->save();
+
+      $user->assignRole("Seller");
+
+
+    $user=new User;
+    $user->username="Bernardo";
+    $user->email="luis_ber_27@hotmail.com";
+    $user->password= Hash::make('123123');
+    $user->verified=1;
+    $user->admin=1;
+    $user->save();
+
+    $user->assignRole("Seller");
+
+   
+
+    $user=new User;
+    $user->username="Jon";
+    $user->email="jonatan1994@yahoo.com";
+    $user->password=  Hash::make('jonatan9402');
+    $user->verified=1;
+    $user->admin=1;
+    $user->save();
+
+    $user->assignRole("Seller");
+
+
+    $user=new User;
+    $user->username="Luis_Bernardo";
+    $user->email="13310577@itlp.edu.mx";
+    $user->password=  Hash::make('456456');
+    $user->verified=1;
+    $user->admin=0;
+    $user->save();
+
+    $user->assignRole("Client");
+
+    $users=User::all();
+    foreach($users as $user)
+    {
+        $user->company_id=1;
+        $user->save();
+    }
+    
+    
+
     }
 }

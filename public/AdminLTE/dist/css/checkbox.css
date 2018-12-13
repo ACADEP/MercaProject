@@ -1,0 +1,94 @@
+.multiselect {
+  width: 100px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/* .check {
+  display: none;
+  border: 1px #dadada solid;
+  
+  
+} */
+
+#checkboxes li label {
+  display: block;
+  background-color: blue;
+}
+
+.check li:hover
+{
+  background-color:white;
+}
+.check li
+{
+  font-size: 14px;
+  color:rgb(0, 0, 0);
+  /* color:rgb(169, 169, 169); */
+}
+.check li input[type=checkbox] { 
+  cursor: pointer;
+  display: inline-block;
+	width: 15px;
+	height: 15px;
+	margin: -1px 6px 0 0;
+  vertical-align: middle;
+  background-size: cover;
+  
+  
+}
+.scrollable-menu {
+  height: auto;
+  max-height: 150px;
+  overflow-x: hidden;
+
+  
+}
+.checkbox input[type="checkbox"] {
+  opacity: 0;
+}
+
+.checkbox label {
+  position: relative;
+  display: inline-block;
+  
+  /*16px width of fake checkbox + 6px distance between fake checkbox and text*/
+  padding-left: 22px;
+}
+
+.checkbox label::before,
+.checkbox label::after {
+  position: absolute;
+  content: "";
+  
+  /*Needed for the line-height to take effect*/
+  display: inline-block;
+}
+
+/*Outer box of the fake checkbox*/
+.checkbox label::before{
+  height: 16px;
+  width: 16px;
+  
+  border: 1px solid;
+  left: 0px;
+  
+}
+
+
+  

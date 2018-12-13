@@ -151,7 +151,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -162,6 +163,11 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        Aftab\Sepomex\SepomexServiceProvider::class,
+        Dirape\Token\TokenServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        // Laravel\Cashier\CashierServiceProvider::class,
         //Snowfire\Beautymail\BeautymailServiceProvider::class,
 
     ],
@@ -213,7 +219,11 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        
+        'QRCode' => LaravelQRCode\Facades\QRCode::class, 
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,  
+        'QRCode' => LaravelQRCode\Facades\QRCode::class,  
+        'Sepomex' => Aftab\Sepomex\Facades\Sepomex::class, 
+        'Token'=>\Dirape\Token\Facades\Facade::class,
 
     ],
 

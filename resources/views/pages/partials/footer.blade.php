@@ -1,12 +1,12 @@
 
 <!-- Footer -->
-<div id="footer_div">
+<div id="footer_div" style=" bottom: 0;">
     <footer class="page-footer" if="footer" id="contact">
         <div style="color:white">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="/images/mercadata-footer.png" width="150px">
-                    <p class="white-text text-center"><a href="{{ url('/') }}">Mercadata</a></p>
+                    <img src="{{config('configurations.general.main_logo')}}" width="150px">
+                    <p class="white-text text-center"><a href="{{ url('/') }}">{{config('configurations.general.store_name')}}</a></p>
                 </div>
                 
                 <div class="col-md-4 text-center">
@@ -25,7 +25,7 @@
 
                             <li>
                             <i class="fa fa-whatsapp"></i>
-                                Whatsapp: <a href="#" target="_blank">6121578112</a>
+                                Whatsapp: <a href="tel:6121225174" target="_blank">6121578112</a>
                             <li><br>
 
                             <li class="footer-sprite email">
@@ -38,11 +38,11 @@
 
                  <div class="col-md-4 text-center">
                     <p>Formas de pago</p>
-                    <img src="/images/waystopays/paypal.png">
-                    <img src="/images/waystopays/visa.png">
-                    <img src="/images/waystopays/oxxo.png">
-                    <img src="/images/waystopays/mastercard.png">
-                    <img src="/images/waystopays/dollar.png">
+                    <img src="/images/WaystoPays/Mastercard.png">
+                    <img src="/images/WaystoPays/Visa.png">
+                    <img src="/images/WaystoPays/PayPal.png">
+                    <img src="/images/WaystoPays/OXXO.png">
+                    <img src="/images/WaystoPays/Dollar.png">
                 </div>
                 
             </div>

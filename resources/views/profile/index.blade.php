@@ -47,7 +47,7 @@
                                                 <tbody>
                                                 @foreach($order->orderItems as $orderitem)
                                                     <tr>
-                                                        <td><a href="{{ route('show.product', $orderitem->product_name) }}">{{$orderitem->product_name}}</a></td>
+                                                        <td><a class="link-products" href="{{ route('show.product', $orderitem->product_name) }}">{{$orderitem->product_name}}</a></td>
                                                         <td>{{$orderitem->pivot->qty}}</td>
                                                         <td>
                                                             @if($orderitem->pivot->reduced_price == 0)

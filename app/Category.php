@@ -13,7 +13,11 @@ class Category extends Model {
 
   //protected $guarded = ['id'];
 
-
+  public function getRouteKeyName()
+  {
+      return 'category';
+  }
+  
     /**
      * One sub category, belongs to a Main Category ( Or Parent Category ).
      *
@@ -39,8 +43,8 @@ class Category extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function product() {
-        return $this->hasMany('App\Product', 'id');
+    public function products() {
+        return $this->hasMany('App\Product', 'cat_id');
     }
 
 
@@ -62,6 +66,63 @@ class Category extends Model {
                 $subcategory->delete();
             }
         });
+    }
+    public function totalSubcategories(){
+        return $this->children()->count();
+    }
+
+    public function insertNewCategory($categoryname, $subCategories)
+    {
+        $this->category=$categoryname;
+        $this->parent_id=0;
+        $this->save();
+        $idCatParent=$this;
+        if($subCategories!=null)
+        {
+            foreach($subCategories as $sub)
+            {
+                $newSub=new $this;
+                $newSub->category=$sub;
+                $newSub->parent_id=$idCatParent->id;
+                $newSub->save();
+            }
+        }
+       
+    }
+
+    public function updateCategory($categoryname, $subCategories)
+    {
+       
+        $this->category=$categoryname;
+        $this->save();
+        if($subCategories != null)
+        {
+            $i=0;
+            foreach($this->children()->get() as $sub)
+            {
+               
+                $sub->category= $subCategories[$i];
+                $i++;
+                $sub->update();
+                
+            }
+        }
+       
+        
+       
+    }
+    public function addSubcategories($subCategories)
+    {
+        if($subCategories!=null)
+        {
+            foreach($subCategories as $sub)
+            {
+                $newSub=new $this;
+                $newSub->category=$sub;
+                $newSub->parent_id=$this->id;
+                $newSub->save();
+            }
+        }
     }
 
 

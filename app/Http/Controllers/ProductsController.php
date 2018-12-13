@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Category;
+use App\ProductPhoto;
+use App\ShopSold;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ValidateProducts;
 use App\Http\Requests\ProductEditRequest;
 
 use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
 use App\Http\Traits\CartTrait;
+use File;
+use LaravelQRCode\Facades\QRCode;
 
 
 class ProductsController extends Controller {
@@ -21,217 +27,117 @@ class ProductsController extends Controller {
     use BrandAllTrait, CategoryTrait, SearchTrait, CartTrait;
 
 
-    /**
-     * Show all products
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showProducts() {
+    public function showProducts() 
+    {
+        $products=Product::where('company_id', Auth::user()->company_id)->paginate(config('configurations.paginate_general'));
+        return view('admin.products.products.index', compact('products'));
+    }
 
-        // Get all latest products, and paginate them by 10 products per page
-        $product = Product::latest('created_at')->paginate(10);
-
-        // Count all Products in Products Table
-        $productCount = Product::all()->count();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        return view('admin.product.show', compact('productCount', 'product', 'cart_count'));
+    public function showEdit(Product $product)
+    {
+        
+        return view('admin.products.products.edit',compact('product'));
     }
 
 
-    /**
-     * Return the view for add new product
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function addProduct() {
-        // From Traits/CategoryTrait.php
-        // ( This is to populate the parent category drop down in create product page )
-        $categories = $this->parentCategory();
-
-        // From Traits/BrandAll.php
-        // Get all the Brands
-        $brands = $this->brandsAll();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        return view('admin.product.add', compact('categories', 'brands', 'cart_count'));
-    }
-
-
-    /**
-     * Add a new product into the Database.
-     *
-     * @param ProductRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function addPostProduct(ProductRequest $request) {
-
-        // Check if checkbox is checked or not for featured product
-        $featured = Input::has('featured') ? true : false;
-
-        // Replace any "/" with a space.
-        $product_name =  str_replace("/", " " ,$request->input('product_name'));
-
-
-       // if (Auth::user()->id == 2) {
-            // If user is a test user (id = 2),display message saying you cant delete if your a test user
-        //    flash()->error('Error', 'Cannot create Product because you are signed in as a test user.');
-       // } else {
-            // Create the product in DB
-            $product = Product::create([
-                'product_name' => $product_name,
-                'product_qty' => $request->input('product_qty'),
-                'product_sku' => $request->input('product_sku'),
-                'price' => $request->input('price'),
-                'reduced_price' => $request->input('reduced_price'),
-                'cat_id' => $request->input('cat_id'),
-                'brand_id' => $request->input('brand_id'),
-                'featured' => $featured,
-                'description' => $request->input('description'),
-                'product_spec' => $request->input('product_spec'),
-            ]);
-
-            // Save the product into the Database.
-            $product->save();
-
-            // Flash a success message
-            flash()->success('Success', 'Product created successfully!');
-       // }
-
-
-        // Redirect back to Show all products page.
-        return redirect()->route('admin.product.show');
-    }
-
-
-    /**
-     * This method will fire off when a admin chooses a parent category.
-     * It will get the option and check all the children of that parent category,
-     * and then list them in the sub-category drop-down.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function categoryAPI() {
-        // Get the "option" value from the drop-down.
-        $input = Input::get('option');
-
-        // Find the category name associated with the "option" parameter.
-        $category = Category::find($input);
-
-        // Find all the children (sub-categories) from the parent category
-        // so we can display then in the sub-category drop-down list.
-        $subcategory = $category->children();
-
-        // Return a Response, and make a request to get the id and category (name)
-        return \Response::make($subcategory->get(['id', 'category']));
-    }
-
-
-    /**
-     * Return the view to edit & Update the Products
-     *
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function editProduct($id) {
-
-        // Find the product ID
-        $product = Product::where('id', '=', $id)->find($id);
-
-        // If no product exists with that particular ID, then redirect back to Show Products Page.
-        if (!$product) {
-            return redirect('admin/products');
+    public function addProduct(ValidateProducts $request) 
+    {
+        
+        $product=new Product;
+        $product->company_id=Auth::user()->company_id;
+        $product->product_name=$request->product_name;
+        $product->product_qty=$request->product_qty;
+        $product->product_sku=$request->product_sku;
+        $product->price=$request->product_price;
+        $product->reduced_price=$request->product_reduced;
+        $product->shop_id=0;
+        $product->cat_id=$request->categoria;
+        $product->brand_id=$request->marca;
+        $product->featured=0;
+        $product->description=$request->product_des;
+        $product->product_spec=$request->product_spec;
+        if($request->get("code_mode")!=null)
+        {
+            $product->product_manufacturer=$request->get("code_mode");
+        }
+        if($request->get("guaranty")!=null)
+        {
+            $product->guaranty=$request->get("guaranty");
+        }
+        if($request->get("date_prom")!=null)
+        {
+            $date = strtotime($request->get("date_prom"));
+            $product->date_prom=date('Y-m-d H:i:s', $date);
         }
 
-        // From Traits/CategoryTrait.php
-        // ( This is to populate the parent category drop down in create product page )
-        $categories = $this->parentCategory();
+        $product->weight=$request->weight;
+        $product->length=$request->length;
+        $product->height=$request->height;
+        $product->width=$request->width;
 
-        // From Traits/BrandAll.php
-        // Get all the Brands
-        $brands = $this->BrandsAll();
+        $product->save();
 
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        // Return view with products and categories
-        return view('admin.product.edit', compact('product', 'categories', 'brands', 'cart_count'));
+        return back()->with('product_added', "Producto agregado");
 
     }
 
-
-    /**
-     * Update a Product
-     *
-     * @param $id
-     * @param ProductEditRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateProduct($id, ProductEditRequest $request) {
-
-        // Check if checkbox is checked or not for featured product
-        $featured = Input::has('featured') ? true : false;
-
-        // Find the Products ID from URL in route
-        $product = Product::findOrFail($id);
-
-
-        if (Auth::user()->id == 2) {
-            // If user is a test user (id = 2),display message saying you cant delete if your a test user
-            flash()->error('Error', 'Cannot edit Product because you are signed in as a test user.');
-        } else {
-            // Update product
-            $product->update(array(
-                'product_name' => $request->input('product_name'),
-                'product_qty' => $request->input('product_qty'),
-                'product_sku' => $request->input('product_sku'),
-                'price' => $request->input('price'),
-                'reduced_price' => $request->input('reduced_price'),
-                'cat_id' => $request->input('cat_id'),
-                'brand_id' => $request->input('brand_id'),
-                'featured' => $featured,
-                'description' => $request->input('description'),
-                'product_spec' => $request->input('product_spec'),
-            ));
-
-
-            // Update the product with all the validation rules
-            $product->update($request->all());
-
-            // Flash a success message
-            flash()->success('Success', 'Product updated successfully!');
+    public function updateProduct(ValidateProducts $request)
+    {
+        $product=Product::find($request->product_id);
+        $product->company_id=Auth::user()->company_id;
+        $product->product_name=$request->product_name;
+        $product->product_qty=$request->product_qty;
+        $product->product_sku=$request->product_sku;
+        $product->price=$request->product_price;
+        $product->reduced_price=$request->product_reduced;
+        $product->shop_id=0;
+        $product->cat_id=$request->categoria;
+        $product->brand_id=$request->marca;
+        $product->featured=0;
+        $product->description=$request->product_des;
+        $product->product_spec=$request->product_spec;
+        if($request->get("code_mode")!=null)
+        {
+            $product->product_manufacturer=$request->get("code_mode");
+        }
+        if($request->get("guaranty")!=null)
+        {
+            $product->guaranty=$request->get("guaranty");
+        }
+        if($request->get("date_prom")!=null)
+        {
+            $date = strtotime($request->get("date_prom"));
+            $product->date_prom=date('Y-m-d H:i:s', $date);
         }
 
-        // Redirect back to Show all categories page.
-        return redirect()->route('admin.product.show');
+        $product->weight=$request->weight;
+        $product->length=$request->length;
+        $product->height=$request->height;
+        $product->width=$request->width;
+
+        $product->save();
+
+        return back()->with('msg-success', "Producto actualizado");
     }
 
 
-    /**
-     * Delete a Product
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function deleteProduct($id) {
 
-        if (Auth::user()->id == 2) {
-            // If user is a test user (id = 2),display message saying you cant delete if your a test user
-            flash()->error('Error', 'Cannot delete Product because you are signed in as a test user.');
-        } else {
-            // Find the product id and delete it from DB.
-            Product::findOrFail($id)->delete();
+    public function deleteProduct(Request $response) {
+
+        $product=Product::find($response->product_id);
+        $product->shopsold()->delete();
+        $product_name=$product->product_name;
+        foreach($product->photos()->get() as $photo)
+        {
+            File::delete(public_path($photo->path));
         }
-
-        // Then redirect back.
-        return redirect()->back();
+        $product->photos()->delete();
+        $product->delete();
+        return response("El producto ".$product_name." ha sido eliminada");
+      
+        
+      
+       
     }
 
 
@@ -281,15 +187,52 @@ class ProductsController extends Controller {
         // ( Count how many items in Cart for signed in user )
         $cart_count = $this->countProductsInCart();
 
+        //previous URL for breadcrumbs
+        // $URL = url()->previous();
+        // $URLoffers = substr($URL, 27, 7);
+        // $URLnewprod = substr($URL, 27, 13);
+        // $URLsearch = substr($URL, 27, 8);
+        // $previousURL = substr($URL, 27);
+        // dd($URLnewprod);
 
+        //Codigo QR
+        
+        //previous URL for breadcrumbs
+        $URL = $this->Breadcrumb();
+       
         $similar_product = Product::where('id', '!=', $product->id)
             ->where(function ($query) use ($product) {
                 $query->where('brand_id', '=', $product->brand_id)
                     ->orWhere('cat_id', '=', $product->cat_id);
             })->get();
 
-        return view('pages.show_product', compact('product', 'search', 'brands', 'categories', 'similar_product', 'cart_count'));
+        return view('pages.show_product', compact('product', 'URL', 'search', 'brands', 'categories', 'similar_product', 'cart_count'));
     }
+
+    public function Breadcrumb() {
+        //previous URL for breadcrumbs
+        $URL = url()->previous();
+        $URLoffers = substr($URL, 27, 7);
+        $URLnewprod = substr($URL, 27, 13);
+        $URLsearch = substr($URL, 27, 8);
+        $previousURL = substr($URL, 27);
+        $URLbrand = substr($URL, 27, 8);
+        $URLshop = substr($URL, 27, 7);
+        $URLprevious = [$URLoffers, $URLnewprod, $URLsearch, $previousURL, $URLbrand, $URLshop];
+
+        return $URLprevious;
+    }
+
+    public function qr_code()
+    {
+       
+        return QRCode::url(url()->previous())
+        ->setSize(5)
+        ->setMargin(2)
+        ->png();
+    }
+
+    
 
 
 }

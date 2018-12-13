@@ -7,12 +7,13 @@
             <div class="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
                 <div class="card" id="Login-Register-Panel">
                     <div class="card-body">
-                        <h4 class="text-center" id="log-in">Restablecer Contraseña</h4>
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
+                        @if(session('flash'))
+                            <div class="alert alert-primary">
+                                {{session('flash')}}
                             </div>
                         @endif
+
+                        <h4 class="text-center" id="log-in">Recuperar Contraseña</h4>
 
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
                             {!! csrf_field() !!}
@@ -30,7 +31,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 col-md-offset-2 text-center">
-                                    <button type="submit" class="btn btn-default btn-rounded waves-effect waves-light btn-block">Restablecer Contraseña</button>
+                                    <button type="submit" class="btn btn-primary btn-rounded waves-effect waves-light btn-block">Recuperar Contraseña</button>
                                 </div>
                             </div>
 
