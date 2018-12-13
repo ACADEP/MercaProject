@@ -60,10 +60,10 @@ class PagesController extends Controller {
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, SUM(customer_histories.amount) as ventas"))
-            ->where('sales.status_pago', 'Acreditado')
-            ->where("sales.date",">",$endDate)
-            ->groupBy("products.id")->orderBy("ventas", "desc");
+        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
+        ->where('sales.status_pago', 'Acreditado')->where("sales.date",">",$endDate)
+        ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")
+        ->orderBy("ventas", "desc");        
         $selledProducts = Product::wherein('id', $query->pluck('id'))->OrderBy('company_id','ASC')->take(12)->get();
 
         $rand_brands = Brand::orderByRaw('RAND()')->take(8)->get();
@@ -304,12 +304,12 @@ class PagesController extends Controller {
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, SUM(customer_histories.amount) as ventas"))
+        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
             // ->where('sales.status_pago', 'Pago por acreditar')
             ->where('sales.status_pago', 'Acreditado')
             ->where("sales.date",">",$endDate)
-            ->groupBy("products.id")->orderBy("ventas", "desc");
-        $selledProducts = $query->OrderBy('company_id','ASC')->paginate(12);
+            ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")->orderBy("ventas", "desc");
+        $selledProducts = $query->OrderBy('products.company_id','ASC')->paginate(12);
         // $selledProducts = Product::wherein('id', $query->get())->OrderBy('company_id','ASC')->paginate(12);
 
         //previous URL for breadcrumbs
@@ -862,7 +862,6 @@ class PagesController extends Controller {
         } else if ($request->clear == 'clear') {
             $products = Product::where('featured', '=', 1)->paginate(12);
         }
-        // dd($maxfilter);
 
         return view('pages.partials.all-offersProducts', compact('products', 'marcas', 'categorias', 'ordenamiento', 'brandFilter', 'catFilter', 'minFilter', 'maxfilter', 'labels'));
     }
@@ -872,14 +871,11 @@ class PagesController extends Controller {
 
 
     public function filtrosSelled(Request $request) {
-        // dd($request);
-        // $products = "";
         $brandFilter = $request->brand;
         $catFilter = $request->categories;
         $minFilter = $request->desde;
         $maxfilter = $request->hasta;
         $labels = 1;
-        // dd($brandFilter);
 
         $date = Carbon::now();
         $endDate = $date->subMonth(3);
@@ -918,9 +914,7 @@ class PagesController extends Controller {
                     $c++;
                 }
             }
-            // dd($marc);
             $marca = Brand::wherein('brand_name', $marc)->get();
-            // dd($marca);
 
             $cc = $request->categories;
             $ca = null;
@@ -937,35 +931,26 @@ class PagesController extends Controller {
                     $a++;
                 }
             }
-            // dd($marc);
             $categoria = Category::wherein('category', $cat)->get();
-            // dd($categoria);
 
             $brandFilter = $marca;
             $catFilter = $categoria;
             $minFilter = $desde;
             $maxfilter = $hasta;
             $labels = 0;
-            // dd($maxfilter);
         }
 
         $ordenamiento = "Ordenar Por";
-        // $selledProducts = Product::OrderBy('price')->where('shop_id', '=', $request->id)->where('price', '>=', $request->desde)->Paginate(5);
 
         $query=Product::select("products.*")->join('customer_histories', 'products.id', '=', 'customer_histories.product_id')
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, SUM(customer_histories.amount) as ventas"))
+        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
             ->where('sales.status_pago', 'Acreditado')
             ->where("sales.date",">",$endDate)
-            ->groupBy("products.id")->orderBy("ventas", "desc");
-        
-            // dd($query->get());
-        // $products = Product::wherein('id', $query->get());
+            ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")->orderBy("ventas", "desc");
         $products = $query;
-        // dd($products);
-        // dd(get_class($products));
        
       
 
@@ -974,7 +959,6 @@ class PagesController extends Controller {
         {
             if ($request->fil == 1) {
                 $selledProducts = $products->where('price', '<=', $request->hasta)->OrderBy('company_id','ASC')->paginate(12);
-                // dd($selledProducts);
             } else {
                 $selledProducts = $products->where('price', '<=', $hasta)->OrderBy('company_id','ASC')->paginate(12);
             }        

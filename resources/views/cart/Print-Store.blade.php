@@ -31,7 +31,7 @@
     
         <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
         <div><strong>{{config('configurations.general.store_name')}}</strong></div>
-          <div>{{config('configurations.company.direction_1')}},<br /> 
+          <div>{{config('configurations.company.direction_1')}},<br/> 
                 {{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
                 {{config('configurations.company.country_code')}}</div>
           <div>Tel:  {{config('configurations.company.phone')}}</div>

@@ -194,7 +194,7 @@
 
                 <a id="mpay-4">
                     <div class="card border-primary mb-3 text-center col-md-2" id="card-pay4" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">Tiendas</div>
+                        <div class="card-header">Tiendas de conveniencia </div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="images/shipments/store.png" style="width:100%;">
