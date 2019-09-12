@@ -17,7 +17,7 @@ use App\Http\Traits\CartTrait;
 
 class QueryController extends Controller {
 
-    use BrandAllTrait, CategoryTrait, CartTrait;
+    
 
 
     /**
@@ -26,19 +26,7 @@ class QueryController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function search(Request $peticion) {    
-        // From Traits/CategoryTrait.php
-        // ( Show Categories in side-nav )
-        $categorie = $this->categoryAll();
-
-        // From Traits/BrandAll.php
-        // Get all the Brands
-        $brands = $this->brandsAll();
-
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
-
-        // Gets the query string from our form submission
+        
 
         $search=null;
         $resultados = null;
@@ -195,8 +183,6 @@ class QueryController extends Controller {
             $labels = 0;
         }
 
-//         $query=Product::select(\DB::raw('products.*, (price - reduced_price) as oferta'))->join('brands', 'brand_id', '=', 'brands.id')
-//         ->join('categories', 'cat_id', '=', 'categories.id'); 
         $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
         ->join('categories', 'cat_id', '=', 'categories.id'); 
 

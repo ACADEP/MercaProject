@@ -102,11 +102,11 @@
 
     </head>
 <body>
-            
+
     @include('partials.nav')
-            
+    <div class="container">         
    
-    <div class="container">
+    
     
     @if(Session::has('progress'))
     @php Session::forget('progress'); @endphp

@@ -18,6 +18,7 @@ use App\Http\Traits\BrandAllTrait;
 use App\Http\Traits\CategoryTrait;
 use App\Http\Traits\SearchTrait;
 use App\Http\Traits\CartTrait;
+use App\ApiRequest;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -33,8 +34,9 @@ class PagesController extends Controller {
      * @return $this
      */
     public function index() {
-       
-        
+        // $requestAPI=ApiRequest::ProductbyBrand("SYMANTEC / NORTON");
+        // dd($requestAPI);
+
         $categories = Category::pluck('category')->take(5);
         
         // From Traits/BrandAll.php
@@ -51,7 +53,7 @@ class PagesController extends Controller {
 
         // Select all products where featured = 1,
         // order by random rows, and only take 4 rows from table so we can display them on the homepage.
-        $products = Product::where('featured', '=', 1)->orderBy('company_id','ASC')->take(12)->get();
+        $products = Product::where('featured', '=', 1)->where("product_qty",">",0)->orderBy('reduced_price','asc')->take(12)->get();
 
         $date = Carbon::now();
         $endDate = $date->subMonth(3);
@@ -79,6 +81,8 @@ class PagesController extends Controller {
         // order by random rows, and only take 8 rows from table so we can display them on the New Product section in the homepage.
         $new = Product::where('featured', '=', 0)->OrderBy('company_id','ASC')->take(12)->get();
 
+
+        
         return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories', 'selledProducts'));
     }
 
@@ -304,14 +308,14 @@ class PagesController extends Controller {
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
+        $query=$query->select(\DB::raw("products.*, products.brand_id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
             // ->where('sales.status_pago', 'Pago por acreditar')
             ->where('sales.status_pago', 'Acreditado')
             ->where("sales.date",">",$endDate)
-            ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")->orderBy("ventas", "desc");
-        $selledProducts = $query->OrderBy('products.company_id','ASC')->paginate(12);
-        // $selledProducts = Product::wherein('id', $query->get())->OrderBy('company_id','ASC')->paginate(12);
-
+            ->groupBy("products.id", 'products.brand_id' ,"products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")->with("brand")->orderBy("ventas", "desc");
+        $selledProducts = $query->OrderBy('products.product_name','ASC')->paginate(12);
+        //$selledProducts = Product::wherein('id', $query->select("products.id"))->OrderBy('company_id','ASC')->paginate(12);
+        
         //previous URL for breadcrumbs
         $previousURL = url()->previous();
 
@@ -613,7 +617,7 @@ class PagesController extends Controller {
 
 
     public function filtrosOffer(Request $request) {
-        // dd($request);
+        
         // $products = "";
         $brandFilter = $request->brand;
         $catFilter = $request->categories;
@@ -871,6 +875,7 @@ class PagesController extends Controller {
 
 
     public function filtrosSelled(Request $request) {
+       
         $brandFilter = $request->brand;
         $catFilter = $request->categories;
         $minFilter = $request->desde;
@@ -946,12 +951,12 @@ class PagesController extends Controller {
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
+        $query=$query->select(\DB::raw("products.*,SUM(customer_histories.amount) as ventas"))
             ->where('sales.status_pago', 'Acreditado')
             ->where("sales.date",">",$endDate)
-            ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")->orderBy("ventas", "desc");
+            ->groupBy("products.*")->orderBy("ventas", "desc");
         $products = $query;
-       
+       dd($products);
       
 
         // Filtro por Precio Maximo
@@ -1131,4 +1136,37 @@ class PagesController extends Controller {
     }
 
 
+}
+
+function removeNamespaceFromXML( $xml )
+{
+    // Because I know all of the the namespaces that will possibly appear in 
+    // in the XML string I can just hard code them and check for 
+    // them to remove them
+    $toRemove = ['rap', 'turss', 'crim', 'cred', 'j', 'rap-code', 'evic'];
+    // This is part of a regex I will use to remove the namespace declaration from string
+    $nameSpaceDefRegEx = '(\S+)=["\']?((?:.(?!["\']?\s+(?:\S+)=|[>"\']))+.)["\']?';
+
+    // Cycle through each namespace and remove it from the XML string
+   foreach( $toRemove as $remove ) {
+        // First remove the namespace from the opening of the tag
+        $xml = str_replace('<' . $remove . ':', '<', $xml);
+        // Now remove the namespace from the closing of the tag
+        $xml = str_replace('</' . $remove . ':', '</', $xml);
+        // This XML uses the name space with CommentText, so remove that too
+        $xml = str_replace($remove . ':commentText', 'commentText', $xml);
+        // Complete the pattern for RegEx to remove this namespace declaration
+        $pattern = "/xmlns:{$remove}{$nameSpaceDefRegEx}/";
+        // Remove the actual namespace declaration using the Pattern
+        $xml = preg_replace($pattern, '', $xml, 1);
+    }
+
+    // Return sanitized and cleaned up XML with no namespaces
+    return $xml;
+}
+
+function namespacedXMLToArray($xml)
+{
+    // One function to both clean the XML string and return an array
+    return json_decode(json_encode(simplexml_load_string(removeNamespaceFromXML($xml))), true);
 }

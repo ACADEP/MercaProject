@@ -78,7 +78,10 @@
                     <!-- Paqueterias disponibles -->
                     @if($rates!=null)
                         @if($rates->count() > 0)
-                            @foreach($rates as $rate)
+                        @foreach($rates as $rate)
+                        @if (count((array)$rate)>1)
+                                    
+                               
                                 @php $date = date_create($rate->estimated_delivery); @endphp
                                 <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
                                 <div class='card-body'>
@@ -112,6 +115,7 @@
                                         $("#date_aprox").html("{{date_format($date, 'd-m-Y')}}");
                                     });
                                 </script>
+                            @endif
                             @endforeach
                             <script>
                                 function reset_paq_css()
@@ -447,6 +451,20 @@ $(document).ready(function () {
 
   $('div.setup-panel-2 div a.btn-amber').trigger('click');
 });
+
+@if(Session::has('error'))
+
+    $.notify({
+        // options
+        message: '<strong>{{ Session("error") }}</strong>' 
+    },{
+        // settings
+        type: 'danger',
+        delay:3000
+    });
+  
+@endif
+
 
        
 </script>

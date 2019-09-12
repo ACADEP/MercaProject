@@ -58,7 +58,7 @@
                        
                        <td style="width:100px;"><img style="width:100%;" src="{{ $cart->product->photos()->first()->path}}" alt=""></td>
                         <td> <a href="{{ route('show.product', $cart->product->product_name) }}">{{ $cart->product->product_name  }}</a></td>
-                    
+                        
                         <td>${{ number_format(($cart->product_price), 2)  }}</td>
                         <td>
                             <select class="form-control selectCtd" id="{{ $cart->id }}">

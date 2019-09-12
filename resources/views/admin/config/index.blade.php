@@ -92,6 +92,13 @@
                                 <label for="paginate">Paginación de elementos:</label>
                                 <input type="text" id="paginate" name="paginate" style="width:30%;" autocomplete="off" class="form-control"  value="{{config('configurations.paginate_general')}}">
                                </div>
+
+                                <div class="col-md-12"><h3>Porcentaje de ganancía</h3></div>
+
+                                <div class="col-md-12">
+                                <label for="pct">Porcentaje:</label>
+                                <input type="numeric" id="pct" name="pct" style="width:30%;" autocomplete="off" class="form-control"  value="{{config('configurations.general.pct')}}">
+                               </div>
                              
                               
                                

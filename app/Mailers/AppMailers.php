@@ -23,7 +23,7 @@ class AppMailers {
     /**
      * Who is the email from.
      */
-    protected $from = 'confirmacion@mercageek.com';
+    protected $from = 'sistemas@acadep.com';
 
     /**
      * Who is this going to.

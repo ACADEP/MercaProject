@@ -295,8 +295,8 @@ $(document).ready(function(){
                             $("#productmarket_content").empty();
                         }
                         $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
-                        "<div class='col-md-3'>"+response.detail.description+"</div>"+
-                        "<div class='col-md-3'>"+response.detail.subtotal+"</div>"+
+                        "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
+                        "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
                         "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'>Borrar</button> </div></div>");
                     }
                     else
@@ -476,7 +476,7 @@ $("#btn-send-market").click(function(){
             },
 
             error: function(response){
-                console.log(response);
+                
                 alert("Intente de nuevo");
             }
     
@@ -559,6 +559,8 @@ $("#btn-send-market").click(function(){
     });
     function mostrarElementos()
     {
+       
+        
         // Cookies.remove("products");
         // Cookies.remove("market_id");
         $("#productmarket_content").empty();
@@ -570,13 +572,17 @@ $("#btn-send-market").click(function(){
         {
             var productosArray=jQuery.parseJSON(Cookies.get("products"));
             var cont=productosArray.length;
+            
+            
             if(cont>0){
                 var maxElements=parseInt(productosArray.length);
                 for(var i=0;i<maxElements;i++)
                 {
+                
+                     
                     $("#productmarket_content").append("<div class='col-md-12' id='product"+productosArray[i].id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+productosArray[i].thumbnail+"' style='width:100%;'></div>"+
-                    "<div class='col-md-3'>"+productosArray[i].description+"</div>"+
-                    "<div class='col-md-3'>"+productosArray[i].subtotal+"</div>"+
+                    "<div class='col-md-3'>"+ String(productosArray[i].description).substring(0, 30)+"</div>"+
+                    "<div class='col-md-3'> $"+parseFloat(productosArray[i].subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
                     "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+i+"' value='"+productosArray[i].id+"'>Borrar</button> </div></div>");
                 }
             }

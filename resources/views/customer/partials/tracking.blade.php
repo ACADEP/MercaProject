@@ -7,19 +7,19 @@
     <div class="text-left border" style="font-size: 25px;">
         Paquetería: <span class="label label-primary">{{ $carrie }}</span> 
         @php
-        if($carrie=="dhl")
+        if(strtolower($carrie)=="dhl")
         {
                 $url_carrie="http://www.dhl.com.mx/es/express/rastreo.html";
         }
-        else if($carrie=="fedex")
+        else if(strtolower($carrie)=="fedex")
         {
                 $url_carrie="https://www.fedex.com/apps/fedextrack/?action=track&cntry_code=mx";
         }
-        else if($carrie=="ups")
+        else if(strtolower($carrie)=="ups")
         {
                 $url_carrie="https://www.ups.com/track?loc=es_MX&requester=WT/";
         }
-        else if($carrie=="redpack")
+        else if(strtolower($carrie)=="redpack")
         {
             $url_carrie="http://www.redpack.com.mx/";
         }

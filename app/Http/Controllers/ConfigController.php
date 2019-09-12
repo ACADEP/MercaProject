@@ -40,6 +40,7 @@ class ConfigController extends Controller
         //Configuración general
         $array['paginate_general']=$request->paginate;
         $array['general']['store_name']=$request->store_name;
+        $array['general']['pct']=$request->pct;
 
         $array['company']['name']=$request->company_name;
         $array['company']['country_code']=$request->country;
@@ -47,6 +48,7 @@ class ConfigController extends Controller
         $array['company']['direction_1']=$request->street_1;
         $array['company']['city']=$request->city;
         $array['company']['phone']=$request->phone;
+        
 
         if($request->file('main_logo')!=null)
         {

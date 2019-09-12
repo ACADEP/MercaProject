@@ -169,10 +169,11 @@ class CustomerController extends Controller
             $sale=Sale::find($request->get('sale'));
             if($sale->shipment_tracking != null)
             {
+
                 $enviaYa= new EnviaYa;
                 $carrie = $sale->shipment_method;
                 $track=json_encode($enviaYa->getTracking($carrie,$sale->shipment_tracking));
-            
+           
                 return view('customer.partials.tracking', compact('track', 'carrie'));
             }
             else

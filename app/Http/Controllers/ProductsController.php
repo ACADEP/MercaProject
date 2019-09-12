@@ -168,7 +168,7 @@ class ProductsController extends Controller {
      */
     public function show($product_name) {
 
-        
+          
         // Find the product by the product name in URL
         $product = Product::ProductLocatedAt($product_name);
 

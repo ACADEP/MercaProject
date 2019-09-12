@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
 
+    protected $appends =['real_price'];
     
 
     protected $fillable = [
@@ -109,6 +110,21 @@ class Product extends Model {
      */
     public static function ProductLocatedAt($product_name) {
         return static::where(compact('product_name'))->firstOrFail();
+    }
+
+    public function getRealPriceAttribute()
+    {
+        $real=0;
+        if($this->reduced_price > 0)
+        {
+            $real=$this->reduced_price;
+        }
+        else
+        {
+            $real=$this->price;
+        }
+
+        return floatval($real);
     }
 
 

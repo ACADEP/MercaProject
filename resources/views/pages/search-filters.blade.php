@@ -1,14 +1,4 @@
-<style>
-    /* .ajuste {
-    }
-    .alineado {
-    }
-    .ordenado {
-    }
-    .filters {
-        padding-left: 3px;
-    } */
-</style>
+
 <div class="alineado ordenado col-sm-2 col-md-2 col-lg-2">
     <form action="/queries/order" method="get">
         <div class="dropdown">
@@ -25,6 +15,7 @@
         <input type="hidden" name="search_find" value="{{ $search_find }}">
     </form>
 </div>
+
 <div class="filters col-sm-10 col-md-10 col-lg-10">
     <form class="form-inline" action="{{route('queries.filter')}}" method="GET">
         <div class="form-row align-items-center">
@@ -45,7 +36,7 @@
                     Categorias   
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2">
+                <ul class="dropdown-menu check filter-color" aria-labelledby="dropdownMenu2" > 
                     @foreach ($categorias as $categoria)
                         <li><label for="{{'cat'.$categoria->id}}"><input class="text-left" type="checkbox" name="categories[]" value="{{$categoria->id}}, {{$categoria->category}}" id="{{'cat'.$categoria->id}}" /><strong class="ml-1">{{$categoria->category}}</strong></label></li>
                     @endforeach

@@ -56,7 +56,7 @@
             <tr>
                 <td class="service">{{$item->qty}}</td>
                 <td class="desc">{{$item->product_sku}}</td>
-                <td class="unit">{{$item->description}}</td>
+                <td class="unit">{{ substr($item->description,0,30) }}</td>
                 <td class="qty">${{number_format($item->price, 2)}}</td>
                 <td class="total">${{number_format(($item->subtotal), 2)}}</td>
             </tr>

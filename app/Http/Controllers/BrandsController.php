@@ -114,24 +114,29 @@ class BrandsController extends Controller {
             'brand_name'=>'required',
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-        if($request->file('logo')!=null)
-        {
-            $request->validate([
-                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ]);
-            $file=$request->file('logo')->store('/Brands');
-        }
+        
         
 
         $brand=Brand::find($request->brand);
         $brand->brand_name=$request->brand_name;
         $brand->banner="img-".$request->brand_name;
+        
         if($request->file('logo')!=null)
         {
-            File::delete(public_path($brand->path));
-            $brand->path="/images/".$file;
-            $brand->thumbnail_path="/images/".$file;
+            $request->validate([
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+
+            if($brand->path!=null)
+            {
+                File::delete(public_path($brand->path));
+                $file=$request->file('logo')->store('/images/Brands');
+                $brand->path="/".$file;
+                $brand->thumbnail_path="/".$file;
+            }
+           
         }
+        
         $brand->save();
 
         return back()->withFlash("Marca actualizada");

@@ -57,7 +57,7 @@
                     <td class="col-md-2"><img src="{{$product->photos()->first()->path}}" style="width:50%;"></td>
                     <td>{{$product->product_sku}}</td>
                     <td>{{$product->product_name}}</td>
-                    <td>{{$product->price-$product->reduced_price}}</td>
+                    <td>${{ number_format($product->real_price,2)}}</td>
                     <td>
                         <select class="form-control" id="qty_product{{$product->id}}">
                             @for($i=1;$i<$product->product_qty;$i++)
@@ -82,6 +82,7 @@
         </tbody>
     
     </table>
+    {{ $search->appends(request()->except('page'))->links() }}
         @endif
     </div>
 </div><!--  fin del col-md-8 -->
@@ -91,8 +92,8 @@
 
 @foreach($marketrate->MarketRatesDetails()->get() as $detail)
 <div class='col-md-12' style='margin-bottom:25px;' id="rowProduct{{$detail->id}}"><div class='col-md-3'><img src="{{$detail->thumbnail}}" style='width:100%;'></div>
-<div class='col-md-3'>{{$detail->description}}</div>
-<div class='col-md-3'>{{$detail->subtotal}}</div>
+<div class='col-md-3'>{{ substr($detail->description, 0, 30) }}..</div>
+<div class='col-md-3'>${{ number_format($detail->subtotal,2)}}</div>
 <div class='col-md-3'>
     <button  class='btn btn-danger btn-xs btn-row-product' value="{{$detail->id}}">Borrar</button></form> 
 </div></div>

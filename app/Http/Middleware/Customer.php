@@ -17,7 +17,7 @@ class Customer
     public function handle($request, Closure $next)
     {
         if(Auth::check()) {
-            if(Auth::user()->admin==0)
+            if(Auth::user()->hasRole('Client'))
             {
                 return $next($request);
             }

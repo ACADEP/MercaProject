@@ -64,7 +64,7 @@
             @else
                 @foreach($items as $item)
                 <tr>
-                    @php $total_price=$item->price-$item->reduced_price; @endphp
+                    @php $total_price=$item->real_price @endphp
                     <td>{{$item->product_name}}</td>
                     <td>${{number_format($total_price, 2)}}</td>
                     <td>{{$item->qty}}</td>

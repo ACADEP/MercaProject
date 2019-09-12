@@ -48,7 +48,7 @@ class MarketRatesController extends Controller
             $query = $query->orWhere("category", 'LIKE', "%$search_find%");
             $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
             $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-            $search = $query->get();
+            $search = $query->orderBy("products.product_name")->paginate(10);
            
             
         }
@@ -73,7 +73,7 @@ class MarketRatesController extends Controller
             $query = $query->orWhere("category", 'LIKE', "%$search_find%");
             $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
             $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-            $search = $query->get();
+            $search = $query->paginate(10);
            
             
         }
@@ -153,7 +153,7 @@ class MarketRatesController extends Controller
         if($request->market_id==null || $request->market_id=='undefined')   //Nueva cotización
         {
             $market_rate=new MarketRates;
-            $market_rate->total=($product->price-$product->reduced_price)+$market_rate->total;
+            $market_rate->total=($product->real_price)+$market_rate->total;
             $market_rate->save();
             
             $market_rate_detail=new MarketRatesDetail;
@@ -163,8 +163,8 @@ class MarketRatesController extends Controller
             $market_rate_detail->qty=$request->product_qty;
             $market_rate_detail->product_sku=$product->product_sku;
             $market_rate_detail->description=$product->description;
-            $market_rate_detail->price=$product->price-$product->reduced_price;
-            $market_rate_detail->subtotal=($product->price-$product->reduced_price)*$request->product_qty;
+            $market_rate_detail->price=$product->real_price;
+            $market_rate_detail->subtotal=($product->real_price)*$request->product_qty;
             $market_rate_detail->save();
         }
         else    //Agregar productos a la cotización ya creada
@@ -174,7 +174,7 @@ class MarketRatesController extends Controller
            
             if($market_rate->productRepeat($product->id)==false)
             {
-                $market_rate->total=($product->price-$product->reduced_price)+$market_rate->total;
+                $market_rate->total=($product->real_price)+$market_rate->total;
                 $market_rate->save();
 
                 $market_rate_detail=new MarketRatesDetail;
@@ -184,8 +184,8 @@ class MarketRatesController extends Controller
                 $market_rate_detail->qty=$request->product_qty;
                 $market_rate_detail->product_sku=$product->product_sku;
                 $market_rate_detail->description=$product->description;
-                $market_rate_detail->price=$product->price-$product->reduced_price;
-                $market_rate_detail->subtotal=($product->price-$product->reduced_price)*$request->product_qty;
+                $market_rate_detail->price=$product->real_price;
+                $market_rate_detail->subtotal=($product->real_price)*$request->product_qty;
                 $market_rate_detail->save();
             }
             
@@ -203,7 +203,7 @@ class MarketRatesController extends Controller
             if(!$market_rate->productRepeat($product->id))
             {
               
-                $market_rate->total=($product->price-$product->reduced_price)+$market_rate->total;
+                $market_rate->total=($product->real_price)+$market_rate->total;
                 $market_rate->save();
 
                 $market_rate_detail=new MarketRatesDetail;
@@ -213,8 +213,8 @@ class MarketRatesController extends Controller
                 $market_rate_detail->qty=$request->qty;
                 $market_rate_detail->product_sku=$product->product_sku;
                 $market_rate_detail->description=$product->description;
-                $market_rate_detail->price=$product->price-$product->reduced_price;
-                $market_rate_detail->subtotal=($product->price-$product->reduced_price)*$request->qty;
+                $market_rate_detail->price=$product->real_price;
+                $market_rate_detail->subtotal=($product->real_price)*$request->qty;
                 $market_rate_detail->save();
                 
                 return back();

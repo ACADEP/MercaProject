@@ -163,7 +163,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        // LaravelQRCode\Providers\QRCodeServiceProvider::class,
         Aftab\Sepomex\SepomexServiceProvider::class,
         Dirape\Token\TokenServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,

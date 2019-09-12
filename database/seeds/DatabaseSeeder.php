@@ -17,19 +17,19 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
-        $this->call(BrandTableSeed::class);
-        $this->call(CategoryTableSeeder::class);
-        $this->call(ShopsTableSeeder::class);
-        $this->call(ProductsTableSeeder::class);
-        $this->call(ProductImageTableSeeder::class);
-        $this->call(ShopSalesTableSeeder::class);
-        $this->call(CustomerTableSeeder::class);
-        $this->call(PaymentInformationTableSeeder::class);
-        $this->call(AddressTableSeeder::class);
-        $this->call(SeleHistoriesTableSeeder::class);
-        $this->call(ShipmentTableSeeder::class);
-        $this->call(SalesTableSeeder::class);
-        $this->call(CustomerHistoriesTableSeeder::class);
+        // $this->call(BrandTableSeed::class);
+        // $this->call(CategoryTableSeeder::class);
+        // $this->call(ShopsTableSeeder::class);
+        // $this->call(ProductsTableSeeder::class);
+        // $this->call(ProductImageTableSeeder::class);
+        // $this->call(ShopSalesTableSeeder::class);
+        // $this->call(CustomerTableSeeder::class);
+        // $this->call(PaymentInformationTableSeeder::class);
+        // $this->call(AddressTableSeeder::class);
+        // $this->call(SeleHistoriesTableSeeder::class);
+        // $this->call(ShipmentTableSeeder::class);
+        // $this->call(SalesTableSeeder::class);
+        // $this->call(CustomerHistoriesTableSeeder::class);
 
         \Illuminate\Database\Eloquent\Model::reguard();
     }

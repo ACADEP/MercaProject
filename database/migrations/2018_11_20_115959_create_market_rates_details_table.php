@@ -20,7 +20,7 @@ class CreateMarketRatesDetailsTable extends Migration
             $table->string('thumbnail');
             $table->integer('qty')->unsigned();
             $table->string('product_sku');
-            $table->string('description');
+            $table->longtext('description');
             $table->decimal('price', 10, 2)->unsigned();
             $table->decimal('subtotal', 10, 2)->unsigned();
             $table->timestamps();

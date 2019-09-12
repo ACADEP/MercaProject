@@ -704,10 +704,10 @@ class OrderByController extends ProductsController {
         ->join('sales', 'customer_histories.sale_id', '=', 'sales.id')
         ->join('brands', 'products.brand_id', '=', 'brands.id');
 
-        $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
+        $query=$query->select(\DB::raw("products.*, SUM(customer_histories.amount) as ventas"))
             ->where('sales.status_pago', 'Acreditado')
             ->where("sales.date",">",$endDate)
-            ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id");
+            ->groupBy("products.id");
 
         if ($request->Menor == 1) {
             $selledProducts = $query->OrderByRaw('(price - reduced_price) ASC')->paginate(12);

@@ -2,7 +2,7 @@
   
   <nav class="navbar navbar-light navbar-expand-lg bg-light sticky-top" id="navbar-header">
     
-    
+    <div class="form-inline text-center" id="nav-bar" >
     <a class="navbar-brand" href="{{ url('/') }}" id="nav-bar-logo"><img src="{{config('configurations.general.main_logo')}}" style="float: left; width: 240px; height:80px;"></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
                         <li class="nav-item">
                             <div id="form-sesion">
                                 @if(Auth::check())
-                                    <div class="form-inline">
+                                    <div class="pull-left">
                                         @role('Client')
                                         <a class="header-color" href="{{ url('/customer/profile') }}">Mi Perfil</a>&nbsp | &nbsp
                                         @else
@@ -109,6 +109,7 @@
             </ul>
 
               </div>
+              </div>
     </nav>
     
 
@@ -138,7 +139,21 @@
             white-space: nowrap;
         }
 
-       
+   
+        @media (min-width: 1601px) {
+            #nav-bar {
+                margin-left:15%; 
+                margin-right:15%;
+            }
+        }
+
+        @media (max-width: 1600px) {
+            #nav-bar {
+                margin-left:5%; 
+                margin-right:5%;
+            }
+        }
+
        
   </style>
  

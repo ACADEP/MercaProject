@@ -35,7 +35,7 @@
                                                         Marcas
                                                         <span class="caret"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu1">
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu1" style="overflow-y: scroll !important; height:200px;">
                                                         @foreach ($marcas as $marca)
                                                             <li><label for="{{'bra'.$marca->id}}"><input class="text-left" type="checkbox" name="brand[]" value="{{$marca->id}}, {{$marca->brand_name}}" id="{{'bra'.$marca->id}}" /><strong class="ml-1">{{$marca->brand_name}}</strong></label></li>
                                                         @endforeach                                    
@@ -48,7 +48,7 @@
                                                         Categorias  
                                                         <span class="caret"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu2">
+                                                    <ul class="dropdown-menu check filter-color text-left pl-2" aria-labelledby="dropdownMenu2" style="overflow-y: scroll !important; height:200px;">
                                                         @foreach ($categorias as $categoria)
                                                             <li><label for="{{'cat'.$categoria->id}}"><input class="text-left" type="checkbox" name="categories[]" value="{{$categoria->id}}, {{$categoria->category}}" id="{{'cat'.$categoria->id}}" /><strong class="ml-1">{{$categoria->category}}</strong></label></li>
                                                         @endforeach                                    

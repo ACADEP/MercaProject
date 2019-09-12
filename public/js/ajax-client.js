@@ -112,7 +112,7 @@ $(document).ready(function(){
                     var total=0;
                     
                     response.cartItems.forEach(element => {
-                        var num = '$' +(element.product.price-element.product.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                        var num = '$' + parseFloat(element.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                         $("#client-container").append('<div class="col-md-3"> <img  style="width:100%;" src="'+element.product.photos[0].path+'"></div>'+
                         '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+element.product.product_name+'</span> <br>'+
                         '<span class="badge badge-success">'+num+'</span> </div>'+

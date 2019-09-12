@@ -69,6 +69,8 @@ class CartController extends Controller {
         {
             $cpUser="";
         }
+
+        // dd(count((array)$rates[3]));
        
         return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer','cpUser','rates'));
     }
@@ -89,6 +91,7 @@ class CartController extends Controller {
         // Identificar si es visitante o usuario registrado
         $user=0;
         $itemCount=0;
+      
         if(Auth::check())
         { 
             $user=1;
@@ -98,7 +101,13 @@ class CartController extends Controller {
             }
             else
             {
-                $product_total=$product_id->price-$product_id->reduced_price;
+                if ($product_id->reduced_price==0) {
+                    $product_total=$product_id->price;
+                } else {
+                    $product_total=$product_id->reduced_price;
+                }
+                
+               
                 $cart=new Cart;
                 $cart->user_id=Auth::user()->id;
                 $cart->status="Active";
@@ -220,7 +229,8 @@ class CartController extends Controller {
 
     
     
-    public function paypal(Request $request) {
+    public function paypal(Request $request) 
+    {
         return view('cart.cart-confirmation');
     }
     public function progressConfirmation()
@@ -590,7 +600,7 @@ class CartController extends Controller {
 
     //pago con targeta de crédito o débito
     public function CardOpenpay(Request $request) {
-        
+        // dd($request);
         Session::put('progress', "Generando el cargo");
         Session::save(); 
         try {
@@ -609,7 +619,7 @@ class CartController extends Controller {
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
-                'amount' => $request->get("ship_rate_total"),
+                'amount' => number_format($request->get("ship_rate_total"),2),
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
@@ -620,8 +630,8 @@ class CartController extends Controller {
 
             $charge = $openpay->charges->create($chargeData);
            if($charge->status=='completed')
-           {$val=$request->ship_rate;
-            
+           {
+               $val=$request->ship_rate;
                 return redirect()->action(
                     'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id'),
                                                     'ship_rate'=>$request->get('ship_rate'), 'date_ship'=>$request->get('date_ship'),
@@ -629,14 +639,20 @@ class CartController extends Controller {
                 );
            }
         } catch (OpenpayApiTransactionError $e) {
-            error_log('ERROR on the transaction: ' . $e->getMessage() . 
-                ' [error code: ' . $e->getErrorCode() . 
-                ', error category: ' . $e->getCategory() . 
-                ', HTTP code: '. $e->getHttpCode() . 
-                ', request ID: ' . $e->getRequestId() . ']', 0);
-            // if ($e->getErrorCode() == 3001) {
-            //     echo($e->getMessage());
-            // }
+            
+            $msg="Error en la transacción, intente de nuevo";
+            switch ($e->getErrorCode()) {
+                case 3001:
+                   $msg="La tarjeta fue declinada";
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+            return back()->with("error", $msg);
+                
         
         } catch (OpenpayApiRequestError $e) {
             error_log('ERROR on the request: ' . $e->getMessage(), 0);
@@ -712,29 +728,7 @@ class CartController extends Controller {
         }        
     }
 
-    public function pruevasRecibos($charge) {
-        $ship_rate = 200;
-        $ship_rate_total;
-        $date_ship = '12/12/18';
-        $cartItems=Auth::user()->cart->with("product")->get();
-        $ship_rate_total = $ship_rate + Auth::user()->total;
-        $Items = $cartItems;
-        // dd($charge->payment_method->agreement);
-        $subtotal = $charge->amount;
 
-        $pdf = PDF::loadView('cart.Print-Bank',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
-        return $pdf->stream('Recibo-Banco.pdf');
-
-        // $pdf = PDF::loadView('cart.Print-Store',compact());
-        // return $pdf->stream('Recibo-Tiendas.pdf');
-
-
-        // $pdf = PDF::loadView('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
-        // $pdf = PDF::loadView('cart.Print-Receipt',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
-        // $pdf = PDF::loadView('cart.Cotizacion',compact('cartItems','ship_rate','ship_rate_total','date_ship', 'Items', 'subtotal'));
-        // return $pdf->stream('Recibo-Oxxo.pdf');
-        // return view('cart.Print-Oxxo',compact('cartItems','ship_rate','ship_rate_total','date_ship'));
-    }
 
     //Pagos por Oxxo
     public function PagosOxxo(Request $request, AppMailers $mailer) {

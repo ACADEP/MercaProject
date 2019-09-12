@@ -27,6 +27,7 @@
     'carrusel_2' => '/images/slider/iPhone_1.jpg',
     'carrusel_3' => '/images/aYwPmHOgQp7a2yj6Mscmn0BjuceScXUe7jHPumLe.jpeg',
     'store_name' => 'Mercadata',
+    'pct' => '25',
   ),
   'mk' => 
   array (

@@ -69,24 +69,29 @@
                     <td class="col-md-2"><img src="{{$product->photos()->first()->path}}" style="width:50%;"></td>
                     <td>{{$product->product_sku}}</td>
                     <td>{{$product->product_name}}</td>
-                    <td>{{$product->price-$product->reduced_price}}</td>
+                    <td>${{number_format($product->real_price,2)}}</td>
                     <td>
                         <select class="form-control" id="qty_product{{$product->id}}">
-                            @for($i=1;$i<$product->product_qty;$i++)
-                            <option value="{{$i}}">{{$i}}</option>
+                            @for($i=1;$i<=$product->product_qty;$i++)
+                                <option value="{{$i}}">{{$i}}</option>
                             @endfor
                         </select>
                     </td>
-                    <td>  
-                        <button class="btn btn-primary btn-sm btn-add-market"  data-toggle="tooltip" title="Agregar" value="{{$product->id}}">
-                            <i class="fa fa-plus"></i>
-                        </button>
+                    <td> 
+                        @if ($product->product_qty > 0)
+                            <button class="btn btn-primary btn-sm btn-add-market"  data-toggle="tooltip" title="Agregar" value="{{$product->id}}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        @else
+                            <span class="label label-danger">Agotado</span>
+                        @endif 
                     </td>
                 </tr>
             @endforeach
         </tbody>
     
     </table>
+    {{ $search->appends(request()->except('page'))->links() }}
         @endif
     </div>
 </div><!--  fin del col-md-8 -->
@@ -94,9 +99,9 @@
 <div class="col-md-4">
 <h4>Productos</h4>
 <input type="hidden" name="marketRate" class="marketRate" value="">
-<div  id="productmarket_content">
+    <div  id="productmarket_content">
 
-</div>
+    </div>
 </div><!--  fin del col-md-4 -->
    
 @stop

@@ -1,10 +1,11 @@
+
 <li class="nav-item dropdown" >
                             
     <a class="nav-link hidden-md-down"  role="button" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="material-icons"> shopping_cart</i><span class="badge" id="badge-cart">{{ Auth::check() ? Auth::user()->cart->count() : '0' }}</span>
     </a>
     
-    <ul class="dropdown-menu" style="width:220px;" aria-labelledby="navbarDropdown">
+    <ul class="dropdown-menu" style="width:100%;" aria-labelledby="navbarDropdown">
     
         <li style="width:100%;">
        
@@ -19,7 +20,7 @@
                     @if($tItems<=4)
                    
                         <div class="col-md-3"> <img  style="width:100%;" src="{{ $cartItem->product->photos()->first()->path }}"></div>
-                        <div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">{{ $cartItem->product->product_name }}</span> <br><span class="badge badge-success">${{number_format($cartItem->product->price-$cartItem->product->reduced_price, 2)}}</span> </div>
+                        <div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">{{ $cartItem->product->product_name }}</span> <br><span class="badge badge-success">${{number_format($cartItem->product->real_price, 2)}}</span> </div>
                         <div class="col-md-12 "><hr></div>
           
                     @endif

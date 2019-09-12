@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Address;
+use App\Sepomex;
 use App\Http\Requests\ValidacionAddress;
 use Aftab\Sepomex\Contracts\SepomexContract;
 
@@ -32,7 +33,7 @@ class AddressController extends Controller
     }
 
     public function addAddress(ValidacionAddress $request) {
-        if (\Sepomex::getByPostal($request->postalcode)) {
+        if (Sepomex::where("d_codigo",$request->postalcode)->count()) {
             $address = new Address;
             $address->usuario = Auth::user()->id;
             $address->calle = $request->mainstreet;
@@ -49,8 +50,10 @@ class AddressController extends Controller
                 $address->activo = 1;
             } 
             $address->save();
+           
             return redirect()->back()->with("msg","Dirección actualizada!!");
         } else {
+            
             return back()->with('flash','Código postal no valido.');
         }    
 

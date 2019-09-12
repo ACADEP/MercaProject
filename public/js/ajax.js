@@ -18,7 +18,7 @@ $(document).ready(function(){
             if($(this).attr('id') == 'selectQty'+i+'')
             {
                 var qty=parseInt($( '#selectQty'+i+'').val());
-                var pPriceTotal=(productosJson[i].price-productosJson[i].reduced_price)*qty;
+                var pPriceTotal=parseFloat(productosJson[i].real_price)*qty;
                 var num = '$' + pPriceTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                 $("#subtotal"+i+"").html(num);
                 productosJson[i].qty=qty;
@@ -43,7 +43,7 @@ $(document).ready(function(){
     $('#tbody').on('click', '.click-delete', function(e){
         e.preventDefault();
         var productosJson=jQuery.parseJSON(Cookies.get("productos"));
-        console.log(this.id);
+       
         productosJson.splice(this.id, 1);
         
         Cookies.set("productos",productosJson,1);
@@ -94,7 +94,7 @@ $(document).ready(function(){
                             if(response.itemcount<=5 && response.itemcount>0)
                             {
                                 
-                                var num = '$' +(response.item.price-response.item.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                 $('#client-container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
                                 '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
                                 '<span class="badge badge-success">'+num+'</span> </div>'+
@@ -169,7 +169,7 @@ $(document).ready(function(){
                                 }
                                 if(productosCart.length<=5)
                                 {
-                                    var num = '$' +(response.item.price-response.item.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                    var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                                     $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
                                     '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
                                     '<span class="badge badge-success">'+num+'</span> </div>'+
@@ -238,7 +238,7 @@ $(document).ready(function(){
                     var producto=productosArray[i];
                     if(i<=4)
                     {
-                        var num = '$' +(producto.price-producto.reduced_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                        var num = '$' + parseFloat(producto.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                         $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+producto.img+'"></div>'+
                         '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+producto.product_name+'</span> <br>'+
                         '<span class="badge badge-success">'+num+'</span> </div>'+
@@ -251,7 +251,7 @@ $(document).ready(function(){
                     
                     
                     //Mostrar los productos en la vista detalles de carrito
-                    var pPriceTotal=(producto.price-producto.reduced_price);
+                    var pPriceTotal=parseFloat(producto.real_price);
                     var num = '$' + pPriceTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                   
                     $('#tbody').append("<tr>");
@@ -321,7 +321,7 @@ $(document).ready(function(){
             var i=0;
             for(i;i<productosJSON.length;i++)
             {
-                var pPriceTotal=(productosJSON[i].price-productosJSON[i].reduced_price)*productosJSON[i].qty;
+                var pPriceTotal=(productosJSON[i].real_price)*productosJSON[i].qty;
                 
                 total+=parseInt(pPriceTotal);
             }

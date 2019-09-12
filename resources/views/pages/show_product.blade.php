@@ -35,14 +35,14 @@
             
             <div class="col-md-4">
                 <h5 id="Product_Name">{{ $product->product_name }}</h5>
-                <p id="Product_Brand">Marca: {{ $product->brand->brand_name }}</p>
+                <p id="Product_Brand">Marca: {{ $product->brand ? $product->brand->brand_name : 'Sin Marca' }}</p>
                 <br>
                 @if($product->reduced_price == 0)
                     <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{number_format($product->price, 2)  }}</div>
                     <br>
                 @else
                     <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s style="color: red;">$ {{number_format($product->price, 2)  }}<i class="fa fa-tag ml-1" aria-hidden="true"></i></s></div>
-                    <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->price-$product->reduced_price), 2) }}</div>
+                    <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->reduced_price), 2) }}</div>
                 @endif
                
                 @if ($product->product_qty == 0)
