@@ -5,11 +5,11 @@
 <nav aria-label="breadcrumb" class="pt-3">
     <ol class="breadcrumb breadcrumb-right-arrow">
         <li class="breadcrumb-item"><a href="{{ url('/') }}">Inicio</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Busqueda</li>
+        <li class="breadcrumb-item active" aria-current="page">Búsqueda</li>
     </ol>
 </nav>  
 
-<div class="pt-3 pb-3">
+{{-- <div class="pt-3 pb-3">
     @if ($labels == 1)          
         @if ($brandFilter)
             @foreach ($brandFilter as $brand)
@@ -57,29 +57,29 @@
             @endif
         @endif
     @endif
-</div>
+</div> --}}
      
 <h4><br>
-    @if (count($search) != 0 || $search != null)
+    @if ( $search != null)
         <i>{{ $resultados }} resultados para <i class="search_find">{{ $search_find }}</i></i>
     @else
-        <i class="search_find">No se resultados para {{ $search_find }}</i>
+        <i class="search_find">No hay resultados para {{ $search_find }}</i>
     @endif
 
 </h4><br>
 
 <div class="row">
-    @if (count($search) != 0 || $search != null)
+    @if ($search != null)
         <div class="row col-sm-3 col-md-3">
-            @include('pages.filter')
+            @include('pages.filter',["route"=>route('queries.filter')])
         </div>    
         <div class="row col-sm-9 col-md-9 text-center ml-4">
-                @include('pages.utils.product-card', ["data"=>$search])
+            @include('pages.utils.product-card', ["data"=>$search])
         </div>
     @endif
 </div>
 
-@if (count($search) != 0 || $search!=null)
+@if ( $search!=null)
     <div class="row justify-content-center mt-3 pl-5">
         {{ $search->appends(Request::input())->links() }}        
     </div>    

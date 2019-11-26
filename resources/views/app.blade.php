@@ -91,14 +91,7 @@
         <!-- Font Awesome -->
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
      
-        <script>
-            // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            //             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            //         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            // })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-            // ga('create', 'UA-76800406-1', 'auto');
-            // ga('send', 'pageview');
-        </script>
+       
 
     </head>
 <body>
@@ -281,11 +274,14 @@
     @yield('modal-store')
     @yield('modal-oxxo')
     @yield('scripts-progress')
-    @include('partials.flash')
     @include('partials.special_search')
     @include('customer.partials.add-address')
     @yield('modal-paypal')
 
+    <script>
+        var brands=[{{ App\Brand::pluck('id') }}];
+    </script>
+    {{-- <script src="/js/cva-products.js"></script> --}}
 
 </body>
 </html>

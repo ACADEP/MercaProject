@@ -1,5 +1,5 @@
 @foreach($data as $product)
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 wow animated zoomIn  m-2" id="product-sub-container" style="max-width: 23%;">
+        <div class="col-md-4 col-lg-3 col-xs-6 col-sm-6  wow animated zoomIn " id="product-sub-container">
         <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand!=null ? $product->brand->brand_name : 'SinMarca'}}</span> </div>
             <div class="row">
                 
@@ -33,11 +33,11 @@
             </div>
             <div class="text-center">
                 @if($product->reduced_price == 0)
-                    <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->price, 2) }}
+                    <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->real_price, 2) }}
                     <br>
                 @else
-                    <div class="text-danger list-price"><s style="color: red">$ {{ number_format($product->price, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>
-                    <div class="blue-text light-300 medium-500" id="Product_Reduced-Price">$ {{ number_format($product->reduced_price, 2) }}</div>
+                    <div class="text-danger list-price"><s style="color: red">$ {{ number_format($product->price*1.16, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>
+                    <div class="blue-text light-300 medium-500" id="Product_Reduced-Price">$ {{ number_format($product->real_price, 2) }}</div>
                 @endif
                     <input type="hidden" id="product_id{{$product->id}}" value="{{$product->id}}"/>
                     <input type="hidden" id="qty" value="1"/>

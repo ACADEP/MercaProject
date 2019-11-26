@@ -40,98 +40,99 @@ class UpdateProductsApi extends Seeder
             }
          }
         
-        $brands=Brand::select("*")->get();
-        foreach ($brands as $brand) 
-        {
-            $requestAPI=ApiRequest::ProductbyBrand($brand->brand_name);
-            var_dump($brand->brand_name);
-            foreach ($requestAPI as $value) 
-            {
-                $band=false;
+    //     $brands=Brand::select("*")->get();
+    //     foreach ($brands as $brand) 
+    //     {
+    //         $requestAPI=ApiRequest::ProductbyBrand($brand->brand_name);
+    //         var_dump($brand->brand_name);
+    //         foreach ($requestAPI as $value) 
+    //         {
+    //             $band=false;
                
-                if(count($value) > 0)
-                {
-                    $product=Product::where("product_sku", $value["clave"])->get();
+    //             if(count($value) > 0)
+    //             {
+    //                 $product=Product::where("product_sku", $value["clave"])->get();
 
-                    if($product->count() == 0)
-                    {
-                        $product=new Product();
-                        if($value['disponible'] > 0)
-                        {
-                            $band=true;
-                        }
-                    }
-                    else
-                    {
-                        $product=$product->first();
-                        $band=true;
-                    }
+    //                 if($product->count() == 0)
+    //                 {
+    //                     $product=new Product();
+    //                     if($value['disponible'] > 0)
+    //                     {
+    //                         $band=true;
+    //                     }
+    //                 }
+    //                 else
+    //                 {
+    //                     $product=$product->first();
+    //                     $band=true;
+    //                 }
 
-                    if($band)
-                    {
-                        $product->company_id=1;
+    //                 if($band)
+    //                 {
+    //                     $product->company_id=1;
     
-                        $product->product_qty=(int)$value['disponible'];
+    //                     $product->product_qty=(int)$value['disponible'];
                        
-                        $product->product_name=str_replace("/","-",$value['descripcion']);
-                        $product->product_sku=$value['clave'];
-                        $product->price=$value['precio'];
+    //                     $product->product_name=str_replace("/","-",$value['descripcion']);
+    //                     $product->product_sku=$value['clave'];
+    //                     $product->price=$value['precio'];
                        
-                        if($value['PrecioDescuento']=='Sin Descuento')
-                        {
-                            $product->reduced_price=0;
-                        }
-                        else
-                        {
-                            $product->reduced_price=$value['PrecioDescuento'];
-                            $product->featured=1;
-                        }
+    //                     if($value['PrecioDescuento']=='Sin Descuento')
+    //                     {
+    //                         $product->reduced_price=0;
+    //                         $product->featured=0;
+    //                     }
+    //                     else
+    //                     {
+    //                         $product->reduced_price=$value['PrecioDescuento'];
+    //                         $product->featured=1;
+    //                     }
                         
-                        if(!empty($value['marca']))
-                        {
-                            $brand=Brand::where("brand_name",$value['marca'])->first();
-                            $product->brand_id=$brand->id;
+    //                     if(!empty($value['marca']))
+    //                     {
+    //                         $brand=Brand::where("brand_name",$value['marca'])->first();
+    //                         $product->brand_id=$brand->id;
             
-                        }
+    //                     }
                     
-                        if(!empty($value['grupo'])){
-                            $category=Category::where("category",$value['grupo'])->first();
-                            $product->cat_id=$category->id;
-                        }
+    //                     if(!empty($value['grupo'])){
+    //                         $category=Category::where("category",$value['grupo'])->first();
+    //                         $product->cat_id=$category->id;
+    //                     }
                        
-                        $ficha="";
-                        if(!empty($value['ficha_comercial']))
-                        {
-                            $ficha=$value['ficha_comercial'];
-                        }
-                        $product->description=$ficha;
-                        $ficha="";
-                        if(!empty($value['ficha_tecnica']))
-                        {
-                            $ficha=$value['ficha_tecnica'];
-                        }
-                        $product->product_spec=$ficha;
-                        $product->save();
+    //                     $ficha="";
+    //                     if(!empty($value['ficha_comercial']))
+    //                     {
+    //                         $ficha=$value['ficha_comercial'];
+    //                     }
+    //                     $product->description=$ficha;
+    //                     $ficha="";
+    //                     if(!empty($value['ficha_tecnica']))
+    //                     {
+    //                         $ficha=$value['ficha_tecnica'];
+    //                     }
+    //                     $product->product_spec=$ficha;
+    //                     $product->save();
             
-                        if($product->count() == 0)
-                        {
-                            $productphoto=new ProductPhoto();
-                            $productphoto->product_id=$product->id;
-                            $foto="";
+    //                     if($product->count() == 0)
+    //                     {
+    //                         $productphoto=new ProductPhoto();
+    //                         $productphoto->product_id=$product->id;
+    //                         $foto="";
         
-                            if(!empty($value['imagen']))
-                            {
-                                $foto=$value['imagen'];
-                            }
+    //                         if(!empty($value['imagen']))
+    //                         {
+    //                             $foto=$value['imagen'];
+    //                         }
                             
-                            $productphoto->name=$value['descripcion'];
-                            $productphoto->path=$foto;
-                            $productphoto->thumbnail_path=$foto;
-                            $productphoto->save();
-                        }
-                    }
-                }
-            }
-        }
+    //                         $productphoto->name=$value['descripcion'];
+    //                         $productphoto->path=$foto;
+    //                         $productphoto->thumbnail_path=$foto;
+    //                         $productphoto->save();
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
     }
 }

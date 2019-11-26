@@ -12,61 +12,11 @@
 
 <h1 class="text-center">Productos en Oferta</h1>
 
-<div class="pt-3 pb-3">
-    @if ($labels == 1)          
-        @if ($brandFilter)
-            @foreach ($brandFilter as $brand)
-                <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{substr($brand, 3)}}<i class="fa fa-times activo"></i></span>  
-            @endforeach
-        @endif
-        @if ($catFilter)
-            @foreach ($catFilter as $cat)
-                <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{substr($cat, 3)}}<i class="fa fa-times activo"></i></span>  
-            @endforeach
-        @endif
-        @if ($maxfilter && $minFilter)
-            <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
-        @else
-            @if ($maxfilter)
-                <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
-            @else
-                @if ($minFilter)
-                    <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
-                @endif
-            @endif
-        @endif
-    @else
-        @if ($labels == 0)
-            @if ($brandFilter)
-                @foreach ($brandFilter as $brand)
-                    <span class="badge badge-primary badge-labeled brand badge-filter" style="font-size:15px;">{{$brand->brand_name}}<i class="fa fa-times activo"></i></span>  
-                @endforeach
-            @endif
-            @if ($catFilter)
-                @foreach ($catFilter as $cat)
-                    <span class="badge badge-primary badge-labeled cat badge-filter" style="font-size:15px;">{{$cat->category}}<i class="fa fa-times activo"></i></span>  
-                @endforeach
-            @endif
-            @if ($maxfilter && $minFilter)
-                <span class="badge badge-primary badge-labeled priceAll badge-filter" style="font-size:15px;">${{$minFilter}} a ${{$maxfilter}}<i class="fa fa-times activo"></i></span>
-            @else
-                @if ($maxfilter)
-                    <span class="badge badge-primary badge-labeled priceMax badge-filter" style="font-size:15px;">Hasta ${{$maxfilter}}<i class="fa fa-times activo"></i></span>  
-                @else
-                    @if ($minFilter)
-                        <span class="badge badge-primary badge-labeled priceMin badge-filter" style="font-size:15px;">Desde ${{$minFilter}}<i class="fa fa-times activo"></i></span>
-                    @endif
-                @endif
-            @endif
-        @endif
-    @endif    
-</div>
 
-<br>
 
 <div class="row">
     <div class="row col-sm-3 col-md-3 mb-4">
-        @include('pages.partials.filter-offer')
+            @include('pages.filter',["route"=>route('offer.filter')])
     </div>
 
     <div class="row col-sm-9 col-md-9 text-center ml-4">

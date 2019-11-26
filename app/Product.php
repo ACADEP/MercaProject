@@ -7,6 +7,7 @@ use App\Brand;
 use App\Category;
 use App\Shop;
 use App\ShopSold;
+use App\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
@@ -53,8 +54,16 @@ class Product extends Model {
         return $this->hasMany(ShipmentProduct::class,'id_product');
     }
 
+    public static function setQtybyBrand($brand_id) {
+        $products=Product::where("brand_id",$brand_id)->get();
+        foreach ($products as $product) 
+        {
+           $product->product_qty=0;
+           $product->featured=0;
+           $product->save();
+        }
+    }
 
-    // do same thing above for category() if you want to show what category a certain product is under in products page.
 
     /**
      * A Product Belongs To a Brand
@@ -124,8 +133,10 @@ class Product extends Model {
             $real=$this->price;
         }
 
-        return floatval($real);
+        return floatval($real)*1.16;
     }
+
+   
 
 
 }

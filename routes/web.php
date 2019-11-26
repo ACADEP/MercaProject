@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/update/products', 'testController@updateProduct');
+Route::get('/download/products', 'testController@downloadProducts');
+Route::get('/getBrands', 'testController@getBrands');
+
 //precio bajo
 Route::post('/priceLow', 'testController@order');
 Route::post('/webhook', 'CartController@notify');

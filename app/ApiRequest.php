@@ -30,9 +30,8 @@ class ApiRequest extends Model
 
     public static function ProductbyBrand($brand)
     {
-        $endpoint = "https://www.grupocva.com/catalogo_clientes_xml/lista_precios.xml?dt=1&dc=1&cliente=35152&marca=".strtolower($brand)."&MonedaPesos=1&promos=1&porcentaje=".config("configurations.genereal.pct");
+        $endpoint = "https://www.grupocva.com/catalogo_clientes_xml/lista_precios.xml?dt=1&dc=1&cliente=35152&marca=".strtolower($brand)."&MonedaPesos=1&promos=1&porcentaje=".config("configurations.general.pct");
         $client = new \GuzzleHttp\Client();
-
         
         $requestContent = [
             'headers' => [
