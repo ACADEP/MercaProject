@@ -16,6 +16,49 @@
         </h1>
         
 </section><br>
+
+<div class="row">
+    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+        <label for="">Buscar por nombre</label>
+        <input type="text" name="search" class="form-control" style="width:100%;" autocomplete="off">
+
+    </div>
+
+    <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+        <label for="">Precio max</label>
+        <input type="number" name="price_max" min="0" class="form-control" style="width:100%;">
+
+    </div>
+
+    <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+        <label for="">Precio min</label>
+        <input type="number" name="price_min" min="0" class="form-control" style="width:100%;">
+
+    </div>
+
+    <div class="col-md-5 col-lg-5 col-xs-5 col-sm-5">
+        <label for="">Categoría</label>
+        <select name="category" class="form-control" style="width:100%;">
+            <option value="">Elegir una categoría</option>
+        </select>
+
+    </div>
+
+    <div class="col-md-5 col-lg-5 col-xs-5 col-sm-5">
+        <label for="">Marca</label>
+        <select name="brand" class="form-control" style="width:100%;">
+            <option value="">Elegir una Marca</option>
+        </select>
+
+    </div>
+
+    <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2" style="margin-top:20px;">
+        <button type="submit" class="btn btn-success" style="width:100%;"><i class="fa fa-search"></i></button>
+    </div>
+
+</div> {{-- Fin Row --}}
+<br><br>
+
 @can("add_products")
 <div class="text-right">
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_product"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar producto</button>
