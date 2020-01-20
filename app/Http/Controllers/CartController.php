@@ -96,25 +96,17 @@ class CartController extends Controller {
         { 
             $user=1;
             if(Auth::user()->productIs($product_id->id))
-            {  
-                
-            }
+            { }
             else
             {
-                if ($product_id->reduced_price==0) {
-                    $product_total=$product_id->price;
-                } else {
-                    $product_total=$product_id->reduced_price;
-                }
                 
-               
                 $cart=new Cart;
                 $cart->user_id=Auth::user()->id;
                 $cart->status="Active";
                 $cart->product_id=$product_id->id;
-                $cart->product_price=$product_total;
+                $cart->product_price=$product_id->real_price;
                 $cart->qty=1;
-                $cart->total=$product_total;
+                $cart->total=$product_id->real_price;
                 $cart->save();
                 $itemCount=Auth::user()->carts->count();
                 $product_id->setAttribute('total', Auth::user()->total);

@@ -160,17 +160,13 @@ class ProductsController extends Controller {
     }
 
 
-    /**
-     * Show a Product in detail
-     *
-     * @param $product_name
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show($product_name) {
+    
+    
+    public function show($product_id) {
 
-          
-        // Find the product by the product name in URL
-        $product = Product::ProductLocatedAt($product_name);
+        
+        // Find the product by the product id in URL
+        $product = Product::findOrFail($product_id);
 
         // From Traits/SearchTrait.php
         // Enables capabilities search to be preformed on this view )

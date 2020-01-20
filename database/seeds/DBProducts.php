@@ -40,8 +40,9 @@ class DBProducts extends Seeder
         $brands=Brand::select("*")->get();
         foreach ($brands as $brand) 
         {
-            $requestAPI=ApiRequest::ProductbyBrand($brand->brand_name);
             var_dump($brand->brand_name);
+            $requestAPI=ApiRequest::ProductbyBrand($brand->brand_name);
+           
             foreach ($requestAPI as $value) {
                
                 if(count($value) > 0  && $value['disponible'] > 0)
@@ -75,7 +76,10 @@ class DBProducts extends Seeder
                 
                     if(!empty($value['grupo'])){
                         $category=Category::where("category",$value['grupo'])->first();
-                        $product->cat_id=$category->id;
+                        if($category)
+                        {
+                            $product->cat_id=$category->id;
+                        }
         
                     }
                    

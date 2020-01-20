@@ -256,7 +256,7 @@ $(document).ready(function(){
                   
                     $('#tbody').append("<tr>");
                     $('#tbody').append(" <td style='width:100px;'><img style='width:100%;' src="+producto.img+" ></td>");
-                    $('#tbody').append("<td><a class='show-product' id='"+producto.product_name+"' style='text-decoration:none;'>"+producto.product_name+"</a></td>");
+                    $('#tbody').append("<td><a class='show-product' id='"+producto.id+'-'+producto.product_name+"' style='text-decoration:none;'>"+producto.product_name+"</a></td>");
                     $('#tbody').append("<td>"+num+"</td>");
                     var k=0;
                     $('#tbody').append("<td><select class='form-control selectqty' id='selectQty"+i+"'>");

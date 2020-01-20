@@ -29,7 +29,7 @@ class PagesController extends Controller {
         public function index() {
         // $requestAPI=ApiRequest::ProductbyBrand("SYMANTEC / NORTON");
         // dd($requestAPI);
-
+        
        
 
         $categories = Category::pluck('category')->take(5);

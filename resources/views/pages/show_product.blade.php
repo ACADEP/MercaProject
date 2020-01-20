@@ -19,14 +19,14 @@
                             
                             <div class="col-xs-6 col-sm-4 col-md-6 gallery_image text-center"  >
                                 <a >
-                                    <img src="{{$photo->thumbnail_path}}" id="" alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail img-product">
+                                    <img src="{{$photo->thumbnail_path}}" onerror="this.onerror=null; this.src='/images/no-image-found.jpg'" id="" alt="Photo ID: {{ $photo->id  }}" data-id="{{ $photo->id }}" class="img-thumbnail img-product">
                                 </a>
                             </div>
                         @endforeach
                         </div>
                         <div class="col-md-6" >
                         <div id="img-container" class="xzoom-container" >
-                            <img class="xzoom" id="main-img" style="width:100%;" src="{{ $product->photos()->first()->path}}" xoriginal="{{ $product->photos()->first()->path}}" />
+                            <img class="xzoom" id="main-img"  onerror="this.onerror=null; this.src='/images/no-image-found.jpg'" style="width:100%;" src="{{ $product->photos()->first()->path}}" xoriginal="{{ $product->photos()->first()->path}}" />
                         </div>
                     </div>
                 @endif
@@ -38,12 +38,14 @@
                 <p id="Product_Brand">Marca: {{ $product->brand ? $product->brand->brand_name : 'Sin Marca' }}</p>
                 <br>
                 @if($product->reduced_price == 0)
-                    <div class="light-300 black-text medium-500" id="Product_Reduced-Price">$ {{number_format($product->price, 2)  }}</div>
-                    <br>
+                <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->real_price, 2) }}
+                <br>
                 @else
-                    <div class="discount light-300 black-text medium-500" id="Product_Reduced-Price"><s style="color: red;">$ {{number_format($product->price, 2)  }}<i class="fa fa-tag ml-1" aria-hidden="true"></i></s></div>
-                    <div class="green-text medium-500" id="Product_Reduced-Price">$ {{number_format(( $product->reduced_price), 2) }}</div>
+                    <div class="text-danger list-price"><s style="color: red">$ {{ number_format($product->price*1.16, 2) }}<i class="fa fa-tag" aria-hidden="true"></i></s></div>
+                    <div class="blue-text light-300 medium-500" id="Product_Reduced-Price">$ {{ number_format($product->real_price, 2) }}</div>
                 @endif
+                    
+                
                
                 @if ($product->product_qty == 0)
                     <h5 class="text-center red-text">Agotado</h5>
@@ -96,7 +98,7 @@
 
             @foreach($similar_product->slice(0, 4) as $similar)
                 <div class="col-xs-6 col-md-2" id="Similar-Product-Sub-Container" >
-                    <a class="link-products" href="{{ route('show.product', $similar->product_name) }}">
+                    <a class="link-products" href="{{ route('show.product', $similar->id."-".$similar->product_name) }}">
                         @if ($similar->photos->count() === 0)
                             <p id="Similar-Title">{{ str_limit($similar->product_name, $limit = 28, $end = '...') }}</p>
                             <img src="/images/no-image-found.jpg" alt="Imagen no encontrada" id="Product-similar-Image">

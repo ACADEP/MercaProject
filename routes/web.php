@@ -11,12 +11,11 @@
 |
 */
 
-Route::get('/update/products', 'testController@updateProduct');
-Route::get('/download/products', 'testController@downloadProducts');
-Route::get('/getBrands', 'testController@getBrands');
+Route::get('/getBrands', 'ApiController@getBrands');
 
-//precio bajo
-Route::post('/priceLow', 'testController@order');
+Route::get('/update/products', 'ApiController@updateProduct');
+
+
 Route::post('/webhook', 'CartController@notify');
 /** Route to get typehead results **/
 Route::get('/getData', [
@@ -108,7 +107,7 @@ Route::group(['middleware' => ['web']], function () {
     
 
     /** Route to Products show page **/
-    Route::get('product/{product_name}', [
+    Route::get('product/{product_id}', [
         'uses' => '\App\Http\Controllers\ProductsController@show',
         'as'   => 'show.product',
     ]);

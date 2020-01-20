@@ -14,6 +14,10 @@ class Product extends Model {
 
     protected $appends =['real_price'];
     
+    public function getRouteKeyName()
+    {
+        return 'product_name';
+    } 
 
     protected $fillable = [
         'product_name',
