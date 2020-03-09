@@ -7,6 +7,8 @@ use App\MarketRatesDetail;
 use App\Sale;
 use App\CustomerHistory;
 use App\OrderOxxo;
+use App\Http\Requests\MarketRateRequest;
+
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -24,8 +26,8 @@ class MarketRatesController extends Controller
 
     public function showCreate()
     {
-        
-        return view("admin.market_rates.create");
+        $marketrate=new MarketRates;
+        return view("admin.market_rates.create", compact('marketrate'));
     }
 
     public function showEdit(MarketRates $marketrate)
@@ -37,6 +39,7 @@ class MarketRatesController extends Controller
     {
         $search=null;
         $search_find=$request->search;
+
         if( $search_find!=null)
         {
             // Returns an array of products that have the query string located somewhere within
@@ -48,15 +51,14 @@ class MarketRatesController extends Controller
             $query = $query->orWhere("category", 'LIKE', "%$search_find%");
             $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
             $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+            $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
             $search = $query->orderBy("products.product_name")->paginate(10);
            
             
         }
+        $marketrate=new MarketRates;
+        return view("admin.market_rates.create", compact('search','marketrate'));
         
-       
-            return view("admin.market_rates.create", compact('search'));
-        
-       
     }
     public function searchMarket_ratesedit(Request $request)
     {
@@ -72,8 +74,9 @@ class MarketRatesController extends Controller
             $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
             $query = $query->orWhere("category", 'LIKE', "%$search_find%");
             $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
+            $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
             $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-            $search = $query->paginate(10);
+            $search = $query->orderBy("products.product_name")->paginate(10);
            
             
         }
@@ -82,26 +85,15 @@ class MarketRatesController extends Controller
         
        
     }
-    public function createMarket_rates(Request $request)
+    public function createMarket_rates(MarketRateRequest $request)
     {
-        $request->validate([
-            'company'=>'required',
-            'email'=>'required|email',
-            'marketRate'=>'required'
-        ],
-        [
-            'company.required'=>'Ingresar el nombre de la empresa',
-            'email.required'=>'Ingresar un email a enviar',
-            'marketRate.required'=>'Agregar productos para crear la cotización'
-        ]);
+        
+        $request["date"]=Carbon::now();
 
         $market_rate=MarketRates::find($request->marketRate);
         if($market_rate->MarketRatesDetails()->count()>0)
         {
-            $market_rate->company=$request->company;
-            $market_rate->email=$request->email;
-            $market_rate->date=Carbon::now();
-            $market_rate->save();
+            $market_rate->update($request->all());
             return redirect("/admin/market_rates")->with("success", "Cotizacion creada");
         }
         else
@@ -109,24 +101,12 @@ class MarketRatesController extends Controller
             return redirect("/admin/market_rates/create")->with("fail", "Agregar productos para crear la cotización")->withInput();
         }
         
-
-       
-
     }
-    public function updateMarket_rates(Request $request)
-    {
-        $request->validate([
-            'company'=>'required',
-            'email'=>'required|email',
-        ],
-        [
-            'company.required'=>'Ingresar el nombre de la empresa',
-            'email.required'=>'Ingresar un email a enviar',
-        ]);
 
+    public function updateMarket_rates(MarketRateRequest $request)
+    {
         $market_rate=MarketRates::find($request->marketRate);
-        $market_rate->company=$request->company;
-        $market_rate->email=$request->email;
+        $market_rate->update($request->all());
         $market_rate->save();
 
         return redirect("/admin/market_rates")->with("success", "Cotizacion actualizada");
@@ -146,56 +126,124 @@ class MarketRatesController extends Controller
 
     public function addMarket_rates(Request $request)
     {
-        
-        $product=Product::find($request->product_id);
+       
         $market_rate_detail=null;
         $market_rate=null;
         if($request->market_id==null || $request->market_id=='undefined')   //Nueva cotización
         {
             $market_rate=new MarketRates;
-            $market_rate->total=($product->real_price)+$market_rate->total;
-            $market_rate->save();
-            
-            $market_rate_detail=new MarketRatesDetail;
-            $market_rate_detail->market_rates_id=$market_rate->id;
-            $market_rate_detail->product_id=$product->id;
-            $market_rate_detail->thumbnail=$product->photos()->first()->path;
-            $market_rate_detail->qty=$request->product_qty;
-            $market_rate_detail->product_sku=$product->product_sku;
-            $market_rate_detail->description=$product->description;
-            $market_rate_detail->price=$product->real_price;
-            $market_rate_detail->subtotal=($product->real_price)*$request->product_qty;
-            $market_rate_detail->save();
+           
         }
-        else    //Agregar productos a la cotización ya creada
+        else
         {
             $market_rate=MarketRates::find($request->market_id);
-            
-           
-            if($market_rate->productRepeat($product->id)==false)
-            {
-                $market_rate->total=($product->real_price)+$market_rate->total;
-                $market_rate->save();
-
-                $market_rate_detail=new MarketRatesDetail;
-                $market_rate_detail->market_rates_id=$request->market_id;
-                $market_rate_detail->product_id=$product->id;
-                $market_rate_detail->thumbnail=$product->photos()->first()->path;
-                $market_rate_detail->qty=$request->product_qty;
-                $market_rate_detail->product_sku=$product->product_sku;
-                $market_rate_detail->description=$product->description;
-                $market_rate_detail->price=$product->real_price;
-                $market_rate_detail->subtotal=($product->real_price)*$request->product_qty;
-                $market_rate_detail->save();
-            }
-            
         }
+       
+        
+        $market_rate->total=($request->product_price*$request->product_qty)+$market_rate->total;
+        
+        
+        $market_rate->save();
+        
+        $market_rate_detail=new MarketRatesDetail;
+        $market_rate_detail->market_rates_id=$market_rate->id;
+       
+        $market_rate_detail->thumbnail=$request->product_photo;
+        $market_rate_detail->unity="PRODUCTO";
+        $market_rate_detail->qty=$request->product_qty;
+        $market_rate_detail->product_sku=$request->product_sku;
+        $market_rate_detail->description=$request->product_name;
+        $market_rate_detail->price=$request->product_price;
+        $market_rate_detail->subtotal=($request->product_price)*$request->product_qty;
+        
+        
+        $market_rate_detail->save();
+        
+        return response(["detail"=>$market_rate_detail, "market_id"=>$market_rate->id],200);
+    }
+
+    public function addNewMarket_rates(Request $request)
+    {
+        $market_rate_detail=null;
+        $market_rate=null;
+        if($request->market_id==null || $request->market_id=='undefined')   //Nueva cotización
+        {
+            $market_rate=new MarketRates;
+           
+        }
+        else
+        {
+            $market_rate=MarketRates::find($request->market_id);
+        }
+       
+        if($request->tab_active=="service")
+        {
+            $market_rate->total=($request->service_price*$request->qty_service)+$market_rate->total;
+        }
+        else
+        {
+            $market_rate->total=($request->product_price*$request->qty_product)+$market_rate->total;
+        }
+        
+        $market_rate->save();
+        
+        $market_rate_detail=new MarketRatesDetail;
+        $market_rate_detail->market_rates_id=$market_rate->id;
+        if($request->tab_active=="service")
+        {
+            $request->validate([
+                "unity"=>"required",
+                "qty_service"=>"required",
+                "summary"=>"required",
+                "service_price"=>"required"
+            ],
+            [
+                "unity.required"=>"Ingresar la unidad del servicio",
+                "qty_service.required"=>"Ingresar la cantidad del servicio",
+                "summary.required"=>"Igresar una descripción ",
+                "service_price.required"=>"Ingresar un costo al servicio"
+            ]);
+            $market_rate_detail->thumbnail="/images/service.png";
+            $market_rate_detail->unity=$request->unity;
+            $market_rate_detail->qty=$request->qty_service;
+            $market_rate_detail->product_sku="Servicio";
+            $market_rate_detail->description=$request->summary;
+            $market_rate_detail->price=$request->service_price;
+            $market_rate_detail->subtotal=($request->service_price)*$request->qty_service;
+        }
+        else
+        {
+            $request->validate([
+                
+                "qty_service"=>"required",
+                "product_name"=>"required",
+                "product_price"=>"required"
+            ],
+            [
+               
+                "qty_service.required"=>"Ingresar la cantidad del servicio",
+                "product_name.required"=>"Igresar un nombre del producto",
+                "product_price.required"=>"Ingresar un costo al servicio"
+            ]);
+            $market_rate_detail->thumbnail="/images/no-image-found.jpg";
+            $market_rate_detail->unity="PRODUCTO";
+            $market_rate_detail->qty=$request->qty_product;
+            $market_rate_detail->product_sku=$request->product_sku ? $request->product_sku : "No ingresado";
+            $market_rate_detail->description=$request->product_name;
+            $market_rate_detail->price=$request->product_price;
+            $market_rate_detail->subtotal=($request->product_price)*$request->qty_product;
+        }
+        
+        $market_rate_detail->save();
+        
+        
         
         return response(["detail"=>$market_rate_detail, "market_id"=>$market_rate->id],200);
     }
     public function addMarket_ratesEdit(Request $request)
     {
         
+       
             $product=Product::find($request->product_id);
             $market_rate=MarketRates::find($request->market_id);
             
@@ -203,18 +251,18 @@ class MarketRatesController extends Controller
             if(!$market_rate->productRepeat($product->id))
             {
               
-                $market_rate->total=($product->real_price)+$market_rate->total;
+                $market_rate->total=($product->mr_price*$request->qty)+$market_rate->total;
                 $market_rate->save();
 
                 $market_rate_detail=new MarketRatesDetail;
                 $market_rate_detail->market_rates_id=$request->market_id;
-                $market_rate_detail->product_id=$product->id;
-                $market_rate_detail->thumbnail=$product->photos()->first()->path;
+               
+                $market_rate_detail->thumbnail="/images/no-image-found.jpg";
                 $market_rate_detail->qty=$request->qty;
                 $market_rate_detail->product_sku=$product->product_sku;
                 $market_rate_detail->description=$product->description;
-                $market_rate_detail->price=$product->real_price;
-                $market_rate_detail->subtotal=($product->real_price)*$request->qty;
+                $market_rate_detail->price=$product->mr_price;
+                $market_rate_detail->subtotal=($product->mr_price)*$request->qty;
                 $market_rate_detail->save();
                 
                 return back();
@@ -246,8 +294,13 @@ class MarketRatesController extends Controller
         if($request->market_id!=null)
         {
             $market_rate=MarketRates::find($request->market_id);
-            $market_rate->MarketRatesDetails()->delete();
-            $market_rate->delete();
+
+            if($market_rate)
+            {
+                $market_rate->MarketRatesDetails()->delete();
+                $market_rate->delete();
+            }
+            
         }
         
         

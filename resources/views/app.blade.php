@@ -60,6 +60,7 @@
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/pay.css') }}" >
+        @stack('scripts')
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/ajax.js') }}"></script>
@@ -277,7 +278,7 @@
     @include('partials.special_search')
     @include('customer.partials.add-address')
     @yield('modal-paypal')
-
+   
     <script>
         var brands=[{{ App\Brand::pluck('id') }}];
     </script>

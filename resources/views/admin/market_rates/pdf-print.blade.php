@@ -18,7 +18,10 @@
                 {{config('configurations.mk.slogan')}}
             </div>
       </div>
-      <h1 class="tittle font">Cotización</h1>
+      <div class="text-center">
+        <h1 class="tittle font">Cotización</h1>
+
+      </div>
 
       <div class="row mb-3" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
@@ -29,11 +32,11 @@
         </div>
     
         <div class="col-sm-6 col-md-6 text-right" id="company" class="clearfix font">
-          <div><strong>{{config('configurations.general.store_name')}}</strong></div>
-          <div>{{config('configurations.company.direction_1')}},<br /> 
-                {{config('configurations.company.city')}} {{config('configurations.company.postal_code')}}, 
+          <div><strong>German Leonardo Lage Suarez </strong></div>
+          <div>LASG 730203 7D4<br /> 
+            Allende Entre Revolución y Serdán #270 {{config('configurations.company.postal_code')}}, 
                 {{config('configurations.company.country_code')}}</div>
-          <div>Tel:  {{config('configurations.company.phone')}}</div>
+          <div>Tel: (612) 122 5174 / Cel:(612) 111 7386</div>
           <div><a href="mailto:mercadata@acadep.com">mercadata@acadep.com</a></div>
         </div>  
       </div>
@@ -44,9 +47,11 @@
       <table>
         <thead>
           <tr>
-            <th class="service"><strong>Cantidad</strong></th>
+            <th>#</th>
             <th class="desc"><strong>Código</strong></th>
             <th><strong>Descripción</strong></th>
+            <th class="service"><strong>Cantidad</strong></th>
+            <th><strong>Unidad</strong></th>
             <th><strong>Precio</strong></th>
             <th><strong>Total</strong></th>
           </tr>
@@ -54,27 +59,29 @@
         <tbody>
           @foreach($items->MarketRatesDetails()->get() as $item)
             <tr>
-                <td class="service">{{$item->qty}}</td>
+                <td>{{$loop->iteration}}</td>
                 <td class="desc">{{$item->product_sku}}</td>
                 <td class="unit">{{ substr($item->description,0,30) }}</td>
+                <td class="service">{{$item->qty}}</td>
+                <td class="service">{{$item->unity}}</td>
                 <td class="qty">${{number_format($item->price, 2)}}</td>
                 <td class="total">${{number_format(($item->subtotal), 2)}}</td>
             </tr>
           @endforeach
           <tr>
-            <td colspan="4">Subtotal</td>
+            <td colspan="6">Subtotal</td>
             <td class="total">${{number_format($items->total, 2) }}</td>
           </tr>
           <tr>
-            <td colspan="4">IVA</td>
+            <td colspan="6">IVA</td>
             <td class="total">Incluido</td>
           </tr>
           <tr>
-            <td colspan="4">Costo de envío</td>
+            <td colspan="6">Costo de envío</td>
             <td class="total">En sitio</td>
           </tr>    
           <tr>
-            <td colspan="4" class="grand total">Total</td>
+            <td colspan="6" class="grand total">Total</td>
             <td class="grand total">${{number_format($items->total, 2) }}</td>
           </tr>
         </tbody>

@@ -268,7 +268,19 @@ $(document).ready(function(){
             var market_id=$(".marketRate").val(); 
             var product_id=$(this).val();
             var product_qty=$("#qty_product"+product_id).val();
-            var formData = { product_id:product_id, product_qty:product_qty, market_id:market_id};
+            var product_photo=$("#product_photo"+product_id).val();
+            var product_name=$("#product_name"+product_id).val();
+            var product_price=$("#product_price"+product_id).val();
+            var product_sku=$("#product_sku"+product_id).val();
+            var formData = {    product_id:product_id, 
+                                product_name:product_name, 
+                                product_price:product_price, 
+                                product_sku:product_sku, 
+                                product_photo:product_photo, 
+                                product_qty:product_qty, 
+                                market_id:market_id};
+            console.log(formData);
+            
             $.ajax({
                 url: "/admin/market_rates/addProduct",
                 method: 'POST',

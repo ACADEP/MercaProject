@@ -16,6 +16,10 @@ class CreateMarketRatesTable extends Migration
         Schema::create('market_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('company')->nullable();
+            $table->string('client')->nullable();
+            $table->string('contact')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->datetime('date')->nullable();
             $table->decimal('total', 10, 2)->unsigned();

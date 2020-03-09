@@ -815,6 +815,8 @@ Route::group(["middleware" => 'admin'], function(){
      Route::get("/admin/market_rates/searchEdit", "MarketRatesController@searchMarket_ratesedit")->name("searchedit-marketRates");
     //Agregar productos 
     Route::post("/admin/market_rates/addProduct", "MarketRatesController@addMarket_rates")->name("add-marketRates");
+    //Agregar productos 
+    Route::post("/admin/market_rates/addNewProduct", "MarketRatesController@addNewMarket_rates")->name("add-newmarketRates");
     //Agregar productos en editar
     Route::post("/admin/market_rates/addProductEdit", "MarketRatesController@addMarket_ratesEdit")->name("add-marketRatesEdit");
     //Eliminar producto de cortizacion

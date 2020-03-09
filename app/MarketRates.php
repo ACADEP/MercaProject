@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MarketRates extends Model
 {
+    protected $fillable = [ 'company','client','contact','address','phone','email','date'];
+    
     public function getRouteKeyName()
     {
         return 'id';

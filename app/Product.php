@@ -140,6 +140,12 @@ class Product extends Model {
         return floatval($real)*1.16;
     }
 
+    public function getMrPriceAttribute()
+    {
+        
+        return floatval($this->price)*1.16;
+    }
+
    
 
 

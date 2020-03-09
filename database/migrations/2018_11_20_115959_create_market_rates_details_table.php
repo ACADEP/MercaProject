@@ -16,9 +16,9 @@ class CreateMarketRatesDetailsTable extends Migration
         Schema::create('market_rates_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('market_rates_id');
-            $table->integer('product_id');
             $table->string('thumbnail');
             $table->integer('qty')->unsigned();
+            $table->string('unity');
             $table->string('product_sku');
             $table->longtext('description');
             $table->decimal('price', 10, 2)->unsigned();
