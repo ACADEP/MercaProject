@@ -407,6 +407,16 @@ $(".btn-row-market").click(function(){
     }else{}
 });
 
+$("#btn-search").click(function(){
+    window.location = "/admin/market_rates/search?"+ $('#form-search').serialize()+'&'+$("#form-create").serialize();
+   
+});
+
+$("#btn-search-edit").click(function(){
+    window.location = "/admin/market_rates/searchEdit?"+ $('#form-search').serialize()+'&'+$("#form-edit").serialize();
+   
+});
+
 $("#btn-send-market").click(function(){
     if (confirm('Desea enviar esta cotizacion')) {
         if($("#company").val()=="")

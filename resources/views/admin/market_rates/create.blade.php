@@ -18,7 +18,7 @@
 </section><br>
 
 <div class="col-md-12 form-inline">
-<form action="{{route('create-marketRate')}}" method="post">
+<form action="{{route('create-marketRate')}}" method="post" id="form-create">
     {{csrf_field()}}
     <input type="hidden" name="marketRate" class="marketRate" value="">
     
@@ -49,9 +49,9 @@
 <div class="col-md-8">
     <h4>Buscar</h4>
     <div class="col-md-12 ">
-        <form action="{{route('search-marketRates')}}" method="get">
-            <input type="text" class="form-control" placeholder="Buscar productos..." id="search" name="search" size="70">
-            <button type="submit" class="btn btn-primary" style="vertical-align:top;">Buscar</button>
+        <form action="{{route('search-marketRates')}}" id="form-search" method="get">
+        <input type="text" class="form-control" placeholder="Buscar productos..." id="search" name="search" size="70" value="{{ old("search") }}">
+            <button type="button" class="btn btn-primary" id="btn-search" style="vertical-align:top;">Buscar</button>
         </form>
     </div>
    @include('admin.market_rates.includes.search-results')

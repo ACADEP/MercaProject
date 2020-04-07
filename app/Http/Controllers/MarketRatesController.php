@@ -56,6 +56,7 @@ class MarketRatesController extends Controller
            
             
         }
+        session()->flashInput($request->input());
         $marketrate=new MarketRates;
         return view("admin.market_rates.create", compact('search','marketrate'));
         
@@ -80,6 +81,9 @@ class MarketRatesController extends Controller
            
             
         }
+
+        
+        session()->flashInput($request->input());
         $marketrate=MarketRates::find($request->market);
         return view("admin.market_rates.edit", compact('search', 'marketrate'));
         

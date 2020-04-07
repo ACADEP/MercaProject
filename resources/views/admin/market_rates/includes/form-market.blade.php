@@ -1,4 +1,6 @@
 <div class="row">
+    
+    
     <div class="col-md-4 text-left">
         <label for="company">Empresa:</label>
         <input type="text" class="form-control" required style="width:100%;" maxlength="255" name="company" id="company" value="{{old('company', $data->company)}}">

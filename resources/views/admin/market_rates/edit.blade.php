@@ -8,7 +8,7 @@
 </section><br>
 
 <div class="col-md-12 form-inline">
-<form action="{{route('update-marketRate')}}" method="post">
+<form action="{{route('update-marketRate')}}" method="post" id="form-edit">
     {{csrf_field()}}
     <input type="hidden" name="marketRate" class="marketRate" value="{{$marketrate->id}}">
         <div class="text-right">
@@ -25,10 +25,10 @@
 <div class="col-md-8">
     <h4>Buscar</h4>
     <div class="col-md-12 ">
-        <form action="{{route('searchedit-marketRates')}}" method="get">
+        <form action="{{route('searchedit-marketRates')}}" method="get" id="form-search">
             <input type="hidden" name="market" class="marketRate" value="{{$marketrate->id}}">
-            <input type="text" class="form-control" placeholder="Buscar productos..." id="search" name="search" size="70">
-            <button type="submit" class="btn btn-primary" style="vertical-align:top;">Buscar</button>
+            <input type="text" class="form-control" placeholder="Buscar productos..."  name="search" size="50" value="{{ old("search") }}">
+            <button type="button" class="btn btn-primary" style="vertical-align:top;" id="btn-search-edit">Buscar</button>
         </form>
     </div>
     <div class="col-md-12">
