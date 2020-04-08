@@ -33,6 +33,8 @@ class AddressController extends Controller
     }
 
     public function addAddress(ValidacionAddress $request) {
+        
+
         if (Sepomex::where("d_codigo",$request->postalcode)->count()) {
             $address = new Address;
             $address->usuario = Auth::user()->id;

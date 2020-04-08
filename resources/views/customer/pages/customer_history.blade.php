@@ -31,14 +31,14 @@
             </div>
             <div id="collapse{{$i}}" class="{{ $i==1 ? 'panel-collapse collapse in' : 'panel-collapse collapse' }}" role="tabpanel" aria-labelledby="heading{{$i}}">
                 <div class="panel-body">
-                    <div class="text-left" >
+                    {{-- <div class="text-left" >
                         Envío: <span class="label label-primary" id="status_ship">{{$sale->status_envio}}</span>&nbsp <button class="btn btn-primary btn-xs btn-refresh "  data-toggle="tooltip"  data-placement="top" title="Actualizar estado" value="{{ $sale->id }}"><i class="fa fa-refresh" id="refreshing" aria-hidden="true"></i></button> &nbsp
                         <form action="/customer/tracking" method="post" style="display: inline;">
                             <input type="hidden" name="sale" value="{{ $sale->id }}">
                             {{ csrf_field()}}
                             <button type="submit"class="btn btn-info btn-xs">Ver detalles</button>
                         </form> 
-                    </div>
+                    </div> --}}
                     <div class="text-right">
                         <button class="btn btn-warning btn-sm btn-reclame" data-toggle="modal" value="{{$sale->id}}" data-target="#reclame">Iniciar reclamo</button>
                         <form action="/customer/pdf" method="post" style="display: inline;">

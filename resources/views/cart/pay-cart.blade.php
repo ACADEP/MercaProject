@@ -14,9 +14,12 @@
             <div class="steps-step-2">
                 <a href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Dirección"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
             </div>
-            <div class="steps-step-2">
+            
+            {{-- Paqueteria --}}
+            {{-- <div class="steps-step-2">
                 <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
-            </div>
+            </div> --}}
+
             <div class="steps-step-2">
                 <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Método de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
             </div>
@@ -314,7 +317,8 @@
 
     <div class="h5">
         Total de productos: ${{ number_format($subtotal, 2) }} <br>
-        Envío + impuestos: <div id="ship_rate_choosed" class="ship-rate">$0,00</div> <br>
+        {{-- Envío + impuestos:  --}}
+        <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
       
     </div>
     
@@ -522,68 +526,68 @@ $(document).ready(function () {
     
         // $("#btn-next-pay")
         $("#btn-conf").click(function(){
-            if(carrie_choosed){
-            if($("#credit-debit-method-r").prop("checked"))
-            {
-              
-                    $('#debit-card').modal('show');
+            // if(carrie_choosed){
+                if($("#credit-debit-method-r").prop("checked"))
+                {
+                
+                        $('#debit-card').modal('show');
+                        
+                        $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                        $("#openpay_carrie_id").val($('#carrie_id').val());
+                        $("#total-credit").val($("#total-pursh").val());
+                        $("#ship_rate_target").val($('#ship_rate_choosed').html());
+                        $("#date_ship_target").val($('#date_aprox').html());
+                        $('#method_pay_target').val("Tarjeta de débito o crédito");
                     
-                    $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
-                    $("#openpay_carrie_id").val($('#carrie_id').val());
-                    $("#total-credit").val($("#total-pursh").val());
-                    $("#ship_rate_target").val($('#ship_rate_choosed').html());
-                    $("#date_ship_target").val($('#date_aprox').html());
-                    $('#method_pay_target').val("Tarjeta de débito o crédito");
                 
-               
-            }
-            else if($("#paypal-method-r").prop("checked"))
-            {
-                $('#pay-pal').modal('show');
-                $("#paypal-amount").val($("#total-pursh").val());
+                }
+                else if($("#paypal-method-r").prop("checked"))
+                {
+                    $('#pay-pal').modal('show');
+                    $("#paypal-amount").val($("#total-pursh").val());
+                    
+                }
+                else if($("#bank-method-r").prop("checked"))
+                {
                 
-            }
-            else if($("#bank-method-r").prop("checked"))
-            {
-               
-                $(".rate_delivered").val($("#total-pursh").val());
-                $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
-               $("#method_pay_bank").val("Transferencia bancaria");
-                $("#bank_carrie_id").val($('#carrie_id').val());
-                $("#ship_rate_bank").val($('#ship_rate_choosed').html());
-                $("#date_ship_bank").val($('#date_aprox').html());
-                $('#transfer').modal('show');
-            }
-            else if($("#store-method-r").prop("checked"))
-            {
-               
-                $(".rate_delivered").val($("#total-pursh").val());
-                $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
-                $("#method_pay_store").val("Tiendas de convenencia");
-                $("#store_carrie_id").val($('#carrie_id').val());
-                $("#ship_rate_store").val($('#ship_rate_choosed').html());
-                $("#date_ship_store").val($('#date_aprox').html());
-                $('#store').modal('show');
-            }
-            else if($("#oxxo-method-r").prop("checked"))
-            {
-               
-                $(".rate_delivered").val($("#total-pursh").val());
-                $("#oxxo_carrie").val($("#shipment").html()); //Nombre de la paquetería
-                $("#oxxo_carrie_id").val($('#carrie_id').val());
-                $("#ship_rate_oxxo").val($('#ship_rate_choosed').html());
-                $("#date_ship_oxxo").val($('#date_aprox').html());
-                $('#oxxo').modal('show');
-            }
-            else
-            {
-                alert("Elegir un metodo de pago");
-            }
-            }
-            else
-            {
-                alert("Elegir un metodo de envío");
-            }
+                    $(".rate_delivered").val($("#total-pursh").val());
+                    $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                $("#method_pay_bank").val("Transferencia bancaria");
+                    $("#bank_carrie_id").val($('#carrie_id').val());
+                    $("#ship_rate_bank").val($('#ship_rate_choosed').html());
+                    $("#date_ship_bank").val($('#date_aprox').html());
+                    $('#transfer').modal('show');
+                }
+                else if($("#store-method-r").prop("checked"))
+                {
+                
+                    $(".rate_delivered").val($("#total-pursh").val());
+                    $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                    $("#method_pay_store").val("Tiendas de convenencia");
+                    $("#store_carrie_id").val($('#carrie_id').val());
+                    $("#ship_rate_store").val($('#ship_rate_choosed').html());
+                    $("#date_ship_store").val($('#date_aprox').html());
+                    $('#store').modal('show');
+                }
+                else if($("#oxxo-method-r").prop("checked"))
+                {
+                
+                    $(".rate_delivered").val($("#total-pursh").val());
+                    $("#oxxo_carrie").val($("#shipment").html()); //Nombre de la paquetería
+                    $("#oxxo_carrie_id").val($('#carrie_id').val());
+                    $("#ship_rate_oxxo").val($('#ship_rate_choosed').html());
+                    $("#date_ship_oxxo").val($('#date_aprox').html());
+                    $('#oxxo').modal('show');
+                }
+                else
+                {
+                    alert("Elegir un metodo de pago");
+                }
+            // }
+            // else
+            // {
+            //     alert("Elegir un metodo de envío");
+            // }
         });
 
         $(".loader").fadeOut("slow");
