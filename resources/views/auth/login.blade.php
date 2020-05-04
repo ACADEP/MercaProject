@@ -4,7 +4,7 @@
 
     <div class="container-fluid" id="Login-Register-Container">
         <div class="row justify-content-center">
-            <div class="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <div class="col-12 col-xl-4 col-sm-6 col-md-6 col-sm-offset-3 col-md-offset-4">
                 <div class="card" id="Login-Register-Panel">
                     <div class="card-body">
                         @if(session('flash'))

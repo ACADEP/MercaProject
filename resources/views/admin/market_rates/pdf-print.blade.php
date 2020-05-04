@@ -20,6 +20,10 @@
       #main-table th{
         font-size: 11px !important;
       }
+      body {
+        font-family:  Arial !important;
+        font-size: 13px;
+      }
     </style>
   </head>
   <body>

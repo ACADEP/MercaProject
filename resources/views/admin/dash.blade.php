@@ -259,7 +259,7 @@ desired effect
       Mercadata
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2018 <a href="#">Acadep</a>.</strong>
+    <strong>Copyright &copy; {{ \Carbon\Carbon::now()->year }} <a href="#">Acadep</a>.</strong>
   </footer>
 
   <!-- Control Sidebar -->

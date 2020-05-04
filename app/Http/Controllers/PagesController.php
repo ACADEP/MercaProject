@@ -9,15 +9,11 @@ use App\Product;
 use App\CustomerHistory;
 use App\Shop;
 use App\Category;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-use App\Http\Traits\BrandAllTrait;
-use App\Http\Traits\CategoryTrait;
-use App\Http\Traits\SearchTrait;
-use App\Http\Traits\CartTrait;
 use App\ApiRequest;
 
 use Illuminate\Support\Facades\Auth;

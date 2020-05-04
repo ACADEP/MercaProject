@@ -8,7 +8,7 @@ use App\Cart;
 use App\Mailers\AppMailers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\RegistrationRequest;
 

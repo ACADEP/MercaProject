@@ -8,7 +8,7 @@ use App\Shop;
 use App\Category;
 use Carbon\Carbon;
 // use App\Http\Requests;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 
 

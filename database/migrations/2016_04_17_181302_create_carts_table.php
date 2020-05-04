@@ -17,8 +17,10 @@ class CreateCartsTable extends Migration
             $table->integer('user_id');
             $table->string('status');
             $table->integer('product_id');
+            $table->string('product_sku')->nullable();
             $table->integer('product_price');
             $table->integer('qty')->unsigned();
+            $table->date('checked_date')->nullable();
             $table->decimal('total', 10, 2)->unsigned();
             $table->timestamps();
         });

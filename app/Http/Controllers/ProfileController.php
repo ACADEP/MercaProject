@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Order;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Customer;
 

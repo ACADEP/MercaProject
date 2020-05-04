@@ -6,7 +6,7 @@ use App\Product;
 use App\ProductPhoto;
 use App\AddPhotoToProduct;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+
 use File;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\ProductPhotoRequest;

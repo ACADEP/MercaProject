@@ -68,7 +68,7 @@ class AddressController extends Controller
         $address = Auth::user()->address()->find($request->product_id);
         if($address!=null)
         {
-            if (\Sepomex::getByPostal($request->postalcode)) {
+            if (Sepomex::where("d_codigo",$request->postalcode)->count()) {
                 $address = Address::find($address->id);
                 $address->calle = $request->mainstreet;
                 $address->ciudad = $request->city;

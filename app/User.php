@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use App\ApiRequest;
+use Carbon\Carbon;
 
 
 
@@ -178,12 +180,41 @@ class User extends Authenticatable
     {
         $cartUser= $this->carts()->where('status', 'Active')->get();
         $total=0;
+       
         foreach($cartUser as $cartItem)
         {
+          
             $total+=$cartItem->total;
         }
         return $total;
     }
+
+    public function getTotalCheckedAttribute()
+    {
+        $cartUser= $this->carts()->where('status', 'Active')->get();
+        $total=0;
+        $api_request=new ApiRequest;
+        $date_now=Carbon::now();
+
+        foreach($cartUser as $cartItem)
+        {
+            if($cartItem->checked_date->addDay(5) > $date_now)
+            {
+                $total+=ApiRequest::checkPrice($cartItem->product_sku);
+                $cartItem->total=ApiRequest::checkPrice($cartItem->product_sku);
+                $cartItem->checked_date=$date_now->format("Y-m-d");
+                $cartItem->save();
+            }
+            else
+            {
+                $total+=$cartItem->total;
+            }
+
+        }
+
+        return $total;
+    }
+
     public function productIs($id)
     {   
         $band=false;

@@ -19,9 +19,16 @@
     <h1>Hola {{$client->username}}</h1>
     <h3>Se le ajunta el recibo de pago de su compra</h3>
     <h2>Datos del envío</h2>
-    <img src="{{ $img_carrie }}" class="img-thumbnail">
-    <h3>Número de guía: </h3>{{$guia}} <br>
-    <a href="{{$url}}" target="_blank" style="color:blue;">Ir a la página de rastreo</a>
+    @if (is_object($envio))
+        <img src="{{ $envio->rate->carrier_logo_url }}" class="img-thumbnail">
+   
+
+    
+        <h3>Número de guía: </h3>{{$envio->carrier_shipment_number}} <br>
+    
+    
+        <a href="{{$envio->carrie_url}}" target="_blank" style="color:blue;">Ir a la página de rastreo</a>
+    @endif
     <h3>¡Gracias por comprar en Mercadata!</h3>
 </body>
 </html>

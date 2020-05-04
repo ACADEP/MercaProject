@@ -6,7 +6,7 @@ use App\Brand;
 use App\Product;
 use App\Category;
 use App\Shop;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 

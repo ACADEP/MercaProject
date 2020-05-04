@@ -23,7 +23,7 @@ class AppMailers {
     /**
      * Who is the email from.
      */
-    protected $from = 'sistemas@acadep.com';
+    protected $from = 'info@mercadata.com';
 
     /**
      * Who is this going to.
@@ -99,32 +99,26 @@ class AppMailers {
         $this->view = 'customer.partials.view-email';
         // The data that is required
         $this->data = compact('admin');
-        if($sale!=null)
-        {
-            $this->deliverPDF("administración", $client, $sale);
-        }else
-        {
+        
+        
             $this->deliverPDF2("administración", $client, $shiprate, $dateShip, $method_pay);
-        }
+        
     }
 
-    public function sendReceiptPaymentClient(User $client,$guia, $url, $img_carrie, $sale, $shiprate, $dateShip, $method_pay) {
-       
+    public function sendReceiptPaymentClient(User $client, $envio, $sale, $shiprate, $dateShip, $method_pay) {
+        // $guia, $url, $img_carrie
+
         // Send this to the users email.
         $this->to = $client->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
         // The data that is required
-        $this->data = compact('client','guia','url','img_carrie');
+        $this->data = compact('client','envio');
       
-        if($sale!=null)
-        {
-            $this->deliverPDF("cliente", $client, $sale);
-        }
-        else
-        {
+        
+
             $this->deliverPDF2("cliente", $client, $shiprate, $dateShip, $method_pay);
-        }
+        
         
     }
     public function sendOxxoReceipt(User $client, $pdf)
@@ -152,13 +146,18 @@ class AppMailers {
         });
     }
 
-    public function sendReceiptClientAdmin(User $admin, User $client,$guia, $url, $img_carrie, $sale,$ship_rate, $ship_date)
+    public function sendReceiptClientAdmin(User $admin, User $client,
+    $guia, $url, 
+    $img_carrie, $sale,
+    $ship_rate, $ship_date)
     {
         $Items=$sale;
         $subtotal=$sale->total;
         $address=$client->address()->where("Activo",1)->first();
         $expiry = Carbon::now()->addDay(1); 
-        $pdf = PDF::loadView('cart.Print-Receipt-webhook',compact('Items','subtotal','address','client','expiry','ship_rate', 'ship_date'));
+        $pdf = PDF::loadView('cart.Print-Receipt-webhook',
+        compact('Items','subtotal',
+        'address','client','expiry','ship_rate', 'ship_date'));
        
         $this->to=$admin->email;
         //Enviar a administracion
@@ -234,7 +233,7 @@ class AppMailers {
         $this->mailer->send($this->view, $this->data, function($message) use($pdf){
                 $message->from($this->from, 'Administrator')
                 ->subject($this->subject)
-                ->to($this->to)            
+                ->to($this->to)       
                 ->attachData($pdf->output(), "recibo de pago.pdf");
         });    
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Brand;
 use App\Category;
 use App\Product;
-use App\Http\Controllers\Controller;
+
 use App\Http\Requests\BrandsRequest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Http\Request;

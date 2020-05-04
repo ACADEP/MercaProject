@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-<div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px; '><span style="padding-top:300px;">Espere por favor <br>Cargando paqueterías</span> </div></div>
+<div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px; '><span style="padding-top:300px;">Espere por favor</span> </div></div>
     
 <br>
 
@@ -201,7 +201,7 @@
 
                 <a id="mpay-4">
                     <div class="card border-primary mb-3 text-center col-md-2" id="card-pay4" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">Tiendas de conveniencia </div>
+                        <div style="font-size: 10px !important;" class="card-header">Tiendas de conveniencia </div>
                         <div class="card-body text-primary">
                             <p class="card-text">
                                 <img src="images/shipments/store.png" style="width:100%;">
@@ -289,7 +289,9 @@
                         @endif
                     </div>
                     <div class="card-footer text-muted">
-                        Paquetería:  <div id="shipment" style="font-size:15px; display:inline;"> Seleccionar un método</div> <input type="hidden" id="carrie_id"> Costo: <div class="ship-rate" style="display:inline;">$0,00</div> Llegada aproximada: <div id="date_aprox" style="display:inline;"></div> 
+                        Paquetería:  <div id="shipment" style="font-size:15px; display:inline;"> Seleccionar un método</div> <input type="hidden" id="carrie_id"> Costo: <div class="ship-rate" style="display:inline;">Acordar con el vendedor</div> 
+                        <br> Llegada aproximada: 
+                        <div id="date_aprox" style="display:inline;"> <span class="badge badge-danger">Solo La Paz BCS Gratis</span> </div> 
     
                     </div>
                 </div>
@@ -327,7 +329,7 @@
     <div class="h5">
         <input type="hidden" id="total-cart" value="{{ $subtotal }}">
         Total: <div id="total">${{ number_format($subtotal, 2) }}</div>
-        <input type="hidden" id="total-pursh"> 
+        <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
     </div>
     
  
@@ -534,6 +536,8 @@ $(document).ready(function () {
                         
                         $("#openpay_carrie").val($("#shipment").html()); //Nombre de la paquetería
                         $("#openpay_carrie_id").val($('#carrie_id').val());
+           
+                        
                         $("#total-credit").val($("#total-pursh").val());
                         $("#ship_rate_target").val($('#ship_rate_choosed').html());
                         $("#date_ship_target").val($('#date_aprox').html());
@@ -596,6 +600,7 @@ $(document).ready(function () {
     });
 </script>
 @stop
+
 @section('scripts-progress')
 <script type="text/javascript">
     $(document).ready(function() {
@@ -610,6 +615,7 @@ $(document).ready(function () {
     });
 </script>   
 @stop
+
 @section('modal-debit')
 <div class="modal fade" id="debit-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -622,9 +628,7 @@ $(document).ready(function () {
             <script type="text/javascript">
                             $(document).ready(function() {
                                 
-                                /*OpenPay.setId('mk5lculzgzebbpxpam6x');
-                                OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
-                                OpenPay.setSandboxMode(true);*/
+
                                 //Se genera el id de dispositivo
                                 var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
                                 
@@ -646,12 +650,104 @@ $(document).ready(function () {
                                     }, 1000);
 
                                 };
-
+                                
+                                //Errores 
                                 var error_callbak = function(response) {
                                     var desc = response.data.description != undefined ? response.data.description : response.message;
-                                    alert("ERROR [" + response.status + "] " + desc);
-                                    $("#pay-button").prop("disabled", false);
-                                };
+                                    var message_errors=desc.split(",");
+                                    
+                                    var error_code = response.status;
+                                    var error_code2 = response.data.error_code;
+
+                                    var error_message="Errores:";
+                                    message_errors.forEach(function(error, index) {
+                                        
+                                        switch (error.trim()) {
+                                            
+                                            case "card_number is required":
+                                                error_message+=" El número de tarjeta es requerido |"
+                                                break;
+
+                                            case "The card number verification digit is invalid":
+                                                error_message+=" El número de tarjeta es invalido |"
+                                                break;
+
+                                            case "holder_name is required":
+                                                error_message+=" El nombre del titular es requerido |"
+                                                break;
+
+                                            case "expiration_year expiration_month is required":
+                                                error_message+=" La fecha de expiracion es requerida |"
+                                                break;
+
+                                            case "card_number must contain only digits":
+                                                error_message+=" El número de tarjeta debe contener solo dígitos |"
+                                                break;
+
+                                            case "card_number length is invalid":
+                                                error_message+=" La longitud del número de tarjeta es invalido |"
+                                                break;
+
+                                            case "The CVV2 security code is required":
+                                                error_message+=" El codigo de seguiridad es requerido |"
+                                                break;
+
+                                            case "cvv2 must contain only digits":
+                                                error_message+=" El codigo de seguiridad tiene que contener solo dígitos |"
+                                                break;
+
+                                            case "cvv2 length must be 3 digits":
+                                                error_message+=" El codigo de seguiridad debe contener solo 3 dígitos |"
+                                                break;
+
+                                            case "cvv2 length must be 4 digits":
+                                                error_message+=" El codigo de seguiridad debe contener solo 4 dígitos |"
+                                                break;
+
+                                            case "valid expirations months are 01 to 12":
+                                                error_message+=" El mes de expiración es invalido debe ser entre 01-12 |"
+                                                break;
+
+                                            case "valid expirations year are 01 to 99":
+                                                error_message+=" El año de expiración es invalido debe ser entre 01-99 |"
+                                                break;
+
+                                            case "expiration_year length must be 2 digits":
+                                                error_message+=" El año debe contener 2 dígitos |"
+                                                break;
+                                            
+                                            case "expiration_month length must be 2 digits":
+                                                error_message+=" El mes debe contener 2 dígitos |"
+                                                break;
+
+                                            case "The expiration date has already passed":
+                                                error_message+=" La fecha de expiración ya ha pasado |"
+                                                break;
+                                        
+                                            default:
+                                                if( (error.includes("expiration_month") && error.includes("is invalid")) ||
+                                                    (error.includes("expiration_year") && error.includes("is invalid")) )
+                                                { }
+                                                else
+                                                {
+                                                    error_message+=" Error desconocido: "+error+" |"
+                                                }
+                                                break;
+                                        }
+                                        
+                                    });
+
+                                    //Notificacion
+                                    $.notify({
+                                        // options
+                                        message: error_message
+                                    },{
+                                        // settings
+                                        type: 'danger',
+                                        z_index: 2000,
+                                    });
+                                   
+                                }
 
                             });
                         </script>

@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 use App\Http\Traits\CartTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\validation\Rule;
 use Spatie\Permission\Models\Role;

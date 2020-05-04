@@ -94,29 +94,25 @@
         El total de su carrito es: ${{ number_format(Auth::user()->total, 2)  }}
     @endif
 </div>
-                        
-   
-    
-    
-   
-        
+                             
 </div>
 <style>
- #loader {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
-    opacity: .8;
-}
+    #loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
 </style>
 <script>
-$("#btn-pay-cart").click(function(){
-    $("#loader-contener").html("<div id='loader' class='text-center' style='font-size:40px; '><span style='padding-top:300px;'>Espere por favor <br>Cargando paqueterías</span> </div>");
-});
+
+    $("#btn-pay-cart").click(function(){
+        $("#loader-contener").html("<div id='loader' class='text-center' style='font-size:40px; '><span style='padding-top:300px;'>Espere por favor</span> </div>");
+    });
 
 </script>
 @stop

@@ -103,4 +103,49 @@ class ApiRequest extends Model
 
         return collect(json_decode($response, true)['grupo']);
     }
+
+    //Checar precio antes de compra
+    public static function checkPrice($product_sku)
+    {
+        $endpoint = "https://www.grupocva.com/catalogo_clientes_xml/lista_precios.xml?dt=1&dc=1&cliente=35152&clave=".$product_sku."&marca=%25&MonedaPesos=1&promos=1&sucursales=1&porcentaje=".config("configurations.general.pct");
+        $client = new \GuzzleHttp\Client();
+        
+        $requestContent = [
+            'headers' => [
+                'Content-type'     => 'application/x-www-form-urlencoded',
+                'Accept' =>'*/*'
+            ],
+            
+        ];
+
+        $res=$client->request('GET', $endpoint, $requestContent);
+       
+        $xml=simplexml_load_string($res->getBody(),'SimpleXMLElement',LIBXML_NOCDATA);
+        $response=json_encode($xml);
+
+        $data=collect(json_decode($response, true));
+        $product;
+        
+        if($data->count()>0)
+        {
+            if (!array_key_exists("disponible", $data["item"])) {
+                $product=$data['item'];
+            }
+        }
+
+
+        $price_checked=0;
+
+        $price_checked=$data['precio'];
+                    
+        if(!$data['PrecioDescuento']=='Sin Descuento') //Condicion para ingresar si existe descuento
+        {
+            $price_checked=$data['PrecioDescuento'];
+        }
+        
+
+        return $price_checked;
+
+
+    }
 }

@@ -16,12 +16,14 @@ use App\Webhook;
 use App\OrderOxxo;
 use Carbon\Carbon;
 use App\EnviaYa;
+use App\Sepomex;
+use App\ApiRequest;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
-use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Routing\Controller as BaseController;
@@ -35,6 +37,13 @@ use App\Http\Traits\SearchTrait;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
+use Openpay;
+use Exception;
+use OpenpayApiError;
+use OpenpayApiAuthError;
+use OpenpayApiRequestError;
+use OpenpayApiConnectionError;
+use OpenpayApiTransactionError;
 
 use App\Mailers\AppMailers;
 use App\PaymentInformation;
@@ -54,16 +63,29 @@ class CartController extends Controller {
 
     public function payCart()
     {
-        $envia=new EnviaYa;
+        // $envia=new EnviaYa; //Envios
         $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
+
+        $date_now=Carbon::now();
+       
+        // $subtotal=Auth::user()->total_checked;
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
-        $rates=null;
+        $rates=collect([]);
         if(Auth::user()->addressActive() != null)
         {
             $cpUser=Auth::user()->addressActive()->cp;
-            $rates=$envia->getRates();
+            //Revisar ciudad del codigo postal
+            $sepomex_register=Sepomex::where("d_codigo",$cpUser)->first();
+            if ($sepomex_register->count()) {
+                if($sepomex_register->d_ciudad=="La Paz") //Revisar si el codigo postal es de la paz
+                {
+                    $rates=collect(["rate"=>0]);
+                }
+            }
+
+            // $rates=$envia->getRates();
         }
         else
         {
@@ -83,38 +105,39 @@ class CartController extends Controller {
     public function addCart(Request $request) {
 
         //Buscar el producto para agregar al carrito
-        $product_id=Product::find($request->product_id);
-        //$product_id=Product::where("id",$request->product_id);
-        $product_id->setAttribute('qty', 1);
-        $img_product=$product_id->photos()->first()->path;
-        $product_id->setAttribute('img', $img_product);
-        // Identificar si es visitante o usuario registrado
+        $product=Product::find($request->product_id);
+        //Obtener fecha actual
+        $current_date=Carbon::now();
+        //Agregar el atributo de la cantidad para mostrarlo
+        $product->setAttribute('qty', 1);
+        //Agregar el atributo de la imagen para mostrarlo
+        $img_product=$product->photos()->first()->path;
+        $product->setAttribute('img', $img_product);
+        // Identificar si es visitante=0 | usuario registrado=1
         $user=0;
         $itemCount=0;
-      
+       
         if(Auth::check())
         { 
-            $user=1;
-            if(Auth::user()->productIs($product_id->id))
-            { }
-            else
-            {
-                
-                $cart=new Cart;
+            $user=1; 
+            if(!Auth::user()->productIs($product->id)) //Prevenir que se repita el producto en el carrito
+            {  $cart=new Cart;
                 $cart->user_id=Auth::user()->id;
                 $cart->status="Active";
-                $cart->product_id=$product_id->id;
-                $cart->product_price=$product_id->real_price;
+                $cart->product_id=$product->id;
+                $cart->product_price=$product->real_price;
+                $cart->product_sku=$product->product_sku;
                 $cart->qty=1;
-                $cart->total=$product_id->real_price;
+                $cart->total=$product->real_price;
+                $cart->checked_date=$current_date->format("Y-m-d");
                 $cart->save();
                 $itemCount=Auth::user()->carts->count();
-                $product_id->setAttribute('total', Auth::user()->total);
+                $product->setAttribute('total', Auth::user()->total);
             }
             
         }
         
-        return response(['item'=>$product_id,'user' =>$user,'itemcount'=>$itemCount, 'img_product'=>$img_product],200);
+        return response(['item'=>$product,'user' =>$user,'itemcount'=>$itemCount, 'img_product'=>$img_product],200);
     
 
     }
@@ -214,7 +237,6 @@ class CartController extends Controller {
     }
 
     public function showPaymentCardCreditSuccess(Request $request) {
-        //dd($request);
         return back()->with('flash','Pago exitoso');
     }
 
@@ -230,23 +252,44 @@ class CartController extends Controller {
         return response(['progress'=>Session::get('progress')],200);
     }
 
-    public function confirmation(Request $request, AppMailers $mailer) {
-        
-        Session::put('progress', "Preparando envío");
-        Session::save(); 
-        
+    public function confirmation(Request $request, AppMailers $mailer) 
+    {
         $sale= new Sale;
-        $enviaYa=new EnviaYa;
-        $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'),Auth::user());
-       
-        Session::put('progress', $envio->status_message);
-        Session::save();
+        $envio;
 
-        $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),$envio->shipment_status,$envio->carrier_shipment_number,"Acreditado", $request->method_pay);
+        //Revisar tipo de envio null == Acordar con el vendedor
+        if($request->carrie_id)
+        {
+
+            Session::put('progress', "Preparando envío");
+            Session::save(); 
+            
+            $enviaYa=new EnviaYa;
+            $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'),Auth::user());
+            
+              
+            Session::put('progress', $envio->status_message);
+            Session::save();
+        }
+        else
+        {
+            $envio["shipment_status"]="Por acordar";
+            $envio["carrier_shipment_number"]="Vendedor";
+            $request["date_ship"]="5 dias habiles";
+            $request["ship_rate"]="Acordar con el vendedor";
+        }
+     
+        //Realizar y guardar la venta 
+        $sale->insert(Auth::user()->total,$request->get('carrie'),$request->get("carrie_id"),
+        $envio['shipment_status'],
+        $envio['carrier_shipment_number'],"Acreditado", 
+        $request->method_pay);
         
+        //Obtener productos del carrito
         $cartItems=Auth::user()->carts();
         foreach($cartItems->get() as $cartItem)
         {
+            //Obtener vendedor del producto
             $productseller=ProductSeller::find( $cartItem->product->id);
            
             if($productseller != null)
@@ -256,7 +299,9 @@ class CartController extends Controller {
             }
             else
             {
+                //Obtener administrador
                 $admin = User::role('Admin')->first();
+                //Agregar historial de venta
                 $saleHistory=new SeleHistory;
                 $saleHistory->insert($cartItem,$admin->id,Auth::user()->customer->nombre, $sale->id);
             
@@ -266,6 +311,7 @@ class CartController extends Controller {
             $product->product_qty=$product->product_qty-$cartItem->qty;
             $product->save();
 
+            //Agregar al historial del cliente
             $customerHistory=new CustomerHistory;
             $customerHistory->insert($cartItem,$sale);
         }
@@ -274,16 +320,19 @@ class CartController extends Controller {
         //Administrador
         $admin = User::role('Admin')->first();
         
-        $mailer->sendReceiptPayment($admin,Auth::user(), null, $request->ship_rate, $request->date_ship, $request->method_pay);
+        //Enviar correo a administrador
+        $mailer->sendReceiptPayment($admin,Auth::user(), $sale, $request->ship_rate, $request->date_ship, $request->method_pay);
         if($mailer)
         {
-            
-            $mailer->sendReceiptPaymentClient(Auth::user(),$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url,null,$request->ship_rate, $request->date_ship, $request->method_pay);
+            //Enviar correo a cliente con su recibo de compra
+            $mailer->sendReceiptPaymentClient(Auth::user(), $envio, $sale, $request->ship_rate,$request->date_ship, $request->method_pay);
             if($mailer)
             {
                 //borrar productos del carrito
                 Auth::user()->carts()->delete();
+                //Borrar sesion para el mensaje de progreso
                 Session::forget('progress');
+                //Regresar a home con el mensaje de pago existoso
                 return redirect("/")->with('pay-success','Pago exitoso');
             }
             else
@@ -296,6 +345,94 @@ class CartController extends Controller {
             echo("Mensaje no enviado");
         }
         
+    }
+
+    //WebHook para pagos con banco y tiendas
+    public function OpnepayWebhookCatch(Request $request, AppMailers $mailer) 
+    {
+        echo "HTTP 200 OK"; 
+        if($request != null)
+        { 
+            $json = file_get_contents("php://input");
+            $transfer = json_decode($json);
+            //Pago procesado con exito
+             if($transfer->type=="charge.succeeded")
+             {
+                 //Buscar venta 
+                 $sale=Sale::find($transfer->transaction->order_id);
+                 if(!$sale->status_pago=="Acreditado") //Prevenir el doble envio de notificacion por parte de openpay
+                 {
+                     $client=$sale->client;
+                     $envio=null;
+                     //Envio acordar con el vendedor
+                     if($sale->shipment_method)
+                     {
+                        $enviaYa=new EnviaYa;
+                        $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
+                        $sale->updateStatusShip($envio->shipment_status);
+                        $sale->updateTracking($envio->carrier_shipment_number);
+                    }
+                    //Actualizar status de pago
+                    $sale->updatePay();
+   
+                    //Buscar el usuario administrador
+                    $userAdmin=User::role('Admin')->first();
+                    //Enviar correos
+                    
+                    //Agregar al historial de venta
+                    foreach($sale->customerHistories()->get() as $item)
+                    {
+                       $productseller=ProductSeller::find( $item->product_id); //Buscar si existe el vendedor
+                       if($productseller != null)
+                       {
+                           $saleHistory=new SeleHistory;
+                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
+                       }
+                       else //Al no existir se le agrega al administrador
+                       {
+                            $saleHistory=new SeleHistory;
+                            $saleHistory->insert_pCustomer($item,$userAdmin->id,$client->customer->nombre,$sale->id);
+                       }
+
+                       //Quitar cantidad al producto
+                        $product=Product::find($item->product_id);
+                        $product->product_qty=$product->product_qty-$item->amount;
+                        $product->save();
+                   }
+                   //envio de correos al administrador como al cliente del pago existoso
+                   if($envio) //null==Acordar con el vendedor
+                   {
+                       $mailer->sendReceiptClientAdmin($userAdmin,$client,
+                       $envio->carrier_shipment_number, 
+                       $envio->carrie_url, $envio->rate->carrier_logo_url, 
+                       $sale,$envio->rate->total_amount,
+                       $envio->rate->estimated_delivery);
+                       
+                    }
+                    else
+                    {
+                        $mailer->sendReceiptClientAdmin($userAdmin,$client,
+                        "Vendedor", 
+                        null, null, 
+                        $sale,"Acordado con el vendedor",
+                        "5 dias habiles");
+                    }
+                }
+                 
+            }
+         }
+       
+       
+       
+        //Obtener codigo de enlace para el dashboard de openpay (NO BORRAR)
+
+        // header('HTTP/1.1 200 OK');        
+        // $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+        // $json = file_get_contents("php://input");
+        // $a = json_decode($json);
+        //     fwrite($myfile, json_encode($a));
+        // fclose($myfile); 
+
     }
 
     //Pruebas de vista de recibo de pago
@@ -326,36 +463,15 @@ class CartController extends Controller {
         }
     }
 
-    public function addUserOpenpay() {
-
-        $openpay = \Openpay::getInstance('mk5lculzgzebbpxpam6x', 'sk_d90dcb48c665433399f3109688b76e24');
-
-        $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
-        $useraddresses = Address::where("usuario",Auth::user()->id)->first();
-            $customerData = array(
-            'external_id' => Auth::user()->id,
-            'name' => $usercustomer->nombre,
-            'last_name' => $usercustomer->apellidos,
-            'email' => Auth::user()->email,
-            'phone_number' => $usercustomer->telefono,
-            'address' => array(
-                    'line1' => $useraddresses->calle,
-                    'line2' => $useraddresses->calle2,
-                    'line3' => $useraddresses->calle3,
-                    'postal_code' => $useraddresses->cp,
-                    'state' => $useraddresses->estado,
-                    'city' => $useraddresses->ciudad,
-                    'country_code' => 'MX'));
-        $customer = $openpay->customers->add($customerData);
-
-    }
-
     //Pagos en banco
     public function PagosBanco(Request $request) {
-
-      
+        
+        //Conectarse con la api de openpay
         $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+        
+        //Obtener el cliente
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
+        //Obtener direccion activa del cliente 
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
      
         try {
@@ -375,6 +491,7 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
+
         $sale= new Sale;
         $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
         $cartItems=Auth::user()->carts();
@@ -392,7 +509,7 @@ class CartController extends Controller {
 
         $chargeData = array(
             'method' => 'bank_account',
-            'amount' => $request->get("ship_rate_total"),
+            'amount' => (float) $request->get("ship_rate_total"),
             'description' => 'Cargo con Bancomer',
             'order_id' => $sale->id, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
@@ -408,39 +525,42 @@ class CartController extends Controller {
         }
         
         } catch (OpenpayApiTransactionError $e) {
-            error_log('ERROR on the transaction: ' . $e->getMessage() . 
-                  ' [error code: ' . $e->getErrorCode() . 
-                  ', error category: ' . $e->getCategory() . 
-                  ', HTTP code: '. $e->getHttpCode() . 
-                  ', request ID: ' . $e->getRequestId() . ']', 0);
-            echo "ERROR A";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
-            echo "ERROR B";
-            echo $e;
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
-            echo "ERROR C";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
-            echo "ERROR D";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
-            echo "ERROR E";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
             
         } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
-            echo "ERROR F";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         }
         
     }
 
     //Pagos en tienda
     public function PagosStore(Request $request) {
+        //Conectra con el api de openpay
         $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+        
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
         Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
@@ -461,7 +581,8 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-
+        
+        //Generar venta por acreditar
         $sale= new Sale;
         $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
         $cartItems=Auth::user()->carts();
@@ -479,7 +600,7 @@ class CartController extends Controller {
         Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' =>  $request->get("ship_rate_total"),
+            'amount' => (float) $request->get("ship_rate_total"),
             'description' => 'Cargo a tienda',
             'order_id' => $sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
@@ -496,107 +617,47 @@ class CartController extends Controller {
         }
         
         } catch (OpenpayApiTransactionError $e) {
-            error_log('ERROR on the transaction: ' . $e->getMessage() . 
-                  ' [error code: ' . $e->getErrorCode() . 
-                  ', error category: ' . $e->getCategory() . 
-                  ', HTTP code: '. $e->getHttpCode() . 
-                  ', request ID: ' . $e->getRequestId() . ']', 0);
-            echo "ERROR A";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
-            echo "ERROR B";
-            echo $e;
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
-            echo "ERROR C";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         
         } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
-            echo "ERROR D";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
-            echo "ERROR E";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
             
         } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
-            echo "ERROR F";
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         }
 
     }
 
-    public function OpnepayWebhookCatch(Request $request, AppMailers $mailer) 
-    {
-        echo "HTTP 200 OK"; 
-        if($request != null)
-        { 
-            $json = file_get_contents("php://input");
-            $transfer = json_decode($json);
-             if($transfer->type=="charge.succeeded")
-             {
-                 $sale=Sale::find($transfer->transaction->order_id);
-                 if($sale->status_pago=="Acreditado")
-                 { }
-                 else
-                 {
-                    $enviaYa=new EnviaYa;
-                    $client=$sale->client;
-                    $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
-                    $sale->updateStatusShip($envio->shipment_status);
-                    $sale->updateTracking($envio->carrier_shipment_number);
-                    $sale->updatePay();
-   
-                    //Admin
-                    $userAdmin=User::find(6);
-                    //Enviar correos
-                  
-                    foreach($sale->customerHistories()->get() as $item)
-                    {
-                       $productseller=ProductSeller::find( $item->product_id);
-                       if($productseller != null)
-                       {
-                           $saleHistory=new SeleHistory;
-                           $saleHistory->insert_pCustomer($item,$productseller->id,$client->customer->nombre,$sale->id);
-                       }
-                       else
-                       {
-                            $admin = User::role('Admin')->first();
-                            $saleHistory=new SeleHistory;
-                            $saleHistory->insert_pCustomer($item,$admin->id,$client->customer->nombre,$sale->id);
-                       }
-
-                       //Quitar cantidad al producto
-                        $product=Product::find($item->product_id);
-                        $product->product_qty=$product->product_qty-$item->amount;
-                        $product->save();
-                   }
-                   $mailer->sendReceiptClientAdmin($userAdmin,$client,$envio->carrier_shipment_number, $envio->carrie_url, $envio->rate->carrier_logo_url, $sale,$envio->rate->total_amount,$envio->rate->estimated_delivery);
-                }
-                 
-            }
-         }
-       
-       
-       
-
-        // header('HTTP/1.1 200 OK');        
-
-        // $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
-        // $json = file_get_contents("php://input");
-        // $a = json_decode($json);
-        //     fwrite($myfile, json_encode($a));
-        // fclose($myfile); 
-
-    }
 
     //pago con targeta de crédito o débito
     public function CardOpenpay(Request $request) {
-        // dd($request);
+        
         Session::put('progress', "Generando el cargo");
         Session::save(); 
         try {
-            $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+            $openpay = Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+            Openpay::setProductionMode(false);
+
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
             $useraddresses = Address::where("usuario",Auth::user()->id)->first();
             $random = rand(0, 99999);
@@ -611,7 +672,7 @@ class CartController extends Controller {
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
-                'amount' => number_format($request->get("ship_rate_total"),2),
+                'amount' => (float) $request->get("ship_rate_total"),
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
@@ -619,8 +680,10 @@ class CartController extends Controller {
                 'customer' => $customer);
             
             
-
             $charge = $openpay->charges->create($chargeData);
+           
+
+          
            if($charge->status=='completed')
            {
                $val=$request->ship_rate;
@@ -630,37 +693,42 @@ class CartController extends Controller {
                                                     'method_pay'=>$request->get('method_pay') ]
                 );
            }
-        } catch (OpenpayApiTransactionError $e) {
-            
-            $msg="Error en la transacción, intente de nuevo";
-            switch ($e->getErrorCode()) {
-                case 3001:
-                   $msg="La tarjeta fue declinada";
-                    break;
-                
-                default:
-                    # code...
-                    break;
-            }
+          
 
-            return back()->with("error", $msg);
-                
-        
+
+        } catch (OpenpayApiTransactionError $e) {
+
+            $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
+            
         } catch (OpenpayApiRequestError $e) {
-            error_log('ERROR on the request: ' . $e->getMessage(), 0);
-        
+
+             $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (OpenpayApiConnectionError $e) {
-            error_log('ERROR while connecting to the API: ' . $e->getMessage(), 0);
-        
+
+             $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (OpenpayApiAuthError $e) {
-            error_log('ERROR on the authentication: ' . $e->getMessage(), 0);
-            
+
+             $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (OpenpayApiError $e) {
-            error_log('ERROR on the API: ' . $e->getMessage(), 0);
-            
+
+             $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         } catch (Exception $e) {
-            error_log('Error on the script: ' . $e->getMessage(), 0);
+
+             $error_message="Error en la trasacción: ".Cart::error_code_openpay($e->getErrorCode());
+
+            return back()->with("error", $error_message);
         }
+       
 
     }
 
@@ -831,11 +899,9 @@ class CartController extends Controller {
 
     } 
 
-    
-    public function notify(Request $request)
-    {
-        dd($request);
-    } 
+  
 
     
 }
+
+
