@@ -23,38 +23,36 @@ use Barryvdh\DomPDF\Facade as PDF;
 class CustomerController extends Controller
 {
     use SearchTrait, CartTrait;
+    
+    public function accountdata(Request $request)
+    {
+        // dd($request->all());
 
-    /**
-     * Display Profile contents
-     *
-     * @return mixed
-     */
-    public function index() {
-        // From Traits/SearchTrait.php
-        // ( Enables capabilities search to be preformed on this view )
-        $search = $this->search();
+        if(!auth()->user()->hasRole('Admin'))
+        {
+            return response("Permiso denegado", 403);
+        }
 
-        // From Traits/CartTrait.php
-        // ( Count how many items in Cart for signed in user )
-        $cart_count = $this->countProductsInCart();
+        $customer=Customer::findOrFail($request->customer_id);
 
-        // Get the currently authenticated user
+        return response($customer, 200);
+    }
+
+
+    public function index() 
+    {
+       
         $username = \Auth::user();
 
-        // Set user_id to the currently authenticated user ID
-        $user_id = $username->id;
-
-        // Select all from "Orders" where the user_id = the ID og the signed in user to get all their Orders
-        $orders = Order::where('user_id', '=', $user_id)->get();
+        $orders = Order::where('user_id', '=', $username->id)->get();
 
         $sales=Auth::user()->sale()->orderBy("date","desc")->paginate(5);
 
-        return view('customer.pages.customer_history', compact('search', 'cart_count', 'username', 'orders', 'sales'));
+        return view('customer.pages.customer_history', compact('username', 'orders', 'sales'));
     }
 
     public function personal() {
         $userpersonal = Auth::user()->customer;
-        // dd($userpersonal);
         return view('customer.pages.persanaldate', compact('userpersonal'));
     }
 
@@ -70,6 +68,7 @@ class CustomerController extends Controller
         $customer->nombre = $request->name;
         $customer->apellidos = $request->firstname.' '.$request->secondname;
         $customer->telefono = $request->phone;
+        $customer->email = $request->email;
         $customer->razonSocial = $request->socialname;
         $customer->tipoFacturacion = $request->facturacion;
         $customer->rfc = $request->rfc;
@@ -101,6 +100,7 @@ class CustomerController extends Controller
             $customer->nombre = $request->name;
             $customer->apellidos = $request->firstname.' '.$request->secondname;
             $customer->telefono = $request->phone;
+            $customer->email = $request->email;
             $customer->razonSocial = $request->socialname;
             $customer->tipoFacturacion = $request->facturacion;
             $customer->rfc = $request->rfc;

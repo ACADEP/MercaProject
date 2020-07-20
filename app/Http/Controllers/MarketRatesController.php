@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Product;
+use App\User;
+use App\Customer;
 use App\MarketRates;
 use App\MarketRatesDetail;
 use App\Sale;
 use App\CustomerHistory;
-use App\OrderOxxo;
+use App\Order;
 use App\Http\Requests\MarketRateRequest;
 
 use Illuminate\Http\Request;
@@ -20,19 +22,24 @@ class MarketRatesController extends Controller
 {
     public function market_rates()
     {
+        
         $market_rates=MarketRates::all();
-        return view("admin.market_rates.index", compact('market_rates'));
+        $clients=Customer::orderBy("nombre")->get();
+        return view("admin.market_rates.index", compact('market_rates', 'clients'));
     }
 
     public function showCreate()
     {
+        $clients=Customer::orderBy("nombre")->get();
+       
         $marketrate=new MarketRates;
-        return view("admin.market_rates.create", compact('marketrate'));
+        return view("admin.market_rates.create", compact('marketrate', "clients"));
     }
 
     public function showEdit(MarketRates $marketrate)
     {
-        return view("admin.market_rates.edit", compact('marketrate'));
+        $clients=Customer::orderBy("nombre")->get();
+        return view("admin.market_rates.edit", compact('marketrate',"clients"));
     }
     
     public function searchMarket_rates(Request $request)
@@ -58,7 +65,8 @@ class MarketRatesController extends Controller
         }
         session()->flashInput($request->input());
         $marketrate=new MarketRates;
-        return view("admin.market_rates.create", compact('search','marketrate'));
+        $clients=Customer::orderBy("nombre")->get();
+        return view("admin.market_rates.create", compact('search','marketrate', "clients"));
         
     }
     public function searchMarket_ratesedit(Request $request)
@@ -85,7 +93,8 @@ class MarketRatesController extends Controller
         
         session()->flashInput($request->input());
         $marketrate=MarketRates::find($request->market);
-        return view("admin.market_rates.edit", compact('search', 'marketrate'));
+        $clients=Customer::orderBy("nombre")->get();
+        return view("admin.market_rates.edit", compact('search', 'marketrate', "clients"));
         
        
     }
@@ -314,7 +323,8 @@ class MarketRatesController extends Controller
     public function PDF(MarketRates $marketrate)
     {
         $items=$marketrate;
-        $pdf = PDF::loadView('admin.market_rates.pdf-print',compact('items'));
+        // $pdf = PDF::loadView('admin.market_rates.pdf-print',compact('items'));
+        $pdf = PDF::loadView('admin.market_rates.pdf-template',compact('items'));
         return $pdf->stream('Cotización'.$items->date.'.pdf');
       
     }
@@ -345,24 +355,28 @@ class MarketRatesController extends Controller
     {
         $search=null;
         $search_find=$request->search;
+
+        $query=MarketRates::select("*");
+
+        if($request->client)
+        {
+            $query=$query->where("client", $request->client);
+        }
+
         if( $search_find!=null || $search_find!="")
         {
-           
-            $query=MarketRates::select("*");
-                                                 
+                                        
             $query = $query->orWhere("id", 'LIKE', "%$search_find%");
             $query = $query->orWhere("company", 'LIKE', "%$search_find%");
             $query = $query->orWhere("email", 'LIKE', "%$search_find%");
-            $market_rates = $query->get();
-           
             
         }
-        else
-        {
-            $market_rates=MarketRates::all();
-        }
+        
+        $market_rates=$query->paginate(10);
+        $clients=Customer::orderBy("nombre")->get();
+        $old_inputs=$request->all();
        
-        return view("admin.market_rates.index", compact('market_rates'));
+        return view("admin.market_rates.index", compact('market_rates', 'clients', 'old_inputs'));
     }
 
     public function sendEmailMarketRate(AppMailers $mailer, Request $request)
@@ -395,20 +409,22 @@ class MarketRatesController extends Controller
         $sale= new Sale;
         $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar","Cotización");
         $items=$market_rate;
+        
+        //PDF RECIBO
         $pdf = PDF::loadView('admin.market_rates.pdf-pay',compact('items'));
         Session::put('pay-marketrate',  $pdf->stream('Recibo-pago.pdf'));
         Session::save(); 
-        foreach($market_rate->MarketRatesDetails()->get() as $detail)
-        {
-            $history= new CustomerHistory;
-            $history->sale_id=$sale->id;
-            $history->product_id=$detail->product_id;
-            $history->product_name=$detail->product->product_name;
-            $history->product_price=$detail->price;
-            $history->amount=$detail->qty;
-            $history->save();
-        }
-        $orOxxo=new OrderOxxo;
+        // foreach($market_rate->MarketRatesDetails()->get() as $detail)
+        // {
+        //     $history= new CustomerHistory;
+        //     $history->sale_id=$sale->id;
+        //     $history->product_id=$detail->product_id;
+        //     $history->product_name=$detail->description;
+        //     $history->product_price=$detail->price;
+        //     $history->amount=$detail->qty;
+        //     $history->save();
+        // }
+        $orOxxo=new Order;
         $orOxxo->insert(Auth::user()->id,$sale->id, $market_rate->id);
 
         return back();

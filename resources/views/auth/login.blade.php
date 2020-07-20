@@ -11,7 +11,17 @@
                             <div class="alert alert-primary">
                                 {{session('flash')}}
                             </div>
-                        @endif    
+                        @endif  
+
+                        @if(session('log-to-pay'))
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{session('log-to-pay')}}
+                                <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                            
                         <h4 class="text-center" id="log-in">Iniciar Sesión</h4>
                         <form class="form-horizontal" role="form" method="POST" action="{{ route('auth.login') }}">
                             {!! csrf_field() !!}

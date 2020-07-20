@@ -9,8 +9,16 @@
     </div>
 
     <div class="col-md-4 text-left">
-    <label for="client">Cliente:</label>
-    <input type="text" class="form-control" required style="width:100%;" maxlength="255" name="client" id="client" value="{{old('client', $data->client)}}">
+    <label for="client">Cliente:</label><br>
+    <select required class="form-control" style="width:100%;" name="client" id="client">
+        <option value="">Elegir un cliente</option>
+        @foreach ($clients as $item)
+            <option @if(old("client", $data->client) == $item->id ) selected @endif
+             value="{{$item->id}}">{{$item->full_name}}</option>
+        @endforeach
+        <option value="add">Añadir</option>
+    </select>
+    {{-- <input type="text" class="form-control" required style="width:100%;" maxlength="255" name="client" id="client" value="{{old('client', $data->client)}}"> --}}
     &nbsp&nbsp
     </div>
 
@@ -37,3 +45,35 @@
     <input type="email" class="form-control" required style="width:100%;" maxlength="255" name="email" id="email" value="{{old('email', $data->email)}}">
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        $("#client").change(function(){
+            if( $(this).val() == "add" )
+            {
+                //Ir a crear un cliente
+                window.open('/admin/clients/showcreate', '_blank');
+                $(this).val("");
+                return ;
+            }
+            if($(this).val() != "")
+            {
+                var element_id=$(this).val();
+                $.ajax({
+                url: "/customer/getdata",
+                method: 'get',
+                datatype: "json",
+                data: {customer_id:element_id},
+                    success: function(response){
+                        $("#phone").val(response.telefono)
+                        $("#address").val(response.full_address)
+                        $("#email").val(response.email)
+                    },
+                    error: function(response) {
+                        alert(response)
+                    }
+                });
+            }
+        });
+    </script>
+@endpush

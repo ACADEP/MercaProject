@@ -91,7 +91,11 @@ desired effect
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          
+          <li>
+            <a href="{{ url('/cart') }}" style="color: #000 !important;">Ir al Carrito</a>
+
+          </li>
+       
           <!-- User Account Menu -->
           <li class="dropdown user user-menu" style="background-color:black;">
             <!-- Menu Toggle Button -->

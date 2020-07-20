@@ -4,14 +4,7 @@
 <div class="col-md-12" id="body-cart">
 <div id="loader-contener"></div>
 <div class="row col-md-12">
-    @if(Auth::check()==false)
-        <div class="alert alert-primary lert-dismissible fade show mt-3" role="alert">
-            Inicie sesión o Regístrese para completar su compra.
-            <button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+    
     <div class="text-center col-12 col-sm-12 col-md-12 pt-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-right-arrow">
@@ -20,19 +13,23 @@
             </ol>
         </nav>  
     </div>
-    <form class="form-inline text-right"  method="get" action="{{ route('cart.pdf') }}">
-        <div class="text-right" style="width:100%;">
-            <input type="hidden" name="Items" id="items-carts">
-            <button class="btn btn-primary btn-just-icon" formtarget="_blank" type="submit">
-                    <i class="material-icons">local_printshop</i>
-            </button>
-            @if(Auth::check())
-                @if(Auth::user()->carts()->count()>0)
-                    <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success text-center " id="btn-pay-cart">Pagar</a></div>  
-                @endif
-            @endif
+    
+
+        <div class="row col-12 col-sm-12 col-md-12" style="display: inline-block; text-align: end;">
+            
+                <form class="form-inline" method="get" action="{{ route('cart.pdf') }}" style="display: inline-block;">
+                    <input type="hidden" name="Items" id="items-carts">
+                    <button class="btn btn-primary btn-xs btn-just-icon " formtarget="_blank" type="submit">
+                            <i class="material-icons">local_printshop</i>
+                    </button>
+                </form>            
+                
+               
+                <div id="btn-pay-div" style="display:inline;"> <a href="{{ route('pay-cart') }}" class="btn btn-success" id="btn-pay-cart">Pagar</a></div>  
+               
+                
         </div>
-    </form>            
+
 </div>
         
 

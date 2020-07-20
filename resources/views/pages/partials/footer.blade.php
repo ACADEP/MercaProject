@@ -43,14 +43,15 @@
                     <img src="/images/WaystoPays/PayPal.png">
                     <img src="/images/WaystoPays/OXXO.png">
                     <img src="/images/WaystoPays/Dollar.png">
+                    <br><br>
+                    <a href="{{route("pages.politics")}}">Politicas de privacidad</a> &nbsp;
+                    <a href="{{route("pages.terms-and-conditions")}}">Terminos y condiciones</a>
                 </div>
                 
             </div>
         </div>
         <div class="footer-copyright">
-           
-            
-                <div class="text-center"><a href="http://acadep.com/wp/" target="_blank">© 2018 Derechos Reservados, mercadata.com</a></div>
+            <div class="text-center"><a href="http://acadep.com/wp/" target="_blank">©{{\Carbon\Carbon::now()->year}} Derechos Reservados, mercadata.com</a></div>
         </div>
     </footer>
 </div>

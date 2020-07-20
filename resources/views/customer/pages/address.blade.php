@@ -32,21 +32,19 @@
             Direcciones 
         </h1> 
 </section><br>     
-<div class="col-sm-3 text-left" style="padding-left: 35px; font-size: 18px;">
-    <a href="{{ url('/cart') }}" style="color: #000 !important;">Ver Carrito</a>
-</div>
-<div class="col-sm-3 text-center" style="margin-right: 14%; padding-bottom: 20px;">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right" style="margin-right: 14%; padding-bottom: 20px;">
     <button class="btn btn-success"  data-toggle="modal" data-target="#add_address"><i class="fa fa-plus-square" aria-hidden="true"></i> Agregar</button>
 </div>
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row">
     @if($useraddresses != null)
         @php
             $id = 1;
         @endphp
         <!-- <form action="#" method="POST"> -->
-            <div class="panel-group col-xs-6 col-sm-6 col-md-6 col-lg-6" id="accordion" style="width: 100%;" role="tablist" aria-multiselectable="true" >
-                
-                @foreach($useraddresses as $address)
+            
+            @foreach($useraddresses as $address)
+            <div class="panel-group col-xs-4 col-sm-4 col-md-4 col-lg-4" id="accordion" style="width: 100%;" role="tablist" aria-multiselectable="true" >
                         <div class="panel panel-default" id="address{{ $address->id }}">
                             <div class="panel-heading" role="tab" id="heading{{ $id }}">
                                 <h4 class="panel-title" style="float: left;">
@@ -59,13 +57,16 @@
                                         @else
                                             <label class="btn btn-xs btn-success">
                                                 <input name="choices[1]" class="form-control btn-click activo" type="radio" value="{{ $address->id }}" defaultchecked="checked">
-                                                <i class="fa fa-times glyphicon glyphicon-ok icon-click"></i>
+                                                <i class="fa fa-check glyphicon glyphicon-ok icon-click"></i>
                                             </label>
                                         @endif
                                          
                                     </div>
                                     <a class="collapsed lead" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $id }}" aria-expanded="false" aria-controls="collapse{{ $id }}">
-                                        {{ $address->calle }}
+                                        {{ $address->calle  ?  $address->calle.", " : " "}}  
+                                        {{ $address->calle2 ? $address->calle2.", " : " " }} 
+                                        {{ $address->calle3 ? $address->calle3.", " : " "}} 
+                                        Col. {{ $address->colonia }} - Código postal: {{ $address->cp }}
                                     </a>
                                 </h4>
                                 <div class="form-inline" style="margin-left: 88%;">
@@ -115,9 +116,9 @@
                         @php
                             $id++;
                         @endphp
+            </div>
                 @endforeach
 
-            </div>
         <!-- </form> -->
     @endif
 </div>

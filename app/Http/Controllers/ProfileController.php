@@ -56,7 +56,7 @@ class ProfileController extends Controller {
         // Set user_id to the currently authenticated user ID
         $user_id = $username->id;
 
-        // Select all from "Orders" where the user_id = the ID og the signed in user to get all their Orders
+        // Select all from "Order" where the user_id = the ID og the signed in user to get all their Order
         $orders = Order::where('user_id', '=', $user_id)->get();
 
         return view('profile.index', compact('categories', 'brands', 'search', 'cart_count', 'username', 'orders'));

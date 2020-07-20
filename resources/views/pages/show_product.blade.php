@@ -36,7 +36,7 @@
             <div class="col-md-4">
                 <h5 id="Product_Name">{{ $product->product_name }}</h5>
                 <p id="Product_Brand">Marca: {{ $product->brand ? $product->brand->brand_name : 'Sin Marca' }}</p>
-                <br>
+                <p id="Product_Brand">SKU: {{$product->product_sku}}</p>
                 @if($product->reduced_price == 0)
                 <i class="fa fa-tag" style="color: green" aria-hidden="true"></i> $ {{ number_format($product->real_price, 2) }}
                 <br>
@@ -70,7 +70,7 @@
 
                     <p id="Product_Brand" >Cantidad: {{ $product->product_qty }}</p>
                     
-                    <img src="{{ route('QRCode') }}" width="200" heigth="200">
+                    {{-- <img src="{{ route('QRCode') }}" width="200" heigth="200"> --}}
                         
                         
                 @endif

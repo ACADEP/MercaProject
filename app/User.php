@@ -102,7 +102,7 @@ class User extends Authenticatable
     }
     public function ordersOxxo()
     {
-        return $this->hasMany(OrderOxxo::class);
+        return $this->hasMany(Order::class);
     }
     
     public function payments()
@@ -194,22 +194,23 @@ class User extends Authenticatable
         $cartUser= $this->carts()->where('status', 'Active')->get();
         $total=0;
         $api_request=new ApiRequest;
-        $date_now=Carbon::now();
 
         foreach($cartUser as $cartItem)
         {
-            if($cartItem->checked_date->addDay(5) > $date_now)
+         
+            $totalChecked=ApiRequest::checkPrice($cartItem->product_sku);
+            if($totalChecked > 0) //Checar el precio 0=elimnar
             {
-                $total+=ApiRequest::checkPrice($cartItem->product_sku);
-                $cartItem->total=ApiRequest::checkPrice($cartItem->product_sku);
+                $total+=$totalChecked;
+                $cartItem->total=$totalChecked;
                 $cartItem->checked_date=$date_now->format("Y-m-d");
                 $cartItem->save();
             }
             else
             {
-                $total+=$cartItem->total;
+                $cartItem->delete();
             }
-
+            
         }
 
         return $total;

@@ -12,6 +12,12 @@ class MarketRates extends Model
     {
         return 'id';
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, "client");
+    }
+
     public function MarketRatesDetails()
     {
         return $this->hasMany(MarketRatesDetail::class);
@@ -29,5 +35,10 @@ class MarketRates extends Model
             }
         }
         return $band;
+    }
+
+    public function getTotalWithIvaAttribute()
+    {
+        return $this->total*1.16;
     }
 }

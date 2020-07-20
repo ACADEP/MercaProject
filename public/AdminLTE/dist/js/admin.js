@@ -126,7 +126,7 @@ $(document).ready(function(){
                 var order_id=$(this).val();
                 var formData = { order_id:order_id }
                 $.ajax({
-                    url: "/admin/OrderOxxo/deleteOrder",
+                    url: "/admin/Order/deleteOrder",
                     method: 'POST',
                     data: formData,
                     success: function(response){

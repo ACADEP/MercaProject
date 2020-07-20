@@ -15,6 +15,7 @@ class ConfigController extends Controller
 
     public function update(Request $request)
     {
+        
         $request->validate([
             "*"=>"required",
             'main_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -33,6 +34,7 @@ class ConfigController extends Controller
         //Configuracion de API
         $array['api']['api_key_enviaya']=$request->api_enviaya;
         $array['api']['api_key_openpay']=$request->api_openpay;
+        $array['api']['openpay_client_id']=$request->openpay_clientId;
         $array['api']['paypal-type']=$request->mode_paypal;
         $array['api']['pay-pal-key']=$request->api_paypal;
 

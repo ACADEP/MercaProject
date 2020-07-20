@@ -65,7 +65,11 @@
           @endforeach 
           <tr>
             <td colspan="4">Subtotal</td>
-            <td class="total">${{number_format($subtotal-$ship_rate, 2) }}</td>
+            @if (is_string($ship_rate))
+              <td class="total">${{number_format($subtotal, 2) }}</td>
+            @else
+              <td class="total">${{number_format($subtotal-$ship_rate, 2) }}</td>
+            @endif
           </tr>
           <tr>
             <td colspan="4">IVA</td>
@@ -73,7 +77,11 @@
           </tr>
           <tr>
             <td colspan="4">Costo de envío</td>
-            <td class="total">${{number_format($ship_rate, 2) }}</td>
+            @if (is_string($ship_rate))
+              <td class="total">{{$ship_rate}}</td>
+            @else
+              <td class="total">${{number_format($ship_rate, 2) }}</td>
+            @endif
           </tr>    
           <tr>
             <td colspan="4" class="grand total">Total</td>

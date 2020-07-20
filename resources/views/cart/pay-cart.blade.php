@@ -4,10 +4,20 @@
 <div id="loader-contener"><div id="loader" class='text-center' style='font-size:40px; '><span style="padding-top:300px;">Espere por favor</span> </div></div>
     
 <br>
-
 <!-- Stepper -->
 <div class="row">
-<div class="col-md-8 border" >
+    <div class="col-md-8 border" >
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
+                <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    @foreach ($errors->all() as $error)
+                        <li style="list-style-type: none;">{{ $error }} </li>
+                    @endforeach
+                
+                </ul>
+                
+            </div>
+        @endif
     <h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
     <div class="steps-form-2">
         <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
@@ -37,32 +47,36 @@
             <h3 class="font-weight-bold pl-0 my-4"><strong>Dirección</strong></h3>
             @php $i=1;@endphp
                 @if($addresses->count() > 0)
-                    @if($addresses->count() < 3 )
-                        <div class="text-right"><a data-toggle="modal" data-target="#add_address" style="color:blue;">Agregar una dirección</a></div>
-                    @endif
-                    <h4>Será enviado a:</h4>
-                    @foreach($addresses as $address)
                     
-                    <div class="border" style="font-size:15px;">
-                    <div class="custom-control custom-radio" style="margin-top: 10px;">
-                    &nbsp;<input type="radio" class="custom-control-input radio-address" {{ $address->activo==1 ? 'id=defaultChecked checked' : 'id=defaultUnchecked'.$i }} value="{{ $address->id }}"   name="defaultExampleRadios3">
-                        <label class="custom-control-label" {{ $address->activo==1 ? 'for=defaultChecked' : 'for=defaultUnchecked'.$i }} >Activar dirección</label>
-                    </div>
-                    <hr>
-                    &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
-                    <strong>CP:</strong>{{$address->cp}} <br>
-                    <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
-                    <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
-                    <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
-                    <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
-                    <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
-                    <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
-                    </div>
+                        <div class="text-right">
+                            
+                            @if($addresses->count() < 3 )
+                                &nbsp;&nbsp;
+                                <a data-toggle="modal" data-target="#add_address" style="color:blue;">Agregar una dirección</a>
+                            @endif
+                        </div>
+                        
+                    <h4>Será enviado a:</h4>
+                    @if($addressActive)
+                    
+                        <div class="border" style="font-size:15px;">
+                        <div style="margin-top: 10px; margin-left: 5px;">
+                            <a href="/customer/personal/address" style="color:blue;">Cambiar direccion</a> 
+                        </div>
+                        <hr>
+                        &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
+                        <strong>CP:</strong>{{$addressActive->cp}} <br>
+                        <strong>&nbsp;Ciudad:</strong>{{ $addressActive->ciudad }} {{$addressActive->estado}} <br>
+                        <strong>&nbsp;Calles:</strong> {{$addressActive->calle}} entre {{ $addressActive->calle2 }} y {{ $addressActive->calle3 }} <br> 
+                        <strong>&nbsp;Colonia:</strong> {{ $addressActive->colonia }} <br>
+                        <strong>&nbsp;Número exterior:</strong> {{$addressActive->numExterior=="" ? 'No especificado': $addressActive->numExterior}}<br> 
+                        <strong>&nbsp;Número interior:</strong> {{$addressActive->numInterior=="" ? 'No especificado': $addressActive->numinterior}} <br>
+                        <strong>&nbsp;Referencias: </strong> {{$addressActive->referencias=="" ? 'No especificado': $addressActive->referencias}}
+                        </div>
                    
-                    <br>
+                        <br>
 
-                     @php $i++; @endphp
-                    @endforeach
+                    @endif
                     
                 @else
                     <a href="{{ url('/customer/personal/address/') }}" style="color: blue;">Agregar una dirección</a>
@@ -278,12 +292,20 @@
                         @if($addresses->count() > 0)
                         @if(Auth::user()->customer !=null)
                         @if($rates->count() > 0)
-                            <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pedido</button><br>
+                            @if($subtotal<=0)
+                                <div class="alert alert-danger">No hay productos en el carrito</div>
+                            @else
+                                <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pedido</button><br>
+                            @endif
+                            
                         @else
                         <div class="alert alert-danger">No hay paqueterías disponibles</div>
                         @endif
                         @else
-                            <div class="alert alert-danger">Agregar sus datos personales para continuar su proceso de pago</div>
+                            <div class="alert alert-danger">Agregar sus datos personales para continuar su proceso de pago <br>
+                                <a data-toggle="modal" data-target="#add_personal_data" style="color:blue;" id="personalData">Agregar datos</a>
+                            </div>
+
                         @endif
                             
                         @endif
@@ -292,7 +314,11 @@
                         Paquetería:  <div id="shipment" style="font-size:15px; display:inline;"> Seleccionar un método</div> <input type="hidden" id="carrie_id"> Costo: <div class="ship-rate" style="display:inline;">Acordar con el vendedor</div> 
                         <br> Llegada aproximada: 
                         <div id="date_aprox" style="display:inline;"> <span class="badge badge-danger">Solo La Paz BCS Gratis</span> </div> 
-    
+                        <br>
+                        <strong>Información de contacto</strong> <br>
+                        Dirección: Ignacio Allende 270 entre Revolución y Serdan, col. Centro, CP: 23000 La Paz, Baja California Sur, México. <br>
+                        Contacto: sistemas@brokersconnector.com <br>
+                        <a href="{{route('pages.terms-and-conditions')}}" target="_blanck">Terminos y condiciones</a>
                     </div>
                 </div>
                  <!-- fin -->
@@ -600,6 +626,24 @@ $(document).ready(function () {
     });
 </script>
 @stop
+
+@push('scripts')
+
+    @include('cart.utils.modal-add-address')
+
+    @include('cart.utils.modal-add-personal')
+
+    <script>
+
+        @if ($errors->any())
+            @if(url()->previous()==route('customer.address.add'))
+                $("add_address").modal("show");
+            @endif
+    
+        @endif
+
+    </script>
+@endpush
 
 @section('scripts-progress')
 <script type="text/javascript">

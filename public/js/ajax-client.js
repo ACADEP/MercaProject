@@ -49,6 +49,7 @@ $(document).ready(function(){
     
 
    $(".selectCtd").change(function(){
+     
         $.ajaxSetup({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -65,10 +66,10 @@ $(document).ready(function(){
                 data: formData,
                 success: function(response){
                    
-                    var cartUserTotal = parseInt(response.cartUser[0].total);
+                    var cartUserTotal = parseFloat(response.cartUser[0].total);
                     var num = '$' +cartUserTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $("#total-client" + cart_id).html(num);
-                    var cartTotal=parseInt(response.totalCart);
+                    var cartTotal=parseFloat(response.totalCart);
                     num = '$' + cartTotal.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                     $("#total-items-client").html('<strong>Total</strong>: '+num);
                     $('#client-total').html("El total de su carrito es "+num);

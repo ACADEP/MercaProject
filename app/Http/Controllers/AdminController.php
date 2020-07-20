@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Cart;
 use App\User;
-use App\Order;
+
 use App\Product;
 use App\Category;
+use App\Customer;
 use App\Sale;
 use App\ProductSeller;
 use App\SeleHistory;
-use App\OrderOxxo;
+use App\Order;
 use App\EnviaYa;
 use File;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -100,10 +101,10 @@ class AdminController extends Controller {
         return view('admin.users.edit-roles', compact('role', 'permissions'));
     }
 
-    public function showOrderOxxo()
+    public function showOrder()
     {
-        $orders=OrderOxxo::all();
-        return view("admin.orderoxxo.index", compact("orders"));
+        $orders=Order::all();
+        return view("admin.orders.index", compact("orders"));
     }
     
     public function showCategories()
@@ -207,7 +208,7 @@ class AdminController extends Controller {
 
     public function accreditedPay(Request $request, AppMailers $mailer)
     {
-        $order=OrderOxxo::find($request->get("order"));
+        $order=Order::find($request->get("order"));
         if($order->recipt_url !=null){
             $sale=$order->sale;
             // $enviaYa=new EnviaYa;
@@ -250,7 +251,7 @@ class AdminController extends Controller {
     public function deleteOrder(Request $request)
     {
        
-        $order=OrderOxxo::find($request->get("order_id"));
+        $order=Order::find($request->get("order_id"));
         $sale=$order->sale;
         $name=$sale->client->username;
         $sale->customerHistories()->delete();
@@ -655,22 +656,22 @@ class AdminController extends Controller {
        
         return view('admin.sales.index',compact('sales','histories','ventas'));
     }
-    public function searchOrderOxxo(Request $request)
+    public function searchOrder(Request $request)
     {
         $search_find=$request->search;
         $orders=null;
         if($search_find!=null)
         {
-            $query=OrderOxxo::select("*");                                  
+            $query=Order::select("*");                                  
             $query = $query->orWhere("market_id", 'LIKE', "%$search_find%");
             $orders = $query->get();
         }
         else
         {
-            $orders=OrderOxxo::all();
+            $orders=Order::all();
         }
         
-        return view("admin.orderoxxo.index", compact("orders"));
+        return view("admin.orders.index", compact("orders"));
     }
 
     
@@ -748,7 +749,7 @@ class AdminController extends Controller {
      {
         $file = $request->file('file');
         $urlRec = $file->store('Comprobantes');    
-        $order = OrderOxxo::find($request->get("receipt"));
+        $order = Order::find($request->get("receipt"));
         if ($order->receipt_url == null) 
         {
             $order->receipt_url = $urlRec;
@@ -762,6 +763,74 @@ class AdminController extends Controller {
             $order->update();
             return response('El comprobante fue remplazado con exito',200);            
         }
+    }
+
+    //Clientes
+    public function showclients()
+    {
+        $clients=Customer::all();
+
+        return view("admin.clients.index", compact("clients"));
+    }
+
+    public function showclientupdate($id)
+    {
+        $customer=Customer::findOrFail($id);
+        return view("admin.clients.update", compact("customer"));
+    }
+
+    public function showclientcreate()
+    {
+        $customer=new Customer;
+        return view("admin.clients.create", compact("customer"));
+    }
+
+    public function clientcreate(Request $request)
+    {
+        $customer = new Customer;
+        $customer->usuario = Auth::user()->id;
+        $customer->nombre = $$request->firstname;
+        $customer->apellidos = $request->secondname;
+        $customer->telefono = $request->phone;
+        $customer->email = $request->email;
+        $customer->razonSocial = $request->socialname;
+        $customer->tipoFacturacion = $request->facturacion;
+        $customer->rfc = $request->rfc;
+        $customer->calle = $request->mainstreet;
+        $customer->numInterior = $request->interior;
+        $customer->numExterior = $request->exterior;
+        $customer->cp = $request->cp;
+        $customer->estado = $request->state;
+        $customer->ciudad = $request->city;
+        $customer->colonia = $request->colony;
+        $customer->cfdi = $request->cfdi;
+        $customer->save();
+
+        return redirect("/admin/clients/index")->with("success", "El cliente ".$customer->nombre." ha sido editado");
+    }
+
+    public function clientupdate(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->usuario = Auth::user()->id;
+        $customer->nombre = $request->firstname;
+        $customer->apellidos = $request->secondname;
+        $customer->telefono = $request->phone;
+        $customer->email = $request->email;
+        $customer->razonSocial = $request->socialname;
+        $customer->tipoFacturacion = $request->facturacion;
+        $customer->rfc = $request->rfc;
+        $customer->calle = $request->mainstreet;
+        $customer->numInterior = $request->interior;
+        $customer->numExterior = $request->exterior;
+        $customer->cp = $request->cp;
+        $customer->estado = $request->state;
+        $customer->ciudad = $request->city;
+        $customer->colonia = $request->colony;
+        $customer->cfdi = $request->cfdi;
+        $customer->update();
+
+        return redirect("/admin/clients/index")->with("success", "Nuevo cliente ".$customer->nombre." ha sido creado");
     }
 
 

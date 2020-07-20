@@ -13,7 +13,7 @@
 
             <div class="col-md-12">
 
-                <h4 class="text-center">Your Orders</h4><br>
+                <h4 class="text-center">Your Order</h4><br>
 
                 <div class="menu">
                     <div class="accordion">

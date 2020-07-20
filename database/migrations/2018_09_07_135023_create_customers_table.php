@@ -28,6 +28,7 @@ class CreateCustomersTable extends Migration
             $table->string('numExterior')->nullable();
             $table->string('cp')->nullable();
             $table->string('estado')->nullable();
+            $table->string('email')->nullable();
             $table->string('ciudad')->nullable();
             $table->string('colonia')->nullable();
             $table->string('cfdi')->nullable();

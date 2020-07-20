@@ -143,7 +143,7 @@ class Product extends Model {
     public function getMrPriceAttribute()
     {
         
-        return floatval($this->price)*1.16;
+        return floatval($this->price);
     }
 
    

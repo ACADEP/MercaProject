@@ -23,9 +23,7 @@
     </div>    
 </section><br> 
 <div class="row" style="padding-bottom: 15px;">
-    <div class="col-sm-2 text-left" style="padding-left: 30px; font-size: 18px;">
-        <a href="{{ url('/cart') }}" style="color: #000 !important;">Ver Carrito</a>
-    </div>                
+             
     <div class="col-sm-2 text-left" style="margin-left: 100px;">
         @if ($userpersonal != null)
             <a type="button" href="{{ route('customer.personal.showUpdate', $userpersonal->id) }}" class="btn btn-success add" ><i class="fa fa-plus-square" aria-hidden="true"></i> Actualizar</a>

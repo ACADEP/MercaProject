@@ -11,7 +11,20 @@
    
     <div class="text-left col-md-8 form-inline">
         <form action="{{route('searchMarketRates')}}" method="get">
-            <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off" style="width:60%;" name="search" > 
+            <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off" style="width:60%;" name="search" 
+            value="@isset($old_inputs){{$old_inputs["search"]}}@endisset"> 
+            <select class="form-control" name="client" id="">
+                <option value="">Buscar por cliente</option>
+                @foreach ($clients as  $client)
+                    <option 
+                    @isset($old_inputs)
+                        @if($old_inputs["client"]==$client->id)
+                            selected
+                        @endif
+                    @endisset
+                    value="{{$client->id}}">{{$client->full_name}}</option>
+                @endforeach
+            </select>
             <button type="sumbit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
@@ -27,7 +40,7 @@
                 <th>Num. Cotización</th>
                 <th>Fecha</th>
                 <th>Correo</th>
-                <th>Empresa</th>
+                <th>Cliente</th>
                 <th>Total</th>
                 <th>PDF</th>
                 <th></th>
@@ -39,8 +52,8 @@
             <td>{{ $marketrate->id}}</td>
             <td>{{ $marketrate->date }}</td>
             <td>{{ $marketrate->email }}</td>
-            <td>{{ $marketrate->company }}</td>
-            <td>${{number_format( $marketrate->total, 2) }}</td>
+            <td>{{ $marketrate->customer->full_name }}</td>
+            <td>${{number_format( $marketrate->total_with_iva, 2) }}</td>
             <td>
                
                 <form action="{{route('marketRatesPdf',$marketrate)}}" method="get">

@@ -82,7 +82,7 @@
     </div>
       <div id="notices">
       <div><strong>Forma de pago: En espera</strong></div>
-      <div><strong>{{config('configurations.mk.greetings')}}</strong></div>
+      
         <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
         <div class="notice">{{config('configurations.mk.information_final')}}</div>
       </div>

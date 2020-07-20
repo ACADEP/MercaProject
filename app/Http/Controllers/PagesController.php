@@ -80,6 +80,14 @@ class PagesController extends Controller {
         return view('pages.about');
     }
 
+    public function terms() {
+        return view('pages.terms-and-conditions');
+    }
+
+    public function politics() {
+        return view('pages.politics');
+    }
+
     public function help() {
         return view('pages.help');
     }

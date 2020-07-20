@@ -42,9 +42,13 @@
                 <label for="secondname">Segundo Apellido:</label>
                 <input type="text" id="secondname" name="secondname" maxLength='100' autocomplete="off"  class="form-control" value="{{old('secondname')}}" placeholder="Opcional">
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 50px;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px;">
                 <label for="phone">Teléfono:</label>
                 <input type="text" id="phone" name="phone" maxLength='10' autocomplete="off"  class="form-control" value="{{$customer->telefono}}">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px;">
+                <label for="email">Correo electronico:</label>
+                <input type="text" id="email" name="email" maxLength='100' autocomplete="off"  class="form-control" value="{{old('email', $customer->email)}}">
             </div>
 
             <h3>Dirección de Facturación</h3>

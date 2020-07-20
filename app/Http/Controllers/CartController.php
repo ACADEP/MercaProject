@@ -13,7 +13,7 @@ use App\SeleHistory;
 use App\Customer;
 use App\ProductSeller;
 use App\Webhook;
-use App\OrderOxxo;
+use App\Order;
 use Carbon\Carbon;
 use App\EnviaYa;
 use App\Sepomex;
@@ -55,27 +55,36 @@ class CartController extends Controller {
     use BrandAllTrait, CategoryTrait, SearchTrait;
     
     protected $mailer;
+
     public function showCart() {
     
-        return view('cart.cart'); 
-            
+        return view('cart.cart');     
     }
 
     public function payCart()
     {
+        if(!auth()->check())
+        {
+           return redirect("/login")->with("log-to-pay", "Inicie sesión o regístrese para completar su compra");
+        }
+
         // $envia=new EnviaYa; //Envios
         $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
 
         $date_now=Carbon::now();
        
-        // $subtotal=Auth::user()->total_checked;
+        //Obtener el total al checar con el api
+         //$subtotal=Auth::user()->total_checked;
         $subtotal=Auth::user()->total;
         $customer=Auth::user()->customer;
         $rates=collect([]);
+
+        $addressActive;
         if(Auth::user()->addressActive() != null)
         {
-            $cpUser=Auth::user()->addressActive()->cp;
+            $addressActive=Auth::user()->addressActive();
+            $cpUser=$addressActive->cp;
             //Revisar ciudad del codigo postal
             $sepomex_register=Sepomex::where("d_codigo",$cpUser)->first();
             if ($sepomex_register->count()) {
@@ -92,9 +101,7 @@ class CartController extends Controller {
             $cpUser="";
         }
 
-        // dd(count((array)$rates[3]));
-       
-        return view('cart.pay-cart', compact('addresses','cartItems','subtotal','customer','cpUser','rates'));
+        return view('cart.pay-cart', compact('addresses','addressActive','cartItems','subtotal','customer','cpUser','rates'));
     }
 
    
@@ -103,41 +110,58 @@ class CartController extends Controller {
      * Agregar productos al carrito
      */
     public function addCart(Request $request) {
-
+        
+        //Checar el producto desde el api ->precio ->disponibilidad
+        // $productChecked=ApiRequest::checkProductFromApi($request);
+        $productChecked=true;
         //Buscar el producto para agregar al carrito
         $product=Product::find($request->product_id);
+
         //Obtener fecha actual
         $current_date=Carbon::now();
+
         //Agregar el atributo de la cantidad para mostrarlo
         $product->setAttribute('qty', 1);
+
         //Agregar el atributo de la imagen para mostrarlo
         $img_product=$product->photos()->first()->path;
+        
         $product->setAttribute('img', $img_product);
-        // Identificar si es visitante=0 | usuario registrado=1
+        //Identificar si es visitante=0 | usuario registrado=1
         $user=0;
         $itemCount=0;
-       
-        if(Auth::check())
-        { 
-            $user=1; 
-            if(!Auth::user()->productIs($product->id)) //Prevenir que se repita el producto en el carrito
-            {  $cart=new Cart;
-                $cart->user_id=Auth::user()->id;
-                $cart->status="Active";
-                $cart->product_id=$product->id;
-                $cart->product_price=$product->real_price;
-                $cart->product_sku=$product->product_sku;
-                $cart->qty=1;
-                $cart->total=$product->real_price;
-                $cart->checked_date=$current_date->format("Y-m-d");
-                $cart->save();
-                $itemCount=Auth::user()->carts->count();
-                $product->setAttribute('total', Auth::user()->total);
+
+        if($productChecked)
+        {
+            if(Auth::check())
+            { 
+                $user=1; 
+                if(!Auth::user()->productIs($product->id)) //Prevenir que se repita el producto en el carrito
+                {  
+                    $cart=new Cart;
+                    $cart->user_id=Auth::user()->id;
+                    $cart->status="Active";
+                    $cart->product_id=$product->id;
+                    $cart->product_price=$product->real_price;
+                    $cart->product_sku=$product->product_sku;
+                    $cart->qty=1;
+                    $cart->total=$product->real_price;
+                    $cart->checked_date=$current_date->format("Y-m-d");
+                    $cart->save();
+                    $itemCount=Auth::user()->carts->count();
+                    $product->setAttribute('total', Auth::user()->total);
+                }
+                
             }
-            
         }
+       
         
-        return response(['item'=>$product,'user' =>$user,'itemcount'=>$itemCount, 'img_product'=>$img_product],200);
+        return response([
+        'item'=>$product,
+        'user' =>$user,
+        'itemcount'=>$itemCount, 
+        'img_product'=>$img_product,
+        'productChecked'=>$productChecked],200);
     
 
     }
@@ -316,6 +340,7 @@ class CartController extends Controller {
             $customerHistory->insert($cartItem,$sale);
         }
 
+        // Envio de correo
         
         //Administrador
         $admin = User::role('Admin')->first();
@@ -350,7 +375,7 @@ class CartController extends Controller {
     //WebHook para pagos con banco y tiendas
     public function OpnepayWebhookCatch(Request $request, AppMailers $mailer) 
     {
-        echo "HTTP 200 OK"; 
+        
         if($request != null)
         { 
             $json = file_get_contents("php://input");
@@ -358,20 +383,34 @@ class CartController extends Controller {
             //Pago procesado con exito
              if($transfer->type=="charge.succeeded")
              {
+
+              
+
                  //Buscar venta 
                  $sale=Sale::find($transfer->transaction->order_id);
-                 if(!$sale->status_pago=="Acreditado") //Prevenir el doble envio de notificacion por parte de openpay
+                
+                 if($sale->status_pago!="Acreditado") //Prevenir el doble envio de notificacion por parte de openpay
                  {
-                     $client=$sale->client;
-                     $envio=null;
-                     //Envio acordar con el vendedor
-                     if($sale->shipment_method)
-                     {
+                
+                    $client=$sale->client;
+                    $envio=null;
+                    //Envio acordar con el vendedor
+                    if($sale->shipment_method=="A acordar con el vendedor")
+                    {
+                        
+                        $envio["shipment_status"]="Por acordar";
+                        $envio["carrier_shipment_number"]="Vendedor";
+                        $request["date_ship"]="5 dias habiles";
+                        $request["ship_rate"]="A acordar con el vendedor";
+                    }
+                    else
+                    {
                         $enviaYa=new EnviaYa;
                         $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
                         $sale->updateStatusShip($envio->shipment_status);
                         $sale->updateTracking($envio->carrier_shipment_number);
                     }
+                    
                     //Actualizar status de pago
                     $sale->updatePay();
    
@@ -399,30 +438,34 @@ class CartController extends Controller {
                         $product->product_qty=$product->product_qty-$item->amount;
                         $product->save();
                    }
+                   
                    //envio de correos al administrador como al cliente del pago existoso
-                   if($envio) //null==Acordar con el vendedor
-                   {
-                       $mailer->sendReceiptClientAdmin($userAdmin,$client,
-                       $envio->carrier_shipment_number, 
-                       $envio->carrie_url, $envio->rate->carrier_logo_url, 
-                       $sale,$envio->rate->total_amount,
-                       $envio->rate->estimated_delivery);
-                       
+                  
+                    $shipment_data=null;
+                    $carrie_rate;
+                    $delivery;
+                    if($envio["shipment_status"]!="Por acordar") //Por acordar==Acordar con el vendedor
+                    {
+                        $shipment_data["guia"]= $envio->carrier_shipment_number;
+                        $shipment_data["url"]=$envio->carrie_url;
+                        $shipment_data["img_carrier"]=$envio->rate->carrier_logo_url;
+
+                        $carrie_rate= $envio->rate->total_amount;
+                        $delivery=$envio->rate->estimated_delivery;
                     }
                     else
                     {
-                        $mailer->sendReceiptClientAdmin($userAdmin,$client,
-                        "Vendedor", 
-                        null, null, 
-                        $sale,"Acordado con el vendedor",
-                        "5 dias habiles");
+                        $carrie_rate="Acordado con el vendedor";
+                        $delivery="Acordar con el vendedor";
                     }
+                    
+                    $mailer->sendReceiptClientAdmin($userAdmin, $client, $sale, $shipment_data, $carrie_rate, $delivery);
                 }
                  
             }
          }
        
-       
+         echo "HTTP 200 OK"; 
        
         //Obtener codigo de enlace para el dashboard de openpay (NO BORRAR)
 
@@ -473,6 +516,11 @@ class CartController extends Controller {
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         //Obtener direccion activa del cliente 
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
+
+        //Realizar venta
+        $sale= new Sale;
+        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
+
      
         try {
         $random = rand(0, 99999);
@@ -491,9 +539,17 @@ class CartController extends Controller {
                     'state' => $useraddresses->estado,
                     'city' => $useraddresses->ciudad,
                     'country_code' => 'MX'));
-
-        $sale= new Sale;
-        $sale->Insert($request->get("ship_rate_total"),$request->get("carrie"),$request->get("carrie_id"),"Pago por acreditar",null,"Pago por acreditar",$request->method_pay);
+                    
+        $chargeData = array(
+            'method' => 'bank_account', 
+            'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
+            'description' => 'Cargo con Bancomer',
+            'order_id' => $sale->id, //oid-00051 id del carrito
+            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
+            'customer' => $customerData );
+        $charge = $openpay->charges->create($chargeData);
+        
+      
         $cartItems=Auth::user()->carts();
         $itemsCart = Auth::user()->cart->with("product")->get();
         foreach($cartItems->get() as $cartItem)
@@ -507,17 +563,11 @@ class CartController extends Controller {
         $ship_rate_total = $request->get("ship_rate_total");
         $date_ship = $request->get("date_ship");
 
-        $chargeData = array(
-            'method' => 'bank_account',
-            'amount' => (float) $request->get("ship_rate_total"),
-            'description' => 'Cargo con Bancomer',
-            'order_id' => $sale->id, //oid-00051 id del carrito
-            'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
-            'customer' => $customerData );
-        $charge = $openpay->charges->create($chargeData);
         
         if($charge){    
             $pdf = PDF::loadView('cart.Print-Bank',compact('itemsCart','ship_rate','ship_rate_total','date_ship', 'charge'));
+            //enviar por correo
+            
             Session::put('pay-bank',  $pdf->stream('Recibo-Banco.pdf'));
             Session::save(); 
             return redirect("/");
@@ -600,7 +650,7 @@ class CartController extends Controller {
         Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' => (float) $request->get("ship_rate_total"),
+            'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
             'description' => 'Cargo a tienda',
             'order_id' => $sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
@@ -672,7 +722,7 @@ class CartController extends Controller {
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
-                'amount' => (float) $request->get("ship_rate_total"),
+                'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
@@ -813,7 +863,7 @@ class CartController extends Controller {
         $admins=User::where("admin",1)->get();
         foreach($admins as $admin)
         {   
-            $orOxxo=new OrderOxxo;
+            $orOxxo=new Order;
             $orOxxo->insert($admin->id,$sale->id);
         }
         Auth::user()->carts()->delete();

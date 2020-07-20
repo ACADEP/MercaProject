@@ -67,8 +67,16 @@ $(document).ready(function(){
     });
     
     $('.btn-addcart').click(function(e){
-        e.preventDefault(); 
-      
+        e.preventDefault();
+
+        var notify = $.notify({
+            // options
+            message: '<strong><i class="fa fa-refresh fa-spin" ></i> Añadiendo producto</strong>' 
+        },{
+            // settings
+            type: 'success',
+            delay:3000
+        });
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -83,116 +91,95 @@ $(document).ready(function(){
                 method: 'POST',
                 data: formData,
                 success: function(response){
-                       
-                        if(response.user==1)
-                        {
-                            if(response.itemcount==1)
-                            {
-                                $('#client-container').empty();
-                            }
-                            
-                            if(response.itemcount<=5 && response.itemcount>0)
-                            {
-                                
-                                var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                $('#client-container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
-                                '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
-                                '<span class="badge badge-success">'+num+'</span> </div>'+
-                                '<div class="col-md-12"><hr></div>');
-                                $('#badge-cart').html(response.itemcount);
-                                $.notify({
-                                    // options
-                                    message: 'Producto agregado al carrito' 
-                                },{
-                                    // settings
-                                    type: 'success',
-                                    delay:1000
-                                });
-                            }
-                            else
-                            {
-                                if(response.itemcount==0)
-                                {
-                                    $.notify({
-                                        // options
-                                        message: '<strong>Este producto ya ha sido agregado</strong>' 
-                                    },{
-                                        // settings
-                                        type: 'warning',
-                                        delay:1000
-                                    });
-                                }
-                                else
-                                {
-                                    $('#cart-detail').html("Ver todos");
-                                    $('#badge-cart').html(response.itemcount);
-                                    
-
-                                    $.notify({
-                                        // options
-                                        message: 'Producto agregado al carrito' 
-                                    },{
-                                        // settings
-                                        type: 'success',
-                                        delay:1000
-                                    });
-                                }
-                                
-                            }
-                           
-                        }
-                        else
-                        {
-                            if(productoAgregado(response.item.id))
-                            {
-                                $.notify({
-                                    // options
-                                    message: '<strong>Este producto ya ha sido agregado</strong>' 
-                                },{
-                                    // settings
-                                    type: 'warning',
-                                    delay:1000
-                                });
-                            }
-                            else
-                            {
-                                if(Cookies.get("productos")!=null)
-                                {
-                                    var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
-                                    productosCart=productosJSON;
-                                }
-                                productosCart.push(response.item);
-                                Cookies.set("productos",productosCart,1);
-                                if(productosCart.length<=1)
-                                {
-                                    $('#product_container').empty();
-                                }
-                                if(productosCart.length<=5)
-                                {
-                                    var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                    $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
-                                    '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
-                                    '<span class="badge badge-success">'+num+'</span> </div>'+
-                                    '<div class="col-md-12"><hr></div>');
-                                }
-                                else
-                                {
-                                    $('#cart-detail').html("Ver todos");
-                                }
-                                $('#badge-cart').html(productosCart.length);
+                       if(response.productChecked)
+                       {
+                           if(response.user==1)
+                           {
+                               if(response.itemcount==1)
+                               {
+                                   $('#client-container').empty();
+                               }
                                
-                                //Notificacion
-                                $.notify({
-                                    // options
-                                    message: 'Producto agregado al carrito' 
-                                },{
-                                    // settings
-                                    type: 'success',
-                                    delay:1000
-                                });
-                            }
-                          
-                        }
+                               if(response.itemcount<=5 && response.itemcount>0)
+                               {
+                                   
+                                   var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                   $('#client-container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
+                                   '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
+                                   '<span class="badge badge-success">'+num+'</span> </div>'+
+                                   '<div class="col-md-12"><hr></div>');
+                                   $('#badge-cart').html(response.itemcount);
+                                   
+                                   notify.update('message', 'Producto agregado al carrito');
+                                   
+                               }
+                               else
+                               {
+                                   if(response.itemcount==0)
+                                   {
+                                        notify.update('type', 'warning');
+                                        notify.update('message', '<strong>Este producto ya ha sido agregado</strong>');
+                                   }
+                                   else
+                                   {
+                                       $('#cart-detail').html("Ver todos");
+                                       $('#badge-cart').html(response.itemcount);
+                                       
+                                       notify.update('message', 'Producto agregado al carrito');
+                                      
+                                   }
+                                   
+                               }
+                              
+                           }
+                           else
+                           {
+                               if(productoAgregado(response.item.id))
+                               {
+                                    notify.update('type', 'warning');
+                                    notify.update('message', '<strong>Este producto ya ha sido agregado</strong>');
+                               }
+                               else
+                               {
+                                   if(Cookies.get("productos")!=null)
+                                   {
+                                       var productosJSON=jQuery.parseJSON(Cookies.get("productos"));
+                                       productosCart=productosJSON;
+                                   }
+                                   productosCart.push(response.item);
+                                   Cookies.set("productos",productosCart,1);
+                                   if(productosCart.length<=1)
+                                   {
+                                       $('#product_container').empty();
+                                   }
+                                   if(productosCart.length<=5)
+                                   {
+                                       var num = '$' + parseFloat(response.item.real_price).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                                       $('#product_container').append('<div class="col-md-3"> <img  style="width:100%;" src="'+response.img_product+'"></div>'+
+                                       '<div class="col-md-9" ><span class="badge badge-primary" style="font-size:12px; width:100%;">'+response.item.product_name+'</span> <br>'+
+                                       '<span class="badge badge-success">'+num+'</span> </div>'+
+                                       '<div class="col-md-12"><hr></div>');
+                                   }
+                                   else
+                                   {
+                                       $('#cart-detail').html("Ver todos");
+                                   }
+                                   $('#badge-cart').html(productosCart.length);
+                                  
+                                   //Notificacion
+                                   notify.update('message', 'Producto agregado al carrito');
+                                  
+                               }
+                             
+                           }
+
+                       }
+                       else
+                       {
+                            notify.update('type', 'danger');
+                            notify.update('message', '<strong>Este producto no esta disponible</strong>');
+                            
+                       }
                     
                 },
 

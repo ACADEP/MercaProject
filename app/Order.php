@@ -6,39 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-
-    /**
-     * @var string
-     */
-    protected $table = 'orders';
-
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'user_id',
-        'first_name',
-        'last_name',
-        'address',
-        'address_2',
-        'city',
-        'state',
-        'zip',
-        'total',
-        'full_name',
-    ];
-
-
-    /**
-     * An Order can have many products
-     *
-     * @return $this
-     */
-    public function orderItems() {
-        return $this->belongsToMany('App\Product')->withPivot('qty', 'price', 'reduced_price', 'total', 'total_reduced');
+    public function insert($userId,$saleId,$market_id)
+    {
+        $this->sale_id=$saleId;
+        $this->market_id=$market_id;
+        $this->user_id=$userId;
+        $this->save();
     }
-
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
 }

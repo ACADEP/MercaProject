@@ -215,9 +215,11 @@ desired effect
         @can("view_brands")
         <li class="{{Request::segment(2) == 'brands' ? 'active' : ''}}"><a href="{{route('show-brands')}}"><i class="fa fa-copyright"></i> <span>Marcas</span></a></li>
         @endcan
-        @php $orders=App\OrderOxxo::all()->count(); @endphp
+        
+        <li class="{{Request::segment(2) == 'clients' ? 'active' : ''}}"><a href="{{route('clients.index')}}"><i class="fa fa-user" aria-hidden="true"></i> <span>Clientes</span></a></li>
+        @php $orders=App\Order::all()->count(); @endphp
         @can("view_orders")
-        <li class="{{Request::segment(2) == 'OrderOxxo' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes Oxxo</span></a></li>
+        <li class="{{Request::segment(2) == 'Order' ? 'active' : ''}}"><a href="{{ route('show-orderOxxo') }}"><i class="label label-primary" id="b-order">{{$orders}}</i> <span>Ordenes</span></a></li>
         @endcan
          @can("view_reclames")
         <li class="{{Request::segment(2) == 'reclames' ? 'active' : ''}}"><a href="{{ route('my-reclames') }}"><i class="fa fa-commenting" aria-hidden="true"></i><span>Reclamos de ventas</span></a></li>

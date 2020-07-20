@@ -112,15 +112,21 @@ class AppMailers {
         $this->to = $client->email;
         // Pass the view to this...
         $this->view = 'customer.partials.view-email-client';
-        // The data that is required
-        $this->data = compact('client','envio');
-      
-        
 
-            $this->deliverPDF2("cliente", $client, $shiprate, $dateShip, $method_pay);
-        
-        
+        $shipment_data=null;
+        if($envio["shipment_status"]!="Por acordar") //Por acordar==Acordar con el vendedor
+        {
+            $shipment_data["guia"]= $envio->carrier_shipment_number;
+            $shipment_data["url"]=$envio->carrie_url;
+            $shipment_data["img_carrier"]=$envio->rate->carrier_logo_url;
+        }
+
+
+        $this->data = compact('client','shipment_data');
+      
+        $this->deliverPDF2("cliente", $client, $shiprate, $dateShip, $method_pay);
     }
+
     public function sendOxxoReceipt(User $client, $pdf)
     {
         $this->to=$client->email;
@@ -146,10 +152,7 @@ class AppMailers {
         });
     }
 
-    public function sendReceiptClientAdmin(User $admin, User $client,
-    $guia, $url, 
-    $img_carrie, $sale,
-    $ship_rate, $ship_date)
+    public function sendReceiptClientAdmin(User $admin, User $client, $sale, $shipment_data, $ship_rate, $ship_date)
     {
         $Items=$sale;
         $subtotal=$sale->total;
@@ -170,7 +173,7 @@ class AppMailers {
 
         $this->to=$client->email;
          //Enviar a cliente
-         $this->mailer->send("customer.partials.view-email-client", compact('client','guia','url','img_carrie') , function($message) use($pdf){
+         $this->mailer->send("customer.partials.view-email-client", compact('client', 'shipment_data') , function($message) use($pdf){
             $message->from($this->from, 'Administrator')
             ->subject("Recibo de compra")
             ->to($this->to)            

@@ -8,8 +8,8 @@
        
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name=description content="A medium sized e-commerce shopping cart made by David Trushkov. Made using Laravel 5.2" />
-        <meta name="keywords" content="shopping, ecommerce, store, electronics, electronics store, david, david trushkov, github, laravel, laravel 5, laravel 5.2" />
-        <meta name="author" content="David Trushkov" />
+        <meta name="keywords" content="mercadata, ecommerce, tienda, electronicos, tienda de electronicos" />
+        
         <link rel="shortcut icon" href="{!! asset('/images/logo-mercadata.png') !!}" />
 
         <title>{{ config('app.name') }}</title>
@@ -80,8 +80,9 @@
         <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                   OpenPay.setId('mk5lculzgzebbpxpam6x');
-                   OpenPay.setApiKey('pk_26757cbb5f7f44e8b31a2aed751c285c');
+                
+                   OpenPay.setId("{{config('configurations.api.openpay_client_id')}}");
+                   OpenPay.setApiKey('pk_d55faab6c5564d7f9451d311e8077415');
                    OpenPay.setSandboxMode(true);
            });
        </script>
@@ -264,8 +265,7 @@
     </script>
    
     @yield('modal-debit')
-   
-   
+    
     @yield('styles')
     @yield('js')
     @yield('css-pay')
@@ -278,7 +278,8 @@
     @include('partials.special_search')
     @include('customer.partials.add-address')
     @yield('modal-paypal')
-   
+    
+    @stack('scripts')
     <script>
         var brands=[{{ App\Brand::pluck('id') }}];
     </script>

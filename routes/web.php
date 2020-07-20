@@ -11,6 +11,9 @@
 |
 */
 
+ //Obtener datos del cliente (SOLO ADMINS)
+ Route::get("/customer/getdata", "CustomerController@accountdata");
+
 Route::get('/getBrands', 'ApiController@getBrands');
 
 Route::get('/update/products', 'ApiController@updateProduct');
@@ -37,6 +40,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'PagesController@index');
 
     Route::get('/about', 'PagesController@about');
+
+    Route::get('/terms', 'PagesController@terms')->name("pages.terms-and-conditions");
+    
+    Route::get('/politics', 'PagesController@politics')->name("pages.politics");
 
     Route::get('/help', 'PagesController@help');
 
@@ -507,7 +514,10 @@ Route::group(["middleware" => 'customer'], function(){
         'as'   => 'customer.acount.update.password',
     ]);
 
+   
+
     /*********************** CRUD Address Profile ***********************/
+
     Route::get('/customer/personal/address/', [
         'uses' => '\App\Http\Controllers\AddressController@address',
         'as'   => 'customer.address',
@@ -726,13 +736,13 @@ Route::group(["middleware" => 'admin'], function(){
 
     //Ordenes por Oxxo
     //Mostrar disponibles
-    Route::get("/admin/OrderOxxo/index", "AdminController@showOrderOxxo")->name("show-orderOxxo");
+    Route::get("/admin/Order/index", "AdminController@showOrder")->name("show-orderOxxo");
     //Acreditar pago
-    Route::post("/admin/OrderOxxo/accreditedPay", "AdminController@accreditedPay")->name("accreditedPay");
+    Route::post("/admin/Order/accreditedPay", "AdminController@accreditedPay")->name("accreditedPay");
     //Eliminar orden
-    Route::post("/admin/OrderOxxo/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
+    Route::post("/admin/Order/deleteOrder", "AdminController@deleteOrder")->name("deleteOrder");
      //Eliminar orden
-     Route::post("/admin/OrderOxxo/storeReceipt", "AdminController@storeReceipt")->name("storeReceipt");
+     Route::post("/admin/Order/storeReceipt", "AdminController@storeReceipt")->name("storeReceipt");
 
     //Facturas
     //Subir factura
@@ -741,7 +751,7 @@ Route::group(["middleware" => 'admin'], function(){
     Route::post("/admin/sales/deleteInvoice", "AdminController@deleteInvoice")->name("delete-invoice");  
 
     //Buscar ordenes
-    Route::get("admin/OrderOxxo/search", "AdminController@searchOrderOxxo")->name("search-orderOxxo");
+    Route::get("admin/Order/search", "AdminController@searchOrder")->name("search-orderOxxo");
    
     //CRUD Marcas
     //Mostrar disponibles
@@ -755,6 +765,14 @@ Route::group(["middleware" => 'admin'], function(){
      //Editar una marca
      Route::post("admin/brands/edit", "BrandsController@edit")->name("edit-brands");
 
+     //CRUD Clientes
+     Route::get("admin/clients/index", "AdminController@showclients")->name("clients.index");
+     Route::get("admin/clients/showcreate", "AdminController@showclientcreate")->name("clients.show.create");
+     Route::get("admin/clients/showupdate/{id}", "AdminController@showclientupdate")->name("clients.show.update");
+     Route::post("admin/clients/create", "AdminController@clientcreate")->name("clients.create");
+     Route::post("admin/clients/update/{id}", "AdminController@clientupdate")->name("clients.update");
+
+     
     //CRUD Categorias
     //Mostrar todas las categorias
     Route::get("/admin/products/categories", "AdminController@showCategories");

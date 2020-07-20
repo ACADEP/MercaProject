@@ -18,16 +18,17 @@
     <div class="col-md-12"><img src="{{asset(config('configurations.general.main_logo'))}}" style="width:50%; height:150px;"></div>
     <h1>Hola {{$client->username}}</h1>
     <h3>Se le ajunta el recibo de pago de su compra</h3>
-    <h2>Datos del envío</h2>
-    @if (is_object($envio))
-        <img src="{{ $envio->rate->carrier_logo_url }}" class="img-thumbnail">
+    @if ($shipment_data)
+        <h2>Datos del envío</h2>
+
+        <img src="{{ $shipment_data["img_carrier"] }}" class="img-thumbnail">
    
 
     
-        <h3>Número de guía: </h3>{{$envio->carrier_shipment_number}} <br>
+        <h3>Número de guía: </h3>{{$shipment_data["guia"]}} <br>
     
     
-        <a href="{{$envio->carrie_url}}" target="_blank" style="color:blue;">Ir a la página de rastreo</a>
+        <a href="{{$shipment_data["url"]}}" target="_blank" style="color:blue;">Ir a la página de rastreo</a>
     @endif
     <h3>¡Gracias por comprar en Mercadata!</h3>
 </body>
