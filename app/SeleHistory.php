@@ -8,8 +8,17 @@ class SeleHistory extends Model
 {
     public function product()
     {
+        
         return $this->belongsTo(Product::class);
     }
+
+    public function marketdetail()
+    {
+        return $this->belongsTo(MarketRatesDetail::class, "product_id");
+    } 
+
+
+
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -41,6 +50,27 @@ class SeleHistory extends Model
         $this->amount=$item->amount;
         $this->total=$item->amount*$item->product_price;
         $this->save();
+    }
+
+    //Atributos
+    public function getProductPhotoAttribute()
+    {
+        if($this->sales->pay_method=="Cotización")
+        {
+            return $this->marketdetail->thumbnail;
+        }
+
+        return $this->product->photos->first()->path;
+    }
+
+    public function getProductNameAttribute()
+    {
+        if($this->sales->pay_method=="Cotización")
+        {
+            return $this->marketdetail->description;
+        }
+
+        return $this->product->product_name;
     }
 
 }

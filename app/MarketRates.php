@@ -15,7 +15,7 @@ class MarketRates extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, "client");
+        return $this->belongsTo(Customer::class, "client")->withTrashed();
     }
 
     public function MarketRatesDetails()

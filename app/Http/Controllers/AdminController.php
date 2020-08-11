@@ -29,6 +29,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SellerExport;
 use App\Mailers\AppMailers;
 
+ 
+
 class AdminController extends Controller {
 
     
@@ -36,11 +38,12 @@ class AdminController extends Controller {
     {
 
         $seller = Auth::user()->selehistories();
-        $sales = Auth::user()->selehistories()->paginate(config('configurations.paginate_general'));
-        $histories = Auth::user()->selehistories()->get();
-        $ventas = $seller->select('sale_id', "created_at")->distinct()->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'));
-        return view("admin.sales.index", compact("sales", "histories", "ventas"));
-        // return view("admin.dash");       
+        
+        $sales = SeleHistory::select('*')->paginate(config('configurations.paginate_general'));
+        $histories = SeleHistory::select('*')->get();
+        $ventas = SeleHistory::select('sale_id', "created_at")->distinct('sale_id')->orderBy('created_at', "desc")->paginate(config('configurations.paginate_general'), ['sale_id']);
+        
+        return view("admin.sales.index", compact("sales", "histories", "ventas"));   
     }
 
     public function showSales() 
@@ -209,7 +212,7 @@ class AdminController extends Controller {
     public function accreditedPay(Request $request, AppMailers $mailer)
     {
         $order=Order::find($request->get("order"));
-        if($order->recipt_url !=null){
+        if($order->receipt_url !=null){
             $sale=$order->sale;
             // $enviaYa=new EnviaYa;
             $client=$sale->client;
@@ -752,16 +755,16 @@ class AdminController extends Controller {
         $order = Order::find($request->get("receipt"));
         if ($order->receipt_url == null) 
         {
-            $order->receipt_url = $urlRec;
+            $order->receipt_url = "/".$urlRec;
             $order->update();
-            return response('El comprobante fue subido con exito',200);    
+            return response(['El comprobante fue subido con exito'],200);    
         } 
         else 
         {
             File::delete(public_path($order->receipt_url));
-            $order->receipt_url = $urlRec;
+            $order->receipt_url = "/".$urlRec;
             $order->update();
-            return response('El comprobante fue remplazado con exito',200);            
+            return response(['El comprobante fue remplazado con exito'],200);            
         }
     }
 
@@ -787,9 +790,14 @@ class AdminController extends Controller {
 
     public function clientcreate(Request $request)
     {
+        $request->validate(
+            ["email"=>"unique:customers"],
+            ["email.unique" => "Correo registrado, Intente con uno nuevo"]
+        );
+        
         $customer = new Customer;
-        $customer->usuario = Auth::user()->id;
-        $customer->nombre = $$request->firstname;
+        // $customer->usuario = Auth::user()->id;
+        $customer->nombre = $request->firstname;
         $customer->apellidos = $request->secondname;
         $customer->telefono = $request->phone;
         $customer->email = $request->email;
@@ -811,8 +819,15 @@ class AdminController extends Controller {
 
     public function clientupdate(Request $request, $id)
     {
+        $request->validate(
+            [
+                "email"=> Rule::unique('customers')->ignore($id)
+            ],
+            [ "email.unique" => "Correo registrado, Intente con uno nuevo", ]
+        );
+
         $customer = Customer::findOrFail($id);
-        $customer->usuario = Auth::user()->id;
+        // $customer->usuario = Auth::user()->id;
         $customer->nombre = $request->firstname;
         $customer->apellidos = $request->secondname;
         $customer->telefono = $request->phone;
@@ -831,6 +846,17 @@ class AdminController extends Controller {
         $customer->update();
 
         return redirect("/admin/clients/index")->with("success", "Nuevo cliente ".$customer->nombre." ha sido creado");
+    }
+
+    public function clientdelete(Request $request)
+    {
+        $customer = Customer::findOrFail($request->id);
+
+        $customer->delete();
+
+        return back()->with("success", "Cliente eliminado con éxito");
+
+
     }
 
 

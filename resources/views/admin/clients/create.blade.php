@@ -7,6 +7,17 @@
         </h1> 
 </section><br>
 
+@if ($errors->any())
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+            @foreach ($errors->all() as $error)
+                <li style="list-style-type: none;">{{ $error }} </li>
+            @endforeach
+        
+        </ul>
+    </div>
+@endif
+
 <form action="{{ route('clients.create') }}" method="POST">
     {{csrf_field()}}
     <div class="text-right" style="margin-bottom:5px;">

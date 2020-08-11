@@ -9,7 +9,7 @@
 
 <div class="col-md-12">
    
-    <div class="text-left col-md-8 form-inline">
+    <div class="text-left col-md-10 form-inline">
         <form action="{{route('searchMarketRates')}}" method="get">
             <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off" style="width:60%;" name="search" 
             value="@isset($old_inputs){{$old_inputs["search"]}}@endisset"> 
@@ -29,7 +29,7 @@
         </form>
     </div>
 
-     <div class="text-right col-md-4 form-inline">
+     <div class="text-right col-md-2 form-inline">
         <a type="button" href="{{route('create-marketRates')}}" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> Nueva cotización</a>
     </div>
 </div>
@@ -53,7 +53,7 @@
             <td>{{ $marketrate->date }}</td>
             <td>{{ $marketrate->email }}</td>
             <td>{{ $marketrate->customer->full_name }}</td>
-            <td>${{number_format( $marketrate->total_with_iva, 2) }}</td>
+            <td>${{number_format( $marketrate->total, 2) }}</td>
             <td>
                
                 <form action="{{route('marketRatesPdf',$marketrate)}}" method="get">

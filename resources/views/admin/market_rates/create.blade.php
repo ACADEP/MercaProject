@@ -7,6 +7,10 @@
         table-layout: fixed;
         overflow-wrap: break-word;
     }
+    .twitter-typeahead
+    {
+        width: 100% !important;
+    }
     </style>
 @endpush
 
@@ -48,13 +52,22 @@
 
 <div class="col-md-8">
     <h4>Buscar</h4>
-    <div class="col-md-12 ">
+    
         <form action="{{route('search-marketRates')}}" id="form-search" method="get">
-        <input type="text" class="form-control" placeholder="Buscar productos..." id="search" name="search" size="70" value="{{ old("search") }}">
-            <button type="button" class="btn btn-primary" id="btn-search" style="vertical-align:top;">Buscar</button>
+            <div class="col-md-10">
+                <input type="text" class="form-control" placeholder="Buscar productos..." id="search" style="width:100% !important;" name="search"  value="{{ old("search") }}">
+
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" id="btn-search" style="vertical-align:top;">Buscar</button>
+
+            </div>
         </form>
-    </div>
-   @include('admin.market_rates.includes.search-results')
+
+        <div class="col-md-12">
+            @include('admin.market_rates.includes.search-results')
+        </div>
        
   
 </div><!--  fin del col-md-8 -->

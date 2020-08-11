@@ -726,8 +726,8 @@ Route::group(["middleware" => 'admin'], function(){
     //Ordenar por fecha
     Route::get('/admin/orderDate','AdminController@orderDate')->name('orderDate-admin');
     //Recibo de pago
-   //Imprimir PDF
-   Route::get('/print-pay-pdf/{id}', 'AdminController@salesPayPDF')->name('salesPdf');
+    //Imprimir PDF
+    Route::get('/print-pay-pdf/{id}', 'AdminController@salesPayPDF')->name('salesPdf');
 
     //reclamos
     Route::get('/admin/reclames','AdminController@showReclames')->name('my-reclames');
@@ -771,6 +771,7 @@ Route::group(["middleware" => 'admin'], function(){
      Route::get("admin/clients/showupdate/{id}", "AdminController@showclientupdate")->name("clients.show.update");
      Route::post("admin/clients/create", "AdminController@clientcreate")->name("clients.create");
      Route::post("admin/clients/update/{id}", "AdminController@clientupdate")->name("clients.update");
+     Route::post("admin/clients/delete", "AdminController@clientdelete")->name("clients.delete");
 
      
     //CRUD Categorias

@@ -18,12 +18,12 @@
                     <label for="secondname">Apellidos:</label>
                     <input type="text" id="secondname" name="secondname" maxLength='100' autocomplete="off"  class="form-control" value="{{old('secondname', $data->apellidos)}}" placeholder="Opcional">
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px;">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px;">
                     <label for="phone">Teléfono:</label>
                     <input type="text" id="phone" name="phone" maxLength='10' autocomplete="off"  class="form-control" value="{{old('phone', $data->telefono)}}">
                 </div>
                 
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-bottom: 10px;">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-bottom: 10px;">
                     <label for="email">Correo electronico:</label>
                     <input type="text" id="email" name="email" maxLength='100' autocomplete="off"  class="form-control" value="{{old('email', $data->email)}}">
                 </div>
@@ -80,8 +80,8 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
                     <label for="cfdi">Razón CFDI:</label>
-                    <select name="cfdi" id="cfdi" class="form-control" style="padding-bottom: 10px; border-radius: 1 !important; border-color: #fff !important;">
-                        <option value=""></option>
+                    <select name="cfdi" id="cfdi" class="form-control" style="padding-bottom: 10px;">
+                        <option value="">Elegir uno</option>
                         <option value="Adquisición de mercancias">Adquisición de mercancias</option>
                         <option value="Equipo de computo y accesorios">Equipo de computo y accesorios</option>
                     </select> 

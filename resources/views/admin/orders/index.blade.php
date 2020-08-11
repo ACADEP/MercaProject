@@ -147,6 +147,7 @@
         $('.dz-error-message:last > span').text(res.errors.file[0]);
     });
     varDrop.on('success', function(file, res){
+        console.log(res);
         $.notify({
             // options
             message: '<strong>'+res+'</strong>' 

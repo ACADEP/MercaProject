@@ -40,11 +40,11 @@ div.panel-heading {
         @if($sales->count()>0)
             @foreach($sales as $history)
                 <tr>
-                    <td ><img src="{{ $history->product->photos->first()->path }}" height="30px"></td>
+                    <td ><img src="{{ $history->product_photo }}" height="30px"></td>
                     <td>{{ $history->product->product_name }}</td>
-                    <td>${{number_format($history->product->price, 2)}}</td>
+                    <td>${{number_format($history->total, 2)}}</td>
                     <td>{{ $history->client }}</td>
-                    <td>{{$history->date}}</td>
+                    <td>{{ $history->date }}</td>
                     <td>{{ $history->amount }}</td>
                     <td>${{number_format($history->total, 2)  }}</td>
                 </tr>
@@ -120,8 +120,8 @@ div.panel-heading {
                                 <tbody>
                                     @foreach($sale->where('sale_id',$sale->sale_id)->get(); as $history)
                                         <tr>
-                                            <td ><img src="{{ $history->product->photos->first()->path }}" height="30px"></td>
-                                            <td>{{ $history->product->product_name }}</td>
+                                            <td ><img src="{{ $history->product_photo }}" height="30px"></td>
+                                            <td>{{ $history->product_name }}</td>
                                             <td>${{number_format($history->product->price, 2)}}</td>
                                             <td>{{ $history->client }}</td>
                                             <td>{{$history->date}}</td>

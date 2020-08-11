@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('usuario');
+            $table->integer('usuario')->nullable();
             $table->string('idCustomerOpenpay')->nullable();
             $table->string('nombre');
             $table->string('apellidos')->nullable();
@@ -33,6 +33,8 @@ class CreateCustomersTable extends Migration
             $table->string('colonia')->nullable();
             $table->string('cfdi')->nullable();
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 
@@ -44,5 +46,7 @@ class CreateCustomersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('customers');
+        
+        $table->dropSoftDeletes();
     }
 }

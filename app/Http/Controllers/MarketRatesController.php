@@ -406,24 +406,26 @@ class MarketRatesController extends Controller
     {
        
         $market_rate=MarketRates::find($request->marketrate);
-        $sale= new Sale;
-        $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar","Cotización");
+         $sale= new Sale;
+         $sale->Insert($market_rate->total,"","","Pago por acreditar",null,"Pago por acreditar","Cotización");
         $items=$market_rate;
         
         //PDF RECIBO
-        $pdf = PDF::loadView('admin.market_rates.pdf-pay',compact('items'));
+        $pdf = PDF::loadView('admin.market_rates.pdf-template-receipt',compact('items'));
+        
         Session::put('pay-marketrate',  $pdf->stream('Recibo-pago.pdf'));
         Session::save(); 
-        // foreach($market_rate->MarketRatesDetails()->get() as $detail)
-        // {
-        //     $history= new CustomerHistory;
-        //     $history->sale_id=$sale->id;
-        //     $history->product_id=$detail->product_id;
-        //     $history->product_name=$detail->description;
-        //     $history->product_price=$detail->price;
-        //     $history->amount=$detail->qty;
-        //     $history->save();
-        // }
+        
+        foreach($market_rate->MarketRatesDetails()->get() as $detail)
+        {
+            $history= new CustomerHistory;
+            $history->sale_id=$sale->id;
+            $history->product_id=$detail->id;
+            $history->product_name=$detail->description;
+            $history->product_price=$detail->price;
+            $history->amount=$detail->qty;
+            $history->save();
+        }
         $orOxxo=new Order;
         $orOxxo->insert(Auth::user()->id,$sale->id, $market_rate->id);
 

@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>Cotización</title>
+    <title>Recibo de pago</title>
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/css/InvoicePayment.css') }}" media="all" />
     <style>
@@ -69,23 +69,25 @@
   </head>
   <body>
     {{-- Header 1 --}}
-    <div class="text-center border-line" style="margin-bottom:10px; height:100px;">
+    <div class="text-center border-line" style="margin-bottom:10px; height:120px;">
         <div class="box">
             <img src="{{ asset('/images/logo_acadep.png')}}" style="width:70%; max-height:100px;">
         </div>
 
         <div class="box" style="font-size:10px !important;">
-            German Leonardo Lage Súarez <br>
-            LDARR8983834029 <br>
-            Ignacio Allende 270 Altos COL. CENTRO, CP 23000,<br>
-            LA PAZ, BAJA CALIFORNIA SUR MÉXICO <br>
-            T E L . : ( 6 1 2 ) 111 7386  / C E L. : ( 6 1 2 ) 157 8112
+          <div><h3>Depósito a través de OXXO a cuenta BBVA Bancomer</h3></div>
+          <div><span><strong>Propietario de la cuenta: </strong>Leonardo Lage Suarez</span></div>
+          <div><span><strong>Cuenta: </strong>0136602037</span></div>
+          <div><span><strong>Clabe: </strong>012040001366020373</span></div>
+          <div><span><strong>Teléfono: </strong>612 122 5174</span></div>
+          <div><span><strong>Correo: </strong><a href="mailto:administracion@acadep.com">administracion@acadep.com</a></span></div>
+          <div><span><strong>Fecha límite de pago: </strong>{{Carbon\Carbon::now()->addDay(1)}}</span></div>
         </div>
         <div class="box">
-            <div style="height: 50px; background:black;"> <span style="color:white;"> Cotización <br>{{$items->id}}</span> </div>
-            <div style="height: 50px; border-left:solid 1px black;">
+            <div style="height: 120px; border-left:solid 1px black;">
               @php $current_date=\Carbon\Carbon::now(); @endphp
-              {{$current_date->day}} de {{monthName($current_date->month)}} del {{$current_date->year}}
+              {{$current_date->day}} de {{monthName($current_date->month)}} del {{$current_date->year}} <br>
+              Recibo de pago
             </div>
             
         </div>
@@ -96,6 +98,7 @@
     {{-- Header 2 --}}
     <div class="border-line" style="height: 100px; font-size:12px !important;">
         <div style="float: left; width:66.66%;">
+            <span><strong>Cotización</strong></span> {{ $items->id}}  <br> 
             <strong>Cliente:</strong> {{$items->customer->full_name}}<br> 
             <strong>Contacto:</strong> {{$items->contact}}<br>
             <strong>Domicilio:</strong> {{$items->address}}<br>
@@ -121,7 +124,7 @@
 
     {{-- Mensaje intermedio --}}
     <div class="text-center" style="padding: 8px;">
-      Ponemos a su amable consideración el siguiente presupuesto de acuerdo a solicitud expresa:
+     
     </div>
     {{-- Fin del mensaje intermedio --}}
 

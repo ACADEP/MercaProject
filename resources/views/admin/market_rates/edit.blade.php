@@ -1,5 +1,19 @@
 @extends("admin.dash")
 
+@push('styles')
+    <style>
+         table{
+        width:100%;
+        table-layout: fixed;
+        overflow-wrap: break-word;
+    }
+    .twitter-typeahead
+    {
+        width: 100% !important;
+    }
+    </style>
+@endpush
+
 @section("content")
 <section class="content-header">
         <h1>
@@ -24,13 +38,19 @@
 
 <div class="col-md-8">
     <h4>Buscar</h4>
-    <div class="col-md-12 ">
-        <form action="{{route('searchedit-marketRates')}}" method="get" id="form-search">
+    
+        <form action="{{route('searchedit-marketRates')}}" method="get" style="display: inline;" id="form-search">
             <input type="hidden" name="market" class="marketRate" value="{{$marketrate->id}}">
-            <input type="text" class="form-control" placeholder="Buscar productos..."  name="search" size="50" value="{{ old("search") }}">
-            <button type="button" class="btn btn-primary" style="vertical-align:top;" id="btn-search-edit">Buscar</button>
+            <div class="col-md-10">
+                <input type="text" class="form-control" placeholder="Buscar productos..."  name="search" id="search" style="width:100%;" value="{{ old("search") }}">
+
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" style="vertical-align:top;" id="btn-search-edit">Buscar</button>
+
+            </div>
         </form>
-    </div>
+    
     <div class="col-md-12">
         @include('admin.market_rates.includes.search-results')
     </div>

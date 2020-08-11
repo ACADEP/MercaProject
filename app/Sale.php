@@ -21,7 +21,6 @@ class Sale extends Model
     {
         return $this->belongsTo(seleHistory::class);
     }
-
     
     public function client()
     {

@@ -17,7 +17,7 @@
                 <th>Telefono</th>
                 <th>Email</th>
               
-                <th></th>
+                <th>Nombre de usuario</th>
             </tr>
         </thead>
         <tbody>
@@ -26,11 +26,18 @@
                     <td>{{$client->full_name}}</td>
                     <td>{{$client->telefono}}</td>
                     <td>{{$client->email}}</td>
-                   
-                    <td>
-                    <a class="btn btn-info btn-xs" href="{!!route('clients.show.update', ['id' => $client->id] )!!}" title="Editar">
+                    <td>{{$client->user != null ? $client->user->username : "No asignado"}}</td>
+                    <td style="display: inline-flex;">
+                    <a  class="btn btn-info btn-xs" href="{!!route('clients.show.update', ['id' => $client->id] )!!}" title="Editar">
                             <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                        </a>  
+                        </a>
+                    <form action="{!!route('clients.delete' )!!}" method="post" style="margin-left: 5px;">
+                        <input type="hidden" name="id" value="{{$client->id}}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-xs" title="Eliminar">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>  
+                    </form>
                     </td>
                 </tr>
             @endforeach

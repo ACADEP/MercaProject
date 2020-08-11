@@ -22,7 +22,7 @@
       
       <div class="row mb-3" id="dates">
         <div class="col-sm-6 col-md-6" id="project">
-          <div><span><strong>Cotización</strong></span> {{ $items->id}}</div>
+         
           <div><span><strong>Cliente</strong></span> {{ $items->company}}</div>
           <div><span><strong>Correo</strong></span> <a href="mailto:{{$items->email}}">{{$items->email}}</a></div>
           <div><span><strong>Fecha</strong></span> {{ $now->format('d-m-Y') }}</div>
