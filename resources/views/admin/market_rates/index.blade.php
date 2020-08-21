@@ -52,7 +52,7 @@
             <td>{{ $marketrate->id}}</td>
             <td>{{ $marketrate->date }}</td>
             <td>{{ $marketrate->email }}</td>
-            <td>{{ $marketrate->customer->full_name }}</td>
+            <td>{{ $marketrate->customer ? $marketrate->customer->full_name : "No asignado"}}</td>
             <td>${{number_format( $marketrate->total, 2) }}</td>
             <td>
                

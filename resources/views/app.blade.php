@@ -137,6 +137,12 @@
             var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
         </script>
     @endif
+    @if(Session::has('pay-success-no-email'))
+       
+        <script> 
+            var notify = $.notify('<div style="font-size:25px;">{{session("pay-success-no-email")}}</div>', { allow_dismiss: false });
+        </script>
+    @endif
         @yield('content')
           
     </div>

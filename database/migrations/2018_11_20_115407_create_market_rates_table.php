@@ -21,6 +21,7 @@ class CreateMarketRatesTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+            $table->text('pdf_info')->nullable();
             $table->datetime('date')->nullable();
             $table->decimal('total', 10, 2)->unsigned();
             $table->timestamps();

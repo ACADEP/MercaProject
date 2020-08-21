@@ -106,12 +106,13 @@
         <div style="float: left; width:33.33%; font-size:10px !important;">
             <div class="text-center"  style="height: 50px; border-left:solid 1px black; border-bottom:solid 1px black;"">
                 <strong>TIEMPO DE ENTREGA:</strong> <br>
-                5 días hábiles después del finiquito 
+                {{$items->timedelivery}}
+                 
             </div>
 
             <div class="text-center" style="height: 50px; border-left:solid 1px black;"">
                 <strong>CONDICIONES DE PAGO: </strong> <br>
-                100% a la orden
+                {{$items->conditions}}
 
             </div>
            
@@ -170,41 +171,27 @@
 
         </div>
 
-        <div  style="width:100%; height:25px;" >
-          <div class="box-footer-table-right-1" >
-           Notas: 
-          </div>
+        @foreach ($items->notes as $item)
 
-          <div class="box-footer-table-right-2" style="font-size:8px !important;">
-            1.- Esta cotización está sujeta a número de piezas en existencia y/o vigencia de promoción.
-           
-          </div>
+        <div  style="width:100%; height:25px;" >
+          
+            <div class="box-footer-table-right-1" >
+              @if ($loop->iteration==1)
+                Notas: 
+              @endif
+            </div>
+                
+
+            <div class="box-footer-table-right-2" style="font-size:8px !important;">
+            {{ $item }}
+            
+            </div>
 
         </div> 
+            
+        @endforeach
 
-        <div  style="width:100%; height:25px;" >
-          <div class="box-footer-table-right-1">
-          
-          </div>
-
-          <div  class="box-footer-table-right-2" style="font-size:8px !important;">
-            2.- Esta cotización está sujeta a cambio de precio.
-           
-          </div>
-
-        </div>   
-
-        <div style="width:100%; height:25px;" >
-          <div  class="box-footer-table-right-1">
-          
-          </div>
-
-          <div  class="box-footer-table-right-2" style="font-size:8px !important;">
-            3.-Lo que no se especifica en esta cotización tiene un costo adicional.
-           
-          </div>
-
-        </div>        
+       
 
       </div>
 

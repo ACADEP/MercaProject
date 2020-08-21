@@ -111,9 +111,10 @@ class CartController extends Controller {
      */
     public function addCart(Request $request) {
         
+        // $productChecked=true;
         //Checar el producto desde el api ->precio ->disponibilidad
-        // $productChecked=ApiRequest::checkProductFromApi($request);
-        $productChecked=true;
+        $productChecked=ApiRequest::checkProductFromApi($request);
+
         //Buscar el producto para agregar al carrito
         $product=Product::find($request->product_id);
 
@@ -340,35 +341,43 @@ class CartController extends Controller {
             $customerHistory->insert($cartItem,$sale);
         }
 
-        // Envio de correo
+        //borrar productos del carrito
+        Auth::user()->carts()->delete();
+
+        //Envios de correo
         
         //Administrador
         $admin = User::role('Admin')->first();
         
         //Enviar correo a administrador
-        $mailer->sendReceiptPayment($admin,Auth::user(), $sale, $request->ship_rate, $request->date_ship, $request->method_pay);
-        if($mailer)
+        try
         {
-            //Enviar correo a cliente con su recibo de compra
-            $mailer->sendReceiptPaymentClient(Auth::user(), $envio, $sale, $request->ship_rate,$request->date_ship, $request->method_pay);
-            if($mailer)
-            {
-                //borrar productos del carrito
-                Auth::user()->carts()->delete();
-                //Borrar sesion para el mensaje de progreso
-                Session::forget('progress');
-                //Regresar a home con el mensaje de pago existoso
-                return redirect("/")->with('pay-success','Pago exitoso');
-            }
-            else
-            {
-                echo("Mensaje no enviado");
-            } 
+            $mailer->sendReceiptPayment($admin,Auth::user(), $sale, $request->ship_rate, $request->date_ship, $request->method_pay);
         }
-        else
+        catch(\Exception $e)
         {
-            echo("Mensaje no enviado");
+            //Borrar sesion para el mensaje de progreso
+            Session::forget('progress');
+            return redirect("/")->with('pay-success-no-email','Pago exitoso correo no enviado favor de contactarse a administracion');
         }
+       
+        //Enviar correo a cliente con su recibo de compra
+        try 
+        {
+            $mailer->sendReceiptPaymentClient(Auth::user(), $envio, $sale, $request->ship_rate,$request->date_ship, $request->method_pay);   
+        } 
+        catch (\Exception $e) 
+        {
+            //Borrar sesion para el mensaje de progreso
+            Session::forget('progress');
+            return redirect("/")->with('pay-success-no-email','Pago exitoso correo no enviado favor de contactarse a administracion');
+        }
+        
+        //Borrar sesion para el mensaje de progreso
+        Session::forget('progress');
+        //Regresar a home con el mensaje de pago existoso
+        return redirect("/")->with('pay-success','Pago exitoso');
+           
         
     }
 
@@ -736,6 +745,8 @@ class CartController extends Controller {
           
            if($charge->status=='completed')
            {
+               //Eliminar productos del carrito
+
                $val=$request->ship_rate;
                 return redirect()->action(
                     'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id'),

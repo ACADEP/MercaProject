@@ -112,17 +112,17 @@
                                     <div class="col-md-4">
                                         
                                         <label for="paginate">Primer slider:</label>
-                                        <img class="img-responsive" style="height:100px;" src="{{config('configurations.general.carrusel_1')}}">
+                                        <img class="img-responsive" style="height:100px; width: 100%; object-fit: cover;" src="{{config('configurations.general.carrusel_1')}}">
                                         <input type="file" name="carrusel_1" class="form-control">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="paginate">Segundo slider:</label>
-                                        <img class="img-responsive" style="height:100px;" src="{{config('configurations.general.carrusel_2')}}">
+                                        <img class="img-responsive" style="height:100px; width: 100%; object-fit: cover;" src="{{config('configurations.general.carrusel_2')}}">
                                         <input type="file" name="carrusel_2" class="form-control">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="paginate">Tercer slider:</label>
-                                        <img class="img-responsive" style="height:100px;" src="{{config('configurations.general.carrusel_3')}}">
+                                        <img class="img-responsive" style="height:100px; width: 100%; object-fit: cover;" src="{{config('configurations.general.carrusel_3')}}">
                                         <input type="file" name="carrusel_3" class="form-control">
                                     </div>
                                

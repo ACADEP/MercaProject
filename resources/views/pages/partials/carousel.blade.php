@@ -3,7 +3,7 @@
       
       <div class="carousel-item  active animated fadeInDown">
         
-          <img class="d-block w-100" style="height:300px;"src="{{config('configurations.general.carrusel_1')}}" alt="First slide">
+          <img class="d-block w-100" style="height:300px; object-fit: cover;"src="{!!config('configurations.general.carrusel_1')!!}" alt="First slide">
           <div class="carousel-caption hidden-xs">
             <h1><strong><span class="color">{{config('configurations.general.store_name')}}</span></strong></h1>
             <p class="lead">{{config('configurations.general.carrusel_slogan')}}</p>
@@ -11,11 +11,11 @@
       </div>
 
       <div class="carousel-item animated fadeInDown">
-        <img class="d-block w-100" style="height:300px;" src="{{config('configurations.general.carrusel_2')}}" alt="Second slide">
+        <img class="d-block w-100" style="height:300px; object-fit: cover;" src="{!!config('configurations.general.carrusel_2')!!}" alt="Second slide">
       </div>
 
       <div class="carousel-item animated fadeInDown">
-        <img class="d-block w-100" style="height:300px;" src="{{config('configurations.general.carrusel_3')}}" alt="Third slide">
+        <img class="d-block w-100" style="height:300px; object-fit: cover;" src="{!!config('configurations.general.carrusel_3')!!}" alt="Third slide">
       </div>
 
     </div>

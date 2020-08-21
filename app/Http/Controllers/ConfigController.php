@@ -17,7 +17,6 @@ class ConfigController extends Controller
     {
         
         $request->validate([
-            "*"=>"required",
             'main_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'mini_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'carrusel_1' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -54,31 +53,31 @@ class ConfigController extends Controller
 
         if($request->file('main_logo')!=null)
         {
-            $file=$request->file('main_logo')->store('/');
-            $array['general']['main_logo']="/images/".$file;
+            $file=$request->file('main_logo')->store('/images');
+            $array['general']['main_logo']="/".$file;
         }
         if($request->file('mini_logo')!=null)
         {
-            $file=$request->file('mini_logo')->store('/');
-            $array['general']['mini_logo']="/images/".$file;
+            $file=$request->file('mini_logo')->store('/images');
+            $array['general']['mini_logo']="/".$file;
         }
 
         //Carrusel principal
         $array['general']['carrusel_slogan']=$request->carrusel_slogan;
         if($request->file('carrusel_1')!=null)
         {
-            $file=$request->file('carrusel_1')->store('/');
-            $array['general']['carrusel_1']="/images/".$file;
+            $file=$request->file('carrusel_1')->store('/images');
+            $array['general']['carrusel_1']="/".$file;
         }
         if($request->file('carrusel_2')!=null)
         {
-            $file=$request->file('carrusel_2')->store('/');
-            $array['general']['carrusel_2']="/images/".$file;
+            $file=$request->file('carrusel_2')->store('/images');
+            $array['general']['carrusel_2']="/".$file;
         }
         if($request->file('carrusel_3')!=null)
         {
-            $file=$request->file('carrusel_3')->store('/');
-            $array['general']['carrusel_3']="/images/".$file;
+            $file=$request->file('carrusel_3')->store('/images');
+            $array['general']['carrusel_3']="/".$file;
         }
 
         //Configuración pdf

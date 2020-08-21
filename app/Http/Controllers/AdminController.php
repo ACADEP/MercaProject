@@ -854,7 +854,7 @@ class AdminController extends Controller {
 
         $customer->delete();
 
-        return back()->with("success", "Cliente eliminado con éxito");
+        return response("Cliente eliminado con éxito", 200);
 
 
     }

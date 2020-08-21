@@ -101,6 +101,29 @@ class MarketRatesController extends Controller
     public function createMarket_rates(MarketRateRequest $request)
     {
         
+        //Crear JSON para la configuracion del PDF a guardar en la base de datos
+        $json='{"timedelivery":"'.$request->time_delivery.'",'; //Agregar el tiempo de entrega
+        $json.='"conditions":"'.$request->conditions.'", '; //Agregar las condiciones
+        
+        $json.='"notas":{'; //Agregar las notas
+        $i=1;
+        foreach ($request->note as $value) {
+            if(count($request->note) == $i ) //Agregar la coma al ultimo elemento
+            {
+                $json.='"nota'.$i.'":"'.$value.'"';
+            }
+            else
+            {
+                $json.='"nota'.$i.'":"'.$value.'",';
+            }
+            $i++;
+        }
+        $json.="}";
+
+        $json.="}";
+
+        $request["pdf_info"]=$json;
+        
         $request["date"]=Carbon::now();
 
         $market_rate=MarketRates::find($request->marketRate);
@@ -118,6 +141,30 @@ class MarketRatesController extends Controller
 
     public function updateMarket_rates(MarketRateRequest $request)
     {
+        //Crear JSON para la configuracion del PDF a guardar en la base de datos
+        $json='{"timedelivery":"'.$request->time_delivery.'",'; //Agregar el tiempo de entrega
+        $json.='"conditions":"'.$request->conditions.'", '; //Agregar las condiciones
+        
+        $json.='"notas":{'; //Agregar las notas
+        $i=1;
+        foreach ($request->note as $value) 
+        {
+            if(count($request->note) == $i ) //Agregar la coma al ultimo elemento
+            {
+                $json.='"nota'.$i.'":"'.$value.'"';
+            }
+            else
+            {
+                $json.='"nota'.$i.'":"'.$value.'",';
+            }
+            $i++;
+        }
+        $json.="}";
+
+        $json.="}";
+
+        $request["pdf_info"]=$json;
+
         $market_rate=MarketRates::find($request->marketRate);
         $market_rate->update($request->all());
         $market_rate->save();

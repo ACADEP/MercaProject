@@ -88,7 +88,7 @@
         </div>
 
     <!-- Second Step -->
-        <div class="row setup-content-2" id="step-2">
+        {{-- <div class="row setup-content-2" id="step-2">
             <div class="col-md-12">
             <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
                 <div class="row" id="shipments">
@@ -156,8 +156,8 @@
                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
                 <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
             </div>
-        </div>
-
+        </div> --}}
+        <script> $('#loader').remove();</script>
         <!-- Third Step -->
         <div class="row setup-content-2" id="step-3">
             <div class="col-md-12">

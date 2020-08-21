@@ -25,7 +25,7 @@
                 
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-bottom: 10px;">
                     <label for="email">Correo electronico:</label>
-                    <input type="text" id="email" name="email" maxLength='100' autocomplete="off"  class="form-control" value="{{old('email', $data->email)}}">
+                    <input type="email" id="email" name="email" maxLength='100' autocomplete="off"  class="form-control" value="{{old('email', $data->email)}}">
                 </div>
             </div>
 

@@ -1,6 +1,19 @@
 @foreach($data as $product)
         <div class="col-md-4 col-lg-3 col-xs-6 col-sm-6  wow animated zoomIn " id="product-sub-container">
-        <div class="text-center" style="margin-bottom:10px;"> <span class="badge badge-primary" style="font-size:15px;">{{$product->brand!=null ? $product->brand->brand_name : 'SinMarca'}}</span> </div>
+        <div class="text-center" style="margin-bottom:10px;"> 
+            <span class="badge badge-primary" style="font-size:15px;">
+                @if ($product->brand!=null )
+                    @if (strlen($product->brand->brand_name) > 15)
+                        {{substr($product->brand->brand_name, 0, 15)}}...
+                    @else
+                        {{$product->brand->brand_name}}
+                    @endif
+                @else
+                    SinMarca
+                @endif
+    
+            </span> 
+        </div>
             <div class="row">
                 
                 <div class="col-md-12 text-center hoverable" style="width:100%;">
@@ -22,12 +35,22 @@
             </div>
             <div class="text-center">
                 @php
-                    $acorName = substr($product->product_name, 0, 25);
-                    $acorDesc = substr($product->description, 0, 25);
+                    $acorName=$product->product_name;
+                    if(strlen($acorName) > 50)
+                    {
+                        $acorName = substr($acorName, 0, 50)."...";
+                    }
+
+                    $acorDesc=$product->description;
+                    if(strlen($acorDesc) > 50)
+                    {
+                        $acorDesc = substr($acorDesc, 0, 50)."...";
+                    }
+                
                 @endphp
                 <a class="link-products" href="{{ route('show.product', $product->id) }}" style="text-decoration: none;">
                 <h5 class="center-on-small-only">{{ $acorName }}</h5>
-                <p style="font-size: .9em;">{{ substr($product->description,0,50) }}</p>
+                <p style="font-size: .9em;">{{ $acorDesc }}</p>
                 <p>SKU: {{$product->product_sku}}</p>
                 </a>
             </div>
@@ -47,16 +70,27 @@
             <div class="col-md-12 text-center" style="width:100%;">
                     <div class="text-center">
                         @if ($product->product_qty > 0)
-                            <button class="btn btn-primary btn-sm btn-addcart"  data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
+
+                            @if(Auth::check() && !Auth::user()->hasRole("Admin"))
+                                <button class="btn btn-primary btn-sm btn-addcart"  data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            @elseif(!Auth::check())
+                                <button class="btn btn-primary btn-sm btn-addcart"  data-toggle="tooltip" title="Agregar al carrito" value="{{$product->id}}">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                            @endif
+
                         @else
                             <span class="badge badge-danger">Agotado</span><br>
                         @endif
-                        @if(Auth::check())
+                        @if(Auth::check() && !Auth::user()->hasRole("Admin"))
+                          
                             <button  class="btn btn-warning btn-sm btn-favorite"  data-toggle="tooltip" title="Agregar a favoritos"  data-toggle="tooltip" title="Agregar a favoritos" value="{{$product->id}}">
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                             </button>
+                                
+                            
                         @endif
                     </div>
                 </div>

@@ -59,10 +59,13 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu check filter-color ajusteAdvace" aria-labelledby="dropdownMenu2">
-                    <li><label for="one"><input type="checkbox" name="año[]" value="2018" id="one" />2018</label></li>
-                    <li><label for="two"><input type="checkbox" name="año[]" value="2017" id="two" />2017</label></li>
-                    <li><label for="tree"><input type="checkbox" name="año[]" value="2016" id="tree" />2016</label></li>
-                    <li><label for="four"><input type="checkbox" name="año[]" value="2015" id="four" />2015</label></li>
+                    @php $now=\Carbon\Carbon::now(); @endphp
+                    @for ($i = 1; $i <= 4; $i++)
+                        <li><label for="one"><input type="checkbox" name="año[]" value="{{$now->year}}" id="one" />{{$now->year}}</label></li>
+                        @php $now->subYears(1); @endphp
+                        
+                    @endfor
+                   
                     <!-- <li role="separator" class="divider"></li>
                     <li><a href="#">Separated link</a></li> -->
                 </ul>
