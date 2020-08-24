@@ -39,7 +39,8 @@ class MarketRates extends Model
 
     public function getTotalWithIvaAttribute()
     {
-        return $this->total*1.16;
+        $iva=$this->total*0.16;
+        return $this->total+$iva;
     }
 
     //Configuracion del pdf

@@ -144,7 +144,7 @@
           <tr>
               <td class="text-center">{{$loop->iteration}}</td>
               <td class="desc">{{$item->product_sku}}</td>
-              <td class="unit">{{ substr($item->description,0,30) }}</td>
+              <td class="unit" style="text-align: justify;">{{ $item->description }}</td>
               <td class="service">{{$item->qty}}</td>
               <td class="service">{{$item->unity}}</td>
               <td class="qty">${{number_format($item->price, 2)}}</td>
@@ -254,7 +254,8 @@
     <div class="text-center">
         @php 
         $f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-        $entero=(int)$items->total_with_iva;
+        print(3500+560);
+        $entero=($items->total_with_iva);
         $entero_text=$f->format($entero);
         $decimals=round($items->total_with_iva, 2)-$entero;
         $texto="( ".$entero_text." Pesos ".explode(".", number_format($decimals, 2))[1]."/100)";
