@@ -7,30 +7,38 @@
         </h1> 
 </section><br>
 
-<div class="col-md-12">
+<div class="row">
    
-    <div class="text-left col-md-10 form-inline">
+    <div class="text-left col-md-4 col-xl-4 col-xs-4">
         <form action="{{route('searchMarketRates')}}" method="get">
-            <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off" style="width:60%;" name="search" 
+            <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off"  name="search" 
             value="@isset($old_inputs){{$old_inputs["search"]}}@endisset"> 
-            <select class="form-control" name="client" id="">
-                <option value="">Buscar por cliente</option>
-                @foreach ($clients as  $client)
-                    <option 
-                    @isset($old_inputs)
-                        @if($old_inputs["client"]==$client->id)
-                            selected
-                        @endif
-                    @endisset
-                    value="{{$client->id}}">{{$client->full_name}}</option>
-                @endforeach
-            </select>
-            <button type="sumbit" class="btn btn-primary">Buscar</button>
+            
+           
         </form>
     </div>
 
-     <div class="text-right col-md-2 form-inline">
-        <a type="button" href="{{route('create-marketRates')}}" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> Nueva cotización</a>
+    <div class="col-md-4 col-xl-4 col-xs-4">
+        <select class="form-control" name="client" id="">
+            <option value="">Buscar por cliente</option>
+            @foreach ($clients as  $client)
+                <option 
+                @isset($old_inputs)
+                    @if($old_inputs["client"]==$client->id)
+                        selected
+                    @endif
+                @endisset
+                value="{{$client->id}}">{{$client->full_name}}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-2 col-xl-2 col-xs-2">
+        <button type="sumbit" class="btn btn-primary">Buscar</button>
+    </div>
+
+     <div class="col-md-2 col-xl-2 col-xs-2 ">
+        <a type="button" href="{{route('create-marketRates')}}" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
     </div>
 </div>
 
@@ -50,10 +58,10 @@
         @foreach($market_rates as $marketrate)
         <tr id="rowMarket{{$marketrate->id}}">
             <td>{{ $marketrate->id}}</td>
-            <td>{{ $marketrate->date }}</td>
+            <td>{{ $marketrate->date ? $marketrate->date->format("d/m/Y") : "No agregado" }}</td>
             <td>{{ $marketrate->email }}</td>
             <td>{{ $marketrate->customer ? $marketrate->customer->full_name : "No asignado"}}</td>
-            <td>${{number_format( $marketrate->total, 2) }}</td>
+            <td>${{number_format( $marketrate->total_with_iva, 2) }}</td>
             <td>
                
                 <form action="{{route('marketRatesPdf',$marketrate)}}" method="get">
@@ -61,17 +69,15 @@
                 </form>
                
             </td>
-            <td >
+            <td class="row">
                
-                <form style="display:inline;" action="{{route('edit-marketRates',$marketrate)}}" method="get">
-                    <button type="submit" data-placement="top" title="Editar" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                </form>
+                
+                <a role="button" href="{{route('edit-marketRates',$marketrate->id)}}" data-placement="top" title="Editar" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+            
                 @can("delete_markerRate")
                 <button class="btn btn-danger btn-xs btn-row-market" data-placement="top" title="Eliminar" value="{{$marketrate->id}}"><i class="fa fa-minus-square"></i></button>
                 @endcan
-                <form style="display:inline;" action="{{route('Send-MarketRate',$marketrate)}}" method="get">
-                    <button type="submit" data-placement="top" title="Enviar al correo" class="btn btn-primary btn-xs btn-send-email"><i class="fa fa-paper-plane-o"></i></button>
-                </form>
+                    <a role="button" href="{{route('Send-MarketRate',$marketrate)}}" data-placement="top" title="Enviar al correo" class="btn btn-primary btn-xs btn-send-email"><i class="fa fa-paper-plane-o"></i></a>
                 @can("pay_markerRate")
                 <form style="display:inline;" action="{{route('addOrder')}}" method="post">
                     {{csrf_field()}}

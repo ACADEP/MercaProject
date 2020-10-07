@@ -56,7 +56,7 @@
     </div>
 </div><!--  fin del col-md-8 -->
 
-<div class="col-md-4">
+<div class="col-md-4" style="overflow-y: scroll; height:600px;">
 <h4>Productos</h4>
 
 @foreach($marketrate->MarketRatesDetails()->get() as $detail)
@@ -64,7 +64,7 @@
 <div class='col-md-3'>{{ substr($detail->description, 0, 30) }}..</div>
 <div class='col-md-3'>${{ number_format($detail->subtotal,2)}}</div>
 <div class='col-md-3'>
-    <button  class='btn btn-danger btn-xs btn-row-product' value="{{$detail->id}}">Borrar</button></form> 
+    <button  class='btn btn-danger btn-xs btn-row-product' value="{{$detail->id}}"><i class='fa fa-minus' aria-hidden='true'></i></button></form> 
 </div></div>
 @endforeach
 <div  id="productmarket_content">
@@ -258,7 +258,7 @@
 
                         Cookies.set("market_id",response.market_id,1);
                         $(".marketRate").val(Cookies.get("market_id"));
-                        console.log(response);
+                        
 
                         if(response.detail!=null)
                         {
@@ -278,7 +278,7 @@
                             $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
                             "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
                             "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'>Borrar</button> </div></div>");
+                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
                         }
                         else
                         {

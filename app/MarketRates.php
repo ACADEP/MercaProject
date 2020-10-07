@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class MarketRates extends Model
 {
     protected $fillable = [ 'company','client','contact','address','phone','email','date', "pdf_info"];
+
+    protected $dates=["date"];
     
     public function getRouteKeyName()
     {
@@ -24,7 +26,7 @@ class MarketRates extends Model
     }
 
     public function productRepeat($id)
-    {
+    { 
         $band=false;
         $details = $this->MarketRatesDetails()->get();
         foreach($details as $detail)

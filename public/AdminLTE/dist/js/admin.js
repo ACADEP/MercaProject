@@ -309,7 +309,7 @@ $(document).ready(function(){
                         $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
                         "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
                         "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                        "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'>Borrar</button> </div></div>");
+                        "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
                     }
                     else
                     {
@@ -586,10 +586,7 @@ $("#btn-send-market").click(function(){
         // Cookies.remove("products");
         // Cookies.remove("market_id");
         $("#productmarket_content").empty();
-        if(Cookies.get("market_id")!=null)
-        {
-            $(".marketRate").val(Cookies.get("market_id"));
-        }
+        
         if(Cookies.get("products")!=null)
         {
             var productosArray=jQuery.parseJSON(Cookies.get("products"));
@@ -605,7 +602,7 @@ $("#btn-send-market").click(function(){
                     $("#productmarket_content").append("<div class='col-md-12' id='product"+productosArray[i].id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+productosArray[i].thumbnail+"' style='width:100%;'></div>"+
                     "<div class='col-md-3'>"+ String(productosArray[i].description).substring(0, 30)+"</div>"+
                     "<div class='col-md-3'> $"+parseFloat(productosArray[i].subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                    "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+i+"' value='"+productosArray[i].id+"'>Borrar</button> </div></div>");
+                    "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+i+"' value='"+productosArray[i].id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
                 }
             }
             else

@@ -12,20 +12,24 @@
             <div class="tab-pane fade in active" id="tab1primary">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-bottom: 10px;">
                     <label for="firstname">Nombre:</label>
-                    <input type="text" id="firstname" name="firstname" maxLength='100' autocomplete="off"  class="form-control" value="{{old('firstname', $data->nombre)}}">
+                    <input type="text" id="firstname" required name="firstname" maxLength='255' 
+                        placeholder="Ingrese un nombre" autocomplete="off"  class="form-control" value="{{old('firstname', $data->nombre)}}">
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-bottom: 10px;">
                     <label for="secondname">Apellidos:</label>
-                    <input type="text" id="secondname" name="secondname" maxLength='100' autocomplete="off"  class="form-control" value="{{old('secondname', $data->apellidos)}}" placeholder="Opcional">
+                    <input type="text" id="secondname" name="secondname" maxLength='100' 
+                        placeholder="Opcional"  autocomplete="off"  class="form-control" value="{{old('secondname', $data->apellidos)}}" >
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px;">
                     <label for="phone">Teléfono:</label>
-                    <input type="text" id="phone" name="phone" maxLength='10' autocomplete="off"  class="form-control" value="{{old('phone', $data->telefono)}}">
+                    <input type="text" id="phone" name="phone" required maxLength='10' 
+                    placeholder="Ingrese un número de teléfono" autocomplete="off"  class="form-control" value="{{old('phone', $data->telefono)}}">
                 </div>
                 
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-bottom: 10px;">
                     <label for="email">Correo electronico:</label>
-                    <input type="email" id="email" name="email" maxLength='100' autocomplete="off"  class="form-control" value="{{old('email', $data->email)}}">
+                    <input type="email" id="email" name="email" required maxLength='100' 
+                    placeholder="Ingrese un correo electroníco" autocomplete="off"  class="form-control" value="{{old('email', $data->email)}}">
                 </div>
             </div>
 

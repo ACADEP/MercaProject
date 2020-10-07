@@ -34,7 +34,7 @@
             </td>
             <td > 
                 
-                    <button class="btn btn-primary btn-sm btn-add-market" style="width:100%;" data-toggle="tooltip" title="Agregar" value="{{$product->id}}">
+                    <button class="btn btn-primary btn-xs btn-add-market" style="width:50%;" data-toggle="tooltip" title="Agregar" value="{{$product->id}}">
                         <i class="fa fa-plus"></i>
                     </button>
                 

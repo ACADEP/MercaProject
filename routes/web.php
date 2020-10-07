@@ -706,7 +706,7 @@ Route::group(["middleware" => 'customer'], function(){
 
  /*******************************************Admin Profile Routes below ************************************************/
 
-Route::group(["middleware" => 'admin'], function(){
+Route::group(["middleware" => 'admin', 'middleware' => 'auth'], function(){
     //Dashboard del administrador
     Route::get("admin/index", "AdminController@index");
     //Edicion de categorías
@@ -812,7 +812,7 @@ Route::group(["middleware" => 'admin'], function(){
     //Editar y crear Cotizaciones
     Route::get("/admin/market_rates/create", "MarketRatesController@showCreate")->name("create-marketRates");
 
-    Route::get("/admin/market_rates/edit/{marketrate}", "MarketRatesController@showEdit")->name("edit-marketRates");
+    Route::get("/admin/market_rates/edit/{id}", "MarketRatesController@showEdit")->name("edit-marketRates");
 
     Route::post("/admin/market_rates/createMarketRate", "MarketRatesController@createMarket_rates")->name("create-marketRate");
     //Actualizar cotizacion

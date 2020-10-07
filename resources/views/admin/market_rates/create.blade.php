@@ -43,7 +43,7 @@
     <input type="hidden" name="email" id="emailSend">
     <input type="hidden" name="markerate" class="marketRate">
     
-    <button type="button" data-placement="top" title="Enviar al correo" class="btn btn-danger btn-sm " id="btn-send-market"><i class="fa fa-paper-plane-o"></i></button>
+    {{-- <button type="button" data-placement="top" title="Enviar al correo" class="btn btn-danger btn-sm " id="btn-send-market"><i class="fa fa-paper-plane-o"></i></button> --}}
 </form>
 </div>
 
@@ -71,8 +71,8 @@
        
   
 </div><!--  fin del col-md-8 -->
-
-<div class="col-md-4">
+ 
+<div class="col-md-4" style="overflow-y: scroll; height:600px;">
     <h4>Productos</h4>
     <input type="hidden" name="marketRate" class="marketRate" value="">
     <div  id="productmarket_content">
@@ -333,7 +333,7 @@
                             $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
                             "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
                             "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'>Borrar</button> </div></div>");
+                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
                         }
                         else
                         {
@@ -387,6 +387,10 @@
             
         }else{}
     });
-    
+
+    if(Cookies.get("market_id")!=null)
+    {
+        $(".marketRate").val(Cookies.get("market_id"));
+    }
     </script>
 @stop

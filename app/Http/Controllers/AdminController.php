@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\ClientAdminRequest;
 
 use App\Cart;
 use App\User;
@@ -788,7 +789,7 @@ class AdminController extends Controller {
         return view("admin.clients.create", compact("customer"));
     }
 
-    public function clientcreate(Request $request)
+    public function clientcreate(ClientAdminRequest $request)
     {
         $request->validate(
             ["email"=>"unique:customers"],
@@ -817,7 +818,7 @@ class AdminController extends Controller {
         return redirect("/admin/clients/index")->with("success", "El cliente ".$customer->nombre." ha sido editado");
     }
 
-    public function clientupdate(Request $request, $id)
+    public function clientupdate(ClientAdminRequest $request, $id)
     {
         $request->validate(
             [

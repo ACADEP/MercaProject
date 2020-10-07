@@ -36,9 +36,10 @@ class MarketRatesController extends Controller
         return view("admin.market_rates.create", compact('marketrate', "clients"));
     }
 
-    public function showEdit(MarketRates $marketrate)
+    public function showEdit($id)
     {
         $clients=Customer::orderBy("nombre")->get();
+        $marketrate=MarketRates::findOrFail($id);
         return view("admin.market_rates.edit", compact('marketrate',"clients"));
     }
     
@@ -71,6 +72,7 @@ class MarketRatesController extends Controller
     }
     public function searchMarket_ratesedit(Request $request)
     {
+       
         $search=null;
         $search_find=$request->search;
         if( $search_find!=null)
@@ -93,6 +95,7 @@ class MarketRatesController extends Controller
         
         session()->flashInput($request->input());
         $marketrate=MarketRates::find($request->market);
+
         $clients=Customer::orderBy("nombre")->get();
         return view("admin.market_rates.edit", compact('search', 'marketrate', "clients"));
         
@@ -229,7 +232,6 @@ class MarketRatesController extends Controller
         if($request->market_id==null || $request->market_id=='undefined')   //Nueva cotización
         {
             $market_rate=new MarketRates;
-           
         }
         else
         {

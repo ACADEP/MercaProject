@@ -254,8 +254,8 @@
     <div class="text-center">
         @php 
         $f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-        print(3500+560);
-        $entero=($items->total_with_iva);
+        
+        $entero=(int)$items->total_with_iva;
         $entero_text=$f->format($entero);
         $decimals=round($items->total_with_iva, 2)-$entero;
         $texto="( ".$entero_text." Pesos ".explode(".", number_format($decimals, 2))[1]."/100)";
