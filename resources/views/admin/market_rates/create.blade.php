@@ -81,6 +81,7 @@
 </div><!--  fin del col-md-4 -->
   
 @include('admin.market_rates.includes.modal-new')
+@include('admin.market_rates.includes.modal-edit-product')
 
 @stop
 
@@ -215,8 +216,17 @@
 
         
 </style>
-   
+
+@stop
+
+@push('scripts')
     <script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script>
+    <script src="{{asset('/AdminLTE/dist/js/market_rates.js')}}"></script>
+    <script>
+        //Mostar prodcutos 
+        mostrarElementos();
+    </script>
+    
     <script>
            
    
@@ -393,4 +403,4 @@
         $(".marketRate").val(Cookies.get("market_id"));
     }
     </script>
-@stop
+@endpush

@@ -166,6 +166,46 @@
                 delay:4000
             });
         });
+
+        //Elimnar la cotizacion 
+        $(".btn-row-market").click(function(){
+        if (confirm('Seguro que quiere eliminar esta cotización')) {
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var market_id=$(this).val();
+
+            var formData = { market_id:market_id};
+            $.ajax({
+                url: "/admin/market_rates/deleteMarket_rates",
+                method: 'POST',
+                data: formData,
+                success: function(response){
+                $("#rowMarket" + market_id).remove();
+                $.notify({
+                    // options
+                    message: '<strong>'+response+'</strong>' 
+                },{
+                    // settings
+                    type: 'success',
+                    delay:3000
+                });
+            
+                
+            
+            },
+
+            error: function(response){
+                console.log(response);
+                alert("Intente de nuevo");
+            }
+
+            });
+            }else{}
+        });
     </script>
 
 @stop

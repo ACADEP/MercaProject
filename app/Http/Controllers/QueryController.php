@@ -20,24 +20,32 @@ class QueryController extends Controller {
     public function search(Request $peticion)
     {    
         
-
         $search=null;
         $resultados = null;
         $search_find=$peticion->searchname;
-        if( $search_find!=null)
-        {
-            $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
-                                                ->join('categories', 'cat_id', '=', 'categories.id');  
-                                                 
-            $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
+        
+        if($search_find!=null)
+        {   
+            $query=Product::select("*")->with('brand')->with("category");  
+                          
+            $query->orWhere("products.product_sku", 'like', "%".$search_find."%");
+            $query = $query->orWhereHas('brand', function( $query ) use ( $search_find ){
+                $query->where('brand_name', "like" , "%".$search_find."%" );
+            });
 
+           
+            $query = $query->orWhereHas('category', function( $query ) use ( $search_find ){
+                $query->where('category',"like" ,"%".$search_find."%" );
+            });
+            
+            $query = $query->orWhere("product_name", 'LIKE', "%".$search_find."%");
+            
+            $query = $query->orWhere("description", 'LIKE', "%".$search_find."%");
+            
+           
             $marcas = Brand::select("*")->whereIn("id",$query->select("brand_id"))->get();
             $categorias = Category::select("*")->whereIn("id",$query->select("cat_id"))->get();
-
+            
             $resultados = count($query->get());
 
             $search = $query->select('products.*')->paginate(12);
@@ -104,20 +112,26 @@ class QueryController extends Controller {
        
         $search_find=$request->search;
 
-        $query=Product::select('products.*')
-                        ->join('brands', 'brand_id', '=', 'brands.id')
-                        ->join('categories', 'cat_id', '=', 'categories.id');  
-                 
-        $query = $query->orWhere("brand_name", 'LIKE', "%$request->search%");
-        $query = $query->orWhere("category", 'LIKE', "%$request->search%");
-        $query = $query->orWhere("product_name", 'LIKE', "%$request->search%");
-        $query = $query->orWhere("description", 'LIKE', "%$request->search%");
-        $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
+        $query=Product::select("*")->with('brand')->with("category");  
+                          
+        $query->orWhere("products.product_sku", 'like', "%".$search_find."%");
+        $query = $query->orWhereHas('brand', function( $query ) use ( $search_find ){
+            $query->where('brand_name', "like" , "%".$search_find."%" );
+        });
+
         
+        $query = $query->orWhereHas('category', function( $query ) use ( $search_find ){
+            $query->where('category',"like" ,"%".$search_find."%" );
+        });
+        
+        $query = $query->orWhere("product_name", 'LIKE', "%".$search_find."%");
+        
+        $query = $query->orWhere("description", 'LIKE', "%".$search_find."%");
+
         $marcas = Brand::select("*")->whereIn("id",$query->select("brand_id"))->get();
         $categorias = Category::select("*")->whereIn("id",$query->select("cat_id"))->get();
         
-        $filter=Product::whereIn("id",$query->select("products.id"));
+        $filter=Product::whereIn("id",$query->select("id"));
         
         if($request->desde > 0)
         {

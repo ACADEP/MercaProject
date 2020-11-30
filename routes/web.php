@@ -811,6 +811,10 @@ Route::group(["middleware" => 'admin', 'middleware' => 'auth'], function(){
     Route::get("/admin/market_rates/searchMarketRates", "MarketRatesController@searchMarketRates")->name("searchMarketRates");
     //Editar y crear Cotizaciones
     Route::get("/admin/market_rates/create", "MarketRatesController@showCreate")->name("create-marketRates");
+    Route::post("/admin/market_rates/editdetail", "MarketRatesController@editdetail")->name("edit-detail-marketRates");
+    
+    //Infomacion del producto de la cotizacion a editar
+    Route::get("/admin/market_rates/showinfoproduct", "MarketRatesController@showinfoproduct")->name("show-info-product-marketRates");
 
     Route::get("/admin/market_rates/edit/{id}", "MarketRatesController@showEdit")->name("edit-marketRates");
 

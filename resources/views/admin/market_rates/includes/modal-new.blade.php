@@ -43,7 +43,8 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <label for="product_price">Precio: </label>
-                                <input type="text" required class="form-control product_new_price" required name="product_price" style="width:100%;" id="product_price" value="">
+                                <input type="text" class="form-control" required  style="width:100%;" id="product_price_format" value="">
+                                <input type="hidden" required class="form-control product_new_price" required name="product_price" style="width:100%;" id="product_price" value="">
                                 <span class="msg-error" style="color:red" id="product_price_error"></span>
                             </div>
                 
@@ -63,7 +64,8 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="service_price">Precio: </label>
-                                <input type="text" required class="form-control product_new_price" required name="service_price" style="width:100%;" id="service_price" value="">
+                                <input type="text" class="form-control"  required style="width:100%;" id="service_price_format" value="">
+                                <input type="hidden" required class="form-control product_new_price" required name="service_price" style="width:100%;" id="service_price" value="">
                                 <span class="msg-error" style="color:red" id="service_price_error"></span>
                             </div>
 
@@ -112,17 +114,82 @@
 
   @push('scripts')
     <script>
-         $(".product_new_price").keydown(function(event) {
-        // Allow only backspace and delete
-        if ( event.keyCode == 46 || event.keyCode == 8 ) {
-            // let it happen, don't do anything
+        
+    //Productos
+    //Establecer el precio formateado en el input price_format donde se ingresa al cantidad
+    function setFormatPrice(input_val){
+        var num= input_val.replace(/\,/g,'');
+        if(num.length>0)
+        {
+            $("#product_price").val(num); //Input escondido 
+            var format =num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $("#product_price_format").val( format );
         }
-        else {
-            // Ensure that it is a number and stop the keypress
-            if (event.keyCode < 48 || event.keyCode > 57 ) {
-                event.preventDefault(); 
-            }   
-        }
+    }
+   
+    
+    //Establecer el precio formateado cuando se esta ingresando
+    $('#product_price_format').keyup(function(e) {
+        setFormatPrice($(this).val());
     });
+    //Validacion de solo ingresar numeros y un punto para formatearlo
+    $('#product_price_format').keypress(function(e) {
+        if (e.which != 8 && e.which != 0 && e.which!=46 && (e.which < 48 || e.which > 57)) 
+        { return false; }
+        else
+        {
+            if(e.which==44)
+            {
+                return false;
+            }
+            else if(e.which==46)
+            {
+                if(this.value.split('.').length>=2)
+                {
+                    return false;
+                }
+            }
+        }  
+        
+    });
+
+    //Servicios
+    //Establecer el precio formateado en el input price_format donde se ingresa al cantidad
+    function setFormatPriceService(input_val){
+        var num= input_val.replace(/\,/g,'');
+        if(num.length>0)
+        {
+            $("#service_price").val(num); //Input escondido 
+            var format =num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $("#service_price_format").val( format );
+        }
+    }
+   
+    
+    //Establecer el precio formateado cuando se esta ingresando
+    $('#service_price_format').keyup(function(e) {
+        setFormatPriceService($(this).val());
+    });
+    //Validacion de solo ingresar numeros y un punto para formatearlo
+    $('#service_price_format').keypress(function(e) {
+        if (e.which != 8 && e.which != 0 && e.which!=46 && (e.which < 48 || e.which > 57)) 
+        { return false; }
+        else
+        {
+            if(e.which==44)
+            {
+                return false;
+            }
+            else if(e.which==46)
+            {
+                if(this.value.split('.').length>=2)
+                {
+                    return false;
+                }
+            }
+        }  
+        
+    });
+           
     </script>
 @endpush

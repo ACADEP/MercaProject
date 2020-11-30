@@ -39,10 +39,22 @@ class MarketRates extends Model
         return $band;
     }
 
+    public function getAllTotalAttribute()
+    {
+        $total=0;
+        foreach ($this->MarketRatesDetails()->get() as  $detail) 
+        {
+            $total+=$detail->subtotal;
+        }
+
+        return $total;
+    }
+
     public function getTotalWithIvaAttribute()
     {
-        $iva=$this->total*0.16;
-        return $this->total+$iva;
+        
+        $iva=$this->all_total*0.16;
+        return $this->all_total+$iva;
     }
 
     //Configuracion del pdf

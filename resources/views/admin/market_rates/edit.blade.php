@@ -58,21 +58,31 @@
 
 <div class="col-md-4" style="overflow-y: scroll; height:600px;">
 <h4>Productos</h4>
-
+<!--   -->
 @foreach($marketrate->MarketRatesDetails()->get() as $detail)
-<div class='col-md-12' style='margin-bottom:25px;' id="rowProduct{{$detail->id}}"><div class='col-md-3'><img src="{{$detail->thumbnail}}" style='width:100%;'></div>
+<div class='col-md-12' style='margin-bottom:25px;' id="rowProduct{{$detail->id}}">
+    
+<div class='col-md-3 '>
+    <img src="{{$detail->thumbnail}}" style='width:100%;'>
+</div>
+
 <div class='col-md-3'>{{ substr($detail->description, 0, 30) }}..</div>
 <div class='col-md-3'>${{ number_format($detail->subtotal,2)}}</div>
 <div class='col-md-3'>
-    <button  class='btn btn-danger btn-xs btn-row-product' value="{{$detail->id}}"><i class='fa fa-minus' aria-hidden='true'></i></button></form> 
-</div></div>
-@endforeach
-<div  id="productmarket_content">
+    <button  class='btn btn-danger btn-xs btn-row-product' style="margin-bottom:10px;" value="{{$detail->id}}"><i class='fa fa-minus' aria-hidden='true'></i></button></form> 
+    <button  class='btn btn-info btn-xs edit-product-market' value="{{$detail->id}}"><i class='fa fa-pencil' aria-hidden='true'></i></button></form> 
+</div>
 
 </div>
+@endforeach
+
+    <div id="productmarket_content">
+
+    </div>
 </div><!--  fin del col-md-4 -->
 
 @include('admin.market_rates.includes.modal-new')
+@include('admin.market_rates.includes.modal-edit-product')
 @stop
 
 @section("msg-success")
@@ -192,146 +202,156 @@
 
         
 </style>
-   <script>
-       //Establecer el tab activo
-       $("#tab_active").val("product");
-        $("#tab1").click(function(){
-            $("#tab_active").val("product");
-        });
-        $("#tab2").click(function(){
-            $("#tab_active").val("service");
-        });
 
-        $(".btn-add-newmarket").click(function(){
-                var market_id=$(".marketRate").val(); 
-                $.ajaxSetup({
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var productosCart=new Array();
-
-                var validate=true;
-                $(".msg-error").text("");
-                if($("#tab_active").val()=="product")
-                {
-                    if($("#product_name").val()=="")
-                    {
-                        $("#product_name_error").text("Campo obligatorio");
-                        validate=false;
-                       
-                    }
-                    if($("#product_price").val()=="")
-                    {
-                        $("#product_price_error").text("Campo obligatorio");
-                        validate=false;
-                    }
-                }
-
-                if($("#tab_active").val()=="service")
-                {
-                    if($("#summary").val()=="")
-                    {
-                        $("#service_summary_error").text("Campo obligatorio");
-                        validate=false;
-                       
-                    }
-                    if($("#service_price").val()=="")
-                    {
-                        $("#service_price_error").text("Campo obligatorio");
-                        validate=false;
-                    }
-                }
-
-                if(!validate)
-                {
-                    return null;
-                }
-                
-                $("#add_product").modal('toggle'); 
-                var formData = $("#form-add-new").serialize()+"&market_id="+market_id;
-                $.ajax({
-                    url: "/admin/market_rates/addNewProduct",
-                    method: 'POST',
-                    data: formData,
-                    success: function(response){
-
-                        Cookies.set("market_id",response.market_id,1);
-                        $(".marketRate").val(Cookies.get("market_id"));
-                        
-
-                        if(response.detail!=null)
-                        {
-                        
-                            if(Cookies.get("products")!=null)
-                            {
-                                var productosJSON=jQuery.parseJSON(Cookies.get("products"));
-                                productosCart=productosJSON;
-                            }
-                            productosCart.push(response.detail);
-                            var cont=productosCart.length-1;
-                            Cookies.set("products",productosCart,1);
-                            if(cont==0)
-                            {
-                                $("#productmarket_content").empty();
-                            }
-                            $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
-                            "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
-                            "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
-                        }
-                        else
-                        {
-                            $.notify({
-                                // options
-                                message: '<strong>Este Producto ya se encuentra en la cotización</strong>' 
-                            },{
-                                // settings
-                                type: 'danger',
-                                delay:3000
-                            });
-                        }
-                        
-                    
-                    },
-
-                    error: function(response){
-                        console.log(response);
-                        alert("Intente de nuevo");
-                    }
-            
-                });
-        });
-   </script>
-    <script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script>
-    <script>
-           
-   
-            $(function () {
-            
-            var datos = new Bloodhound({
-                
-              datumTokenizer: Bloodhound.tokenizers.whitespace,
-              queryTokenizer: Bloodhound.tokenizers.whitespace,
-            
-             prefetch: {
-                url: '/getData',
-                ttl:0,
-                cache: false,
-            }
-             
-            }); 
-            
-            // inicializar typeahead sobre nuestro input de búsqueda
-            $('#search').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: 'datos',
-                source: datos
-            });
-            
-        });
-    </script>
 @stop
+
+@push('scripts')
+<script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script>
+<script src="{{asset('/AdminLTE/dist/js/market_rates.js')}}"></script>
+
+<script>
+    //Establecer el tab activo
+    $("#tab_active").val("product");
+     $("#tab1").click(function(){
+         $("#tab_active").val("product");
+     });
+     $("#tab2").click(function(){
+         $("#tab_active").val("service");
+     });
+
+     $(".btn-add-newmarket").click(function(){
+             var market_id=$(".marketRate").val(); 
+             $.ajaxSetup({
+                 headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }
+             });
+             var productosCart=new Array();
+
+             var validate=true;
+             $(".msg-error").text("");
+             if($("#tab_active").val()=="product")
+             {
+                 if($("#product_name").val()=="")
+                 {
+                     $("#product_name_error").text("Campo obligatorio");
+                     validate=false;
+                    
+                 }
+                 if($("#product_price").val()=="")
+                 {
+                     $("#product_price_error").text("Campo obligatorio");
+                     validate=false;
+                 }
+             }
+
+             if($("#tab_active").val()=="service")
+             {
+                 if($("#summary").val()=="")
+                 {
+                     $("#service_summary_error").text("Campo obligatorio");
+                     validate=false;
+                    
+                 }
+                 if($("#service_price").val()=="")
+                 {
+                     $("#service_price_error").text("Campo obligatorio");
+                     validate=false;
+                 }
+             }
+
+             if(!validate)
+             {
+                 return null;
+             }
+             
+             $("#add_product").modal('toggle'); 
+             var formData = $("#form-add-new").serialize()+"&market_id="+market_id;
+             $.ajax({
+                 url: "/admin/market_rates/addNewProduct",
+                 method: 'POST',
+                 data: formData,
+                 success: function(response){
+
+                     Cookies.set("market_id",response.market_id,1);
+                     $(".marketRate").val(Cookies.get("market_id"));
+                     
+
+                     if(response.detail!=null)
+                     {
+                     
+                         if(Cookies.get("products")!=null)
+                         {
+                             var productosJSON=jQuery.parseJSON(Cookies.get("products"));
+                             productosCart=productosJSON;
+                         }
+                         productosCart.push(response.detail);
+                         var cont=productosCart.length-1;
+                         Cookies.set("products",productosCart,1);
+                         if(cont==0)
+                         {
+                             $("#productmarket_content").empty();
+                         }
+                         $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
+                         "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
+                         "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
+                         "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>"+
+                         "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
+                     }
+                     else
+                     {
+                         $.notify({
+                             // options
+                             message: '<strong>Este Producto ya se encuentra en la cotización</strong>' 
+                         },{
+                             // settings
+                             type: 'danger',
+                             delay:3000
+                         });
+                     }
+                     
+                 
+                 },
+
+                 error: function(response){
+                     console.log(response);
+                     alert("Intente de nuevo");
+                 }
+         
+             });
+     });
+</script>
+ 
+ <script>
+        
+
+         $(function () {
+         
+         var datos = new Bloodhound({
+             
+           datumTokenizer: Bloodhound.tokenizers.whitespace,
+           queryTokenizer: Bloodhound.tokenizers.whitespace,
+         
+          prefetch: {
+             url: '/getData',
+             ttl:0,
+             cache: false,
+         }
+          
+         }); 
+         
+         // inicializar typeahead sobre nuestro input de búsqueda
+         $('#search').typeahead({
+             hint: true,
+             highlight: true,
+             minLength: 1
+         }, {
+             name: 'datos',
+             source: datos
+         });
+         
+     });
+ </script>
+
+@endpush
+  

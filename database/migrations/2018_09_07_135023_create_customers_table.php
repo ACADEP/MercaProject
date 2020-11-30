@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('idCustomerOpenpay')->nullable();
             $table->string('nombre');
             $table->string('apellidos')->nullable();
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->string('razonSocial')->nullable();
             $table->string('tipoFacturacion')->nullable();
             $table->string('rfc')->nullable();

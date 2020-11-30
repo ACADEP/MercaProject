@@ -24,7 +24,7 @@
             @foreach($clients as $client)
                 <tr id="r-User{{$client->id}}">
                     <td>{{$client->full_name}}</td>
-                    <td>{{$client->telefono}}</td>
+                    <td>{{$client->telefono ? $client->telefono : "No ingresado" }}</td>
                     <td>{{$client->email}}</td>
                     <td>{{$client->user != null ? $client->user->username : "No asignado"}}</td>
                     <td>

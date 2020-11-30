@@ -28,6 +28,34 @@ class MarketRatesController extends Controller
         return view("admin.market_rates.index", compact('market_rates', 'clients'));
     }
 
+    //Mostrar informacion del producto a editar  
+    public function showinfoproduct(Request $request)
+    {
+        $marketRateDetail=MarketRatesDetail::findOrFail($request->detail_id);
+
+       return response($marketRateDetail, 200);
+    }
+
+    //Editar producto de la cotizacion
+    public function editdetail(Request $request)
+    {    
+        $marketRateDetail=MarketRatesDetail::findOrFail($request->detail);
+
+        $marketRateDetail->qty=$request->product_qty;
+        $marketRateDetail->product_sku=$request->product_sku;
+        $marketRateDetail->description=$request->product_name;
+        $marketRateDetail->price=$request->product_price;
+        $marketRateDetail->subtotal=($request->product_price)*$request->product_qty;
+        
+        $marketRateDetail->save();
+
+        return back();
+
+
+
+    }
+
+
     public function showCreate()
     {
         $clients=Customer::orderBy("nombre")->get();
@@ -50,16 +78,22 @@ class MarketRatesController extends Controller
 
         if( $search_find!=null)
         {
-            // Returns an array of products that have the query string located somewhere within
-            // our products product name. Paginate them so we can break up lots of search results.
-            $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
-                                        ->join('categories', 'cat_id', '=', 'categories.id');  
-                                                 
-            $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("description", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
+            $query=Product::select("*")->with('brand')->with("category");  
+                          
+            $query->orWhere("products.product_sku", 'like', "%PC-4257%");
+            $query = $query->orWhereHas('brand', function( $query ) use ( $search_find ){
+                $query->where('brand_name', "like" , "%".$search_find."%" );
+            });
+
+           
+            $query = $query->orWhereHas('category', function( $query ) use ( $search_find ){
+                $query->where('category',"like" ,"%".$search_find."%" );
+            });
+            
+            $query = $query->orWhere("product_name", 'LIKE', "%".$search_find."%");
+            
+            $query = $query->orWhere("description", 'LIKE', "%".$search_find."%");
+
             $search = $query->orderBy("products.product_name")->paginate(10);
            
             
@@ -77,16 +111,22 @@ class MarketRatesController extends Controller
         $search_find=$request->search;
         if( $search_find!=null)
         {
-            // Returns an array of products that have the query string located somewhere within
-            // our products product name. Paginate them so we can break up lots of search results.
-            $query=Product::select("products.*")->join('brands', 'brand_id', '=', 'brands.id')
-                                        ->join('categories', 'cat_id', '=', 'categories.id');  
-                                                 
-            $query = $query->orWhere("brand_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("category", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_name", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("product_sku", 'LIKE', "%$search_find%");
-            $query = $query->orWhere("description", 'LIKE', "%$search_find%");
+            $query=Product::select("*")->with('brand')->with("category");  
+                          
+            $query->orWhere("products.product_sku", 'like', "%".$search_find."%");
+            $query = $query->orWhereHas('brand', function( $query ) use ( $search_find ){
+                $query->where('brand_name', "like" , "%".$search_find."%" );
+            });
+
+           
+            $query = $query->orWhereHas('category', function( $query ) use ( $search_find ){
+                $query->where('category',"like" ,"%".$search_find."%" );
+            });
+            
+            $query = $query->orWhere("product_name", 'LIKE', "%".$search_find."%");
+            
+            $query = $query->orWhere("description", 'LIKE', "%".$search_find."%");
+
             $search = $query->orderBy("products.product_name")->paginate(10);
            
             
@@ -199,7 +239,7 @@ class MarketRatesController extends Controller
         }
         else
         {
-            $market_rate=MarketRates::find($request->market_id);
+            $market_rate=MarketRates::findOrFail($request->market_id);
         }
        
         
@@ -340,7 +380,7 @@ class MarketRatesController extends Controller
     public function deleteProductMarket_rates(Request $request)
     {
        
-        $market_rate_detail=MarketRatesDetail::find($request->detail_id);
+        $market_rate_detail=MarketRatesDetail::findOrFail($request->detail_id);
 
         $market_rate=MarketRates::find($market_rate_detail->market_rates_id);
         $market_rate->total= $market_rate->total-$market_rate_detail->subtotal;

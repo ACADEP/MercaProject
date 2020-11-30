@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-bottom: 10px;">
                     <label for="phone">Teléfono:</label>
-                    <input type="text" id="phone" name="phone" required maxLength='10' 
+                    <input type="text" id="phone" name="phone" maxLength='10' 
                     placeholder="Ingrese un número de teléfono" autocomplete="off"  class="form-control" value="{{old('phone', $data->telefono)}}">
                 </div>
                 

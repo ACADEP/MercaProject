@@ -25,7 +25,7 @@ class ClientAdminRequest extends FormRequest
     {
         return [
             "firstname"=>"required",
-            "phone"=>"required|numeric",
+           
             "email"=>"required",
            
         ];
@@ -35,10 +35,10 @@ class ClientAdminRequest extends FormRequest
     {
         return [
             "firstname.required"=>"Ingrese un nombre",
-            "phone.required"=>"Ingresar un número de teléfono",
+           
             "email.required"=>"Ingresa un correo electroníco",
 
-            "phone.numeric"=>"Ingresa el teléfono en digítos",
+           
 
         ];
     }

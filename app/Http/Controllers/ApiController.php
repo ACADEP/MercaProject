@@ -67,6 +67,11 @@ class ApiController extends Controller
 
             $inventario=$value['disponible']+$value['VENTAS_GUADALAJARA']; //Variable de suma de inventarios de la paz y guadalajara
 
+            if(array_key_exists("disponibleCD", $value)) //Agregar inventiro si tienene en el centro distribucion
+            {
+                $inventario+=$value["disponibleCD"];
+            }
+
             if(count($value) > 0) //Condicion para si el producto contiene información
             {
                 $product=Product::where("product_sku", $value["clave"])->with('photos')->get(); //Obteber producto por sku
