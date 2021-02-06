@@ -3,8 +3,9 @@
   'paginate_general' => '10',
   'api' => 
   array (
-    'api_key_openpay' => 'sk_1c3df6f065b64e7995b099068e908d05',
-    'openpay_client_id' => 'mqddgjnqvgl6mhtp8xmo',
+    'api_key_private_openpay' => 'sk_682d756fb3234d10ba31a6934ad013f1',
+    'api_key_public_openpay' => 'pk_c816129ddae14a929f41f53a394c50ea',
+    'openpay_client_id' => 'mhhunqlhkt2gunlzqpqi',
     'api_key_enviaya' => '91fd302dde92bf5160e6b261b680b1c1',
     'paypal-type' => 'sandbox',
     'pay-pal-key' => 'AcbJmhLyQjcEbqe44-pfFrSk3UrV03SwoFSgFgwwoFfiCl8Qjda6ePlsHIyb0nCjzhOQDkUgsya5EHXn',

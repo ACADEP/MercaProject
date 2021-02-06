@@ -63,6 +63,8 @@ class CustomerController extends Controller
     }
 
     public function addpersonal(Request $request) {
+       
+        
         $request->validate(
             ["email"=>"unique:customers"],
             ["email.unique" => "Correo registrado, Intente con uno nuevo"]

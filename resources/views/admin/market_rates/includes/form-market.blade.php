@@ -23,10 +23,16 @@
                         <option @if(old("client", $data->customer ? $data->customer->id : "") == $item->id ) selected @endif
                         value="{{$item->id}}">{{$item->full_name}}</option>
                     @endforeach
-                    <option value="add">Añadir</option>
+                    
                 </select>
+               
+                {{--Añadir clientes a la cotizacion --}}
+                <div class="text-right">
+                    <button class="btn btn-link" type="button" data-toggle="modal" data-target="#add_client">Añadir nuevo</button>
+                </div>
+                
                 {{-- <input type="text" class="form-control" required style="width:100%;" maxlength="255" name="client" id="client" value="{{old('client', $data->client)}}"> --}}
-                &nbsp&nbsp
+               
                 </div>
             
                 <div class="col-md-4 text-left">
@@ -95,6 +101,7 @@
 
 
 @push('scripts')
+   
     <script>
         $("#client").change(function(){
             if( $(this).val() == "add" )
@@ -124,4 +131,13 @@
             }
         });
     </script>
+
+@if(Session::has('success-customer'))
+<script>
+    document.getElementById("client").value="{{ Session::get('success-customer')}}"
+
+    $( "#client" ).trigger( "change" );
+</script>
+
+@endif
 @endpush

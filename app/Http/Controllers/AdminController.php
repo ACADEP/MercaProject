@@ -791,6 +791,7 @@ class AdminController extends Controller {
 
     public function clientcreate(ClientAdminRequest $request)
     {
+        
         $request->validate(
             ["email"=>"unique:customers"],
             ["email.unique" => "Correo registrado, Intente con uno nuevo"]
@@ -814,6 +815,11 @@ class AdminController extends Controller {
         $customer->colonia = $request->colony;
         $customer->cfdi = $request->cfdi;
         $customer->save();
+
+        if($request->exists("admin"))
+        {
+            return back()->with('success-customer', $customer->id);
+        }
 
         return redirect("/admin/clients/index")->with("success", "El cliente ".$customer->nombre." ha sido editado");
     }

@@ -81,6 +81,7 @@
 </div><!--  fin del col-md-4 -->
   
 @include('admin.market_rates.includes.modal-new')
+@include('admin.market_rates.includes.modal-new-client')
 @include('admin.market_rates.includes.modal-edit-product')
 
 @stop

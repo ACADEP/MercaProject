@@ -24,7 +24,8 @@ class ConfigController extends Controller
             'carrusel_3' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ],
         [
-            'api_openpay.required'=>'Ingresar el api de Open Pay',
+            'api_key_private_openpay.required'=>'Ingresar la api privada de Open Pay',
+            'api_key_public_openpay.required'=>'Ingresar la api publica de Open Pay',
         ]);
 
         
@@ -32,7 +33,8 @@ class ConfigController extends Controller
         
         //Configuracion de API
         $array['api']['api_key_enviaya']=$request->api_enviaya;
-        $array['api']['api_key_openpay']=$request->api_openpay;
+        $array['api']['api_key_private_openpay']=$request->api_private_openpay;
+        $array['api']['api_key_public_openpay']=$request->api_public_openpay;
         $array['api']['openpay_client_id']=$request->openpay_clientId;
         $array['api']['paypal-type']=$request->mode_paypal;
         $array['api']['pay-pal-key']=$request->api_paypal;
