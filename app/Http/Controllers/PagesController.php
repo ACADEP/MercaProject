@@ -52,7 +52,8 @@ class PagesController extends Controller {
         $query=$query->select(\DB::raw("products.id, products.product_name, products.description, products.price, products.reduced_price, brands.brand_name, products.company_id, SUM(customer_histories.amount) as ventas"))
         ->where('sales.status_pago', 'Acreditado')->where("sales.date",">",$endDate)
         ->groupBy("products.id", "products.product_name", "products.description", "products.price", "products.reduced_price", "brands.brand_name", "products.company_id")
-        ->orderBy("ventas", "desc");        
+        ->orderBy("ventas", "desc");  
+              
         $selledProducts = Product::wherein('id', $query->pluck('id'))->OrderBy('company_id','ASC')->take(12)->get();
 
         $rand_brands = Brand::orderByRaw('RAND()')->take(8)->get();

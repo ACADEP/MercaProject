@@ -19,6 +19,9 @@ class Product extends Model {
         return 'product_name';
     } 
 
+
+
+
     protected $fillable = [
         'product_name',
         'product_qty',
@@ -40,7 +43,6 @@ class Product extends Model {
     public function category() {
         return $this->belongsTo(Category::class,'cat_id');
     }
-
 
     public function cart(){
         return $this->belongsTo(Cart::class);

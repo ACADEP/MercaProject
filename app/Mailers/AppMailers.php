@@ -172,8 +172,9 @@ class AppMailers {
         });
 
         $this->to=$client->email;
-         //Enviar a cliente
-         $this->mailer->send("customer.partials.view-email-client", compact('client', 'shipment_data') , function($message) use($pdf){
+        
+        //Enviar a cliente
+        $this->mailer->send("customer.partials.view-email-client", compact('client', 'shipment_data') , function($message) use($pdf){
             $message->from($this->from, 'Administrator')
             ->subject("Recibo de compra")
             ->to($this->to)            

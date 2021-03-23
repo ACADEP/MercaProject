@@ -80,7 +80,7 @@ class MarketRatesController extends Controller
         {
             $query=Product::select("*")->with('brand')->with("category");  
                           
-            $query->orWhere("products.product_sku", 'like', "%PC-4257%");
+            $query->orWhere("products.product_sku", 'like', "%".$search_find."%");
             $query = $query->orWhereHas('brand', function( $query ) use ( $search_find ){
                 $query->where('brand_name', "like" , "%".$search_find."%" );
             });

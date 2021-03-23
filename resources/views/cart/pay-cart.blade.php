@@ -7,28 +7,30 @@
 <!-- Stepper -->
 <div class="row">
     <div class="col-md-8 border" >
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
-                <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
-                    @foreach ($errors->all() as $error)
-                        <li style="list-style-type: none;">{{ $error }} </li>
-                    @endforeach
-                
-                </ul>
-                
-            </div>
-        @endif
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
+
+            <ul><button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                @foreach ($errors->all() as $error)
+                    <li style="list-style-type: none;">{{ $error }} </li>
+                @endforeach
+            </ul>
+            
+        </div>
+    @endif
     <h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
     <div class="steps-form-2">
         <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
             <div class="steps-step-2">
                 <a href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Dirección"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
             </div>
-            
-            {{-- Paqueteria --}}
-            {{-- <div class="steps-step-2">
-                <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
-            </div> --}}
+           
+            @if($rates->count() > 1)
+                {{-- Paqueteria --}}
+                <div class="steps-step-2">
+                    <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
+                </div>
+            @endif
 
             <div class="steps-step-2">
                 <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Método de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
@@ -39,296 +41,21 @@
         </div>
     </div>
 
-    <!-- First Step -->
-    <!-- <form role="form" action="" method="post"> -->
-        <div class="row setup-content-2" id="step-1">
-            <div class="col-md-12">
-           
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Dirección</strong></h3>
-            @php $i=1;@endphp
-                @if($addresses->count() > 0)
-                    
-                        <div class="text-right">
-                            
-                            @if($addresses->count() < 3 )
-                                &nbsp;&nbsp;
-                                <a data-toggle="modal" data-target="#add_address" style="color:blue;">Agregar una dirección</a>
-                            @endif
-                        </div>
-                        
-                    <h4>Será enviado a:</h4>
-                    @if($addressActive)
-                    
-                        <div class="border" style="font-size:15px;">
-                        <div style="margin-top: 10px; margin-left: 5px;">
-                            <a href="/customer/personal/address" style="color:blue;">Cambiar direccion</a> 
-                        </div>
-                        <hr>
-                        &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
-                        <strong>CP:</strong>{{$addressActive->cp}} <br>
-                        <strong>&nbsp;Ciudad:</strong>{{ $addressActive->ciudad }} {{$addressActive->estado}} <br>
-                        <strong>&nbsp;Calles:</strong> {{$addressActive->calle}} entre {{ $addressActive->calle2 }} y {{ $addressActive->calle3 }} <br> 
-                        <strong>&nbsp;Colonia:</strong> {{ $addressActive->colonia }} <br>
-                        <strong>&nbsp;Número exterior:</strong> {{$addressActive->numExterior=="" ? 'No especificado': $addressActive->numExterior}}<br> 
-                        <strong>&nbsp;Número interior:</strong> {{$addressActive->numInterior=="" ? 'No especificado': $addressActive->numinterior}} <br>
-                        <strong>&nbsp;Referencias: </strong> {{$addressActive->referencias=="" ? 'No especificado': $addressActive->referencias}}
-                        </div>
-                   
-                        <br>
+        {{-- Elegir la direccion activa --}}
+        @include('cart.includes.address-active')
 
-                    @endif
-                    
-                @else
-                    <a href="{{ url('/customer/personal/address/') }}" style="color: blue;">Agregar una dirección</a>
-                    <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
-                    
-                @endif
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Siguiente</button>
-            </div>
-        </div>
+        {{-- Seccion para elegir la paquerteria --}}
+        @if($rates->count() > 0)
+            @include('cart.includes.shipment-method')
+        @endif
 
-    <!-- Second Step -->
-        {{-- <div class="row setup-content-2" id="step-2">
-            <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
-                <div class="row" id="shipments">
-                    <!-- Paqueterias disponibles -->
-                    @if($rates!=null)
-                        @if($rates->count() > 0)
-                        @foreach($rates as $rate)
-                        @if (count((array)$rate)>1)
-                                    
-                               
-                                @php $date = date_create($rate->estimated_delivery); @endphp
-                                <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
-                                <div class='card-body'>
-                                    <p class='card-text' style='width:100%;' >
-                                        <img src='{{$rate->carrier_logo_url}}' style="height:40px;" class='img-fluid'>
-                                    </p>
-                                    <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
-                                    Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
-                                    <div class='custom-control custom-radio'>
-                                            <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
-                                            <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
-                                </div>
-                                </div>
-                                </div></a>
-                                <script>
-                                    $('#paq-{{$loop->iteration}}').click(function(){
-                                        carrie_choosed=true;
-                                        var total_amount=parseFloat("{{$rate->total_amount}}");
-                                        var total=parseFloat($("#total-cart").val());
-                                        reset_paq_css();
-                                        $("#card-body{{$loop->iteration}}").css("border", "solid blue 5px");
-                                        
-                                        $('#paqueteria{{$loop->iteration}}').prop("checked",true);
-                                        var num = '$' + (total_amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                        $(".ship-rate").html(num);
-                                        $("#total-pursh").val(total_amount+total);
-                                        $("#shipment").html("{{$rate->carrier}}");
-                                        num = '$' + (total_amount+total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                                        $("#total").html(num);
-                                        $('#carrie_id').val($('#paqueteria{{$loop->iteration}}').val());
-                                        $("#date_aprox").html("{{date_format($date, 'd-m-Y')}}");
-                                    });
-                                </script>
-                            @endif
-                            @endforeach
-                            <script>
-                                function reset_paq_css()
-                                {
-                                    for(var i=1;i<="{{$rates->count()}}";i++)
-                                    {
-                                        $("#card-body"+i).css("border", "solid white 1px");
-                                    }
-                                }
-                            </script>
-                        @else
-                            <span class="alert alert-danger col-md-12">No hay paqueterías disponibles vuelva a intentarlo mas tarde</span>
-                        @endif
-                        @else
-                        <span class="alert alert-danger col-md-12">Primero agregue una dirección para cargar paqueterías</span>
-                        @endif
-                    <script> $('#loader').remove();</script>
-                </div>
-               
-
-                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
-            </div>
-        </div> --}}
         <script> $('#loader').remove();</script>
-        <!-- Third Step -->
-        <div class="row setup-content-2" id="step-3">
-            <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de pago</strong></h3>
-            <div class="row">
-                    <a id="mpay-1">
-                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay1" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">Débito o crédito</div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/debit-credit.png" style="width:100%;">
-                                
-                            </p>
-                            <br>
-                            <div class="custom-control custom-radio" >
-                                    <input type="radio" class="custom-control-input" id="credit-debit-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="credit-debit-method-r"></label>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
 
-                    <a id="mpay-2">
-                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay2" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">PayPal <br><br></div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/paypal.png" style="width:100%;">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="paypal-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="paypal-method-r"></label>
-                                </div>
-                        </div>
-                    </div>
-                    </a>
+        @include('cart.includes.pay-method')
 
-                    <a id="mpay-3">
-                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay3" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">Tranferencia bancaria</div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/transfer.png" style="width:100%;">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="bank-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="bank-method-r"></label>
-                            </div>
-                        </div>
-                    </div>
-             
-                </a>
+        @include('cart.includes.verify')
 
-                <a id="mpay-4">
-                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay4" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div style="font-size: 10px !important;" class="card-header">Tiendas de conveniencia </div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/store.png" style="width:100%;">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="store-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="store-method-r"></label>
-                            </div>
-                        </div>
-                    </div>
-               
-                </a>
 
-                <!-- <a id="mpay-5" style="width: 24%;">
-                    <div class="card border-primary mb-3 text-center col-md-2" id="card-pay5" style="max-width: 10rem; margin:10px; height:250px;">
-                        <div class="card-header">Oxxo</div>
-                        <div class="card-body text-primary">
-                            <p class="card-text">
-                                <img src="images/shipments/oxxo.png" style="width:100%;">
-                                
-                            </p>
-                            <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="oxxo-method-r" name="defaultExampleRadios2">
-                                    <label class="custom-control-label" for="oxxo-method-r"></label>
-                            </div>
-                        </div>
-                    </div>
-                    </a> -->
-                </div>
-               
-                <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-pay" type="button">Siguiente</button>
-            </div>
-        </div>
-
-        <!-- Fourth Step -->
-        <div class="row setup-content-2" id="step-4">
-            <div class="col-md-12">
-            <h3 class="font-weight-bold pl-0 my-4"><strong>Verificar compra</strong></h3>
-                 <!-- inicio -->
-                 <div class="card text-center">
-                    <div class="card-header">
-                        Método de pago: <div id="pay" style="font-size:15px; display:inline;">Seleccionar un método</div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>Datos de envío</strong></h5>
-                        <p class="card-text">
-                            @if($addresses->count() > 0)
-                                @php $address=$addresses->where('activo',1)->first();@endphp
-                                @if($address!=null)
-                              
-                                <h4>Será enviado a:</h4>
-                                <input type="hidden" id="address-active" value="{{$address}}">
-                                <input type="hidden" id="customer" value="{{ $customer }}">
-                                <div class="" style="font-size:15px;" id="address-ship">
-                                    &nbsp;<i class="fa fa-map-marker fa-lg" aria-hidden="true"></i> 
-                                    <strong>CP:</strong>{{$address->cp}} <br>
-                                    <strong>&nbsp;Ciudad:</strong>{{ $address->ciudad }} {{$address->estado}} <br>
-                                    <strong>&nbsp;Calles:</strong> {{$address->calle}} entre {{ $address->calle2 }} y {{ $address->calle3 }} <br> 
-                                    <strong>&nbsp;Colonia:</strong> {{ $address->colonia }} <br>
-                                    <strong>&nbsp;Número exterior:</strong> {{$address->numExterior=="" ? 'No especificado': $address->numExterior}}<br> 
-                                    <strong>&nbsp;Número interior:</strong> {{$address->numInterior=="" ? 'No especificado': $address->numinterior}} <br>
-                                    <strong>&nbsp;Referencias: </strong> {{$address->referencias=="" ? 'No especificado': $address->referencias}}
-                                </div>
-                               
-                                @else
-                                <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
-                                @endif
-                            @else
-                                <div class="alert alert-danger">Agregar una dirección de envío para continuar su proceso de pago</div>
-                            @endif
-                        </p>
-                        @if($addresses->count() > 0)
-                        @if(Auth::user()->customer !=null)
-                        @if($rates->count() > 0)
-                            @if($subtotal<=0)
-                                <div class="alert alert-danger">No hay productos en el carrito</div>
-                            @else
-                                <button class="btn btn-success btn-rounded text-center" id="btn-conf" type="submit">Confirmar pedido</button><br>
-                            @endif
-                            
-                        @else
-                        <div class="alert alert-danger">No hay paqueterías disponibles</div>
-                        @endif
-                        @else
-                            <div class="alert alert-danger">Agregar sus datos personales para continuar su proceso de pago <br>
-                                <a data-toggle="modal" data-target="#add_personal_data" style="color:blue;" id="personalData">Agregar datos</a>
-                            </div>
-
-                        @endif
-                            
-                        @endif
-                    </div>
-                    <div class="card-footer text-muted">
-                        Paquetería:  <div id="shipment" style="font-size:15px; display:inline;"> Seleccionar un método</div> <input type="hidden" id="carrie_id"> Costo: <div class="ship-rate" style="display:inline;">Acordar con el vendedor</div> 
-                        <br> Llegada aproximada: 
-                        <div id="date_aprox" style="display:inline;"> <span class="badge badge-danger">Solo La Paz BCS Gratis</span> </div> 
-                        <br>
-                        <strong>Información de contacto</strong> <br>
-                        Dirección: Ignacio Allende 270 entre Revolución y Serdan, col. Centro, CP: 23000 La Paz, Baja California Sur, México. <br>
-                        Contacto: sistemas@brokersconnector.com <br>
-                        <a href="{{route('pages.terms-and-conditions')}}" target="_blanck">Terminos y condiciones</a>
-                    </div>
-                </div>
-                 <!-- fin -->
-                 <button class="btn btn-mdb-color btn-rounded prevBtn-2 text-center" type="button">Anterior</button>
-                    
-                
-
-                
-            </div>
-        </div>
     <!-- </form> -->
 </div>
 
@@ -661,379 +388,23 @@ $(document).ready(function () {
 @stop
 
 @section('modal-debit')
-<div class="modal fade" id="debit-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content" style="width: 10000px;">
-      <div class="modal-header">
-        <h1 class="modal-title text-center" id="exampleModalLongTitle">Información de pago</h1>
-      </div>
-      <div class="modal-body text-center">
-       
-            <script type="text/javascript">
-                            $(document).ready(function() {
-                                
-
-                                //Se genera el id de dispositivo
-                                var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
-                                
-                                $('#pay-button').on('click', function(event) {
-                                    event.preventDefault();
-                                    $("#pay-button").prop( "disabled", true);
-                                    OpenPay.token.extractFormAndCreate('payment-form', success_callbak, error_callbak);                
-                                });
-
-                                var success_callbak = function(response) {
-                                    var token_id = response.data.id;
-                                    $('#token_id').val(token_id);
-                                    $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                    $('#payment-form').submit();
-                                    setInterval(function(){
-                                        $.getJSON('/progressConfirmation', function(data) {
-                                            $("#loader").html(data["progress"]);
-                                        });
-                                    }, 1000);
-
-                                };
-                                
-                                //Errores 
-                                var error_callbak = function(response) {
-                                    var desc = response.data.description != undefined ? response.data.description : response.message;
-                                    var message_errors=desc.split(",");
-                                    
-                                    var error_code = response.status;
-                                    var error_code2 = response.data.error_code;
-
-                                    var error_message="Errores:";
-                                    message_errors.forEach(function(error, index) {
-                                        
-                                        switch (error.trim()) {
-                                            
-                                            case "card_number is required":
-                                                error_message+=" El número de tarjeta es requerido |"
-                                                break;
-
-                                            case "The card number verification digit is invalid":
-                                                error_message+=" El número de tarjeta es invalido |"
-                                                break;
-
-                                            case "holder_name is required":
-                                                error_message+=" El nombre del titular es requerido |"
-                                                break;
-
-                                            case "expiration_year expiration_month is required":
-                                                error_message+=" La fecha de expiracion es requerida |"
-                                                break;
-
-                                            case "card_number must contain only digits":
-                                                error_message+=" El número de tarjeta debe contener solo dígitos |"
-                                                break;
-
-                                            case "card_number length is invalid":
-                                                error_message+=" La longitud del número de tarjeta es invalido |"
-                                                break;
-
-                                            case "The CVV2 security code is required":
-                                                error_message+=" El codigo de seguiridad es requerido |"
-                                                break;
-
-                                            case "cvv2 must contain only digits":
-                                                error_message+=" El codigo de seguiridad tiene que contener solo dígitos |"
-                                                break;
-
-                                            case "cvv2 length must be 3 digits":
-                                                error_message+=" El codigo de seguiridad debe contener solo 3 dígitos |"
-                                                break;
-
-                                            case "cvv2 length must be 4 digits":
-                                                error_message+=" El codigo de seguiridad debe contener solo 4 dígitos |"
-                                                break;
-
-                                            case "valid expirations months are 01 to 12":
-                                                error_message+=" El mes de expiración es invalido debe ser entre 01-12 |"
-                                                break;
-
-                                            case "valid expirations year are 01 to 99":
-                                                error_message+=" El año de expiración es invalido debe ser entre 01-99 |"
-                                                break;
-
-                                            case "expiration_year length must be 2 digits":
-                                                error_message+=" El año debe contener 2 dígitos |"
-                                                break;
-                                            
-                                            case "expiration_month length must be 2 digits":
-                                                error_message+=" El mes debe contener 2 dígitos |"
-                                                break;
-
-                                            case "The expiration date has already passed":
-                                                error_message+=" La fecha de expiración ya ha pasado |"
-                                                break;
-                                        
-                                            default:
-                                                if( (error.includes("expiration_month") && error.includes("is invalid")) ||
-                                                    (error.includes("expiration_year") && error.includes("is invalid")) )
-                                                { }
-                                                else
-                                                {
-                                                    error_message+=" Error desconocido: "+error+" |"
-                                                }
-                                                break;
-                                        }
-                                        
-                                    });
-
-                                    //Notificacion
-                                    $.notify({
-                                        // options
-                                        message: error_message
-                                    },{
-                                        // settings
-                                        type: 'danger',
-                                        z_index: 2000,
-                                    });
-                                   
-                                }
-
-                            });
-                        </script>
-
-                        <div class="bkng-tb-cntnt">
-                            <div class="pymnts">
-                                <form action="/cart/payment/openpay" method="POST" id="payment-form">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="token_id" id="token_id">
-                                    <input type="hidden" name="method_pay" id="method_pay_target">
-                                    <input type="hidden" name="ship_rate" id="ship_rate_target">
-                                    <input type="hidden" name="date_ship" id="date_ship_target">
-                                    <input type="hidden" name="ship_rate_total" id="total-credit">
-                                    <input type="hidden" name="carrie" id="openpay_carrie">
-                                    <input type="hidden" name="carrie_id" id="openpay_carrie_id">
-                                    <div class="pymnt-itm card active">
-                                        <h2>Tarjeta de crédito o débito</h2>
-                                        <div class="pymnt-cntnt">
-                                            <div class="card-expl">
-                                                <div class="credit"><h4>Tarjetas de crédito</h4></div>
-                                                <div class="debit"><h4>Tarjetas de débito</h4></div>
-                                            </div>
-                                            <div class="sctn-row">
-                                                <div class="sctn-col l">
-                                                    <label>Nombre del titular</label><input type="text" placeholder="Como aparece en la tarjeta" autocomplete="off" data-openpay-card="holder_name">
-                                                </div>
-                                                <div class="sctn-col">
-                                                    <label>Número de tarjeta</label><input type="text" autocomplete="off" data-openpay-card="card_number"></div>
-                                                </div>
-                                                <div class="sctn-row">
-                                                    <div class="sctn-col l">
-                                                        <label>Fecha de expiración</label>
-                                                        <div class="sctn-col half l"><input type="text" placeholder="Mes" data-openpay-card="expiration_month"></div>
-                                                        <div class="sctn-col half l"><input type="text" placeholder="Año" data-openpay-card="expiration_year"></div>
-                                                    </div>
-                                                    <div class="sctn-col cvv"><label>Código de seguridad</label>
-                                                        <div class="sctn-col half l"><input type="text" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="openpay"><div class="logo">Transacciones realizadas vía:</div>
-                                                <div class="shield">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
-                                            </div>
-                                            <div class="sctn-row">
-                                                    <a class="button rght" id="pay-button">Pagar</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-               
-      </div> <!-- fin del modal -->
-      
-    </div>
-  </div>
-</div>
-
+    @include('cart.includes.modals.credit-debit')
 @stop
 
 @section('modal-transfer')
-<div class="modal fade" id="transfer" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Transferencia Bancaria</h5>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="/cart/confirmation-banco" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="ship_rate_total" class="rate_delivered">
-            <input type="hidden" name="method_pay" id="method_pay_bank">
-            <input type="hidden" name="ship_rate" id="ship_rate_bank">
-            <input type="hidden" name="date_ship" id="date_ship_bank">
-            <input type="hidden" name="carrie" id="bank_carrie">
-            <input type="hidden" name="carrie_id" id="bank_carrie_id">
-            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </form>
-       
-      </div>
-    </div>
-  </div>
-</div>
-<script>$("#btn-bank-method").click(function(){
- $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Generando el recibo espere por favor</div>");
-    
-});</script>
+    @include('cart.includes.modals.transfer')
 @stop
 
 @section('modal-store')
-<div class="modal fade" id="store" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Tiendas de convenencia</h5>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="/cart/confirmation-store" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="ship_rate_total" class="rate_delivered">
-            <input type="hidden" name="method_pay" id="method_pay_store">
-            <input type="hidden" name="ship_rate" id="ship_rate_store">
-            <input type="hidden" name="date_ship" id="date_ship_store">
-            <input type="hidden" name="carrie" id="store_carrie">
-            <input type="hidden" name="carrie_id" id="store_carrie_id">
-            <button type="submit" class="btn btn-primary" id="btn-store-method">Generar recibo</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </form>
-       
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-        $("#btn-store-method").click(function(){
-            $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Generando el recibo espere por favor</div>");
-        });
-</script>
+     @include('cart.includes.modals.store')
 @stop
 
 @section('modal-oxxo')
-<div class="modal fade" id="oxxo" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Oxxo</h5>
-        </button>
-      </div>
-      <div class="modal-body">
-      <form action="/cart/confirmation-oxxo" method="post">
-            {{ csrf_field() }}
-            <input type="hidden" name="ship_rate_total" class="rate_delivered">
-            <input type="hidden" name="ship_rate" id="ship_rate_oxxo">
-            <input type="hidden" name="date_ship" id="date_ship_oxxo">
-            <input type="hidden" name="carrie" id="oxxo_carrie">
-            <input type="hidden" name="carrie_id" id="oxxo_carrie_id">
-            <button type="submit" class="btn btn-primary" id="btn-bank-method">Generar recibo</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </form>
-       
-      </div>
-    </div>
-  </div>
-</div>
-
+    @include('cart.includes.modals.oxxo')
 @stop
 
 @section('modal-paypal')
-<div class="modal fade" id="pay-pal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title text-center" id="exampleModalLongTitle">Pay-Pal</h1>
-      </div>
-      <div class="modal-body text-center">
-      <div id="paypal-button-container"></div>
-                       
-                        <input type="hidden" id="paypal-amount">
-                        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-                        <script>
-                        
-                        // Render the PayPal button
-                        paypal.Button.render({
-                        // Set your environment
-                        env: '{{config("configurations.api.paypal-type")}}', // sandbox | production
-
-                        // Specify the style of the button
-                        style: {
-                        layout: 'vertical',  // horizontal | vertical
-                        size:   'responsive',    // medium | large | responsive
-                        shape:  'pill',      // pill | rect
-                        color:  'black'       // gold | blue | silver | white | black
-                        },
-
-                        // Specify allowed and disallowed funding sources
-                        //
-                        // Options:
-                        // - paypal.FUNDING.CARD
-                        // - paypal.FUNDING.CREDIT
-                        // - paypal.FUNDING.ELV
-                        funding: {
-                        allowed: [
-                            paypal.FUNDING.CARD,
-                            paypal.FUNDING.CREDIT
-                        ],
-                        disallowed: []
-                        },
-
-                        // PayPal Client IDs - replace with your own
-                        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-                        client: {
-                        sandbox: '{{config("configurations.api.paypal-type")=="sandbox" ? config("configurations.api.pay-pal-key") : "" }}',
-                        production: '{{config("configurations.api.paypal-type")=="production" ? config("configurations.api.pay-pal-key") : "" }}'
-                        },
-
-                        payment: function (data, actions) {
-                        return actions.payment.create({
-                            payment: {
-                            transactions: [
-                                {
-                                amount: {
-                                    
-                                    total: $("#paypal-amount").val(),
-                                    currency: 'MXN'
-                                }
-                                }
-                            ]
-                            }
-                        });
-                        },
-
-                        onAuthorize: function (data, actions) {
-                        return actions.payment.execute()
-                            .then(function () {
-                                var ship=$("#shipment").html();
-                                var carrie_id=$('#carrie_id').val();
-                                var ship_rate=$('#ship_rate_choosed').html();
-                                var date_ship=$('#date_aprox').html();
-                                var method_pay="PayPal";
-                                $("#loader-contener").html("<div id='loader' class='text-center alert alert-success' style='font-size:40px;'>Espere para completar su compra</div>");
-                                post("/cart/confirmation",{_token:"{{csrf_token()}}" ,carrie: ship, carrie_id: carrie_id , ship_rate: ship_rate,date_ship:date_ship,method_pay:method_pay } );
-                                setInterval(function(){
-                                    $.getJSON('/progressConfirmation', function(data) {
-                                        $("#loader").html(data["progress"]);
-                                    });
-                                }, 1000);
-                            });
-                        }
-                        }, '#paypal-button-container');
-                        </script>
-
-                        {{-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                            <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="9VMXDFPYPU7EL">
-                            <input type="image" src="https://www.paypalobjects.com/es_XC/MX/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
-                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
-                        </form> --}}
-                        
-      </div> <!-- fin del modal -->
+    @include('cart.includes.modals.pay-pal')
 @stop
 
 

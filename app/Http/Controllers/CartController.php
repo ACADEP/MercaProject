@@ -61,6 +61,11 @@ class CartController extends Controller {
         return view('cart.cart');     
     }
 
+    public function chargeTest()
+    {
+        
+    }
+
     public function payCart()
     {
         if(!auth()->check())
@@ -68,7 +73,9 @@ class CartController extends Controller {
            return redirect("/login")->with("log-to-pay", "Inicie sesión o regístrese para completar su compra");
         }
 
-        // $envia=new EnviaYa; //Envios
+        $envia=new EnviaYa; //Envios
+       
+        
         $addresses=Auth::user()->address()->get();
         $cartItems=Auth::user()->carts()->get();
 
@@ -92,9 +99,13 @@ class CartController extends Controller {
                 {
                     $rates=collect(["rate"=>0]);
                 }
+                else
+                {
+                    $rates=$envia->getRates();
+                }
             }
 
-            // $rates=$envia->getRates();
+   
         }
         else
         {
@@ -285,22 +296,20 @@ class CartController extends Controller {
         //Revisar tipo de envio null == Acordar con el vendedor
         if($request->carrie_id)
         {
-
             Session::put('progress', "Preparando envío");
             Session::save(); 
             
             $enviaYa=new EnviaYa;
             $envio=$enviaYa->makeShipment($request->get('carrie'),$request->get('carrie_id'),Auth::user());
             
-              
-            Session::put('progress', $envio->status_message);
+            Session::put('progress', $envio["status_message"]);
             Session::save();
         }
         else
         {
             $envio["shipment_status"]="Por acordar";
             $envio["carrier_shipment_number"]="Vendedor";
-            $request["date_ship"]="5 dias habiles";
+            $request["date_ship"]="5 días habiles";
             $request["ship_rate"]="Acordar con el vendedor";
         }
      
@@ -341,11 +350,8 @@ class CartController extends Controller {
             $customerHistory->insert($cartItem,$sale);
         }
 
-        //borrar productos del carrito
-        Auth::user()->carts()->delete();
-
-        //Envios de correo
         
+        //Envios de correo
         //Administrador
         $admin = User::role('Admin')->first();
         
@@ -357,7 +363,11 @@ class CartController extends Controller {
         catch(\Exception $e)
         {
             //Borrar sesion para el mensaje de progreso
+            
             Session::forget('progress');
+            //borrar productos del carrito
+            Auth::user()->carts()->delete();
+
             return redirect("/")->with('pay-success-no-email','Pago exitoso correo no enviado favor de contactarse a administracion');
         }
        
@@ -370,11 +380,16 @@ class CartController extends Controller {
         {
             //Borrar sesion para el mensaje de progreso
             Session::forget('progress');
+            //borrar productos del carrito
+            Auth::user()->carts()->delete();
+
             return redirect("/")->with('pay-success-no-email','Pago exitoso correo no enviado favor de contactarse a administracion');
         }
         
         //Borrar sesion para el mensaje de progreso
         Session::forget('progress');
+        //borrar productos del carrito
+        Auth::user()->carts()->delete();
         //Regresar a home con el mensaje de pago existoso
         return redirect("/")->with('pay-success','Pago exitoso');
            
@@ -392,9 +407,6 @@ class CartController extends Controller {
             //Pago procesado con exito
              if($transfer->type=="charge.succeeded")
              {
-
-              
-
                  //Buscar venta 
                  $sale=Sale::find($transfer->transaction->order_id);
                 
@@ -416,8 +428,8 @@ class CartController extends Controller {
                     {
                         $enviaYa=new EnviaYa;
                         $envio=$enviaYa->makeShipment($sale->shipment_method,$sale->shipment_rate_id,$client);
-                        $sale->updateStatusShip($envio->shipment_status);
-                        $sale->updateTracking($envio->carrier_shipment_number);
+                        $sale->updateStatusShip($envio["shipment_status"]);
+                        $sale->updateTracking($envio["carrier_shipment_number"]);
                     }
                     
                     //Actualizar status de pago
@@ -519,7 +531,7 @@ class CartController extends Controller {
     public function PagosBanco(Request $request) {
         
         //Conectarse con la api de openpay
-        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_private_openpay'));
         
         //Obtener el cliente
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
@@ -551,7 +563,7 @@ class CartController extends Controller {
                     
         $chargeData = array(
             'method' => 'bank_account', 
-            'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
+            'amount' => number_format( (float) $request->get("ship_rate_total"), 4, '.', ''),
             'description' => 'Cargo con Bancomer',
             'order_id' => $sale->id, //oid-00051 id del carrito
             'due_date' => substr(Carbon::now()->addDay(3), 0 , 10),
@@ -618,7 +630,7 @@ class CartController extends Controller {
     //Pagos en tienda
     public function PagosStore(Request $request) {
         //Conectra con el api de openpay
-        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+        $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_private_openpay'));
         
         $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
         $useraddresses = Address::where("usuario",Auth::user()->id)->first();
@@ -659,7 +671,7 @@ class CartController extends Controller {
         Auth::user()->carts()->delete();
         $chargeData = array(
             'method' => 'store',
-            'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
+            'amount' => number_format( (float) $request->get("ship_rate_total"), 4, '.', ''),
             'description' => 'Cargo a tienda',
             'order_id' => $sale->id, 
             'due_date' => substr(Carbon::now()->addDay(1), 0 , 10),
@@ -711,10 +723,12 @@ class CartController extends Controller {
     //pago con targeta de crédito o débito
     public function CardOpenpay(Request $request) {
         
+
         Session::put('progress', "Generando el cargo");
-        Session::save(); 
+        Session::save();
+
         try {
-            $openpay = Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_openpay'));
+            $openpay = Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_private_openpay'));
             Openpay::setProductionMode(false);
 
             $usercustomer = Customer::where("usuario",Auth::user()->id)->first();
@@ -731,7 +745,7 @@ class CartController extends Controller {
             $chargeData = array(
                 'method' => 'card',
                 'source_id' => $_POST["token_id"],
-                'amount' => number_format((float) $request->get("ship_rate_total"), 2) ,
+                'amount' => number_format( (float) $request->get("ship_rate_total"), 4, '.', ''),
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
                 // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos

@@ -100,7 +100,15 @@
           </tr>
         </thead>
         <tbody>
+          @php 
+            $total=0;
+
+          @endphp
           @foreach($items->MarketRatesDetails()->get() as $item)
+            @php 
+              $total+=($item->price*$item->qty);
+
+            @endphp
             <tr>
                 <td class="text-center">{{$loop->iteration}}</td>
                 <td class="desc">{{$item->product_sku}}</td>
@@ -118,7 +126,7 @@
           </tr>
           <tr>
             <td colspan="6">Subtotal</td>
-            <td class="total">${{number_format($items->total, 2) }}</td>
+            <td class="total">${{number_format($total, 2) }}</td>
           </tr>
           <tr>
             <td colspan="6">IVA</td>
@@ -130,7 +138,7 @@
           </tr>    
           <tr>
             <td colspan="6" class="grand total">Total</td>
-            <td class="grand total">${{number_format($items->total, 2) }}</td>
+            <td class="grand total">${{number_format($total*1.16, 2) }}</td>
           </tr>
          
         </tbody>
@@ -149,9 +157,9 @@
       <div class="border-line text-center">
         @php 
           $f = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-          $entero=(int)$items->total;
+          $entero=(int)$total*1.16;
           $entero_text=$f->format($entero);
-          $decimals=round($items->total, 2)-$entero;
+          $decimals=round($total*1.16, 2)-$entero;
           $texto="( ".$entero_text." Pesos ".explode(".", number_format($decimals, 2))[1]."/100)";
           
         @endphp

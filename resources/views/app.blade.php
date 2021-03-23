@@ -82,7 +82,7 @@
             $(document).ready(function() {
                 
                    OpenPay.setId("{{config('configurations.api.openpay_client_id')}}");
-                   OpenPay.setApiKey('pk_d55faab6c5564d7f9451d311e8077415');
+                   OpenPay.setApiKey("{{config('configurations.api.api_key_public_openpay')}}");
                    OpenPay.setSandboxMode(true);
            });
        </script>

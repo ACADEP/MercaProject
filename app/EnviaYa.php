@@ -14,12 +14,15 @@ class EnviaYa extends Model
         $client = new \GuzzleHttp\Client();
 
         $api_key = config("configurations.api.api_key_enviaya");
-        $origin=[   'company'=> config('configurations.company.name'),
+        $origin=[   
+                    'full_name'=> "German Leonardo Lage Suarez",
+                    'company'=> config('configurations.company.name'),
                     'country_code'=> config('configurations.company.country_code'),
                     'postal_code'=> config('configurations.company.postal_code'),
                     'direction_1'=> config('configurations.company.direction_1'),
                     'city'=> config('configurations.company.city'),
                     'phone'=>config('configurations.company.phone')];
+
         $destination=[  'full_name'=> $user->customer->nombre." ".$user->customer->apellidos,
                         'country_code'=> "MX",
                         'postal_code'=> $user->addressActive()->cp,
@@ -78,7 +81,7 @@ class EnviaYa extends Model
         }
         $response=json_decode($res->getBody());
         $response->{"carrie_url"} = $url_carrie;
-        return $response;
+        return (array) $response;
     }
 
     function cmp($a, $b)
