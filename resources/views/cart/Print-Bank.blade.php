@@ -81,7 +81,7 @@
       </table>
       <div id="notices">
         <div><strong>Forma de pago: </strong>Banco</div>
-        <div><strong>Tiempo de Entrega: </strong>{{$date_ship}}</div>
+        <div><strong>Tiempo de Entrega: </strong>{!!$date_ship!!}</div>
         <div><strong>{{config('configurations.mk.greetings')}}</strong></div>
         <div class="notice">{{config('configurations.mk.information_final_2')}}</div>
         <div class="notice">{{config('configurations.mk.information_final')}}</div>

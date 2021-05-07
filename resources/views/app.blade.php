@@ -100,7 +100,12 @@
 
     @include('partials.nav')
     <div class="container">         
-   
+    <script>
+        $(document).ready(function(){
+            $("#success-pay").modal("show");
+
+        });
+    </script>
     
     
     @if(Session::has('progress'))
@@ -147,7 +152,7 @@
           
     </div>
                 
-            
+     @include("modals.success-payment")       
      @include('pages.partials.footer')
 
     

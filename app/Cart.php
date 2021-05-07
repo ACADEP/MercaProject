@@ -34,6 +34,7 @@ class Cart extends Model {
 
     static function error_code_openpay($error_code)
     {
+        
         switch ($error_code) {
             case 3001:
                 $message = 'La tarjeta fue declinada.';
@@ -212,6 +213,8 @@ class Cart extends Model {
                 $message = "Error desconocido.". $error_code;
             break;
         }
+
+       
         return $message;
     }
 

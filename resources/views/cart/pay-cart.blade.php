@@ -160,6 +160,21 @@ $(function () {
 
 // Steppers
 $(document).ready(function () {
+
+    //Notifiaciones de errores
+    @if(Session::has('error'))
+
+        $.notify({
+            // options
+            message: '<strong>{{ Session("error") }}</strong>' 
+        },{
+            // settings
+            type: 'danger',
+            delay:3000
+        });
+  
+    @endif
+
   var navListItems = $('div.setup-panel-2 div a'),
           allWells = $('.setup-content-2'),
           allNextBtn = $('.nextBtn-2'),
@@ -211,18 +226,7 @@ $(document).ready(function () {
   $('div.setup-panel-2 div a.btn-amber').trigger('click');
 });
 
-@if(Session::has('error'))
 
-    $.notify({
-        // options
-        message: '<strong>{{ Session("error") }}</strong>' 
-    },{
-        // settings
-        type: 'danger',
-        delay:3000
-    });
-  
-@endif
 
 
        
