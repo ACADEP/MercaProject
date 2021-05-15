@@ -1,6 +1,6 @@
 <div class="modal fade" id="debit-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content" style="width: 10000px;">
+      <div class="modal-content" style="width: 10000px;" id="modal-content">
     
             <div class="modal-body text-center">
                     <div class="row col-md-12">
@@ -226,7 +226,7 @@
                                                         </div>
                                                     
                                                         <div class="col-md-12 row" style="margin-top: 30px;"> 
-                                                            <div>
+                                                        
                                                                 <div class="col-md-4 text" >
                                                                     Transacciones realizadas <br> vía:
                                                                 </div>
@@ -237,17 +237,17 @@
 
                                                                 <div class="col-md-4">
                                                                     
-                                                                        <div class="col-md-12 " style="display:block; margin:auto;" > <img src="/images/security.png" alt=""></div>
+                                                                        <div class="col-md-12 " style="display:block; margin:auto;" > <img style="float: initial" src="/images/security.png" alt=""></div>
                                                                         <div class="text col-md-12">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
 
                                                                     
                                                                     
                                                                 </div>
-                                                            </div>
+                                                            
                                                         </div>
 
                                                         <div class="col-md-12" >
-                                                            <button class="btn btn-success" id="pay-button">Pagar</button>
+                                                            <button class="btn btn-success boton-n" style="float: initial" id="pay-button"> <img src="/images/modals/dinero.png" alt="">  Pagar</button>
                                                         </div>
                                                     
                                                     </div>
@@ -315,5 +315,12 @@
         box-sizing: border-box;
         border-radius: 5px;
       }
+
+      #modal-content{
+          border-radius: 16px;
+      }
       
+      .boton-n{
+        width: 500px;
+      }
   </style>
