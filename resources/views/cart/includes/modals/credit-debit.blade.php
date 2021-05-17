@@ -185,20 +185,20 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6" style="margin-top: 10px;">
+                                                        <div class="col-md-6" style="margin-top: 10px; padding: initial;">
                                                             <label class="texts">Número de tarjeta</label>
                                                             <div class="col-md-12 row">
-                                                                <div class="col-md-10" style="padding: 0;">
+                                                                <div class="col-md-9" style="padding: 0;">
                                                                      <input class="input-t" type="text" autocomplete="off" data-openpay-card="card_number" placeholder="xxxx-xxxx-xxxx-xxxx">
                                                                 </div>
-                                                                <div class="col-md-2" style="padding: 0;">
+                                                                <div class="col-md-3" style="padding: 0;">
                                                                     <img src="/images/numerotarjeta.png" alt="">
                                                                 </div>
                                                             </div>
 
                                                         </div>
                                                 
-                                                        <div class="col-md-12 row">
+                                                        <div class="col-md-12 row" style="margin-top: 10px;">
                                                             <div class="col-md-6">
                                                                 <label class="texts">Fecha de expiración</label>
                                                                 <div class="col-md-12 row" style="padding: 0">
@@ -214,7 +214,7 @@
                                                             <div class="col-md-6">
                                                                 <div>
                                                                     <label class="texts">Código de seguridad</label>
-                                                                    <div class="col-md-12 row">
+                                                                    <div class="col-md-12 row" style="padding: 0">
                                                                         <div class="col-md-6"><input class="input-b" type="text" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
                                                                         <div class="col-md-6" style="padding: 0;">
                                                                             <img src="/images/cvv.png" alt="">
@@ -239,15 +239,16 @@
                                                                     
                                                                         <div class="col-md-12 " style="display:block; margin:auto;" > <img style="float: initial" src="/images/security.png" alt=""></div>
                                                                         <div class="text col-md-12">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
+                                                                    
 
                                                                     
                                                                     
                                                                 </div>
                                                             
                                                         </div>
-
-                                                        <div class="col-md-12" >
-                                                            <button class="btn btn-success boton-n" style="float: initial" id="pay-button"> <img src="/images/modals/dinero.png" alt="">  Pagar</button>
+                                                       
+                                                        <div class="col-md-12" style="margin-top: 20px;" >
+                                                            <button class="btn btn-success boton-n" style="float: initial"  id="pay-button"> <img style="float: initial"  src="/images/modals/dinero.png" alt="">  Pagar</button>
                                                         </div>
                                                     
                                                     </div>
@@ -323,4 +324,8 @@
       .boton-n{
         width: 500px;
       }
+
+      ::placeholder {
+        padding:15px;
+    }
   </style>
