@@ -152,7 +152,7 @@
           
     </div>
                 
-     @include("modals.success-payment")       
+{{-- @include("modals.success-payment")     --}}      
      @include('pages.partials.footer')
 
     

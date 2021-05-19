@@ -1,12 +1,20 @@
 <div class="modal fade" id="debit-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content" style="width: 10000px;">
-        <div class="modal-header">
-          <h1 class="modal-title text-center" id="exampleModalLongTitle">Información de pago</h1>
-        </div>
-        <div class="modal-body text-center">
+      <div class="modal-content" style="width: 10000px;" id="modal-content">
+    
+            <div class="modal-body text-center">
+                    <div class="row col-md-12">
+                        <div class="col-md-6">
+                            <div  style="text-align: left; margin-top: 10px;">
+                                <strong style="text-aling:left; font-size: 28px">Información de pago</strong> </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img style="float: right; margin: 0px 0px 15px 15px;"  src="/images/merca.png" alt="">
+                        </div>
+                    
+                    </div>
          
-              <script type="text/javascript">
+                    <script type="text/javascript">
                               $(document).ready(function() {
                                   
    
@@ -133,10 +141,10 @@
                                   }
   
                               });
-                          </script>
+                    </script>
   
-                          <div class="bkng-tb-cntnt">
-                              <div class="pymnts">
+                                <div class="bkng-tb-cntnt">
+                                 <div class="pymnts">
                                   <form action="/cart/payment/openpay" method="POST" id="payment-form">
                                       {{ csrf_field() }}
                                       <input type="hidden" name="token_id" id="token_id">
@@ -146,59 +154,179 @@
                                       <input type="hidden" name="ship_rate_total" id="total-credit">
                                       <input type="hidden" name="carrie" id="openpay_carrie">
                                       <input type="hidden" name="carrie_id" id="openpay_carrie_id">
-                                      <div class="pymnt-itm card active">
-                                        <h2 style="background-color: #ff9c00; width:100%;">Pago con tarjeta de crédito o débito</h2>
-                                          <div class="pymnt-cntnt">
-                                              <div class="card-expl">
-                                                  <div class="credit"><h4>Tarjetas de crédito</h4></div>
-                                                  <div class="debit"><h4>Tarjetas de débito</h4></div>
-                                              </div>
-                                              <div class="sctn-row">
-                                                  <div class="sctn-col l">
-                                                      <label>Nombre del titular</label><input type="text" placeholder="Como aparece en la tarjeta" autocomplete="off" data-openpay-card="holder_name">
-                                                  </div>
-                                                  <div class="sctn-col">
-                                                      <label>Número de tarjeta</label><input type="text" autocomplete="off" data-openpay-card="card_number" placeholder="xxxx-xxxx-xxxx-xxxx"></div>
-                                                  </div>
-                                                  <div class="sctn-row">
-                                                      <div class="sctn-col l">
-                                                          <label>Fecha de expiración</label>
-                                                          <div class="sctn-col half l"><input type="text" placeholder="Mes" data-openpay-card="expiration_month"></div>
-                                                          <div class="sctn-col half l"><input type="text" placeholder="Año" data-openpay-card="expiration_year"></div>
-                                                      </div>
-                                                      <div class="sctn-col cvv"><label>Código de seguridad</label>
-                                                          <div class="sctn-col half l"><input type="text" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
-                                                      </div>
-                                                  </div>
-                                                  
-                                                  <div class="openpay">
-                                                      <div class="col-md-6 text-center">
-                                                           Transacciones realizadas vía:
-                                                           <br>
-                                                           <div class="logo" style="width:100%;background-position: center;border:none;"></div>
-                                                      </div>
-                                                      
-                                                      <div class="col-md-6 text-center">
-                                                           <div class="shield" style="width: 100%; height: 42px; margin-left: 0px; background-position: center;"></div> 
-                                                           <br>
-                                                           Tus pagos se realizan de forma segura con encriptación de 256 bits
-                                                      </div>
-                                                    </div>
-                                                 
-                                                  
-                                                 
-                                              </div>
-                                               <div class="col-md-12 pull-right" style="width: 100%; margin-top: 37px;">
-                                                    <button class="btn btn-success w-100" id="pay-button">Pagar</button>
-                                                </div>
-                                          </div>
+                                      
+
+                                      
+                                      <div class="row col-md-12 header-naranja">
+                                       <div class="col-md-4">
+                                       <div >
+                                           <strong style="margin-top: 10px;">Tarjetas de crédito</strong>  </div>  
+                                           <img style="margin-top: 10px;" src="/images/credito.png" alt="">
+                                       </div>
+                                       <div class="col-md-8 " style="padding: 0;" >
+                                           <div>
+                                               <strong style="margin-top: 10px;">Tarjetas de débito</strong>  </div>  
+                                               <img src="/images/debito.png" alt="">
+                                           </div>
                                       </div>
+
+                                                <div class="row col-md-12 body-p">
+                                                    
+                                                    <div class="row col-md-12">
+                                                        <div class="col-md-6" style="margin-top: 10px;">
+                                                            <label class="texts">Nombre del titular</label> 
+                                                            <div class="col-md-12 row">
+                                                                <div class="col-md-10" style="padding: 0;">
+                                                                    <input class="input-t" type="text" placeholder="Como aparece en la tarjeta" autocomplete="off" data-openpay-card="holder_name">
+                                                                </div>
+                                                                <div class="col-md-2" style="padding: 0;">
+                                                                    <img src="/images/nombretitular.png" alt="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6" style="margin-top: 10px; padding: initial;">
+                                                            <label class="texts">Número de tarjeta</label>
+                                                            <div class="col-md-12 row">
+                                                                <div class="col-md-9" style="padding: 0;">
+                                                                     <input class="input-t" type="text" autocomplete="off" data-openpay-card="card_number" placeholder="xxxx-xxxx-xxxx-xxxx">
+                                                                </div>
+                                                                <div class="col-md-3" style="padding: 0;">
+                                                                    <img src="/images/numerotarjeta.png" alt="">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                
+                                                        <div class="col-md-12 row" style="margin-top: 10px;">
+                                                            <div class="col-md-6">
+                                                                <label class="texts">Fecha de expiración</label>
+                                                                <div class="col-md-12 row" style="padding: 0">
+                                                                    <div class="col-md-5"><input class="input-b" type="text" placeholder="Mes" data-openpay-card="expiration_month"></div>
+                                                                    <div class="col-md-5"><input class="input-b" type="text" placeholder="Año" data-openpay-card="expiration_year"></div>
+                                                                    <div class="col-md-2" style="padding: 0;">
+                                                                        <img src="/images/fecha.png" alt="">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div>
+                                                                    <label class="texts">Código de seguridad</label>
+                                                                    <div class="col-md-12 row" style="padding: 0">
+                                                                        <div class="col-md-6"><input class="input-b" type="text" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
+                                                                        <div class="col-md-6" style="padding: 0;">
+                                                                            <img src="/images/cvv.png" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="col-md-12 row" style="margin-top: 30px;"> 
+                                                        
+                                                                <div class="col-md-4 text" >
+                                                                    Transacciones realizadas <br> vía:
+                                                                </div>
+                                                                
+                                                                <div class="col-md-4">
+                                                                   <img src="/images/open.png" alt="">
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    
+                                                                        <div class="col-md-12 " style="display:block; margin:auto;" > <img style="float: initial" src="/images/security.png" alt=""></div>
+                                                                        <div class="text col-md-12">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
+                                                                    
+
+                                                                    
+                                                                    
+                                                                </div>
+                                                            
+                                                        </div>
+                                                       
+                                                        <div class="col-md-12" style="margin-top: 20px;" >
+                                                            <button class="btn btn-success boton-n" style="float: initial"  id="pay-button"> <img style="float: initial"  src="/images/modals/dinero.png" alt="">  Pagar</button>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
                                   </form>
+                                </div>
                               </div>
-                          </div>
+            </div>
                  
         </div> <!-- fin del modal -->
         
-      </div>
     </div>
-  </div>
+</div>
+  
+
+  <style>
+      .header-naranja{
+        width: 100%;
+        height: auto;
+        background: #FF9C00;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        color: #ffffff;
+        left: 15px;
+        font-weight: bold;
+        font-size: 23px;
+        line-height: 32px;
+        padding: 0;
+      }
+
+      .body-p{
+     
+        width: 821px;
+        height: auto;
+        left: 15px;
+        background: #F7F7F7;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.09);
+        border-radius: 16px;   
+      }
+
+      .texts{
+        font-size: 25px; 
+      }
+
+      .text{
+        font-size: 15px;
+        line-height: 19px;
+        text-align: center;
+        color: #828282;
+
+      }
+
+      .input-t{
+          width: 242px;
+          height: 40px;
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+        border-radius: 5px;
+      }
+      .input-b{
+        width: 106px ;
+        height: 40px;
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+        border-radius: 5px;
+      }
+
+      #modal-content{
+          border-radius: 16px;
+      }
+      
+      .boton-n{
+        width: 500px;
+      }
+
+      ::placeholder {
+        padding:15px;
+    }
+  </style>
