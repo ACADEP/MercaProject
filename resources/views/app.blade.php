@@ -109,14 +109,14 @@
     
     
     @if(Session::has('progress'))
-    @php Session::forget('progress'); @endphp
+        @php Session::forget('progress'); @endphp
     @endif
-    @if(Session::has('pay-oxxo'))
-    <script>
 
-        var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
-        window.open('/show-pdf-pay', '_blank');
-    </script>
+    @if(Session::has('pay-oxxo'))
+        <script>
+            var notify = $.notify('<div>Recibo para pagar generado y enviado a su correo favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
+            window.open('/show-pdf-pay', '_blank');
+        </script>
     @endif
     @if(Session::has('pay-bank'))
         <script>
@@ -131,17 +131,18 @@
         </script>       
     @endif
     @if(Session::has('recibe'))
-    <script> 
+        <script> 
             var notify = $.notify('<div>Recibo para pagar generado favor de <strong>imprimirlo</strong></div>', { allow_dismiss: false });
             window.open('/show-pdf-pay', '_blank');
         </script>
     @endif
+
     @if(Session::has('pay-success'))
-       
         <script> 
             var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
         </script>
     @endif
+
     @if(Session::has('pay-success-no-email'))
        
         <script> 
@@ -152,8 +153,8 @@
           
     </div>
                 
-{{-- @include("modals.success-payment")     --}}      
-     @include('pages.partials.footer')
+    {{-- @include("modals.success-payment")           --}}
+    @include('pages.partials.footer')
 
     
     <!-- Include sweet-alert.js file -->

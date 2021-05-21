@@ -307,22 +307,24 @@ $(document).ready(function () {
                     $('#pay-pal').modal('show');
                     $("#paypal-amount").val($("#total-pursh").val());
                     
-                }
+                } //Transferencia bancaria
                 else if($("#bank-method-r").prop("checked"))
                 {
                 
                     $(".rate_delivered").val($("#total-pursh").val());
+                    $("#transfer-total-html").html($("#total-pursh").val());
                     $("#bank_carrie").val($("#shipment").html()); //Nombre de la paquetería
-                $("#method_pay_bank").val("Transferencia bancaria");
+                    $("#method_pay_bank").val("Transferencia bancaria");
                     $("#bank_carrie_id").val($('#carrie_id').val());
                     $("#ship_rate_bank").val($('#ship_rate_choosed').html());
                     $("#date_ship_bank").val($('#date_aprox').html());
                     $('#transfer').modal('show');
-                }
+                } //Tiendas de convenencia
                 else if($("#store-method-r").prop("checked"))
                 {
                 
                     $(".rate_delivered").val($("#total-pursh").val());
+                    $("#store-total-html").html($("#total-pursh").val());
                     $("#store_carrie").val($("#shipment").html()); //Nombre de la paquetería
                     $("#method_pay_store").val("Tiendas de convenencia");
                     $("#store_carrie_id").val($('#carrie_id').val());

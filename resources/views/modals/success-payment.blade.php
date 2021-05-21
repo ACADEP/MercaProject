@@ -2,12 +2,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content" id="modal-content">
         <div class="modal-header">
+
           <h5 class="modal-title"></h5>
-          </button>
+          
         </div>
         <div class="modal-body" id="modal-body">
+
             <div class="col-md-12 text-center" id="title">
-                Compra exitosa!!
+                ¡Compra Exitosa!
             </div>
 
             <div class="col-md-12 text-center" style="top: 10px;">
@@ -15,10 +17,10 @@
             </div>
 
             <div class="col-md-12 text-center" style="font-weight: normal; text-aling:justify; top: 25px; ">
-              <img src="/images/modals/mano.png" alt=""> &nbsp;  Revise su correo electronico o su historial de compras para descargar su recibo
+              <img src="/images/modals/mano.png" alt=""> &nbsp; Revise su correo electronico o su historial de compras para descargar su recibo
             </div>
             <div class="col-md-12 text-center" style="font-weight: 600; font-weight: 900; top: 30px;">
-              Pago con Tarjeta Débito o crédito
+              Pago con Tarjeta Débito o Crédito
           </div>
           <div class="col-md-12 text-center" style="top: 30px;">
             <img src="/images/modals/visa.png" alt="">
@@ -26,18 +28,19 @@
         <div class="col-md-12 text-center" style="top: 30px;">
           <img src="/images/modals/openpay.png" alt="">
       </div>
-      <div class="row col-md-12 text-center " style="top: 30px;">
-        <div class="col-md-6" style="font-weight: 600;">
-          FECHA:
+
+    <div class="row col-md-12 text-center " style="top: 30px;">
+        <div class="col-md-6" >
+          <span style="font-weight: 600;">Fecha: </span>  {{\Carbon\Carbon::now()->format("d/m/Y")}}
         </div>
-        <div class="col-md-6" style="font-weight: 600;">
-          TOTAL:
+        <div class="col-md-6">
+          <span style="font-weight: 600;">Total: </span> $200.00
         </div>
     </div>
 
     <div class="col-md-12 text-center" style="top: 30px;">
       <div  style="margin-top: 29px;">
-        <button class="botoon">cerrar</button>
+        <button data-dismiss="modal" class="botoon">Cerrar</button>
       </div>     
   </div>
 
@@ -57,7 +60,7 @@
         font-size: 24px;
         line-height: 33px;
         /* identical to box height, or 137% */
-        
+
         
         color: #000000;
       }
