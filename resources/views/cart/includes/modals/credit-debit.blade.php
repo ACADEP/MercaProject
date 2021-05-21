@@ -173,23 +173,42 @@
 
                     <div class="row col-md-12 header-naranja">
                         <div class="col-md-12 col-xs-12 col-lg-4">
-                            <div class="col-12">
-                                <strong style="margin-top: 10px;">Tarjetas de crédito</strong> <br>
-
+                            <div class="col-12 row">
+                                <strong style="margin-top: 10px; margin-left: 19px; ">Tarjetas de crédito</strong> 
                             </div>
 
                             <div class="col-12">
-                                <img style="margin-top: 10px;" src="/images/credito.png" alt="">
+                                <img style="margin-top: 10px;" src="/images/credito.png"  alt="">
 
                             </div>
                         </div>
 
-                        <div class="col-md-8 col-xs-12 col-lg-8">
-                            <div class="col-12 text-center">
-                                <strong style="margin-top: 10px;">Tarjetas de débito</strong>
+                        <div class="col-md-12 col-xs-12 col-lg-8">
+                            <div class="col-lg-12" style="text-align: left; margin-top: 10px;">
+                                <strong>Tarjetas de débito</strong>
                             </div>
-                            <div class="col-12">
-                                <img src="/images/debito.png" alt="">
+
+                            <div class="row" style="padding: 0; margin-top: 10px;">
+
+                               <div class="col-6 .col-md-4 col-lg-2">
+                                <img class="imagen" src="/images/modals/bancomer.png" alt="">
+                               </div>
+                               <div class="col-6 .col-md-4 col-lg-2" >
+                                <img class="imagen" src="/images/modals/santander.png" alt="">
+                               </div>
+                               <div class="col-6 .col-md-4 col-lg-2" >
+                                <img class="imagen" src="/images/modals/hsbc.png" alt="">
+                               </div>
+                               <div class="col-6 .col-md-4 col-lg-2" >
+                                <img class="imagen" src="/images/modals/scotiabank.png" alt="">
+                               </div>
+                               <div class="col-6 .col-md-4 col-lg-2" >
+                                <img class="imagen"  src="/images/modals/inbursa.png" alt="">
+                               </div>
+                               <div class="col-6 .col-md-4 col-lg-2" >
+                                <img class="" src="/images/modals/ixe.png" alt="">
+                               </div>
+                               
                             </div>
                         </div>
 
@@ -320,7 +339,7 @@
         color: #ffffff;
         left: 15px;
         font-weight: bold;
-        font-size: 23px;
+        font-size: 20px;
         line-height: 32px;
         padding: 0;
     }
@@ -370,11 +389,17 @@
     }
 
     .boton-n {
-        width: 500px;
+        width: 80%;
     }
+    
+    
 
     ::placeholder {
         padding: 15px;
     }
+    .imagen{
+        width: 80px
+    }
 
+    
 </style>

@@ -102,6 +102,7 @@
         height: 50px;
 
     }
+    
 
     .boton2 {
         background: #FFFFFF !important;
@@ -115,11 +116,18 @@
 
 
     }
+    
 
     .btn-secondary:hover {
         background-color: #164DCE !important;
         color: #FFFFFF !important;
+    } 
+
+    .btn-secondary:not([disabled]):not(.disabled).active, .btn-secondary:not([disabled]):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+        background-color: #164DCE !important;
     }
+
+    
 
     #modal-body {
 
