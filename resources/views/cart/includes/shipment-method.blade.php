@@ -6,11 +6,14 @@
                     <!-- Paqueterias disponibles -->
                     @if($rates!=null)
                         @if($rates->count() > 0)
+                        
+                        
                         @foreach($rates as $rate)
                         @if (count((array)$rate)>1)
                                 @php $date = date_create($rate->estimated_delivery); @endphp
                                 <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center col-md-4' id='card-body{{$loop->iteration}}' style='max-width: 10rem; margin:10px; height:310px;'>
-                                <div class='card-body'>
+                               
+                                    <div class='card-body'>
                                     <p class='card-text' style='width:100%;' >
                                         <img src='{{$rate->carrier_logo_url}}' style="height:40px;" class='img-fluid'>
                                     </p>
@@ -21,6 +24,7 @@
                                             <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
                                 </div>
                                 </div>
+                                
                                 </div></a>
                                 <script>
                                     $('#paq-{{$loop->iteration}}').click(function(){
@@ -43,6 +47,7 @@
                                 </script>
                             @endif
                             @endforeach
+
                             <script>
                                 function reset_paq_css()
                                 {

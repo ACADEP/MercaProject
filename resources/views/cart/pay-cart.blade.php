@@ -6,7 +6,8 @@
 <br>
 <!-- Stepper -->
 <div class="row">
-    <div class="col-md-8 border" >
+    <div class="col-md-8" >
+
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
 
@@ -18,73 +19,86 @@
             
         </div>
     @endif
-    <h2 class="text-center font-bold"><strong>Proceso de pago</strong></h2><br><br>
-    <div class="steps-form-2">
-        <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
-            <div class="steps-step-2">
-                <a href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Dirección"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
-            </div>
-           
-            @if($rates->count() > 1)
-                {{-- Paqueteria --}}
-                <div class="steps-step-2">
-                    <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
-                </div>
-            @endif
-
-            <div class="steps-step-2">
-                <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Método de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
-            </div>
-            <div class="steps-step-2">
-                <a href="#step-4" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect mr-0" data-toggle="tooltip" data-placement="top" title="Verificar"><i class="fa fa-check" aria-hidden="true"></i></a>
-            </div>
+    <div class="content-process">
+        <div class="text-center box-process title-process">
+            Proceso de pago
         </div>
-    </div>
+
+        <div style="margin-top: 50px;" >
+            <div class="steps-form-2" >
+                
+                <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
+
+                    <div class="steps-step-2">
+                        <a href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Dirección"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    </div>
+                
+                    @if($rates->count() > 1)
+                        {{-- Paqueteria --}}
+                        <div class="steps-step-2">
+                            <a href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Paquetería"><i class="fa fa-truck" aria-hidden="true"></i></a>
+                        </div>
+                    @endif
+
+                    <div class="steps-step-2">
+                        <a href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Método de pago"><i class="fa fa-usd" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="steps-step-2">
+                        <a href="#step-4" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect mr-0" data-toggle="tooltip" data-placement="top" title="Verificar"><i class="fa fa-check" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         {{-- Elegir la direccion activa --}}
         @include('cart.includes.address-active')
-
+    
         {{-- Seccion para elegir la paquerteria --}}
         @if($rates->count() > 0)
             @include('cart.includes.shipment-method')
         @endif
-
+    
         <script> $('#loader').remove();</script>
-
+    
         @include('cart.includes.pay-method')
-
+    
         @include('cart.includes.verify')
-
-
+    
+    
     <!-- </form> -->
-</div>
 
-<div class="col-md-4">
-<!-- Default form contact -->
-<form class="text-center border">
-
-    <p class="h4 mb-4">Detalles de la compra</p>
-    <div class="h5">
-        Cantidad: {{ $cartItems->count() }}<!-- Cantidad -->
     </div>
 
-    <hr>
+</div>
 
-    <div class="h5">
-        Total de productos: ${{ number_format($subtotal, 2) }} <br>
+<div class="col-md-4  container-details">
+<!-- Default form contact -->
+<form class="text-center">
+<div class="box-details">
+    <p class="title-details">Detalles de la compra</p>
+    <div class="text2-details">
+        Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
+    </div>
+</div>
+
+   
+ <div class="box-details" style="margin-top: 15px;">
+    <div class="text2-details" style="padding-top: 15px">
+        Total de productos : ${{ number_format($subtotal, 2) }} <br>
         {{-- Envío + impuestos:  --}}
         <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
       
     </div>
+</div>
     
-    <hr>
-
-    <div class="h5">
+<div class="box-details" style="margin-top: 15px;">
+    <div class="text2-details" style="padding-top: 8px; padding-bottom: 8px;">
         <input type="hidden" id="total-cart" value="{{ $subtotal }}">
-        Total: <div id="total">${{ number_format($subtotal, 2) }}</div>
+        Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
         <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
     </div>
-    
+</div>
  
     
 
@@ -99,6 +113,67 @@
 
 @section('css-pay')
 <style>
+    .content-process{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    background: #F5F8FA;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px; 
+    }
+    .box-process{
+        padding: 10px;
+        width: 100%;
+        height: auto;
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+    }
+    .title-process{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 38px;
+        line-height: 45px;
+    }
+    .text2-details{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+    }
+    .container-details{
+        
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    background: #F5F8FA;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    }
+    .box-details{
+        padding: 10px;
+        width: 100%;
+        height: auto ;
+       
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+    }
+    .title-details{
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 28px;
+        
+    }
     .steps-form-2 {
     display: table;
     width: 100%;

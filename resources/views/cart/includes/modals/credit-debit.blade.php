@@ -219,7 +219,9 @@
                            
 
                                 <div class="col-md-12 col-lg-6" style="margin-top:10px;">
-                                    <label class="texts">Nombre del titular</label>
+                                    <div style="text-align: left;">
+                                        <label class="texts">Nombre del titular</label>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12 col-lg-2 text-center order-lg-2 order-*-*" style="padding: 0;">
                                             <img src="/images/nombretitular.png" alt="">
@@ -235,7 +237,9 @@
                                 </div>
         
                                 <div class="col-md-12 col-lg-6" style="margin-top:10px;">
-                                    <label class="texts">Número de tarjeta</label>
+                                    <div style="text-align: left;">
+                                        <label class="texts">Número de tarjeta</label>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12 col-lg-3 order-lg-2 order-*-* text-center">
                                             <img src="/images/numerotarjeta.png" alt="">
@@ -252,7 +256,9 @@
                             
                             
                             <div class="col-md-12 col-lg-6" style="margin-top:10px;">
-                                <label class="texts">Fecha de expiración</label>
+                                <div style="text-align: left;">
+                                    <label class="texts">Fecha de expiración</label>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12 col-lg-2 order-lg-3 order-*-* text-center">
                                         <img src="/images/fecha.png" alt="">
@@ -269,8 +275,11 @@
                             </div>
 
                             <div class="col-md-12 col-lg-6" style="margin-top:10px;">
-                                <div>
+                                <div style="text-align: left;">
                                     <label class="texts">Código de seguridad</label>
+                                </div>
+
+                                <div>
                                     <div class="row">
 
                                         <div class="col-md-12 col-lg-2 order-lg-2 order-*-* text-center">
@@ -287,28 +296,20 @@
                             </div>
                         
 
-                        <div class="col-md-12 row" style="margin-top: 30px;">
-
+                        <div class="col-md-12 row text-center" style="margin-top: 30px;">
                             <div class="col-md-4 text">
                                 Transacciones realizadas <br> vía:
                             </div>
-
                             <div class="col-md-4">
                                 <img src="/images/open.png" alt="">
                             </div>
-
                             <div class="col-md-4">
 
                                 <div class="col-md-12 " style="display:block; margin:auto;"> <img style="float: initial"
                                         src="/images/security.png" alt=""></div>
                                 <div class="text col-md-12">Tus pagos se realizan de forma segura con encriptación de
                                     256 bits</div>
-
-
-
-
                             </div>
-
                         </div>
 
                         <div class="col-md-12" style="margin-top: 20px;">
