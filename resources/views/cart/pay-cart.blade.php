@@ -76,8 +76,12 @@
 <!-- Default form contact -->
 <form class="text-center">
 <div class="box-details">
-    <p class="title-details">Detalles de la compra</p>
-    <div class="text2-details">
+    <p class="title-details" style="padding-top: 15px">Detalles de la compra</p>
+</div>
+
+<div class="box-details" style="margin-top: 15px;">
+    
+    <div class="text2-details" style="padding-top: 15px; padding-bottom: 15px;">
         Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
     </div>
 </div>
@@ -85,7 +89,7 @@
    
  <div class="box-details" style="margin-top: 15px;">
     <div class="text2-details" style="padding-top: 15px">
-        Total de productos : ${{ number_format($subtotal, 2) }} <br>
+        Total : ${{ number_format($subtotal, 2) }} <br>
         {{-- Envío + impuestos:  --}}
         <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
       
@@ -134,11 +138,10 @@
         border-radius: 5px;
     }
     .title-process{
-        font-family: Roboto;
-        font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 38px;
         line-height: 45px;
+        color: #4F4F4F;
     }
     .text2-details{
         font-style: normal;
@@ -146,10 +149,9 @@
         font-size: 20px;
         line-height: 23px;
     }
-    .container-details{
-        
+    .container-details{  
     width: 100%;
-    height: auto;
+    height: 360px;
     padding: 10px;
     background: #F5F8FA;
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -158,10 +160,10 @@
     border-radius: 8px;
     }
     .box-details{
-        padding: 10px;
+        float: initial;
+        padding: 5px;
         width: 100%;
-        height: auto ;
-       
+        height: auto;
         background: #FFFFFF;
         border: 1px solid rgba(0, 0, 0, 0.5);
         box-sizing: border-box;
@@ -172,6 +174,7 @@
         font-weight: 600;
         font-size: 24px;
         line-height: 28px;
+        color: #4F4F4F;
         
     }
     .steps-form-2 {
