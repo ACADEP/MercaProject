@@ -87,7 +87,13 @@
             </a> -->
         </div>
        
-        <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>
-        <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-pay" type="button">Siguiente</button>
+        <button class="buttonx btn btn-mdb-color btn-rounded prevBtn-2 float-left" id="btn-prev-pay" type="button">Anterior</button>
+        <button class="buttonx btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-pay" type="button">Siguiente</button>
     </div>
 </div>
+
+<style>
+    .buttonx{
+       background-color:#2659d1 !important;
+   }
+</style>

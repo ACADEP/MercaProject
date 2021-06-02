@@ -78,12 +78,16 @@
 
                         </div>
                     
-                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" style="margin-top: 10px;" type="button">Siguiente</button>
+                <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right buttonx" style="margin-top: 10px;" type="button">Siguiente</button>
             </div>
 
 
         </div>
         <style>
+
+            .buttonx{
+                background-color:#2659d1 !important;
+            }
 
             .text2-direction{
                 margin-top: 20px;

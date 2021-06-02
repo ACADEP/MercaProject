@@ -68,10 +68,16 @@
             </div>
         </div>
          <!-- fin -->
-         <button class="btn btn-mdb-color btn-rounded prevBtn-2 text-center" type="button">Anterior</button>
+         <button class="buttonx btn btn-mdb-color btn-rounded prevBtn-2 text-center" type="button">Anterior</button>
             
         
 
         
     </div>
 </div>
+
+<style>
+    .buttonx{
+       background-color:#2659d1 !important;
+   }
+</style>

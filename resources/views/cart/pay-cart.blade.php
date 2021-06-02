@@ -6,7 +6,7 @@
 <br>
 <!-- Stepper -->
 <div class="row">
-    <div class="col-md-8" >
+    <div class="col-md-8" style="padding: 1;" >
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
@@ -82,6 +82,11 @@
 <div class="box-details" style="margin-top: 15px;">
     
     <div class="text2-details" style="padding-top: 15px; padding-bottom: 15px;">
+        <div>
+            <img src="/images/cantidad.png" width="60px" alt="">
+        </div>
+        
+
         Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
     </div>
 </div>
@@ -89,6 +94,10 @@
    
  <div class="box-details" style="margin-top: 15px;">
     <div class="text2-details" style="padding-top: 15px">
+        <div>
+            <img src="/images/pagars.png" width="60px" alt="">
+        </div>
+        
         Total : ${{ number_format($subtotal, 2) }} <br>
         {{-- Envío + impuestos:  --}}
         <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
@@ -98,6 +107,11 @@
     
 <div class="box-details" style="margin-top: 15px;">
     <div class="text2-details" style="padding-top: 8px; padding-bottom: 8px;">
+        <div>
+            <img src="/images/entrega.png" width="60px" alt="">
+        </div>
+        
+
         <input type="hidden" id="total-cart" value="{{ $subtotal }}">
         Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
         <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
@@ -151,7 +165,7 @@
     }
     .container-details{  
     width: 100%;
-    height: 360px;
+    height: auto;
     padding: 10px;
     background: #F5F8FA;
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -172,7 +186,7 @@
     }
     .title-details{
         font-weight: 600;
-        font-size: 24px;
+        font-size: 30px;
         line-height: 28px;
         color: #4F4F4F;
         
