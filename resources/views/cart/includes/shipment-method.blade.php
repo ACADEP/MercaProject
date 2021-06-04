@@ -1,51 +1,30 @@
 <!-- Second Step -->
-<div class="row setup-content-2" id="step-2">
+<div class="row setup-content-2" id="step-2" style="padding-right: 20px">
     <div class="col-md-12">
     <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
-       
-    
-    
-    <div class="container" id="shipments">
+        <div class="row" id="shipments">
             <!-- Paqueterias disponibles -->
             @if($rates!=null)
                 @if($rates->count() > 0)
-                 
                 @foreach($rates as $rate)
                 @if (count((array)$rate)>1)
                         @php $date = date_create($rate->estimated_delivery); @endphp
+                <div class="col-md-4">
 
-                
-        <div class="row">
-            <a  id='paq-{{$loop->iteration}}'>
-
-             <div class="'card border-primary mb-3 text-center col-md-4" id='card-body{{$loop->iteration}}'>
-            
-                <div class="card" style="width: 10rem; height: 240px;">
-               
-                <div style="width: 100%">
-                    <img src='{{$rate->carrier_logo_url}}' class='img-fluid' style="width: 80px">
-                </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Costo:</h5>
-                        <div>${{$rate->total_amount}}</div>
-                      <div>
-                          Llegada aprox:
-                          <div>{{date_format($date, 'd-m-Y')}}</div>
-                      </div>
-
-    
-                <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
-                 <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
-                       
+                    <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center w-100' id='card-body{{$loop->iteration}}' style=' margin:10px; height:310px;'>
+                    <div class='card-body'>
+                        <p class='card-text' style='width:100%;' >
+                            <img src='{{$rate->carrier_logo_url}}' style="height:40px;" class='img-fluid'>
+                        </p>
+                        <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
+                        Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
+                        <div class='custom-control custom-radio'>
+                                <input type='radio' class='custom-control-input' value="{{$rate->carrier_service_code}}" id='paqueteria{{$loop->iteration}}' name='defaultExampleRadios'>
+                                <label class='custom-control-label' for='paqueteria{{$loop->iteration}}'></label>
                     </div>
-                    
-             </div>   
-        </div>
-                </a>
-
-        </div>
-
-                        
+                    </div>
+                    </div></a>
+                </div>
 
                         <script>
                             $('#paq-{{$loop->iteration}}').click(function(){
@@ -68,7 +47,6 @@
                         </script>
                     @endif
                     @endforeach
-
                     <script>
                         function reset_paq_css()
                         {
@@ -88,14 +66,7 @@
         </div>
        
 
-        <button class="buttonx btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
-        <button class="buttonx btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
+        <button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Anterior</button>
+        <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
     </div>
 </div>
-
-<style>
-     .buttonx{
-        background-color:#2659d1 !important;
-    }
-
-</style>
