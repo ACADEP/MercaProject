@@ -81,34 +81,36 @@
 
 <div class="box-details" style="margin-top: 15px;">
     
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
+    <div class="text2-details aling-text" style="padding-top: 8px; padding-bottom: 24px;"> 
         
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/cantidad.png" width="40px" alt=""> 
+        <img style="float: left; margin-left: 10px;" src="/images/cantidad.png" width="40px" alt=""> 
       
-        Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
+       <div> Cantidad : {{ $cartItems->count() }}</div>
+        <!-- Cantidad -->
     </div>
 </div>
 
    
  <div class="box-details" style="margin-top: 15px;">
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
+    <div class="text2-details aling-text" style="padding-top: 8px; padding-bottom: 24px;">
       
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/pagars.png" width="40px" alt=""> 
-      
-        Total : ${{ number_format($subtotal, 2) }} <br>
+            <img style="float: left; margin-left: 10px;" src="/images/pagars.png" width="40px" alt=""> 
+      <div> Total : ${{ number_format($subtotal, 2) }} </div>
         {{-- Envío + impuestos:  --}}
-        <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
+        <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> 
       
     </div>
 </div>
     
 <div class="box-details" style="margin-top: 15px;">
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
-      
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/entrega.png" width="40px" alt=""> 
+    <div class="text2-details aling-text" style="padding-top: 8px; padding-bottom: 24px;">
+
+            <img style="float: left; margin-left: 10px;;" src="/images/entrega.png" width="40px" alt=""> 
 
         <input type="hidden" id="total-cart" value="{{ $subtotal }}">
-        Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
+       <div>
+           Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
+       </div>
         <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
     </div>
 </div>
@@ -116,6 +118,7 @@
     
 
 </form>
+
 <!-- Default form contact -->
 </div>
 
@@ -126,6 +129,13 @@
 
 @section('css-pay')
 <style>
+     .aling-text{
+    display: flex;
+    padding: 15px;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    } 
     .content-process{
     width: 100%;
     height: auto;

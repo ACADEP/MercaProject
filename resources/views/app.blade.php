@@ -60,6 +60,7 @@
         <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/pay.css') }}" >
+        @stack('styles')
         @stack('scripts')
         <script type="text/javascript" src="{{ asset('/js/js.cookie.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/Main.js') }}"></script>

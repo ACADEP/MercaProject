@@ -1,7 +1,7 @@
 <!-- Second Step -->
 <div class="row setup-content-2" id="step-2" style="padding-right: 20px">
     <div class="col-md-12">
-    <h3 class="font-weight-bold pl-0 my-4"><strong>Elige un método de envío</strong></h3>
+    <h3 class="col-md-8 elige-title"><strong>Elige un método de envío</strong></h3>
         <div class="row" id="shipments">
             <!-- Paqueterias disponibles -->
             @if($rates!=null)
@@ -9,12 +9,12 @@
                 @foreach($rates as $rate)
                 @if (count((array)$rate)>1)
                         @php $date = date_create($rate->estimated_delivery); @endphp
-                <div class="col-md-4">
+                <div class="col-lg-3 col-md-6 col-sm-12">
 
-                    <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center w-100' id='card-body{{$loop->iteration}}' style=' margin:10px; height:310px;'>
+                    <a id='paq-{{$loop->iteration}}'><div class='card border-primary mb-3 text-center w-100 card-size' id='card-body{{$loop->iteration}}' >
                     <div class='card-body'>
                         <p class='card-text' style='width:100%;' >
-                            <img src='{{$rate->carrier_logo_url}}' style="height:40px;" class='img-fluid'>
+                            <img src='{{$rate->carrier_logo_url}}'  class='img-fluid img-envio'>
                         </p>
                         <h4>Costo:</h4><div class='badge badge-pill badge-primary' style='font-size:15px;'>${{$rate->total_amount}}</div><br>
                         Llegada aprox:<div class='badge badge-pill badge-primary'>{{date_format($date, 'd-m-Y')}}</div>
@@ -70,3 +70,22 @@
         <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" id="btn-next-ship" type="button">Siguiente</button>
     </div>
 </div>
+@push('styles')
+<style>
+.img-envio{
+    height: 40px;
+    width: 50%;
+    object-fit: contain;
+}
+.card-size{
+    margin:10px; 
+    height:250px;
+}
+.elige-title{
+                font-weight: 600;
+                font-size: 30px;
+                line-height: 40px;
+                color: #4F4F4F;
+            }
+</style>
+@endpush
