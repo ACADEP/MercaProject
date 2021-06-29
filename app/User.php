@@ -78,6 +78,28 @@ class User extends Authenticatable
         
     }
 
+
+    /**
+     * Asignar la direccion agregada como activa
+     *
+     * @var address Direccion agregada
+     * 
+     */ 
+    public function setAddressActive($newAddress)
+    {
+        //Desactivar todas sus direcciones
+        foreach ($this->address()->get() as $address) {
+            $address->activo=0;
+            $address->save();
+        }
+
+        //Asignar la nueva direccion como activa
+        $newAddress->activo=1;
+        $newAddress->save();
+
+        return $newAddress;
+    }
+
     public function productseller()
     {
         return $this->hasMany(ProductSeller::class);

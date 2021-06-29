@@ -67,6 +67,8 @@ class AppMailers {
         // The data that is required.
         $this->data = compact('user');
         // Now deliver the email to the user.
+        $this->subject="Confirmacion de correo electroníco";
+        
         $this->deliver();
     }
 

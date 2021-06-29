@@ -290,6 +290,30 @@ class CartController extends Controller {
 
     public function confirmation(Request $request, AppMailers $mailer) 
     {
+      
+
+        //Revisar el estado del cargo
+        if($request->id)
+        {
+           
+            $charge_id=$request->id;
+            
+            $openpay = \Openpay::getInstance(config('configurations.api.openpay_client_id'), config('configurations.api.api_key_private_openpay'));
+            
+            $charge = $openpay->charges->get($charge_id);
+            
+            
+            
+            if($charge->status=="failed") //Regresar un mensaje de error
+            {
+                $error_message="Error en la trasacción: ".Cart::error_code_openpay($charge->serializableData["error_code"]);
+
+                return redirect("/cart-pay")->with("error", $error_message);
+                
+            }
+           
+        }
+
         $sale= new Sale;
         $envio;
 
@@ -748,26 +772,21 @@ class CartController extends Controller {
                 'amount' => number_format( (float) $request->get("ship_rate_total"), 4, '.', ''),
                 'description' => 'Compra',
                 'order_id' => 'ORDEN-'.$random,
-                // 'use_card_points' => $_POST["use_card_points"], // Opcional, si estamos usando puntos
+                "use_3d_secure" => "true",
+                "redirect_url"=>action(
+                    'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id'),
+                                                    'ship_rate'=>$request->get('ship_rate'), 'date_ship'=>$request->get('date_ship'),
+                                                    'method_pay'=>$request->get('method_pay'),  ]
+                ),
                 'device_session_id' => $_POST["deviceIdHiddenFieldName"],
                 'customer' => $customer);
             
             
             $charge = $openpay->charges->create($chargeData);
            
-
+            return redirect($charge->payment_method->url ); //Reenviar 
           
-           if($charge->status=='completed')
-           {
-               //Eliminar productos del carrito
-
-               $val=$request->ship_rate;
-                return redirect()->action(
-                    'CartController@confirmation', ['carrie' => $request->get('carrie'), 'carrie_id'=> $request->get('carrie_id'),
-                                                    'ship_rate'=>$request->get('ship_rate'), 'date_ship'=>$request->get('date_ship'),
-                                                    'method_pay'=>$request->get('method_pay') ]
-                );
-           }
+           
           
 
 

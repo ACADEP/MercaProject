@@ -100,14 +100,8 @@
 
     @include('partials.nav')
     <div class="container">         
-    <script>
-        $(document).ready(function(){
-            $("#success-pay").modal("show");
+    
 
-        });
-    </script>
-    
-    
     @if(Session::has('progress'))
         @php Session::forget('progress'); @endphp
     @endif
@@ -138,22 +132,33 @@
     @endif
 
     @if(Session::has('pay-success'))
-        <script> 
-            var notify = $.notify('<div style="font-size:25px;"><h3>Compra existosa!!</h3>Revise su correo electrónico o su historial de compras para descargar su recibo</div>', { allow_dismiss: false });
-        </script>
+
+    {{-- Mostrar pago existoso con correo electronico --}}
+    <script>
+        $(document).ready(function(){
+            $("#success-pay").modal("show");
+
+        });
+    </script>
+    @include("modals.success-payment",["msg"=>"Revise su correo electrónico o su historial de compras para descargar su recibo"])
+        
     @endif
 
+    {{-- Mostrar pago existoso sin correo electronico --}}
     @if(Session::has('pay-success-no-email'))
-       
-        <script> 
-            var notify = $.notify('<div style="font-size:25px;">{{session("pay-success-no-email")}}</div>', { allow_dismiss: false });
+        <script>
+            $(document).ready(function(){
+                $("#success-pay").modal("show");
+
+            });
         </script>
+        @include("modals.success-payment",["msg"=>session("pay-success-no-email")])
     @endif
         @yield('content')
           
     </div>
                 
-    {{-- @include("modals.success-payment")           --}}
+              
     @include('pages.partials.footer')
 
     

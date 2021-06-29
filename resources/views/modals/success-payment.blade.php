@@ -17,7 +17,7 @@
             </div>
 
             <div class="col-md-12 text-center" style="font-weight: normal; text-aling:justify; top: 25px; ">
-              <img src="/images/modals/mano.png" alt=""> &nbsp; Revise su correo electronico o su historial de compras para descargar su recibo
+              <img src="/images/modals/mano.png" alt=""> &nbsp; {{$msg}}
             </div>
             <div class="col-md-12 text-center" style="font-weight: 600; font-weight: 900; top: 30px;">
               Pago con Tarjeta Débito o Crédito
@@ -29,20 +29,28 @@
           <img src="/images/modals/openpay.png" alt="">
       </div>
 
-    <div class="row col-md-12 text-center " style="top: 30px;">
+    {{-- <div class="row col-md-12 text-center " style="top: 30px;">
         <div class="col-md-6" >
           <span style="font-weight: 600;">Fecha: </span>  {{\Carbon\Carbon::now()->format("d/m/Y")}}
         </div>
         <div class="col-md-6">
           <span style="font-weight: 600;">Total: </span> $200.00
         </div>
+    </div> --}}
+
+    <div class="col-md-12 text-center " style="top: 30px; font-size:20px;">
+
+       
+          <span style="font-weight: 600;">Fecha: </span>  {{\Carbon\Carbon::now()->format("d/m/Y")}}
+      
+        
     </div>
 
     <div class="col-md-12 text-center" style="top: 30px;">
-      <div  style="margin-top: 29px;">
-        <button data-dismiss="modal" class="botoon">Cerrar</button>
-      </div>     
-  </div>
+        <div  style="margin-top: 29px;">
+          <button data-dismiss="modal" id="btn-close" class="botoon">Cerrar</button>
+        </div>     
+    </div>
 
          
         </div>

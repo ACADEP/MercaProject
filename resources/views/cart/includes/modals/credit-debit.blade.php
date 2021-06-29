@@ -227,8 +227,8 @@
                                             <img src="/images/nombretitular.png" alt="">
                                         </div>
     
-                                        <div class="col-md-12 col-lg-10 order-lg-1 order-*-*" style="padding: 0;">
-                                            <input class="input-t w-100" type="text" placeholder="Como aparece en la tarjeta"
+                                        <div class="col-md-12 col-lg-10 order-lg-1 order-*-*" style="padding: 0;" maxlength="255">
+                                            <input class="input-t w-100 input-openpay" type="text" placeholder="Como aparece en la tarjeta"
                                             autocomplete="off" data-openpay-card="holder_name">
                                         </div>
     
@@ -246,8 +246,8 @@
                                         </div>
     
                                         <div class="col-md-12 col-lg-9 order-lg-1 order-*-*">
-                                            <input class="input-t w-100" type="text" autocomplete="off"
-                                                data-openpay-card="card_number" placeholder="xxxx-xxxx-xxxx-xxxx">
+                                            <input class="input-t w-100 input-openpay" type="text" autocomplete="off"
+                                                data-openpay-card="card_number" maxlength="16" placeholder="xxxx-xxxx-xxxx-xxxx">
                                         </div>
                                     </div>
         
@@ -261,14 +261,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 col-lg-2 order-lg-3 order-*-* text-center">
-                                        <img src="/images/fecha.png" alt="">
+                                        <img src="/images/fecha.png" alt="" style="margin-left: -8px; margin-top: 6px;">
                                     </div>
 
                                     <div class="col-md-6 col-sm-6 col-lg-5 order-lg-1 order-*-*">
-                                        <input class="input-b w-100" type="text" placeholder="Mes"
+                                        <input class="input-b w-100 input-openpay" maxlength="2" type="text" placeholder="Mes"
                                             data-openpay-card="expiration_month">
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-lg-5 order-lg-2 order-*-*"><input class="input-b w-100" type="text" placeholder="Año"
+                                    <div class="col-md-6 col-sm-6 col-lg-5 order-lg-2 order-*-*">
+                                        <input class="input-b w-100 input-openpay" maxlength="2" type="text" placeholder="Año"
                                             data-openpay-card="expiration_year"></div>
                                 </div>
 
@@ -287,8 +288,8 @@
                                         </div>
                                         
                                         <div class="col-md-12 col-lg-6 order-lg-1 order-*-*">
-                                            <input class="input-b w-100" type="text" placeholder="3 dígitos"
-                                                autocomplete="off" data-openpay-card="cvv2">
+                                            <input class="input-b w-100 input-openpay" type="text" placeholder="cvv"
+                                                autocomplete="off" data-openpay-card="cvv2" maxlength="4">
                                         </div>
                                     </div>
                                 </div>
@@ -331,6 +332,9 @@
 
 
 <style>
+    .input-openpay{
+        padding: 19px;
+    }
     .header-naranja {
         width: 100%;
         height: auto;

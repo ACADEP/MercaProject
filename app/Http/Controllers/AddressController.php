@@ -48,14 +48,16 @@ class AddressController extends Controller
             $address->numInterior = $request->numinterior;
             $address->numExterior = $request->numexterior;
             $address->referencias = $request->references;
-            if(Auth::user()->address()->count() == 0) {
-                $address->activo = 1;
-            } 
+ 
+
             $address->save();
+
+            auth()->user()->setAddressActive($address);
            
-            return redirect()->back()->with("msg","Dirección actualizada!!");
-        } else {
-            
+            return redirect()->back()->with("msg","Nueva dirección ingresada con éxito");
+        } 
+        else 
+        {
             return back()->with('flash','Código postal no valido.');
         }    
 
@@ -64,7 +66,7 @@ class AddressController extends Controller
 
     public function updateAddress(ValidacionAddress $request)
     {
-        // dd($request);
+        
         $address = Auth::user()->address()->find($request->product_id);
         if($address!=null)
         {

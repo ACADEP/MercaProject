@@ -6,7 +6,54 @@
 <br>
 <!-- Stepper -->
 <div class="row">
-    <div class="col-md-8" style="padding: 1;" >
+
+    {{-- Detalles de compra --}}
+    <div class="col-md-4 container-details order-lg-2">
+    <form class="text-center">
+        <div class="box-details">
+            <p class="title-details" style="padding-top: 15px">Detalles de la compra</p>
+        </div>
+    
+        <div class="box-details" style="margin-top: 15px;">
+            
+            <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
+                
+                    <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/cantidad.png" width="40px" alt=""> 
+            
+                Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
+            </div>
+        </div>
+    
+        
+        <div class="box-details" style="margin-top: 15px;">
+            <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
+            
+                    <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/pagars.png" width="40px" alt=""> 
+            
+                Total : ${{ number_format($subtotal, 2) }} <br>
+                {{-- Envío + impuestos:  --}}
+                <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
+            
+            </div>
+        </div>
+            
+        <div class="box-details" style="margin-top: 15px;">
+            <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
+            
+                    <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/entrega.png" width="40px" alt=""> 
+    
+                <input type="hidden" id="total-cart" value="{{ $subtotal }}">
+                Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
+                <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
+            </div>
+        </div>
+    
+    </form>
+    </div>
+    {{-- Fin Detalles de compra --}}
+
+    
+    <div class="col-md-8 order-lg-1" style="padding: 1;" >
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible w-100 text-center" role="alert" style="font-size: 18px;">
@@ -72,52 +119,7 @@
 
 </div>
 
-<div class="col-md-4  container-details">
-<!-- Default form contact -->
-<form class="text-center">
-<div class="box-details">
-    <p class="title-details" style="padding-top: 15px">Detalles de la compra</p>
-</div>
 
-<div class="box-details" style="margin-top: 15px;">
-    
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
-        
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/cantidad.png" width="40px" alt=""> 
-      
-        Cantidad : {{ $cartItems->count() }}<!-- Cantidad -->
-    </div>
-</div>
-
-   
- <div class="box-details" style="margin-top: 15px;">
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
-      
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/pagars.png" width="40px" alt=""> 
-      
-        Total : ${{ number_format($subtotal, 2) }} <br>
-        {{-- Envío + impuestos:  --}}
-        <div id="ship_rate_choosed" style="display:none;" class="ship-rate">$0,00</div> <br>
-      
-    </div>
-</div>
-    
-<div class="box-details" style="margin-top: 15px;">
-    <div class="text2-details" style="padding-top: 8px; padding-bottom: 24px;">
-      
-            <img style="float: left; margin-left: 10px;padding-bottom: 24px;" src="/images/entrega.png" width="40px" alt=""> 
-
-        <input type="hidden" id="total-cart" value="{{ $subtotal }}">
-        Total con envío : <div id="total">${{ number_format($subtotal, 2) }}</div>
-        <input type="hidden" id="total-pursh" value="{{$subtotal}}"> 
-    </div>
-</div>
- 
-    
-
-</form>
-<!-- Default form contact -->
-</div>
 
 
 </div>
