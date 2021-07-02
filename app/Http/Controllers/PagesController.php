@@ -74,7 +74,7 @@ class PagesController extends Controller {
 
 
         
-        return view('pages.index', compact('products', 'brands', 'previousURL', 'search', 'new', 'cart_count', 'rand_shops', 'rand_brands','categories', 'selledProducts'));
+        return view('pages.index', compact('products',  'previousURL', 'new',  'rand_shops', 'rand_brands','categories', 'selledProducts'));
     }
 
     public function about() {
