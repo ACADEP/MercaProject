@@ -64,16 +64,22 @@
     {{-- Configurar PDF --}}
     <div id="menu2" class="tab-pane fade">
         <div class="row" style="padding: 5px;">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="time_delivery">Tiempo de entrega:</label>
                 <input type="time_delivery" class="form-control" style="width:100%;" maxlength="255" name="time_delivery" id="time_delivery" 
-                    value="{{old('time_delivery', $data->timedelivery)}}" placeholder="Ingresa un correo electronico">
+                    value="{{old('time_delivery', $data->timedelivery)}}" placeholder="Ingresa un tiempo de entrega">
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="conditions">Condiciones de pago:</label>
                 <input type="conditions" class="form-control" style="width:100%;" maxlength="255" name="conditions" id="conditions" 
-                    value="{{old('conditions', $data->conditions)}}" placeholder="Ingresa un correo electronico">
+                    value="{{old('conditions', $data->conditions)}}" placeholder="Ingresa condiciones de pago">
+            </div>
+
+            <div class="col-md-4">
+                <label for="validity">Vigencia:</label>
+                <input type="text" class="form-control" style="width:100%;" maxlength="255" name="validity" id="validity" 
+                    value="{{old('validity', $data->validity)}}" placeholder="Ingresa una vigencia">
             </div>
 
             <div class="col-md-12" style="margin-top: 15px;">

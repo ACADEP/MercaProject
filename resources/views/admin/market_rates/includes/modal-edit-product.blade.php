@@ -40,6 +40,12 @@
                      <textarea type="text" cols="30" rows="10" class="form-control" id="prod_market_name" name="product_name" style="width:100%;">
                     </textarea>
                  </div>
+
+                 <div class="col-md-12" style="margin-top: 10px;">
+                     <label for="prod_market_delevery">Tiempo de entrega: </label>
+                     <input type="text" class="form-control" id="prod_market_delevery" name="product_delevery" style="width:100%;">
+
+                 </div>
               
                 
   

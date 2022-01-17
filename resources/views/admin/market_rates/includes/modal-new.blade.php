@@ -23,6 +23,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab1primary" id="tab1" data-toggle="tab">Produto</a></li>
                         <li><a href="#tab2primary" id="tab2" data-toggle="tab">Servicio</a></li>
+                        <li><a href="#tab3primary" id="tab3" data-toggle="tab">Integración</a></li>
                     </ul>
             </div> {{--Fin tab header--}}
         <form  id="form-add-new" method="POST">
@@ -54,8 +55,12 @@
                             </div>
             
                         </div>
+
+                        <label for="product_delevery">Tiempo de entrega: </label>
+                        <input type="text"  class="form-control" name="product_delevery" id="product_delevery" style="width:100%;"  value="">
                        </div> {{--Fin tab 1--}}
 
+                       {{-- Servicio --}}
                        <div class="tab-pane fade in" id="tab2primary">
                         <label for="summary">Descripción: </label>
                         <textarea class="form-control" required name="summary" id="summary" style="width:100%; height:200px;"></textarea>
@@ -89,7 +94,32 @@
                         </div>
                     
                         
-                       </div>
+                       </div> {{-- Fin del servicio --}}
+
+                       {{-- Integracion --}}
+                       <div class="tab-pane fade in" id="tab3primary">
+                        <label for="summary">Descripción: </label>
+                        <textarea class="form-control" required name="int_summary" id="int_summary" style="width:100%; height:200px;"></textarea>
+                        <span class="msg-error" style="color:red" id="int_summary_error"></span>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="int_price">Precio: </label>
+                                <input type="text" class="form-control"  required style="width:100%;" id="int_price_format" value="">
+                                <input type="hidden" required class="form-control product_new_price" name="int_price" style="width:100%;" id="int_price" value="">
+                                <span class="msg-error" style="color:red" id="int_price_error"></span>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <label for="qty_int">Cantidad: </label>
+                                <input type="number" class="form-control" required name="qty_int" id="qty_int" style="width:100%;" min="1" value="1">
+                            </div>
+
+                           
+                        </div>
+                        
+                       </div> {{-- Fin de integracion --}}
 
                 </div>{{--Fin tab content--}}
 
@@ -164,12 +194,29 @@
             $("#service_price_format").val( format );
         }
     }
+
+    //Establecer el precio formateado en el input price_format donde se ingresa al cantidad
+    function setFormatPriceInt(input_val){
+        var num= input_val.replace(/\,/g,'');
+        if(num.length>0)
+        {
+            $("#int_price").val(num); //Input escondido 
+            var format =num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $("#int_price_format").val( format );
+        }
+    }
    
     
     //Establecer el precio formateado cuando se esta ingresando
     $('#service_price_format').keyup(function(e) {
         setFormatPriceService($(this).val());
     });
+
+    //Establecer el precio formateado cuando se esta ingresando
+    $('#int_price_format').keyup(function(e) {
+        setFormatPriceInt($(this).val());
+    });
+
     //Validacion de solo ingresar numeros y un punto para formatearlo
     $('#service_price_format').keypress(function(e) {
         if (e.which != 8 && e.which != 0 && e.which!=46 && (e.which < 48 || e.which > 57)) 

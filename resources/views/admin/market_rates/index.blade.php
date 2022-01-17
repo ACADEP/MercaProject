@@ -7,23 +7,23 @@
         </h1> 
 </section><br>
 
+<form action="{{route('searchMarketRates')}}" method="get">
 <div class="row">
    
     <div class="text-left col-md-4 col-xl-4 col-xs-4">
-        <form action="{{route('searchMarketRates')}}" method="get">
-            <input type="seacrh" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off"  name="search" 
-            value="@isset($old_inputs){{$old_inputs["search"]}}@endisset"> 
+            <input type="search" class="form-control" placeholder="Buscar en cotizaciones" autocomplete="off"  name="search" 
+            value="@isset($old_inputs, $old_inputs["search"]){{$old_inputs["search"]}}@endisset"> 
             
            
-        </form>
+        
     </div>
 
-    <div class="col-md-4 col-xl-4 col-xs-4">
+    <div class="col-md-2 col-xl-4 col-xs-4">
         <select class="form-control" name="client" id="">
             <option value="">Buscar por cliente</option>
             @foreach ($clients as  $client)
                 <option 
-                @isset($old_inputs)
+                @isset($old_inputs, $old_inputs["client"])
                     @if($old_inputs["client"]==$client->id)
                         selected
                     @endif
@@ -33,14 +33,28 @@
         </select>
     </div>
 
+    <div class="col-md-2 col-xl-4 col-xs-4">
+        <select class="form-control" name="order" id="">
+            <option @isset($old_inputs, $old_inputs['order']){{$old_inputs['order']==1 ? "selected" : ""}}@endisset 
+                value="1">Recientes</option>
+            <option @isset($old_inputs, $old_inputs['order']){{$old_inputs['order']==2 ? "selected" : ""}}@endisset
+                value="2">Antiguos</option>
+            
+        </select>
+    </div>
+
     <div class="col-md-2 col-xl-2 col-xs-2">
         <button type="sumbit" class="btn btn-primary">Buscar</button>
+        @isset($old_inputs)
+            <a class="text-center" href="/admin/market_rates/searchMarketRates">Limpiar</a>
+        @endisset
     </div>
 
      <div class="col-md-2 col-xl-2 col-xs-2 ">
         <a type="button" href="{{route('create-marketRates')}}" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
     </div>
 </div>
+</form>
 
 <table class="text-center table">
     <thead>
@@ -95,6 +109,10 @@
    @if($market_rates->count()<=0)
     <div class="col-md-12 badge badge-primary">No hay cotizaciones</div>
    @endif
+
+    <div class="col text-center">
+        {{$market_rates->appends(Request::except('page'))->links()}}
+    </div>
     
 
 @stop

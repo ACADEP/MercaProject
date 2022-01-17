@@ -14,8 +14,13 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        // If the authenticated user is not an admin (not = to 1), then redirect back to home page
-        if(Auth::check() && Auth::user()->hasRole("Client") == 'false') {
+        //Revisar si esta autenticado
+        if(!Auth::check())
+        {
+            return redirect('/');
+        }
+
+        if(Auth::user()->hasRole("Client")) {
             return redirect('/');
         }
 

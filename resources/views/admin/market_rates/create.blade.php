@@ -261,11 +261,20 @@
     <script>
         //Establecer el tab activo
         $("#tab_active").val("product");
+
+        /* Clic en el tab productos */
         $("#tab1").click(function(){
             $("#tab_active").val("product");
         });
+
+        /* Clic en el tab de servicios */
         $("#tab2").click(function(){
             $("#tab_active").val("service");
+        });
+
+        /* Clic en el tab de servicios */
+        $("#tab3").click(function(){
+            $("#tab_active").val("int");
         });
 
         $(".btn-add-newmarket").click(function(){
@@ -311,6 +320,21 @@
                     }
                 }
 
+                if($("#tab_active").val()=="int")
+                {
+                    if($("#int_summary").val()=="")
+                    {
+                        $("#int_summary_error").text("Campo obligatorio");
+                        validate=false;
+                        
+                    }
+                    if($("#int_price").val()=="")
+                    {
+                        $("#int_price_error").text("Campo obligatorio");
+                        validate=false;
+                    }
+                }
+
                 if(!validate)
                 {
                     return null;
@@ -344,7 +368,11 @@
                             $("#productmarket_content").append("<div class='col-md-12' id='product"+response.detail.id+"' style='margin-bottom:25px;'><div class='col-md-3'><img src='"+response.detail.thumbnail+"' style='width:100%;'></div>"+
                             "<div class='col-md-3'>"+String(response.detail.description).substring(0, 30)+"</div>"+
                             "<div class='col-md-3'> $"+parseFloat(response.detail.subtotal).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</div>"+
-                            "<div class='col-md-3'> <button class='btn btn-danger btn-xs btn-delete-product' id='"+cont+"' value='"+response.detail.id+"'><i class='fa fa-minus' aria-hidden='true'></i></button> </div></div>");
+                            "<div class='col-md-3'>"+
+                            "<button class='btn btn-danger btn-xs btn-delete-market-product' style='margin-bottom:10px;' id='"+cont+"' value='"+response.detail.id+"'>"+
+                            "<i class='fa fa-minus' aria-hidden='true'></i></button>"+
+                            "<button class='btn btn-info btn-xs btn-edit-product' value='" + response.detail.id + "'><i class='fa fa-pencil' aria-hidden='true'></i></button>" +
+                            "</div></div>");
                         }
                         else
                         {

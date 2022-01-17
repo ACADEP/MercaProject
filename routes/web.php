@@ -706,7 +706,7 @@ Route::group(["middleware" => 'customer'], function(){
 
  /*******************************************Admin Profile Routes below ************************************************/
 
-Route::group(["middleware" => 'admin', 'middleware' => 'auth'], function(){
+Route::group(["middleware" => 'admin'], function(){
     //Dashboard del administrador
     Route::get("admin/index", "AdminController@index");
     //Edicion de categorías

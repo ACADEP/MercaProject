@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MarketRates extends Model
 {
-    protected $fillable = [ 'company','client','contact','address','phone','email','date', "pdf_info"];
+    protected $fillable = [ 'company','client','contact','address','phone','email', 'validity','date', "pdf_info"];
 
     protected $dates=["date"];
     
@@ -37,6 +37,18 @@ class MarketRates extends Model
             }
         }
         return $band;
+    }
+
+    public function getValidityTextAttribute()
+    {
+        $text="5 dias apartir de la fecha";
+
+        if($this->validity)
+        {
+            $text=$this->validity;
+        }
+
+        return $text;
     }
 
     public function getAllTotalAttribute()

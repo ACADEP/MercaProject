@@ -71,7 +71,7 @@
     {{-- Header 1 --}}
     <div class="text-center border-line" style="margin-bottom:10px; height:100px;">
         <div class="box">
-            <img src="{{ asset('/images/logo_acadep.png')}}" style="width:70%; max-height:100px;">
+            <img src="{{ asset('/images/lacadep.jpg')}}" style="width:100%; max-height:100px;">
         </div>
 
         <div class="box" style="font-size:10px !important;">
@@ -103,10 +103,24 @@
 
         </div>
 
+        @php
+            $height=50;
+            if($items->validity)
+            {
+              $height=65;
+            }
+        @endphp
         <div style="float: left; width:33.33%; font-size:10px !important;">
-            <div class="text-center"  style="height: 50px; border-left:solid 1px black; border-bottom:solid 1px black;"">
+            <div class="text-center"  style="height: {!!$height!!}px; border-left:solid 1px black; border-bottom:solid 1px black;"">
                 <strong>TIEMPO DE ENTREGA:</strong> <br>
                 {{$items->timedelivery}}
+                
+                @if ($items->validity)
+
+                  <br><strong>VIGENCIA:</strong> <br>
+                  {{$items->validity_text}}
+                    
+                @endif
                  
             </div>
 
@@ -144,7 +158,7 @@
           <tr>
               <td class="text-center">{{$loop->iteration}}</td>
               <td class="desc">{{$item->product_sku}}</td>
-              <td class="unit" style="text-align: justify;">{{ $item->description }}</td>
+              <td class="unit" style="text-align: justify;">{!! $item->description !!}</td>
               <td class="service">{{$item->qty}}</td>
               <td class="service">{{$item->unity}}</td>
               <td class="qty">${{number_format($item->price, 2)}}</td>
