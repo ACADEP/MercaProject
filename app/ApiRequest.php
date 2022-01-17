@@ -49,9 +49,12 @@ class ApiRequest extends Model
         
         if($data->count()>0)
         {
+            //Obtener productos disponibles
             if (!array_key_exists("disponible", $data["item"])) {
                 return $data['item'];
             }
+
+            //
         }
         return $data;
     }
