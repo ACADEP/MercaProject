@@ -48,7 +48,9 @@ class QueryController extends Controller {
             
             $resultados = count($query->get());
 
-            $search = $query->select('products.*')->paginate(12);
+            $search = $query->select('products.*')
+                            ->orderBy("products.product_qty", "desc")
+                            ->paginate(12);
         }
 
         $orden = null;
@@ -153,6 +155,7 @@ class QueryController extends Controller {
             $filter->whereIn("cat_id",$request->categories);
         }      
        
+       
         if ($request->order != null) 
         {
             switch ($request->order) 
@@ -174,7 +177,7 @@ class QueryController extends Controller {
                 break;
             }
         }
-        
+
         $resultados=$filter->count();
         $search=$filter->paginate(12);
 
